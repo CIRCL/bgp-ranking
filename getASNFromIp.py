@@ -3,20 +3,18 @@
 import telnetlib
 import re
 
-risServer = 'www.ris.ripe.net'
+risServer = 'riswhois.ripe.net'
 whoisPort = 43
 
 ipToCheck = '74.125.77.104'
 
-tn = telnetlib.Telnet(risServer,whoisPort)
-tn.write(ipToCheck + "\n")
-tn.write("exit\n")
+s = socket(AF_INET, SOCK_STREAM)
+s.connect((risServer,whoisPort))
+s.send('-F ' + ipToCheck + ' \n')
+data = s.recv(1024)
+s.close()
 
-risServerResponse = tn.read_all()
-
-print(risServerResponse)
-
-asn = re.findall('origin:\s*AS?(.+)',risServerResponse)
+asn = re.findall('\n[0-9]*[\n](.+)[\t]',data)[0]
 
 print(asn)
 

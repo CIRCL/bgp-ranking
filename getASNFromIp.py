@@ -1,22 +1,27 @@
 #!/usr/bin/python
 
-import telnetlib
+from socket import *
 import re
+
 
 risServer = 'riswhois.ripe.net'
 whoisPort = 43
 
-ipToCheck = '74.125.77.104'
 
-s = socket(AF_INET, SOCK_STREAM)
-s.connect((risServer,whoisPort))
-s.send('-F ' + ipToCheck + ' \n')
-data = s.recv(1024)
-s.close()
+# return the ASN and the "best network" of this IP 
+def ASNofIP(ip):
+  s = socket(AF_INET, SOCK_STREAM)
+  s.connect((risServer,whoisPort))
+  s.recv(1024)
+  s.send('-F ' + ip + ' \n')
+  data = s.recv(1024)
+  s.close()	
+  # The Last ASN is always the better (has to be verified.) 
+  return re.findall('[0-9./]+',data)[-2:]
 
-asn = re.findall('\n[0-9]*[\n](.+)[\t]',data)[0]
 
-print(asn)
+
+
 
 
 

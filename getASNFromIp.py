@@ -22,11 +22,14 @@ class Ranking(object):
   whoisPort = 43
   ASNsHash = {}
   ASNs = []
+  noASN = []
   ASNsOrdered = []
   ips = []
 
   def __init__(self,ipList):
     self.ips = re.findall('([0-9.]+).+',ipList)
+			  #([0-9.]*)\s.*
+    self.ips = list(set(self.ips))
 
   def ASNsofIPs(self):
     """ Get informations on the AS of each IP 
@@ -40,10 +43,10 @@ class Ranking(object):
       data = s.recv(1024)
       whois = WhoisEntry(data)
       if not whois.origin:
-        print("No ASN found for " + ip)
+        self.noASN.append(ip)
       else: 
-        self.ASNsHash[whois.origin[0]] = whois.description[0]
-        self.ASNs.append(whois.origin[0])
+        self.ASNsHash[int(whois.origin)] = whois
+        self.ASNs.append(int(whois.origin))
     s.close()
     self.ASNs.sort()
 
@@ -55,7 +58,7 @@ class Ranking(object):
     index = 0
     for k, g in group:
       length = len(list(g))
-      self.ASNsOrdered.append((k, length, self.ASNsHash[k]))
+      self.ASNsOrdered.append((k, length, self.ASNsHash[k].description))
       index += length
     self.ASNsOrdered = sorted(self.ASNsOrdered, key=lambda x:(x[1], x[2], x[0]))
 

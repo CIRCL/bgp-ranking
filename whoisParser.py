@@ -28,7 +28,11 @@ class WhoisEntry(object):
         """
         whois_reg = self._whois_regs.get(attr)
         if whois_reg:
-            setattr(self, attr, re.findall(whois_reg, self.text))
+            value = re.findall(whois_reg, self.text)
+            if not value:
+              setattr(self, attr, false)
+            else:
+              setattr(self, attr, value[0])
             return getattr(self, attr)
         else:
             raise KeyError("Unknown attribute: %s" % attr)

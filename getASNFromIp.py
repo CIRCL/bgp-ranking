@@ -6,20 +6,42 @@ ipListURL ='http://www.dshield.org/feeds/topips.txt'
 response = urllib2.urlopen(ipListURL)
 ipList = response.read()
 
+risServer = 'riswhois.ripe.net'
+whoisPort = 43
+threadsNumber = 10
+
 from socket import *
 import re
 from whoisParser import WhoisEntry
 from itertools import groupby
-
+import time
 
 #ipList = open('topips.txt','r').read()
+
+from threading import Thread
+
+class threaded(Thread):
+
+  def __init__ (self,ips):
+    Thread.__init__(self)
+    self.ips = ips
+    self.datas = []
+
+  def run(self):
+    s = socket(AF_INET, SOCK_STREAM)
+    s.connect((risServer,whoisPort))
+    s.recv(1024)
+    for ip in self.ips[:]:
+      # Options : http://www.ripe.net/ris/riswhois.html
+      s.send('-k -M ' + ip + ' \n')
+      self.datas.append(s.recv(1024))
+    s.close
+
+
 
 class Ranking(object):
   """ Rank the IPs by AS
   """
-
-  risServer = 'riswhois.ripe.net'
-  whoisPort = 43
   ASNsHash = {}
   ASNs = []
   noASN = []
@@ -34,20 +56,28 @@ class Ranking(object):
   def ASNsofIPs(self):
     """ Get informations on the AS of each IP 
     """
-    s = socket(AF_INET, SOCK_STREAM)
-    s.connect((self.risServer,self.whoisPort))
-    s.recv(1024)
-    for ip in self.ips[:]:
-      # Options : http://www.ripe.net/ris/riswhois.html
-      s.send('-k -M ' + ip + ' \n')
-      data = s.recv(1024)
+    IPnumber = len(self.ips)
+    IPrange = IPnumber / threadsNumber
+    threadList = []
+    begin = time.time()
+    index = 0;
+    while index < IPnumber:
+      current = threaded(self.ips[index:index+IPrange])
+      threadList.append(current)
+      current.start()
+      index += IPrange
+
+    datas = []
+    for thread in threadList:
+      thread.join()
+      datas.extend(thread.datas)
+
+    for data in datas[:]:
       whois = WhoisEntry(data)
-      if not whois.origin:
-        self.noASN.append(ip)
-      else: 
+      if whois.origin:
         self.ASNsHash[int(whois.origin)] = whois
         self.ASNs.append(int(whois.origin))
-    s.close()
+    print(time.time() - begin)
     self.ASNs.sort()
 
   # Original idea => http://stackoverflow.com/questions/885546/how-do-you-calculate-the-greatest-number-of-repetitions-in-a-list

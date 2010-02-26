@@ -9,6 +9,8 @@ if version_info < (2,7):
   from netaddr import IPAddress, IPNetwork
 
   def ip_in_network(ip,network):
+    """ return true if the ip is in the network 
+    """
     return IPAddress(ip) in IPNetwork(network)
 
 else:

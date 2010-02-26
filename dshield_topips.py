@@ -7,14 +7,16 @@ from models import IPs, IPs_descriptions
 list_url  = 'http://www.dshield.org/feeds/topips.txt'
 list_name_str = 'Dshield Top IPs'
 
+def insert_ips():
+  """ Insert the ips of Dshield in the database
+  """
+  topips = urllib2.urlopen(list_url).read()
+  ips = re.findall('([0-9.]+).+',topips)
 
-topips = urllib2.urlopen(list_url).read()
-ips = re.findall('([0-9.]+).+',topips)
-
-for ip_t in ips:
-  current_ip = IPs.query.get(ip_t)
-  if not current_ip:
-    current_ip = IPs(ip=ip_t)
-  IPs_descriptions(ip=current_ip, list_name=list_name_str)
-  
-session.commit()
+  for ip_t in ips:
+    current_ip = IPs.query.get(ip_t)
+    if not current_ip:
+      current_ip = IPs(ip=ip_t)
+    IPs_descriptions(ip=current_ip, list_name=list_name_str)
+    
+  session.commit()

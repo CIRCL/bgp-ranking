@@ -23,7 +23,7 @@ class IPs_descriptions(Entity):
   """
   list_name = Field(UnicodeText, required=True)
   list_fetch_date = Field(DateTime, default=datetime.datetime.now)
-  list_date = Field(DateTime)
+  list_date = Field(DateTime, required=True)
   ip = ManyToOne('IPs')
   asn = ManyToOne('ASNs_descriptions')
   
@@ -47,6 +47,7 @@ class ASNs_descriptions(Entity):
   asn = ManyToOne('ASNs')
   ips = OneToMany('IPs_descriptions')
   
-  
-  
+
+setup_all()
+create_all()
   

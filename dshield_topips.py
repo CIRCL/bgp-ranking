@@ -1,22 +1,19 @@
 # -*- coding: utf-8 -*-
 import urllib2
 import re
+import datetime 
 
-from models import IPs, IPs_descriptions
+from ip_update import IP_Update
 
-list_url  = 'http://www.dshield.org/feeds/topips.txt'
-list_name_str = 'Dshield Top IPs'
 
-def insert_ips():
-  """ Insert the ips of Dshield in the database
-  """
-  topips = urllib2.urlopen(list_url).read()
-  ips = re.findall('([0-9.]+).+',topips)
+class Dshield_TopIPs(IP_Update):
+  url = 'http://www.dshield.org/feeds/topips.txt'
+  name = 'Dshield Top IPs'
+  date = datetime.date.today() # Dshield doesn't give a date for his TopIPs list. So we expect that the list is updated every days
+ 
 
-  for ip_t in ips:
-    current_ip = IPs.query.get(ip_t)
-    if not current_ip:
-      current_ip = IPs(ip=ip_t)
-    IPs_descriptions(ip=current_ip, list_name=list_name_str)
-    
-  session.commit()
+  def parse(self):
+    """ Parse the list
+    """
+    topips = urllib2.urlopen(self.url).read()
+    self.ips = re.findall('([0-9.]+).+',topips)

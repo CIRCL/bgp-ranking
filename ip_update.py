@@ -15,7 +15,7 @@ class IP_Update ():
       IP = IPs.query.get(unicode(ip))
       if not IP:
         IP = IPs(ip=unicode(ip))
-      desc = IPs_descriptions.query.filter_by(ip=IP, list_name=self.name, list_date=self.date).all()
+      desc = IPs_descriptions.query.filter_by(ip=IP, list_name=unicode(self.name), list_date=self.date).all()
       if not desc:
-        IPs_descriptions(ip=IP, list_name=self.name, list_date=self.date)
+        IPs_descriptions(ip=IP, list_name=unicode(self.name), list_date=self.date)
     session.commit()

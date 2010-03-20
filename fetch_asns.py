@@ -49,4 +49,3 @@ class Fetch_ASNs ():
       if ip_in_network(desc.ip.ip,asn_desc.ips_block):
         desc.asn = asn_desc
         ips_descriptions.remove(desc)
-        print(desc.ip.ip + " is in " + asn_desc.ips_block)

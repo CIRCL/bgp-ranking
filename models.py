@@ -7,7 +7,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 metadata.bind = "sqlite:///ranking.sqlite"
-metadata.bind.echo = True
+#metadata.bind.echo = True
 
 INET6_ADDRSTRLEN = 46
 
@@ -35,7 +35,7 @@ class IPs_descriptions(Entity):
     if not self.asn:
       return '[%s] List: "%s" \t %s' % (self.list_date, self.list_name, self.ip)
     else:
-      return '[%s] List: "%s" \t %s \t %s' % (self.list_date, self.list_name, self.ip, self.asn.asn)
+      return '\t[%s] List: "%s" \t %s \t %s' % (self.list_date, self.list_name, self.ip, self.asn.asn)
   
   
   
@@ -58,7 +58,7 @@ class ASNs_descriptions(Entity):
   ips = OneToMany('IPs_descriptions')
   
   def __repr__(self):
-    return '[%s] %s \t Owner: "%s" ' % (self.timestamp,  self.asn, self.owner)
+    return '[%s] %s \t Owner: "%s" \t Block: "%s"' % (self.timestamp,  self.asn, self.owner, self.ips_block)
   
 
 setup_all()

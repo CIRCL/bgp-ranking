@@ -30,7 +30,7 @@ class WhoisEntry(object):
         if whois_reg:
             value = re.findall(whois_reg, self.text)
             if not value:
-              setattr(self, attr, false)
+              setattr(self, attr, None)
             else:
               setattr(self, attr, value[0])
             return getattr(self, attr)

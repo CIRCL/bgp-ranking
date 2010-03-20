@@ -22,7 +22,7 @@ class IPs_descriptions(Entity):
   """ Table which contains a description of the IPs and a link to the ASNs Descriptions 
   """
   list_name = Field(UnicodeText, required=True)
-  list_fetch_date = Field(DateTime, default=datetime.datetime.now)
+  fetch_date = Field(DateTime, default=datetime.datetime.now)
   list_date = Field(DateTime, required=True)
   ip = ManyToOne('IPs')
   asn = ManyToOne('ASNs_descriptions')
@@ -42,7 +42,7 @@ class ASNs_descriptions(Entity):
   """ Table which contains a description of the ASNs and a link to the IPs Descriptions 
   """
   seen = Field(DateTime, default=datetime.datetime.now)
-  proprietary = Field(UnicodeText, required=True)
+  owner = Field(UnicodeText, required=True)
   ips_block = Field(Unicode(INET6_ADDRSTRLEN), required=True)
   asn = ManyToOne('ASNs')
   ips = OneToMany('IPs_descriptions')
@@ -50,4 +50,3 @@ class ASNs_descriptions(Entity):
 
 setup_all()
 create_all()
-  

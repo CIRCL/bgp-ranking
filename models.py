@@ -2,6 +2,10 @@
 from elixir import *
 import datetime 
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 metadata.bind = "sqlite:///ranking.sqlite"
 metadata.bind.echo = True
 
@@ -48,7 +52,7 @@ class ASNs_descriptions(Entity):
   """ Table which contains a description of the ASNs and a link to the IPs Descriptions 
   """
   timestamp = Field(DateTime, default=datetime.datetime.now)
-  owner = Field(String, required=True)
+  owner = Field(UnicodeText, required=True)
   ips_block = Field(Unicode(INET6_ADDRSTRLEN), required=True)
   asn = ManyToOne('ASNs')
   ips = OneToMany('IPs_descriptions')

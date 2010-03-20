@@ -37,7 +37,7 @@ class Fetch_ASNs ():
       current_asn = ASNs.query.get(unicode(whois.origin))
       if not current_asn:
         current_asn = ASNs(asn=unicode(whois.origin))
-      asn_desc = ASNs_descriptions(owner=whois.description, ips_block=unicode(whois.route), asn=current_asn)
+      asn_desc = ASNs_descriptions(owner=whois.description.decode("iso-8859-1"), ips_block=unicode(whois.route), asn=current_asn)
       current.asn = asn_desc
       self.__check_all_ips(asn_desc, ips_descriptions)
 

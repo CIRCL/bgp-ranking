@@ -2,6 +2,7 @@
 import urllib2
 import re
 import datetime 
+from datetime import datetime, date
 
 from ip_update import IP_Update
 

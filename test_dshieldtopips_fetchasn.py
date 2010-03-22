@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from dshield_topips import Dshield_Daily
+from dshield_topips import Dshield_TopIPs
+from dshield_daily import Dshield_Daily
 from fetch_asns import Fetch_ASNs
 from models import *
 

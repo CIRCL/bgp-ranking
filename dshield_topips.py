@@ -10,7 +10,7 @@ from ip_update import IP_Update
 class Dshield_TopIPs(IP_Update):
     url = 'http://www.dshield.org/feeds/topips.txt'
     name = 'Dshield Top IPs'
-    date = datetime.date.today() # Dshield doesn't give a date for his TopIPs\
+    date = datetime.date.today() # Dshield doesn't give a date for his TopIPs
 # list. So we assume that the list is updated every days
  
     def parse(self):

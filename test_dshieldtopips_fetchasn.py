@@ -15,6 +15,6 @@ f.fetch_asns()
 asns = ASNs_descriptions.query.all()
 
 for asn in asns:
-  print(asn)
-  for ip in asn.ips:
-    print(ip)
+    print(asn)
+    for ip in asn.ips:
+        print(ip)

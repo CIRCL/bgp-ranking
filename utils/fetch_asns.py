@@ -40,6 +40,8 @@ IPs_descriptions.asn==None).all()
             current_asn = ASNs.query.get(unicode(whois.origin))
             if not current_asn:
                 current_asn = ASNs(asn=unicode(whois.origin))
+            if not whois.description:
+                whois.description = "This ASN has no description"
             asn_desc = ASNs_descriptions(owner=whois.description.decode(\
 "iso-8859-1"), ips_block=unicode(whois.route), asn=current_asn)
             current.asn = asn_desc

@@ -9,9 +9,9 @@ class WhoisEntry(object):
     """Class for parsing a RIS-Whois entry.
     """
     _whois_regs = {
-        'route':       '^route[6]?:\s*(.+)',
+        'route':       'route[6]?:\s*(.+)',
         'origin':      'origin:\s*AS(.+)',
-        'description': 'descr:\s*(.+)',
+        'description': 'descr:\s*(.+)lastupd',
         'first':       'lastupd-frst:\s*(.+)',
         'last':        'lastupd-last:\s*(.+)',
         'seen-at':     'seen-at:\s*(.+)',

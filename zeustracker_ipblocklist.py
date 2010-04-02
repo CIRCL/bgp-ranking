@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
+from sys import version_info
 
-import urllib2
+if version_info < (2,7):
+    import urllib2
+else:
+    import urllib.request, urllib.error
+
+
 import re
 import datetime 
 
@@ -18,7 +24,7 @@ class Zeustracker_IpBlockList(IP_Update):
         """
         ipblocklist = urllib2.urlopen(self.url).read()
         self.ips = re.findall('((?:\d{1,3}\.){3}\d{1,3}).*', ipblocklist)
-        print self.ips
+#        print self.ips
 
 
 if __name__ == "__main__":

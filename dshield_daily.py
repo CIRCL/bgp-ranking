@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
+from sys import version_info
 
-import urllib2
+if version_info < (2,7):
+    import urllib2
+else:
+    import urllib.request, urllib.error
 import re
 import datetime 
 

@@ -8,7 +8,6 @@ else:
 import re
 import datetime 
 
-from datetime import datetime, date
 from ip_update import IP_Update
 
 

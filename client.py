@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from models import *
-from cli import *
+from utils.models import *
+#from cli import *
 
 
 class client():

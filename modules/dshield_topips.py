@@ -8,7 +8,7 @@ else:
 import re
 import datetime 
 
-from ip_update import IP_Update
+from utils.ip_update import IP_Update
 
 
 class Dshield_TopIPs(IP_Update):

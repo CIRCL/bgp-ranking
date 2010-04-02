@@ -3,7 +3,7 @@
 import re
 import datetime 
 
-from ip_update import IP_Update
+from utils.ip_update import IP_Update
 
 
 class IPv6_Test(IP_Update):

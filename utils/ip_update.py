@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from abc import ABCMeta, abstractmethod
-from models import *
+from utils.models import *
 
 
 class IP_Update ():

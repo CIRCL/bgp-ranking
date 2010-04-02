@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from models import *
-from whoisParser import WhoisEntry
-from ip_manip import ip_in_network
+from utils.models import *
+from utils.whoisParser import WhoisEntry
+from utils.ip_manip import ip_in_network
 
 from socket import *
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from ipv6_test import IPv6_Test
-from fetch_asns import Fetch_ASNs
-from models import *
+from modules.ipv6_test import IPv6_Test
+from utils.fetch_asns import Fetch_ASNs
+from utils.models import *
 
 d = IPv6_Test()
 

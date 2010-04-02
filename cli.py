@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from models import *
+from utils.models import *
 from cli import *
 
 def list_ASNs():

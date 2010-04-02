@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from dshield_topips import Dshield_TopIPs
-from dshield_daily import Dshield_Daily
+from ipv6_test import IPv6_Test
 from fetch_asns import Fetch_ASNs
 from models import *
 
-d = Dshield_TopIPs()
-#d = Dshield_Daily()
+d = IPv6_Test()
+
 d.update()
 
 f = Fetch_ASNs()

@@ -34,21 +34,26 @@ IPs_descriptions.asn==None).all()
         whois = WhoisEntry(data)
         if not whois.origin:
             # FIXME: handle the error properly ! the ip has no AS! 
+            
             pass
         else: 
             current_asn = ASNs.query.get(unicode(whois.origin))
             if not current_asn:
                 current_asn = ASNs(asn=unicode(whois.origin))
             asn_desc = ASNs_descriptions(owner=whois.description.decode(\
-"iso-8859-1"), ips_block=unicode(whois.route), \
-asn=current_asn)
+"iso-8859-1"), ips_block=unicode(whois.route), asn=current_asn)
             current.asn = asn_desc
             self.__check_all_ips(asn_desc, ips_descriptions)
 
     def __check_all_ips(self, asn_desc, ips_descriptions):
         """ Check if the ips are in an ip block we already know
         """
-        for desc in ips_descriptions:
-            if ip_in_network(desc.ip.ip,asn_desc.ips_block):
-                desc.asn = asn_desc
-                ips_descriptions.remove(desc)
+        if ips_descriptions:
+            it = 0
+            while it < len(ips_descriptions):
+                desc = ips_descriptions[it]
+                if ip_in_network(desc.ip.ip,asn_desc.ips_block):
+                    desc.asn = asn_desc
+                    ips_descriptions.pop(it)
+                else:
+                    it = it+1

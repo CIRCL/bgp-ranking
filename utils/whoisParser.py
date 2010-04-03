@@ -9,14 +9,14 @@ class WhoisEntry(object):
     """Class for parsing a RIS-Whois entry.
     """
     _whois_regs = {
-        'route':       'route[6]?:\s*(.+)',
-        'origin':      'origin:\s*AS(.+)',
-        'description': 'descr:\s*(.+)lastupd',
-        'first':       'lastupd-frst:\s*(.+)',
-        'last':        'lastupd-last:\s*(.+)',
-        'seen-at':     'seen-at:\s*(.+)',
-        'rispeers':    'num-rispeers:\s*(.+)',
-        'source':      'source:\s*(.+)'
+        'route':       'route[6]?:[ ]*([^\n]*)',
+        'origin':      'origin:[ ]*AS([^\n]*)',
+        'description': 'descr:[ ]*([^\n]*)',
+        'first':       'lastupd-frst:[ ]*([^\n]*)',
+        'last':        'lastupd-last:[ ]*([^\n]*)',
+        'seen-at':     'seen-at:[ ]*([^\n]*)',
+        'rispeers':    'num-rispeers:[ ]*([^\n]*)',
+        'source':      'source:[ ]*([^\n]*)'
     }
 
     def __init__(self, text):

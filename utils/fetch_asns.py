@@ -11,6 +11,7 @@ class Fetch_ASNs():
     risServer = 'riswhois.ripe.net'
     arguments = '-k -M '
     whoisPort = 43
+    default_asn_desc = None
 
     def fetch_asns(self):
         """ Fetch the ASNs
@@ -33,9 +34,12 @@ IPs_descriptions.asn==None).all()
         """
         whois = WhoisEntry(data)
         if not whois.origin:
-            # FIXME: handle the error properly ! the ip has no AS! 
-            
-            pass
+            if not self.default_asn_desc:
+                self.default_asn_desc = \
+                ASNs_descriptions(owner=unicode("IP without AS, see doc to know why"), \
+                ips_block=unicode('0.0.0.0'), asn=ASNs.query.get(unicode(-1)))
+            current.asn = self.default_asn_desc
+                
         else: 
             current_asn = ASNs.query.get(unicode(whois.origin))
             if not current_asn:

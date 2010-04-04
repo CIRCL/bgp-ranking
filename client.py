@@ -1,3 +1,4 @@
+#!/bin/python
 # -*- coding: utf-8 -*-
 
 from utils.models import *

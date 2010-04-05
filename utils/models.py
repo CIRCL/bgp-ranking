@@ -72,10 +72,8 @@ setup_all()
 create_all()
 
 
-# Creation of the "default AS": some IP found in the raw data have no AS 
-# (the owner is gone, it is in a legacy block such as 192.0.0.0/8...) 
-# We don't delete this IPs from the database because thez might be usefull 
-# to trace an AS but they should not be used in the ranking 
+# Creation of the "default AS", see fetch_asn.py for more informations 
 if not ASNs.query.get(str(-1)):
-  ASNs(asn=str(-1))
-session.commit()
+    ASNs(asn=str(-1))
+    session.commit()
+

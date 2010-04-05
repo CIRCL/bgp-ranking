@@ -41,4 +41,4 @@ class WhoisEntry(object):
         """Print all whois properties of IP
         """
         return '\n'.join('%s: %s' % (attr, str(getattr(self, attr))) for attr\
-in self._whois_regs)
+               in self._whois_regs)

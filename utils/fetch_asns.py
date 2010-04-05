@@ -8,6 +8,27 @@ from socket import *
 
 
 class FetchASNs():
+    """
+    Make an AS whois request and set an ASNsDescriptions to all IPsDescriptions
+    wich do not already have one. 
+    
+      1. Selection of all IPsDescriptions which do not have asn
+      2. Query to the Ris Server with an IP 
+      3. If the ASN is not already in the table ASNs, it is inserted 
+      4. The description (name of the AS, IP block) of the ASN is inserted 
+         into ASNsDescriptions
+      5. Searching in the list (see 1.) for all IPs which belong to the IP block 
+         of the current AS and set their ASN to the current
+    
+    Some IP found in the raw data have no AS (the owner is gone, it is in a legacy 
+    block such as 192.0.0.0/8...) We don't delete this IPs from the database because 
+    they might be usefull to trace an AS but they should not be used in the ranking 
+    
+    Note: If the IP as no AS, it is setted to the default ASN: -1. 
+    Note 2: If we found one or more IP withoud AS in a raw data, a new default 
+            ASNsDescriptions is created.
+    """
+  
     risServer = 'riswhois.ripe.net'
     arguments = '-k -M '
     whoisPort = 43

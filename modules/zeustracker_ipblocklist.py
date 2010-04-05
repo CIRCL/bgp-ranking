@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
-from sys import version_info
 
-if version_info < (2,7):
-    import urllib
-else:
+try:
     import urllib.request, urllib.parse, urllib.error
+except ImportError:
+    import urllib2
 
 
 import re
 import datetime 
 
-from utils.ip_update import IP_Update
+from utils.ip_update import IPUpdate
 
 
-class Zeustracker_IpBlockList(IP_Update):
+class ZeustrackerIpBlockList(IPUpdate):
     url = 'http://www.abuse.ch/zeustracker/blocklist.php?download=ipblocklist'
     name = 'Zeustracker\'s ipblocklist'
     # Dshield doesn't give a date for his TopIPs list. So we assume that 
@@ -31,6 +30,6 @@ class Zeustracker_IpBlockList(IP_Update):
 
 if __name__ == "__main__":
     #Just to check the url and print the result (ip addresses)
-    d = Zeustracker_IpBlockList()
+    d = ZeustrackerIpBlockList()
     d.parse()
 

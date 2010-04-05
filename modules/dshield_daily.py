@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
-from sys import version_info
 
-if version_info < (2,7):
+try:
+    import urllib.request, urllib.parse, urllib.error
+except ImportError:
     import urllib2
-else:
-    import urllib.request, urllib.error
+
 import re
 import datetime 
 
-from utils.ip_update import IP_Update
+from .utils.ip_update import IPUpdate
 
 
-class Dshield_Daily(IP_Update):
+class DshieldDaily(IPUpdate):
     url = 'http://www.dshield.org/feeds/daily_sources'
     name = 'Dshield Daily Sources'
     filename = 'datas/dshield/daily.'

@@ -3,10 +3,10 @@
 import re
 import datetime 
 
-from utils.ip_update import IP_Update
+from utils.ip_update import IPUpdate
 
 
-class IPv6_Test(IP_Update):
+class IPv6Test(IPUpdate):
     url = 'datas/ipv6-test'
     name = 'Test IPv6' 
     date = datetime.date.today()

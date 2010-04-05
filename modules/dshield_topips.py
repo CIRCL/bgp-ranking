@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
-from sys import version_info
 
-if version_info < (2,7):
-    import urllib
-else:
+try:
     import urllib.request, urllib.parse, urllib.error
+except ImportError:
+    import urllib2
     
     
 import re
 import datetime 
 
-from utils.ip_update import IP_Update
+from utils.ip_update import IPUpdate
 
 
-class Dshield_TopIPs(IP_Update):
+class DshieldTopIPs(IPUpdate):
     name = 'Dshield Top IPs'
     url = 'http://www.dshield.org/feeds/topips.txt'
     # Dshield doesn't give a date for his TopIPs list. So we assume that 

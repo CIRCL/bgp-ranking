@@ -9,7 +9,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 metadata.bind = "sqlite:///ranking.sqlite"
-#metadata.bind.echo = True
+metadata.bind.echo = True
 
 INET6_ADDRSTRLEN = 46
 
@@ -18,13 +18,13 @@ class IPs(Entity):
     """ Table which contains the IPs 
     """
     ip = Field(Unicode(INET6_ADDRSTRLEN), primary_key=True)
-    ip_descriptions = OneToMany('IPs_descriptions')
+    ip_descriptions = OneToMany('IPsDescriptions')
     
     def __repr__(self):
         return 'IP: "%s"' % (self.ip)
 
 
-class IPs_descriptions(Entity):
+class IPsDescriptions(Entity):
     """ Table which contains a description of the IPs
     and a link to the ASNs Descriptions 
     """
@@ -32,7 +32,7 @@ class IPs_descriptions(Entity):
     timestamp = Field(DateTime, default=datetime.datetime.now)
     list_date = Field(DateTime, required=True)
     ip = ManyToOne('IPs')
-    asn = ManyToOne('ASNs_descriptions')
+    asn = ManyToOne('ASNsDescriptions')
   
     def __repr__(self):
         if not self.asn:
@@ -47,13 +47,13 @@ class ASNs(Entity):
     """ Table which contains the ASNs 
     """
     asn = Field(Integer, primary_key=True)
-    asn_description = OneToMany('ASNs_descriptions')
+    asn_description = OneToMany('ASNsDescriptions')
   
     def __repr__(self):
         return 'ASN: "%s"' % (self.asn)
   
 
-class ASNs_descriptions(Entity):
+class ASNsDescriptions(Entity):
     """ Table which contains a description of the ASNs
     and a link to the IPs Descriptions 
     """
@@ -61,7 +61,7 @@ class ASNs_descriptions(Entity):
     owner = Field(UnicodeText, required=True)
     ips_block = Field(Unicode(INET6_ADDRSTRLEN), required=True)
     asn = ManyToOne('ASNs')
-    ips = OneToMany('IPs_descriptions')
+    ips = OneToMany('IPsDescriptions')
   
     def __repr__(self):
         return '[%s] %s \t Owner: "%s" \t Block: "%s"' % (self.timestamp,\
@@ -76,6 +76,6 @@ create_all()
 # (the owner is gone, it is in a legacy block such as 192.0.0.0/8...) 
 # We don't delete this IPs from the database because thez might be usefull 
 # to trace an AS but they should not be used in the ranking 
-if not ASNs.query.get(unicode(-1)):
-  ASNs(asn=unicode(-1))
+if not ASNs.query.get(str(-1)):
+  ASNs(asn=str(-1))
 session.commit()

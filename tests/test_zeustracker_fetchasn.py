@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from modules.zeustracker_ipblocklist import Zeustracker_IpBlockList
-from utils.fetch_asns import Fetch_ASNs
-from utils.models import *
+from .modules.zeustracker_ipblocklist import ZeustrackerIpBlockList
+from .utils.fetch_asns import FetchASNs
+from .utils.models import *
 
-d = Zeustracker_IpBlockList()
+d = ZeustrackerIpBlockList()
 
 d.update()
 
-f = Fetch_ASNs()
+f = FetchASNs()
 f.fetch_asns()
 
-asns = ASNs_descriptions.query.all()
+asns = ASNsDescriptions.query.all()
 
 for asn in asns:
     print(asn)

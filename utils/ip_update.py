@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from abc import ABCMeta, abstractmethod
-from utils.models import *
+from .utils.models import *
 
 
-class IP_Update ():
+class IPUpdate ():
     __metaclass__ = ABCMeta
   
     @abstractmethod
@@ -14,12 +14,12 @@ class IP_Update ():
     def update(self):
         self.parse()
         for ip in self.ips:
-            IP = IPs.query.get(unicode(ip))
+            IP = IPs.query.get(str(ip))
             if not IP:
-                IP = IPs(ip=unicode(ip))
-            desc = IPs_descriptions.query.filter_by(ip=IP, \
-list_name=unicode(self.name), list_date=self.date).all()
+                IP = IPs(ip=str(ip))
+            desc = IPsDescriptions.query.filter_by(ip=IP, \
+                   list_name=str(self.name), list_date=self.date).all()
             if not desc:
-                IPs_descriptions(ip=IP, \
-list_name=unicode(self.name), list_date=self.date)
+                IPsDescriptions(ip=IP, \
+                list_name=str(self.name), list_date=self.date)
         session.commit()

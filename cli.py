@@ -1,14 +1,14 @@
 #!/bin/python
 # -*- coding: utf-8 -*-
 
-from .utils.models import *
-from .cli import *
+from utils.models import *
+from cli import *
 
 def list_ASNs():
     return ASNs.query.order_by(ASNs.asn).all()
   
 def list_ASNs_descriptions():
-    return ASNDescriptions.query.order_by(ASNsDescriptions.asn_asn).all()
+    return ASNsDescriptions.query.order_by(ASNsDescriptions.asn_asn).all()
 
 def list_IPs():
     return IPs.query.order_by(IPs.ip).all()
@@ -21,7 +21,7 @@ def ASN_descriptions(asn):
            asn=ASNs.query.filter_by(asn=asn).first()).all()
   
 def IP_of_ASN(asn):
-    descs = ASNDescriptions(asn)
+    descs = ASNsDescriptions(asn)
     ips = []
     for desc in descs:
         ips.append(IPsDescriptions.query.filter_by(asn=desc).all())

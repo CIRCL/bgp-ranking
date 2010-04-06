@@ -57,18 +57,18 @@ class FetchASNs():
         if not whois.origin:
             if not self.default_asn_desc:
                 self.default_asn_desc = \
-                ASNsDescriptions(owner=str("IP without AS, see doc to know why"), \
-                ips_block=str('0.0.0.0'), asn=ASNs.query.get(str(-1)))
+                ASNsDescriptions(owner=unicode("IP without AS, see doc to know why"), \
+                ips_block=unicode('0.0.0.0'), asn=ASNs.query.get(unicode(-1)))
             current.asn = self.default_asn_desc
                 
         else: 
-            current_asn = ASNs.query.get(str(whois.origin))
+            current_asn = ASNs.query.get(unicode(whois.origin))
             if not current_asn:
-                current_asn = ASNs(asn=str(whois.origin))
+                current_asn = ASNs(asn=unicode(whois.origin))
             if not whois.description:
                 whois.description = "This ASN has no description"
             asn_desc = ASNsDescriptions(owner=whois.description.decode(\
-                       "iso-8859-1"), ips_block=str(whois.route), asn=current_asn)
+                       "iso-8859-1"), ips_block=unicode(whois.route), asn=current_asn)
             current.asn = asn_desc
             self.__check_all_ips(asn_desc, ips_descriptions)
 

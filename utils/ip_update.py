@@ -2,6 +2,10 @@
 
 from abc import ABCMeta, abstractmethod
 from .utils.models import *
+try : 
+    from ipaddr import IP
+except ImportError:
+    from netaddr import IPAddress, IPNetwork
 
 
 class IPUpdate ():
@@ -29,13 +33,20 @@ class IPUpdate ():
         ATTENTION: it will *fail* if self.date and self.ips are not definded!
         """
         self.parse()
-        for ip in self.ips:
-            IP = IPs.query.get(str(ip))
+        self.ips.sort()
+        i = 0 
+        while i < len(self.ips):
+            ip = IPAddress(self.ips[i])
+            IP = IPs.query.get(unicode(str(ip)))
             if not IP:
-                IP = IPs(ip=str(ip))
+                IP = IPs(ip=unicode(str(ip)))
             desc = IPsDescriptions.query.filter_by(ip=IP, \
-                   list_name=str(self.name), list_date=self.date).all()
+                   list_name=unicode(self.name), list_date=self.date).all()
             if not desc:
-                IPsDescriptions(ip=IP, \
-                list_name=str(self.name), list_date=self.date)
+                desc = IPsDescriptions(ip=IP, list_name=unicode(self.name), \
+                        list_date=self.date)
+            i += 1
+            while i < len(self.ips) and ip == str(IPAddress(self.ips[i])):
+                desc.times  +=1
+                i += 1
         session.commit()

@@ -21,7 +21,7 @@ def ASN_descriptions(asn):
            asn=ASNs.query.filter_by(asn=asn).first()).all()
   
 def IP_of_ASN(asn):
-    descs = ASNsDescriptions(asn)
+    descs = ASN_descriptions(asn)
     ips = []
     for desc in descs:
         ips.append(IPsDescriptions.query.filter_by(asn=desc).all())

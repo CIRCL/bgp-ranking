@@ -5,19 +5,10 @@
 
 import re
 
-class WhoisEntry(object):
+class Whois():
     """Class for parsing a RIS-Whois entry.
+    ATTENTION: _whois_regs must be definded to say what we should search in the whois
     """
-    _whois_regs = {
-        'route':       'route[6]?:[ ]*([^\n]*)',
-        'origin':      'origin:[ ]*AS([^\n]*)',
-        'description': 'descr:[ ]*([^\n]*)',
-        'first':       'lastupd-frst:[ ]*([^\n]*)',
-        'last':        'lastupd-last:[ ]*([^\n]*)',
-        'seen-at':     'seen-at:[ ]*([^\n]*)',
-        'rispeers':    'num-rispeers:[ ]*([^\n]*)',
-        'source':      'source:[ ]*([^\n]*)'
-    }
 
     def __init__(self, text):
         self.text = text

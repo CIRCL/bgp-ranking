@@ -9,7 +9,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 metadata.bind = "sqlite:///ranking.sqlite"
-#metadata.bind.echo = True
+metadata.bind.echo = True
 
 
 INET6_ADDRSTRLEN = 46
@@ -35,6 +35,7 @@ class IPsDescriptions(Entity):
     timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow)
     list_date = Field(DateTime(timezone=True), required=True)
     times = Field(Integer, default=1)
+    whois = Field(Binary)
     ip = ManyToOne('IPs')
     asn = ManyToOne('ASNsDescriptions')
   
@@ -44,7 +45,7 @@ class IPsDescriptions(Entity):
         if self.asn:
             to_return += '\t %s' % (self.asn.asn)
         return to_return
-  
+
     
 class ASNs(Entity):
     """ 
@@ -78,7 +79,7 @@ create_all()
 
 
 # Creation of the "default AS", see fetch_asn.py for more informations 
-if not ASNs.query.get(str(-1)):
-    ASNs(asn=str(-1))
-    session.commit()
+if not ASNs.query.get(unicode(-1)):
+    ASNs(asn=unicode(-1))
+session.commit()
 

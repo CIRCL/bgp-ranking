@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from abc import ABCMeta, abstractmethod
-from .utils.models import *
+from utils.models import *
+#from .whois.whois_parsers import Whois
+
 try : 
     from ipaddr import IP
 except ImportError:
@@ -36,15 +38,12 @@ class IPUpdate ():
         self.ips.sort()
         i = 0 
         while i < len(self.ips):
-            ip = IPAddress(self.ips[i])
-            IP = IPs.query.get(unicode(str(ip)))
+            IP = IPs.query.get(unicode(str(IPAddress(self.ips[i]))))
             if not IP:
-                IP = IPs(ip=unicode(str(ip)))
-            desc = IPsDescriptions.query.filter_by(ip=IP, \
-                   list_name=unicode(self.name), list_date=self.date).all()
+                IP = IPs(ip=unicode(str(IPAddress(self.ips[i]))))
+            desc = IPsDescriptions.query.filter_by(ip=IP, list_name=unicode(self.name), list_date=self.date).all()
             if not desc:
-                desc = IPsDescriptions(ip=IP, list_name=unicode(self.name), \
-                        list_date=self.date)
+                desc = IPsDescriptions(ip=IP, list_name=unicode(self.name), list_date=self.date , whois=Whois(ip))
             i += 1
             while i < len(self.ips) and ip == str(IPAddress(self.ips[i])):
                 desc.times  +=1

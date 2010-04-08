@@ -4,14 +4,40 @@
 # =>  http://code.google.com/p/pywhois/source/browse/trunk/pywhois/parser.py
 
 import re
+from model import *
+from .utils.ip_manip import ip_in_network
+from socket import *
 
-class Whois():
-    """Class for parsing a RIS-Whois entry.
+class AbstractWhois():
+    """Abstract Class for parsing a Whois entry.
     ATTENTION: _whois_regs must be definded to say what we should search in the whois
     """
+    server = None
+    options =  ''
+    port = 43
+    
+    def __fetch_whois(self):
+        s = socket(AF_INET, SOCK_STREAM)
+        s.connect((self.server,self.port))
+        s.recv(1024)
+        s.send(self.options + self.text + ' \n')
+        self.text = s.recv(2048)
+        s.close()
 
-    def __init__(self, text):
+    # TODO: When we know the server, we know the _whois_regs to use 
+    def __find_server(self):
+        assignations = Assignations.query.all()
+        for assignation in assignations:
+            if ip_in_network(self.text, assignation.block):
+                return assignation.whois
+
+
+    def __init__(self, text, connect=True):
         self.text = text
+        if connect: 
+            if not self.server:
+                self.server = self.__find_server()
+            self.__fetch_whois()
 
     def __getattr__(self, attr):
         """The first time an attribute is called it will be calculated here.
@@ -33,3 +59,6 @@ class Whois():
         """
         return '\n'.join('%s: %s' % (attr, str(getattr(self, attr))) for attr\
                in self._whois_regs)
+    
+    def __repr__(self):
+        return self.text

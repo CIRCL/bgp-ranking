@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .utils.models import *
-from .utils.whois_parser import WhoisEntry
+from .whois.whois_parsers import *
 from .utils.ip_manip import ip_in_network
 
 from socket import *
@@ -53,8 +53,8 @@ class FetchASNs():
     def __update_db(self, current, ips_descriptions, data):
         """ Update the database with the whois
         """
-        whois = WhoisEntry(data)
-        if not whois.origin:
+        ris_whois = RIS(data,  False)
+        if not ris_whois.origin:
             if not self.default_asn_desc:
                 self.default_asn_desc = \
                 ASNsDescriptions(owner=unicode("IP without AS, see doc to know why"), \
@@ -62,13 +62,13 @@ class FetchASNs():
             current.asn = self.default_asn_desc
                 
         else: 
-            current_asn = ASNs.query.get(unicode(whois.origin))
+            current_asn = ASNs.query.get(unicode(ris_whois.origin))
             if not current_asn:
-                current_asn = ASNs(asn=unicode(whois.origin))
-            if not whois.description:
-                whois.description = "This ASN has no description"
-            asn_desc = ASNsDescriptions(owner=whois.description.decode(\
-                       "iso-8859-1"), ips_block=unicode(whois.route), asn=current_asn)
+                current_asn = ASNs(asn=unicode(ris_whois.origin))
+            if not ris_whois.description:
+                ris_whois.description = "This ASN has no description"
+            asn_desc = ASNsDescriptions(owner=ris_whois.description.decode(\
+                       "iso-8859-1"), ips_block=unicode(ris_whois.route), asn=current_asn)
             current.asn = asn_desc
             self.__check_all_ips(asn_desc, ips_descriptions)
 

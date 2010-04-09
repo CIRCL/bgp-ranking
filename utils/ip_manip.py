@@ -13,6 +13,21 @@ if version_info < (2,7):
         """ return true if the ip is in the network 
         """
         return IPNetwork(ip) in IPNetwork(network)
+        
+    def smallest_network(networks):
+        """
+        Find the shortest network of a list
+        """
+        smallest = networks[0]
+        i = 1 
+        while i < len(networks):
+            if ip_in_network(networks[i].block, smallest.block):
+                smallest = networks[i]
+            i +=1
+        return smallest
+            
+            
+        
 
 else:
 # TODO ipaddr exists ? => http://docs.python.org/dev/py3k/library/ipaddr.html

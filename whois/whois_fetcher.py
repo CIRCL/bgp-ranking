@@ -5,7 +5,7 @@
 
 import re
 from model import *
-from .utils.ip_manip import ip_in_network
+from .utils.ip_manip import *
 from socket import *
 
 class WhoisFetcher(object):
@@ -39,12 +39,15 @@ class WhoisFetcher(object):
 
     def __find_server(self):
         assignations = Assignations.query.all()
+        possibilities = []
         for assignation in assignations:
             if ip_in_network(self.ip, assignation.block):
-                self.server = assignation.whois
-                self.pre_options = assignation.pre_options
-                self.post_options = assignation.post_options
-                self.port = assignation.port
+                possibilities.append(assignation)
+        assignation = smallest_network(possibilities)
+        self.server = assignation.whois
+        self.pre_options = assignation.pre_options
+        self.post_options = assignation.post_options
+        self.port = assignation.port
 
 
     def __init__(self, ip):

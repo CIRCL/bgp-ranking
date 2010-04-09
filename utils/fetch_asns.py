@@ -72,8 +72,9 @@ class FetchASNs():
                        "iso-8859-1"), ips_block=unicode(ris_whois.route), asn=current_asn)
             current.asn = asn_desc
             whois = WhoisFetcher(current.ip.ip)
-            asn_desc.whois = unicode(whois.text)
-            print (asn_desc.whois)
+            print(current.ip.ip)
+            print(whois.server)
+            asn_desc.whois = whois.text
             asn_desc.whois_address = unicode(whois.server)
             self.__check_all_ips(asn_desc, ips_descriptions)
 

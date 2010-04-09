@@ -4,7 +4,10 @@ drop_all()
 create_all()
 
 # 'address' : [pre_options, post_options]
-options = {'whois.nic.ad.jp' :  ['', ' /e ']}
+options = {
+    'whois.nic.ad.jp' :  [unicode(''), unicode(' /e ')], 
+    'whois.ripe.net' :  [unicode('-B '), unicode('')]
+    }
 
 
 

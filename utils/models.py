@@ -64,7 +64,7 @@ class ASNsDescriptions(Entity):
     timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow)
     owner = Field(UnicodeText, required=True)
     ips_block = Field(Unicode(INET6_ADDRSTRLEN), required=True)
-    whois = Field(Text)
+    whois = Field(Binary)
     whois_address = Field(UnicodeText)
     asn = ManyToOne('ASNs')
     ips = OneToMany('IPsDescriptions')

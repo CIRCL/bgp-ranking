@@ -4,7 +4,7 @@
 from elixir import *
 
 metadata.bind = "sqlite:///ranking.sqlite"
-metadata.bind.echo = True
+#metadata.bind.echo = True
 
 import re
 
@@ -20,8 +20,8 @@ class Assignations(Entity):
     """
     block = Field(Unicode(INET6_ADDRSTRLEN), primary_key=True)
     whois = Field(UnicodeText, required=True)
-    pre_options = Field(UnicodeText, default='')
-    post_options = Field(UnicodeText, default='')
+    pre_options = Field(UnicodeText, default=unicode(''))
+    post_options = Field(UnicodeText, default=unicode(''))
     port = Field(Integer, default=43)
 
     def __repr__(self):

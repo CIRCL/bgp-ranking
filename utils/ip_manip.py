@@ -12,7 +12,7 @@ if version_info < (2,7):
     def ip_in_network(ip, network):
         """ return true if the ip is in the network 
         """
-        return IPAddress(ip) in IPNetwork(network)
+        return IPNetwork(ip) in IPNetwork(network)
 
 else:
 # TODO ipaddr exists ? => http://docs.python.org/dev/py3k/library/ipaddr.html

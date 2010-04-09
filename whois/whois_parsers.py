@@ -3,24 +3,24 @@
 # Original Idea :
 # =>  http://code.google.com/p/pywhois/source/browse/trunk/pywhois/parser.py
 
-from whois import AbstractWhois
+from abstract_whois import AbstractWhoisParser
 
-class RIS(AbstractWhois):
-    """Class for parsing a RIS-Whois entry.
-    """
+
+"""Regex of the RIS-Whois entry.
+"""
+RIS = {
+    'route':       'route[6]?:[ ]*([^\n]*)',
+    'origin':      'origin:[ ]*AS([^\n]*)',
+    'description': 'descr:[ ]*([^\n]*)'
+}
     
-    _whois_regs = {
-        'route':       'route[6]?:[ ]*([^\n]*)',
-        'origin':      'origin:[ ]*AS([^\n]*)',
-        'description': 'descr:[ ]*([^\n]*)'
-    }
 
-class Whois(AbstractWhois):
+class Whois(AbstractWhoisParser):
     """
     This class return a dump of the Whois. 
     Til we have a real implementation of whois in python, 
-    we will use this class to save all the informations
+    we will use this class to return all the informations
     """
-    _whois_regs = {
-        'dump':       '(.*)'
-    }
+    possible_regex = {
+        'riswhois.ripe.net' : RIS
+        }

@@ -2,7 +2,6 @@
 
 from abc import ABCMeta, abstractmethod
 from utils.models import *
-#from .whois.whois_parsers import Whois
 
 try : 
     from ipaddr import IP
@@ -38,14 +37,15 @@ class IPUpdate ():
         self.ips.sort()
         i = 0 
         while i < len(self.ips):
-            IP = IPs.query.get(unicode(str(IPAddress(self.ips[i]))))
+            current_ip = str(IPAddress(self.ips[i]))
+            IP = IPs.query.get(unicode(current_ip))
             if not IP:
-                IP = IPs(ip=unicode(str(IPAddress(self.ips[i]))))
+                IP = IPs(ip=unicode(current_ip))
             desc = IPsDescriptions.query.filter_by(ip=IP, list_name=unicode(self.name), list_date=self.date).all()
             if not desc:
-                desc = IPsDescriptions(ip=IP, list_name=unicode(self.name), list_date=self.date , whois=Whois(ip))
+                desc = IPsDescriptions(ip=IP, list_name=unicode(self.name), list_date=self.date)
             i += 1
-            while i < len(self.ips) and ip == str(IPAddress(self.ips[i])):
+            while i < len(self.ips) and current_ip == str(IPAddress(self.ips[i])):
                 desc.times  +=1
                 i += 1
         session.commit()

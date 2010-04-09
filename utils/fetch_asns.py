@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from .utils.models import *
-from .whois.whois_parsers import *
+from .whois.whois_parsers import Whois
+from .whois.whois_fetcher import *
 from .utils.ip_manip import ip_in_network
 
 from socket import *
@@ -53,7 +54,7 @@ class FetchASNs():
     def __update_db(self, current, ips_descriptions, data):
         """ Update the database with the whois
         """
-        ris_whois = RIS(data,  False)
+        ris_whois = Whois(data,  self.risServer)
         if not ris_whois.origin:
             if not self.default_asn_desc:
                 self.default_asn_desc = \
@@ -70,6 +71,10 @@ class FetchASNs():
             asn_desc = ASNsDescriptions(owner=ris_whois.description.decode(\
                        "iso-8859-1"), ips_block=unicode(ris_whois.route), asn=current_asn)
             current.asn = asn_desc
+            whois = WhoisFetcher(current.ip.ip)
+            asn_desc.whois = unicode(whois.text)
+            print (asn_desc.whois)
+            asn_desc.whois_address = unicode(whois.server)
             self.__check_all_ips(asn_desc, ips_descriptions)
 
     def __check_all_ips(self, asn_desc, ips_descriptions):

@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import datetime 
-import sys
-
 from elixir import *
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 metadata.bind = "sqlite:///ranking.sqlite"
-metadata.bind.echo = True
+#metadata.bind.echo = True
 
+import datetime 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 INET6_ADDRSTRLEN = 46
 
@@ -35,7 +34,6 @@ class IPsDescriptions(Entity):
     timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow)
     list_date = Field(DateTime(timezone=True), required=True)
     times = Field(Integer, default=1)
-    whois = Field(Binary)
     ip = ManyToOne('IPs')
     asn = ManyToOne('ASNsDescriptions')
   
@@ -66,20 +64,20 @@ class ASNsDescriptions(Entity):
     timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow)
     owner = Field(UnicodeText, required=True)
     ips_block = Field(Unicode(INET6_ADDRSTRLEN), required=True)
+    whois = Field(Text)
+    whois_address = Field(UnicodeText)
     asn = ManyToOne('ASNs')
     ips = OneToMany('IPsDescriptions')
   
     def __repr__(self):
         return '[%s] %s \t Owner: "%s" \t Block: "%s"' % (self.timestamp,\
                 self.asn, self.owner, self.ips_block)
-  
 
 setup_all()
 create_all()
 
 
 # Creation of the "default AS", see fetch_asn.py for more informations 
-if not ASNs.query.get(unicode(-1)):
-    ASNs(asn=unicode(-1))
-session.commit()
-
+if not ASNs.query.get(unicode('-1')):
+    ASNs(asn=unicode('-1'))
+    session.commit()

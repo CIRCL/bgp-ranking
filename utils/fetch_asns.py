@@ -49,7 +49,7 @@ class FetchASNs():
             s.send(self.arguments + description.ip.ip + ' \n')
             self.__update_db(description, ips_descriptions, s.recv(1024))
         s.close()
-        session.commit()
+        ranking_session.commit()
 
     def __update_db(self, current, ips_descriptions, data):
         """ Update the database with the whois
@@ -72,8 +72,6 @@ class FetchASNs():
                        "iso-8859-1"), ips_block=unicode(ris_whois.route), asn=current_asn)
             current.asn = asn_desc
             whois = WhoisFetcher(current.ip.ip)
-            print(current.ip.ip)
-            print(whois.server)
             asn_desc.whois = whois.text
             asn_desc.whois_address = unicode(whois.server)
             self.__check_all_ips(asn_desc, ips_descriptions)

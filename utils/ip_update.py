@@ -48,4 +48,4 @@ class IPUpdate ():
             while i < len(self.ips) and current_ip == str(IPAddress(self.ips[i])):
                 desc.times  +=1
                 i += 1
-        session.commit()
+        ranking_session.commit()

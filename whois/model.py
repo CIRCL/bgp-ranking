@@ -1,9 +1,23 @@
+# -*- coding: utf-8 -*-
 # http://bazaar.launchpad.net/~ubuntu-branches/ubuntu/lucid/whois/lucid/files
 # to get the address assignations
-
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy import create_engine
 from elixir import *
 
-metadata.bind = "sqlite:///ranking.sqlite"
+
+whois_engine = create_engine("sqlite:///whois.sqlite") #, echo=True)
+whois_session = scoped_session(sessionmaker())
+whois_metadata = metadata
+
+__metadata__ = whois_metadata
+__session__ = whois_session
+
+whois_metadata.bind = whois_engine
+whois_session.bind = whois_engine
+
+
+#metadata.bind = "sqlite:///ranking.sqlite"
 #metadata.bind.echo = True
 
 import re
@@ -26,9 +40,3 @@ class Assignations(Entity):
 
     def __repr__(self):
         return 'Block: "%s\t Whois Server: %s"' % (self.block, self.whois)
-
-
-setup_all()
-create_all()
-
-

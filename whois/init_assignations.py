@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from model import *
 
 drop_all()
@@ -29,6 +30,6 @@ f = open('whois/ip6_del_list').read()
 assignations = re.findall('[\n]*([^#][\w\d:/]*)\t([^#][\d\w.]*)\s*',f)
 insert(assignations)
 
-session.commit()
+whois_session.commit()
 
 

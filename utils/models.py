@@ -1,9 +1,19 @@
 # -*- coding: utf-8 -*-
 
+
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy import create_engine
 from elixir import *
 
 
-metadata.bind = "sqlite:///ranking.sqlite"
+ranking_engine = create_engine("sqlite:///ranking.sqlite")#, echo=True)
+ranking_session = scoped_session(sessionmaker())
+ranking_metadata = metadata
+
+__metadata__ = ranking_metadata
+__session__ = ranking_session
+
+#metadata.bind = "sqlite:///ranking.sqlite"
 #metadata.bind.echo = True
 
 import datetime 
@@ -72,12 +82,3 @@ class ASNsDescriptions(Entity):
     def __repr__(self):
         return '[%s] %s \t Owner: "%s" \t Block: "%s"' % (self.timestamp,\
                 self.asn, self.owner, self.ips_block)
-
-setup_all()
-create_all()
-
-
-# Creation of the "default AS", see fetch_asn.py for more informations 
-if not ASNs.query.get(unicode('-1')):
-    ASNs(asn=unicode('-1'))
-    session.commit()

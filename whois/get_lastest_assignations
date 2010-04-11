@@ -1,0 +1,6 @@
+We use the assignations provided by the whois package of debian 
+
+1. get the lastest whois_*.tar.gz from http://ftp.debian.org/debian/pool/main/w/whois/
+2. tar xzf whois_*.tar.gz
+3. cp whois-*/ip*_del_list .
+4. regenerate the database and check !

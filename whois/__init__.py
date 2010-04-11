@@ -5,4 +5,4 @@ whois_metadata.bind = whois_engine
 whois_session.bind = whois_engine
 
 setup_all()
-create_all()
+whois_metadata.create_all()

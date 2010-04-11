@@ -53,7 +53,11 @@ class WhoisFetcher(object):
     def __init__(self, ip):
         self.ip = ip
         self.__find_server()
-        self.__fetch_whois()
+        try:
+            self.__fetch_whois()
+        except:
+            # in the case the IP in not allocated -> false positive => None
+            self.text = None
     
     def __repr__(self):
         return self.text

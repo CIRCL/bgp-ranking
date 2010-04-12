@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from models import *
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 ranking_metadata.bind = ranking_engine
 ranking_session.bind = ranking_engine
 

@@ -12,18 +12,10 @@ whois_engine = create_engine('mysql://root@localhost/whois')
 whois_session = scoped_session(sessionmaker())
 whois_metadata = ThreadLocalMetaData()
 
-
 __metadata__ = whois_metadata
 __session__ = whois_session
 
-whois_metadata.bind = whois_engine
-whois_session.bind = whois_engine
-
 import re
-
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 INET6_ADDRSTRLEN = 46
 

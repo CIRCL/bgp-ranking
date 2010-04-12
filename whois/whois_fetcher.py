@@ -15,6 +15,9 @@ class WhoisFetcher(object):
         # This whois contains a Korean and an English version, we only save the english one. 
         'whois.nic.or.kr' :  '# ENGLISH\n(.*)'
         }
+    regex_riswhois = {
+        'whois.ripe.net' : '% Information related to*\n(.*)'
+        }
     
     def __fetch_whois(self):
         s = socket(AF_INET, SOCK_STREAM)
@@ -38,7 +41,7 @@ class WhoisFetcher(object):
         s.close()
 
     def __find_server(self):
-        assignations = Assignations.query.all()
+        assignations = Assignations.query.filter(Assignations.block!='').all()
         possibilities = []
         for assignation in assignations:
             if ip_in_network(self.ip, assignation.block):

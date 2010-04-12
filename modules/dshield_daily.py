@@ -6,8 +6,9 @@ except ImportError:
     import urllib
 
 import re
-import datetime 
-
+import time
+import os
+from datetime import datetime
 from .utils.ip_update import IPUpdate
 
 
@@ -19,11 +20,14 @@ class DshieldDaily(IPUpdate):
     def parse(self):
         """ Parse the list
         """
-        daily = urllib2.urlopen(self.url).read()
+        urllib.urlretrieve(self.url, self.filename)
+        daily = open(self.filename).read()
         self.ips = re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',daily)
         str_date = re.findall('updated (.*)\n', daily)[0]
-        self.date = datetime.strptime(str_date, '%Y-%m-%d %H:%M:%S %Z')
-        self.filename = self.filename + str(self.date)
-        f = open(self.filename)
+        self.date = datetime.fromtimestamp(time.mktime(time.strptime(str_date, '%Y-%m-%d %H:%M:%S %Z')))
+        tmp_filename = self.filename + str(self.date).replace(' ','-')
+        os.rename(self.filename, tmp_filename)
+        self.filename = tmp_filename
+        f = open(self.filename,  'w')
         f.write(daily)
         f.close()

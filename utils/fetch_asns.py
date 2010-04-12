@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# TODO: implement keepalive if possible (-k with ripe.net)
+# TODO: fetch asn from whois.ripe.net & other servers if possible 
+
 from .utils.models import *
 from .whois.whois_parsers import Whois
 from .whois.whois_fetcher import *
@@ -58,10 +61,9 @@ class FetchASNs():
         if not ris_whois.origin:
             if not self.default_asn_desc:
                 self.default_asn_desc = \
-                ASNsDescriptions(owner=unicode("IP without AS, see doc to know why"), \
-                ips_block=unicode('0.0.0.0'), asn=ASNs.query.get(unicode(-1)))
+                    ASNsDescriptions(owner=unicode("IP without AS, see doc to know why"), \
+                    ips_block=unicode('0.0.0.0'), asn=ASNs.query.get(unicode(-1)))
             current.asn = self.default_asn_desc
-                
         else: 
             current_asn = ASNs.query.get(unicode(ris_whois.origin))
             if not current_asn:

@@ -7,12 +7,12 @@ from sys import version_info
 
 if version_info < (2,7):
   
-    from netaddr import IPAddress, IPNetwork
+    import IPy
 
     def ip_in_network(ip, network):
         """ return true if the ip is in the network 
         """
-        return IPNetwork(ip) in IPNetwork(network)
+        return IPy.IP(ip) in IPy.IP(network)
         
     def smallest_network(networks):
         """

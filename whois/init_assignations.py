@@ -35,6 +35,10 @@ f = open('whois/ip6_del_list').read()
 assignations = re.findall('[\n]*' + regex_ipv6 + '\t' + regex_dns + '\s*',f)
 insert(assignations)
 
+# Self defined servers
+# to do the RIS Requests
+Assignations(whois=unicode('riswhois.ripe.net'), pre_options=unicode('-k -M '))
+
 whois_session.commit()
 
 

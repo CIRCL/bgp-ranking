@@ -3,22 +3,21 @@
 # to get the address assignations
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy import create_engine
+from sqlalchemy.schema import ThreadLocalMetaData
 from elixir import *
 
 
-whois_engine = create_engine("sqlite:///whois.sqlite") #, echo=True)
+#whois_engine = create_engine("sqlite:///whois.sqlite") #, echo=True)
+whois_engine = create_engine('mysql://root@localhost/whois')
 whois_session = scoped_session(sessionmaker())
-whois_metadata = metadata
+whois_metadata = ThreadLocalMetaData()
+
 
 __metadata__ = whois_metadata
 __session__ = whois_session
 
 whois_metadata.bind = whois_engine
 whois_session.bind = whois_engine
-
-
-#metadata.bind = "sqlite:///ranking.sqlite"
-#metadata.bind.echo = True
 
 import re
 

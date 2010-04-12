@@ -6,7 +6,8 @@ from sqlalchemy import create_engine
 from elixir import *
 
 
-ranking_engine = create_engine("sqlite:///ranking.sqlite")#, echo=True)
+#ranking_engine = create_engine("sqlite:///ranking.sqlite")#, echo=True)
+ranking_engine = create_engine('mysql://root@localhost/ranking')
 ranking_session = scoped_session(sessionmaker())
 ranking_metadata = metadata
 

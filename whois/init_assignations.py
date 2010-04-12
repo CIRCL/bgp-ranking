@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 from model import *
 
-drop_all()
-create_all()
+whois_metadata.drop_all()
+whois_metadata.create_all()
 
 # 'address' : [pre_options, post_options]
 options = {
     'whois.nic.ad.jp' :  [unicode(''), unicode(' /e ')], 
     'whois.ripe.net' :  [unicode('-B '), unicode('')]
     }
-
-
 
 def insert(assignations): 
     for ip,url in assignations:

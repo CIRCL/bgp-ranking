@@ -5,8 +5,24 @@
 
 import re
 from model import *
-from .utils.ip_manip import *
+from utils.ip_manip import *
 from socket import *
+import time
+
+def get_server_by_name(server):
+    return Assignations.query.filter(Assignations.whois==server).first()
+
+def get_server_by_query(query):
+    assignations = Assignations.query.filter(Assignations.block!='').all()
+    server = None
+    for assignation in assignations:
+        if ip_in_network(query, assignation.block):
+            if not server:
+                server = assignation
+            else:
+                if ip_in_network(assignation.block, server.block ):
+                    server = assignation
+    return server
 
 class WhoisFetcher(object):
     """Class to the Whois entry of a particular IP.
@@ -18,49 +34,40 @@ class WhoisFetcher(object):
     regex_riswhois = {
         'whois.ripe.net' : '% Information related to*\n(.*)'
         }
-    
-    def __fetch_whois(self):
-        s = socket(AF_INET, SOCK_STREAM)
-        s.connect((self.server,self.port))
-        s.setblocking(0)
+        
+    def connect(self):
+        self.s = socket(AF_INET, SOCK_STREAM)
+        self.s.connect((self.server,self.port))
+        self.s.setblocking(0)
+        time.sleep(0.1)
         try: 
-            s.recv(1024)
+            self.s.recv(1024)
         except:
+            # The server does not send any "ehlo message"
             pass
-        s.setblocking(1)
-        s.send(self.pre_options + self.ip + self.post_options +' \n')
-        self.text = ''
-        while 1:
-            temp = s.recv(1024)
-            if len(temp) == 0:
-                break
-            self.text += temp
+        self.s.setblocking(1)
+    
+    def fetch_whois(self, query, keepalive = False):
+        if keepalive:
+            self.pre_options += self.keepalive_options
+        self.s.send(self.pre_options + query + self.post_options +' \n')
+        self.text = self.s.recv(1024)
         special_regex = self.regex_whois.get(self.server, None)
         if special_regex:
             self.text = re.findall(special_regex, self.text )
-        s.close()
+        if not keepalive:
+            self.s.close()
+        return self.text
 
-    def __find_server(self):
-        assignations = Assignations.query.filter(Assignations.block!='').all()
-        possibilities = []
-        for assignation in assignations:
-            if ip_in_network(self.ip, assignation.block):
-                possibilities.append(assignation)
-        assignation = smallest_network(possibilities)
+    def __set_values(self,  assignation):
         self.server = assignation.whois
         self.pre_options = assignation.pre_options
         self.post_options = assignation.post_options
+        self.keepalive_options = assignation.keepalive_options
         self.port = assignation.port
 
-
-    def __init__(self, ip):
-        self.ip = ip
-        self.__find_server()
-        try:
-            self.__fetch_whois()
-        except:
-            # in the case the IP in not allocated -> false positive => None
-            self.text = None
+    def __init__(self, server):
+        self.__set_values(server)
     
     def __repr__(self):
         return self.text

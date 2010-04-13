@@ -25,9 +25,7 @@ if version_info < (2,7):
                 smallest = networks[i]
             i +=1
         return smallest
-            
-            
-        
+
 
 else:
 # TODO ipaddr exists ? => http://docs.python.org/dev/py3k/library/ipaddr.html

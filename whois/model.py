@@ -27,6 +27,7 @@ class Assignations(Entity):
     whois = Field(UnicodeText, required=True)
     pre_options = Field(UnicodeText, default=unicode(''))
     post_options = Field(UnicodeText, default=unicode(''))
+    keepalive_options = Field(UnicodeText, default=unicode(''))
     port = Field(Integer, default=43)
 
     def __repr__(self):

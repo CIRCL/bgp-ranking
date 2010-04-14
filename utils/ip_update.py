@@ -47,6 +47,7 @@ class IPUpdate ():
             if not IP:
                 IP = IPs(ip=unicode(current_ip))
             desc = IPsDescriptions.query.filter_by(ip=IP, list_name=unicode(self.name), list_date=self.date).first()
+            
             if not desc:
                 desc = IPsDescriptions(ip=IP, list_name=unicode(self.name), list_date=self.date)
             i += 1

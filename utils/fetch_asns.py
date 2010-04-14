@@ -8,77 +8,44 @@ from whois.whois_parsers import Whois
 from whois.whois_fetcher import *
 from utils.ip_manip import ip_in_network
 
+from threading import Thread
+
 from socket import *
+import errno
 
-
-class FetchASNs():
-    """
-    Make an AS whois request and set an ASNsDescriptions to all IPsDescriptions
-    wich do not already have one. 
-    
-      1. Selection of all IPsDescriptions which do not have asn
-      2. Query to the Ris Server with an IP 
-      3. If the ASN is not already in the table ASNs, it is inserted 
-      4. The description (name of the AS, IP block) of the ASN is inserted 
-         into ASNsDescriptions
-      5. Searching in the list (see 1.) for all IPs which belong to the IP block 
-         of the current AS and set their ASN to the current
-    
-    Some IP found in the raw data have no AS (the owner is gone, it is in a legacy 
-    block such as 192.0.0.0/8...) We don't delete this IPs from the database because 
-    they might be usefull to trace an AS but they should not be used in the ranking 
-    
-    Note: If the IP as no AS, it is setted to the default ASN: -1. 
-    Note 2: If we found one or more IP withoud AS in a raw data, a new default 
-            ASNsDescriptions is created.
-    """
-  
+class Thread_ASN(Thread):
     risServer = unicode('riswhois.ripe.net')
     default_asn_desc = None
 
-    def __init__(self):
-        """
-        Initialisation of the dictionary to classify the IPs by whois server
-        ris_dict = {'server.tld': [IP_Desc1, IP_Desc2...]}
-        """
-        # get all the IPs_descriptions which don't have asn
-        ips_descriptions = IPsDescriptions.query.filter(\
-                           IPsDescriptions.asn==None).all()
-        self.ris_dict = {}
-        for ip_description in ips_descriptions:
-            server = get_server_by_query(ip_description.ip.ip)
-            if not self.ris_dict.get(server.whois,  None):
-               self.ris_dict[server.whois] = [ip_description]
-            else:
-                self.ris_dict[server.whois].append(ip_description)
-        self.whois_dict = {}
+    def __init__ (self,ip_list ):
+        Thread.__init__(self)
+        self.ip_list = ip_list
 
-    def fetch_asns(self):
-        """ 
-        Main function, initialise the WhoisFetcher and connect to riswhois.ripe.net
-        Make a new connexion for each list of ris_dict. 
-        TODO: threads!
-        """
-        self.ris_fetcher = WhoisFetcher(get_server_by_name(self.risServer))
-        for self.current_server in self.ris_dict:
-            self.current_ip_list = self.ris_dict[self.current_server]
-            self.ris_fetcher.connect()
-            self.__fetch_asns_current_list()
-        self.__fetch_whois()
-        ranking_session.commit()
+    def run(self):
+        self.fetcher = WhoisFetcher(get_server_by_name(self.risServer))
+        self.__fetch_asns_current_list()
 
     def __fetch_asns_current_list(self):
         """
         Fetch the ris whois for the list, using keepalive because we are on riswhois
         Disconnect when the whole list is done
         """
-        while len(self.current_ip_list) > 0:
-            description = self.current_ip_list.pop()
-            if len(self.current_ip_list) != 0:
-                whois = self.ris_fetcher.fetch_whois(description.ip.ip,  True)
-            else:
-                whois = self.ris_fetcher.fetch_whois(description.ip.ip)
-            self.__update_db(description,  whois)
+        broken_pipe = 0
+        last = self.ip_list[len(self.ip_list) -1]
+        for description in self.ip_list:
+            try:
+                whois = self.fetcher.fetch_whois(description.ip.ip,  True)
+                if description == last:
+                    whois = self.fetcher.fetch_whois(description.ip.ip)
+                self.__update_db(description,  whois)
+                ranking_session.commit()
+            except IOError, e:
+                if e.errno == errno.EPIPE and broken_pipe < 5:
+                    self.ip_list.append(description)
+                    broken_pipe += 1
+                    self.fetcher.connect()
+                else:
+                    raise IOError(e)
 
     def __update_db(self, current, data):
         """ 
@@ -112,24 +79,26 @@ class FetchASNs():
         Check if the ips are in an ip block we already know and drop them from the list 
         """
         it = 0
-        while it < len(self.current_ip_list):
-            desc = self.current_ip_list[it]
+        while it < len(self.ip_list):
+            desc = self.ip_list[it]
             if ip_in_network(desc.ip.ip,asn_desc.ips_block):
                 desc.asn = asn_desc
-                self.current_ip_list.pop(it)
+                self.ip_list.pop(it)
             else:
                 it = it+1
 
-    def __fetch_whois(self):
-        """ 
-        Make a new connexion for each list of whois_dict. 
-        """
-        for server in self.whois_dict:
-            current_asn_list = self.whois_dict[server]
-            self.__fetch_whois_current_list(server, current_asn_list)
+class Thread_Whois(Thread):
 
+    def __init__ (self, server, asn_list ):
+        Thread.__init__(self)
+        self.server = server
+        self.asn_list = asn_list
+
+    def run(self):
+        self.__fetch_whois_current_list()
     
-    def __fetch_whois_current_list(self, server,  asn_list):
+        
+    def __fetch_whois_current_list(self):
         """
         Fetch the whois for the list, using keepalive if possible
         """
@@ -153,4 +122,64 @@ class FetchASNs():
                 whois = whois_fetcher.fetch_whois(description.ips_block)
                 description.whois = whois
                 description.whois_address = server
+    
 
+class FetchASNs():
+    """
+    Make an AS whois request and set an ASNsDescriptions to all IPsDescriptions
+    wich do not already have one. 
+    
+      1. Selection of all IPsDescriptions which do not have asn
+      2. Query to the Ris Server with an IP 
+      3. If the ASN is not already in the table ASNs, it is inserted 
+      4. The description (name of the AS, IP block) of the ASN is inserted 
+         into ASNsDescriptions
+      5. Searching in the list (see 1.) for all IPs which belong to the IP block 
+         of the current AS and set their ASN to the current
+    
+    Some IP found in the raw data have no AS (the owner is gone, it is in a legacy 
+    block such as 192.0.0.0/8...) We don't delete this IPs from the database because 
+    they might be usefull to trace an AS but they should not be used in the ranking 
+    
+    Note: If the IP as no AS, it is setted to the default ASN: -1. 
+    Note 2: If we found one or more IP withoud AS in a raw data, a new default 
+            ASNsDescriptions is created.
+    """
+
+    def __init__(self):
+        """
+        Initialisation of the dictionary to classify the IPs by whois server
+        ris_dict = {'server.tld': [IP_Desc1, IP_Desc2...]}
+        """
+        # get all the IPs_descriptions which don't have asn
+        ips_descriptions = IPsDescriptions.query.filter(\
+                           IPsDescriptions.asn==None).all()
+        self.ris_dict = {}
+        for ip_description in ips_descriptions:
+            server = get_server_by_query(ip_description.ip.ip)
+            if not self.ris_dict.get(server.whois,  None):
+               self.ris_dict[server.whois] = [ip_description]
+            else:
+                self.ris_dict[server.whois].append(ip_description)
+        self.whois_dict = {}
+
+    def fetch_asns(self):
+        """ 
+        Main function, initialise the WhoisFetcher and connect to riswhois.ripe.net
+        Make a new connexion for each list of ris_dict. 
+        """
+        for current_server in self.ris_dict:
+            #print(self.ris_dict.keys())
+            current = Thread_ASN(self.ris_dict[current_server])
+            current.setName(current_server)
+            current.start()
+        self.__fetch_whois()
+        ranking_session.commit()
+
+    def __fetch_whois(self):
+        """ 
+        Make a new connexion for each list of whois_dict. 
+        """
+        for server in self.whois_dict:
+            current = Thread_Whois(server, self.whois_dict[server])
+            current.start()

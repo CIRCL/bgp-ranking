@@ -9,7 +9,7 @@ from elixir import *
 
 #whois_engine = create_engine("sqlite:///whois.sqlite") #, echo=True)
 whois_engine = create_engine('mysql://root@localhost/whois')
-whois_session = scoped_session(sessionmaker())
+whois_session = scoped_session(sessionmaker(bind=whois_engine))
 whois_metadata = ThreadLocalMetaData()
 
 __metadata__ = whois_metadata

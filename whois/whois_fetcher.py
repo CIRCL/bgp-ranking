@@ -36,7 +36,6 @@ class WhoisFetcher(object):
         }
         
     def connect(self):
-        self.s = socket(AF_INET, SOCK_STREAM)
         self.s.connect((self.server,self.port))
         self.s.setblocking(0)
         time.sleep(0.1)
@@ -48,10 +47,13 @@ class WhoisFetcher(object):
         self.s.setblocking(1)
     
     def fetch_whois(self, query, keepalive = False):
+        pre_options = self.pre_options
         if keepalive:
-            self.pre_options += self.keepalive_options
-        self.s.send(self.pre_options + query + self.post_options +' \n')
-        self.text = self.s.recv(1024)
+            pre_options += self.keepalive_options
+        self.s.send(pre_options + query + self.post_options +' \n')
+        self.text = ''
+        while self.text == '':
+            self.text = self.s.recv(1024).rstrip()
         special_regex = self.regex_whois.get(self.server, None)
         if special_regex:
             self.text = re.findall(special_regex, self.text )
@@ -68,6 +70,7 @@ class WhoisFetcher(object):
 
     def __init__(self, server):
         self.__set_values(server)
+        self.s = socket(AF_INET, SOCK_STREAM)
     
     def __repr__(self):
         return self.text

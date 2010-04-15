@@ -6,11 +6,13 @@
 import re
 from model import *
 from utils.ip_manip import *
+from utils.models import *
 from socket import *
 import time
 
 def get_server_by_name(server):
-    return Assignations.query.filter(Assignations.whois==server).first()
+    to_return = Assignations.query.filter(Assignations.whois==server).first()
+    return to_return
 
 def get_server_by_query(query):
     assignations = Assignations.query.filter(Assignations.block!='').all()

@@ -9,7 +9,7 @@ from elixir import *
 whois_engine = create_engine('mysql://root@localhost/whois')
 whois_metadata = ThreadLocalMetaData()
 __metadata__ = whois_metadata
-
+whois_metadata.bind = whois_engine
 import re
 
 INET6_ADDRSTRLEN = 46
@@ -27,3 +27,5 @@ class Assignations(Entity):
 
     def __repr__(self):
         return 'Block: "%s\t Whois Server: %s"' % (self.block, self.whois)
+
+setup_all()

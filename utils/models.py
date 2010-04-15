@@ -9,6 +9,7 @@ from elixir import *
 ranking_engine = create_engine('mysql://root@localhost/ranking')
 ranking_metadata = ThreadLocalMetaData()
 __metadata__ = ranking_metadata
+ranking_metadata.bind = ranking_engine
 
 import datetime 
 
@@ -72,3 +73,6 @@ class ASNsDescriptions(Entity):
     def __repr__(self):
         return '[%s] %s \t Owner: "%s" \t Block: "%s"' % (self.timestamp,\
                 self.asn, self.owner, self.ips_block)
+
+
+setup_all()

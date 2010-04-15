@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 
 from abc import ABCMeta, abstractmethod
-from utils.models import *
+from models import *
 
 try : 
     from ipaddr import IP
 except ImportError:
     import IPy
 
-
-import sys
-
 class IPUpdate ():
     """
     Abstract class which update the databases 'IPs' and 'IPsDescriptions'
     """
     __metaclass__ = ABCMeta
+    
+    def __init__(self):
+        self.ranking_session = scoped_session(sessionmaker(bind=ranking_engine))
   
     @abstractmethod
     def parse(self):
@@ -55,4 +55,6 @@ class IPUpdate ():
             while i < len(self.ip_addresses) and current_ip == self.ip_addresses[i]:
                 desc.times  +=1
                 i += 1
-        ranking_session.commit()
+        self.ranking_session.commit()
+        self.ranking_session.close()
+        

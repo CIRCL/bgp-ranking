@@ -3,15 +3,18 @@
 # TODO: implement keepalive if possible (-k with ripe.net)
 # TODO: fetch asn from whois.ripe.net & other servers if possible 
 
-from utils.models import *
+from models import *
+from whois.model import *
 from whois.whois_parsers import Whois
 from whois.whois_fetcher import *
-from utils.ip_manip import ip_in_network
+from ip_manip import ip_in_network
 
 from threading import Thread
 
 from socket import *
 import errno
+
+
 
 class Thread_ASN(Thread):
     risServer = unicode('riswhois.ripe.net')
@@ -20,9 +23,10 @@ class Thread_ASN(Thread):
     def __init__ (self,ip_list ):
         Thread.__init__(self)
         self.ip_list = ip_list
+        self.server = get_server_by_name(self.risServer)
 
     def run(self):
-        self.fetcher = WhoisFetcher(get_server_by_name(self.risServer))
+        self.fetcher = WhoisFetcher(self.server)
         self.__fetch_asns_current_list()
 
     def __fetch_asns_current_list(self):
@@ -38,7 +42,6 @@ class Thread_ASN(Thread):
                 if description == last:
                     whois = self.fetcher.fetch_whois(description.ip.ip)
                 self.__update_db(description,  whois)
-                ranking_session.commit()
             except IOError, e:
                 if e.errno == errno.EPIPE and broken_pipe < 5:
                     self.ip_list.append(description)
@@ -122,6 +125,8 @@ class Thread_Whois(Thread):
                 whois = whois_fetcher.fetch_whois(description.ips_block)
                 description.whois = whois
                 description.whois_address = server
+        this.ranking_session.commit()
+        this.ranking_session.close()
     
 
 class FetchASNs():
@@ -152,8 +157,7 @@ class FetchASNs():
         ris_dict = {'server.tld': [IP_Desc1, IP_Desc2...]}
         """
         # get all the IPs_descriptions which don't have asn
-        ips_descriptions = IPsDescriptions.query.filter(\
-                           IPsDescriptions.asn==None).all()
+        ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.asn==None).all()
         self.ris_dict = {}
         for ip_description in ips_descriptions:
             server = get_server_by_query(ip_description.ip.ip)
@@ -169,12 +173,10 @@ class FetchASNs():
         Make a new connexion for each list of ris_dict. 
         """
         for current_server in self.ris_dict:
-            #print(self.ris_dict.keys())
             current = Thread_ASN(self.ris_dict[current_server])
             current.setName(current_server)
             current.start()
         self.__fetch_whois()
-        ranking_session.commit()
 
     def __fetch_whois(self):
         """ 

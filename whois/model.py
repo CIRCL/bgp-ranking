@@ -6,14 +6,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.schema import ThreadLocalMetaData
 from elixir import *
 
-
-#whois_engine = create_engine("sqlite:///whois.sqlite") #, echo=True)
 whois_engine = create_engine('mysql://root@localhost/whois')
-whois_session = scoped_session(sessionmaker(bind=whois_engine))
 whois_metadata = ThreadLocalMetaData()
-
 __metadata__ = whois_metadata
-__session__ = whois_session
 
 import re
 

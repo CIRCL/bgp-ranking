@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
+
 from model import *
 
 import IPy
 
+whois_session = scoped_session(sessionmaker(bind=whois_engine))
+whois_metadata.bind = whois_engine
+
+__session__ = whois_session
+
+setup_all()
 whois_metadata.drop_all()
 whois_metadata.create_all()
 
@@ -66,4 +73,4 @@ set_options()
 
 whois_session.commit()
 
-
+whois_session.close()

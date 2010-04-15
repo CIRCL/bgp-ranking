@@ -6,14 +6,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.schema import ThreadLocalMetaData
 from elixir import *
 
-
-#ranking_engine = create_engine("sqlite:///ranking.sqlite")#, echo=True)
 ranking_engine = create_engine('mysql://root@localhost/ranking')
-ranking_session = scoped_session(sessionmaker(bind=ranking_engine))
 ranking_metadata = ThreadLocalMetaData()
-
 __metadata__ = ranking_metadata
-__session__ = ranking_session
 
 import datetime 
 

@@ -11,7 +11,7 @@ whois_metadata.create_all()
 
 # 'address' : option(s)
 whois_pre_options = {
-    'whois.ripe.net' :  unicode('-B '), 
+    #'whois.ripe.net' :  unicode('-B '), 
     'riswhois.ripe.net' :  unicode('-M ')
     }
 

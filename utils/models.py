@@ -7,7 +7,7 @@ from sqlalchemy.schema import ThreadLocalMetaData
 from elixir import *
 
 #ranking_engine = create_engine('mysql://root@localhost/ranking')
-ranking_engine = create_engine('sqlite:///ranking.sqlite',  echo=True)
+ranking_engine = create_engine('sqlite:///ranking.sqlite')
 ranking_metadata = ThreadLocalMetaData()
 __metadata__ = ranking_metadata
 ranking_metadata.bind = ranking_engine

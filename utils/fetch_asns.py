@@ -56,11 +56,10 @@ class FetchASNs():
             current = Thread_ASN(self.ris_dict[current_server])
             current.setName(current_server)
             threadList.append(current)
-            current.start()
-            break
+            #current.start()
+            current.run()
         for thread in threadList:
-            thread.join()
-            print(thread.name)
+            #thread.join()
             self.whois_dict[thread.name] = thread.asn_list
         self.__fetch_whois()
 
@@ -69,5 +68,7 @@ class FetchASNs():
         Make a new connexion for each list of whois_dict. 
         """
         for server in self.whois_dict:
+            print(server)
             current = Thread_Whois(server, self.whois_dict[server])
-            current.start()
+            #current.start()
+            current.run()

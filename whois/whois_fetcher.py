@@ -9,9 +9,10 @@ from utils.ip_manip import *
 from utils.models import *
 from socket import *
 import time
+from elixir import *
+
 
 def get_server_by_name(server):
-    print(server)
     to_return = Assignations.query.filter(Assignations.whois==server).first()
     return to_return
 
@@ -30,6 +31,8 @@ def get_server_by_query(query):
 class WhoisFetcher(object):
     """Class to the Whois entry of a particular IP.
     """
+    
+    # Some funny whois implementations.... 
     regex_whois = {
         # This whois contains a Korean and an English version, we only save the english one. 
         'whois.nic.or.kr' :  '# ENGLISH\n(.*)'
@@ -37,27 +40,32 @@ class WhoisFetcher(object):
     regex_riswhois = {
         'whois.ripe.net' : '% Information related to*\n(.*)'
         }
-        
+    has_welcome_message = ['riswhois.ripe.net',  'whois.apnic.net',  'whois.ripe.net', 'whois.afrinic.net']
+    has_info_message = ['whois.afrinic.net',  'whois.lacnic.net']
+    need_an_ip = ['whois.arin.net']
+    
+    #FIXME: whois.arin.net refuse CIRD queries... we have to send an IP......
+    
     def connect(self):
         self.s = socket(AF_INET, SOCK_STREAM)
         self.s.connect((self.server,self.port))
-        self.s.setblocking(0)
-        time.sleep(0.1)
-        try: 
+        if self.server in self.has_welcome_message:
             self.s.recv(1024)
-        except:
-            # The server does not send any "ehlo message"
-            pass
-        self.s.setblocking(1)
+        
     
     def fetch_whois(self, query, keepalive = False):
         pre_options = self.pre_options
         if keepalive:
             pre_options += self.keepalive_options
+        if self.server in self.need_an_ip:
+            query = first_ip(query)
         self.s.send(pre_options + query + self.post_options +' \n')
+        if self.server in self.has_info_message:
+            self.s.recv(1024)
         self.text = ''
         while self.text == '':
             self.text = self.s.recv(1024).rstrip()
+        print(self.text)
         special_regex = self.regex_whois.get(self.server, None)
         if special_regex:
             self.text = re.findall(special_regex, self.text )

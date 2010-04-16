@@ -18,12 +18,12 @@ from threading import Thread
 #    return mapper
 
 
-class Thread_ASN(Thread):
+class Thread_ASN():
     risServer = unicode('riswhois.ripe.net')
     default_asn_desc = None
 
     def __init__ (self,ip_list):
-        Thread.__init__(self)
+        #Thread.__init__(self)
         self.ip_list = ip_list
         self.ranking_session = scoped_session(sessionmaker(bind=ranking_engine))
         self.asn_list = []
@@ -93,11 +93,14 @@ class Thread_ASN(Thread):
                 self.ip_list.pop(it)
             else:
                 it = it+1
+                
+    def setName(self,  name):
+        self.name = name
 
-class Thread_Whois(Thread):
+class Thread_Whois():
 
     def __init__ (self, server, asn_list ):
-        Thread.__init__(self)
+        #Thread.__init__(self)
         self.server = server
         self.asn_list = asn_list
         self.ranking_session = scoped_session(sessionmaker(bind=ranking_engine))

@@ -7,7 +7,7 @@ from sqlalchemy.schema import ThreadLocalMetaData
 from elixir import *
 
 #whois_engine = create_engine('mysql://root@localhost/whois',  echo=True)
-whois_engine = create_engine('sqlite:///whois.sqlite',  echo=True)
+whois_engine = create_engine('sqlite:///whois.sqlite')
 whois_metadata = ThreadLocalMetaData()
 __metadata__ = whois_metadata
 whois_metadata.bind = whois_engine

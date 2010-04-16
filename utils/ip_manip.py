@@ -25,6 +25,12 @@ if version_info < (2,7):
                 smallest = networks[i]
             i +=1
         return smallest
+    
+    def first_ip(network):
+        """
+        Return the first IP of the network
+        """
+        return str(IPy.IP(network)[0])
 
 
 else:

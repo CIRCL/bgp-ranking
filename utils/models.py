@@ -6,7 +6,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.schema import ThreadLocalMetaData
 from elixir import *
 
-ranking_engine = create_engine('mysql://root@localhost/ranking')
+#ranking_engine = create_engine('mysql://root@localhost/ranking')
+ranking_engine = create_engine('sqlite:///ranking.sqlite',  echo=True)
 ranking_metadata = ThreadLocalMetaData()
 __metadata__ = ranking_metadata
 ranking_metadata.bind = ranking_engine
@@ -54,7 +55,7 @@ class ASNs(Entity):
     asn_description = OneToMany('ASNsDescriptions')
   
     def __repr__(self):
-        return 'ASN: "%d"' % (self.asn)
+        return 'ASN: "%s"' % (self.asn)
   
 
 class ASNsDescriptions(Entity):

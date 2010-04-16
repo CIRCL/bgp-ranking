@@ -11,6 +11,7 @@ from socket import *
 import time
 
 def get_server_by_name(server):
+    print(server)
     to_return = Assignations.query.filter(Assignations.whois==server).first()
     return to_return
 
@@ -38,6 +39,7 @@ class WhoisFetcher(object):
         }
         
     def connect(self):
+        self.s = socket(AF_INET, SOCK_STREAM)
         self.s.connect((self.server,self.port))
         self.s.setblocking(0)
         time.sleep(0.1)
@@ -72,7 +74,6 @@ class WhoisFetcher(object):
 
     def __init__(self, server):
         self.__set_values(server)
-        self.s = socket(AF_INET, SOCK_STREAM)
     
     def __repr__(self):
         return self.text

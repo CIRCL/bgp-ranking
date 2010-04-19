@@ -40,10 +40,13 @@ class FetchASNs():
         self.ris_dict = {}
         for ip_description in ips_descriptions:
             server = get_server_by_query(ip_description.ip.ip)
-            if not self.ris_dict.get(server.whois,  None):
-               self.ris_dict[server.whois] = [ip_description]
-            else:
-                self.ris_dict[server.whois].append(ip_description)
+            if not server:
+                raise Exception("regenerate the whois_assignations, please")
+            else : 
+                if not self.ris_dict.get(server.whois,  None):
+                    self.ris_dict[server.whois] = [ip_description.ip.ip]
+                else:
+                    self.ris_dict[server.whois].append(ip_description.ip.ip)
 
     def fetch_asns(self):
         """ 
@@ -56,12 +59,12 @@ class FetchASNs():
             current = Thread_ASN(self.ris_dict[current_server])
             current.setName(current_server)
             threadList.append(current)
-            #current.start()
-            current.run()
+            current.start()
         for thread in threadList:
-            #thread.join()
+            thread.join(20)
             self.whois_dict[thread.name] = thread.asn_list
-        self.__fetch_whois()
+            print(self.whois_dict)
+#        self.__fetch_whois()
 
     def __fetch_whois(self):
         """ 
@@ -70,5 +73,5 @@ class FetchASNs():
         for server in self.whois_dict:
             print(server)
             current = Thread_Whois(server, self.whois_dict[server])
-            #current.start()
-            current.run()
+            current.start()
+            #current.run()

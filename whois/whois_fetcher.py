@@ -11,13 +11,12 @@ from socket import *
 import time
 from elixir import *
 
-
 def get_server_by_name(server):
     to_return = Assignations.query.filter(Assignations.whois==server).first()
     return to_return
 
 def get_server_by_query(query):
-    assignations = Assignations.query.filter(Assignations.block!='').all()
+    assignations = Assignations.query.filter(Assignations.block!=unicode('')).all()
     server = None
     for assignation in assignations:
         if ip_in_network(query, assignation.block):
@@ -65,7 +64,6 @@ class WhoisFetcher(object):
         self.text = ''
         while self.text == '':
             self.text = self.s.recv(1024).rstrip()
-        print(self.text)
         special_regex = self.regex_whois.get(self.server, None)
         if special_regex:
             self.text = re.findall(special_regex, self.text )

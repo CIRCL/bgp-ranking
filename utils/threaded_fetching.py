@@ -6,31 +6,21 @@ from whois.whois_parsers import Whois
 import errno
 from threading import Thread
 
-#__metadata__ = ThreadLocalMetaData()
-#__metadata__.bind = whois_engine
-
-#from sqlalchemy.orm import mapper as sqla_mapper
-#
-#def session_mapper(scoped_session):
-#    def mapper(cls, *arg, **kw):
-#        cls.query = scoped_session.query_property()
-#        return sqla_mapper(cls, *arg, **kw)
-#    return mapper
+from sqlalchemy import and_
 
 
-class Thread_ASN():
+class Thread_ASN(Thread):
     risServer = unicode('riswhois.ripe.net')
     default_asn_desc = None
 
     def __init__ (self,ip_list):
-        #Thread.__init__(self)
+        Thread.__init__(self)
         self.ip_list = ip_list
-        self.ranking_session = scoped_session(sessionmaker(bind=ranking_engine))
+        self.r_session = RankingSession()
         self.asn_list = []
 
     def run(self):
         self.server = get_server_by_name(self.risServer)
-        self.fetcher = WhoisFetcher(self.server)
         self.__fetch_asns_current_list()
 
     def __fetch_asns_current_list(self):
@@ -38,31 +28,33 @@ class Thread_ASN():
         Fetch the ris whois for the list, using keepalive because we are on riswhois
         Disconnect when the whole list is done
         """
+        self.fetcher = WhoisFetcher(self.server)
         broken_pipe = 0
         last = self.ip_list[len(self.ip_list) -1]
         self.fetcher.connect()
-        for description in self.ip_list:
-            try:
-                whois = self.fetcher.fetch_whois(description.ip.ip,  True)
-                if description == last:
-                    whois = self.fetcher.fetch_whois(description.ip.ip)
-                self.asn_list.append(self.__update_db(description,  whois))
-            except IOError, e:
-                if e.errno == errno.EPIPE and broken_pipe < 5:
-                    self.ip_list.append(description)
-                    broken_pipe += 1
-                    self.fetcher.connect()
-                else:
-                    raise IOError(e)
-                    
-        self.ranking_session.commit()
-        self.ranking_session.close()
+        for ip in self.ip_list:
+            print(ip)
+#            try:
+            whois = self.fetcher.fetch_whois(ip,  True)
+            if ip == last:
+                whois = self.fetcher.fetch_whois(ip)
+            self.asn_list.append(self.__update_db(ip,  whois))
+#            except IOError, e:
+#                if e.errno == errno.EPIPE and broken_pipe < 5:
+#                    self.ip_list.append(ip)
+#                    broken_pipe += 1
+#                    self.fetcher.connect()
+#                else:
+#                    raise IOError(e)
+        self.r_session.commit()
+        self.r_session.close()
 
-    def __update_db(self, current, data):
+    def __update_db(self, ip, data):
         """ 
         Update the database with the RIS whois informations and initialize whois_dict
         in order to make the whois requests, by whois server. 
         """
+        current = IPsDescriptions.query.filter(and_(IPsDescriptions.asn==None, IPsDescriptions.ip_ip == ip))
         ris_whois = Whois(data,  self.risServer)
         if not ris_whois.origin:
             if not self.default_asn_desc:
@@ -97,10 +89,10 @@ class Thread_ASN():
     def setName(self,  name):
         self.name = name
 
-class Thread_Whois():
+class Thread_Whois(Thread):
 
     def __init__ (self, server, asn_list ):
-        #Thread.__init__(self)
+        Thread.__init__(self)
         self.server = server
         self.asn_list = asn_list
         self.ranking_session = scoped_session(sessionmaker(bind=ranking_engine))
@@ -133,6 +125,6 @@ class Thread_Whois():
                 whois = whois_fetcher.fetch_whois(description.ips_block)
                 description.whois = whois
                 description.whois_address = self.server
-        self.ranking_session.commit()
-        self.ranking_session.close()
+        self.r_session.commit()
+        self.r_session.close()
     

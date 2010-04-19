@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from sqlalchemy.orm import scoped_session, sessionmaker
 from abc import ABCMeta, abstractmethod
 from models import *
 
@@ -15,7 +16,7 @@ class IPUpdate ():
     __metaclass__ = ABCMeta
     
     def __init__(self):
-        self.ranking_session = scoped_session(sessionmaker(bind=ranking_engine))
+        self.r_session = RankingSession()
   
     @abstractmethod
     def parse(self):
@@ -55,6 +56,6 @@ class IPUpdate ():
             while i < len(self.ip_addresses) and current_ip == self.ip_addresses[i]:
                 desc.times  +=1
                 i += 1
-        self.ranking_session.commit()
-        self.ranking_session.close()
+        self.r_session.commit()
+        self.r_session.close()
         

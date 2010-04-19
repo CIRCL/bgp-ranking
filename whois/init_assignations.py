@@ -4,8 +4,6 @@ from model import *
 
 import IPy
 
-whois_session = scoped_session(sessionmaker(bind=whois_engine))
-
 whois_metadata.drop_all()
 whois_metadata.create_all()
 
@@ -67,6 +65,6 @@ Assignations(whois=unicode('riswhois.ripe.net'))
 
 set_options()
 
-whois_session.commit()
-
-whois_session.close()
+w_session = WhoisSession()
+w_session.commit()
+w_session.close()

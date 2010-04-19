@@ -6,10 +6,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.schema import ThreadLocalMetaData
 from elixir import *
 
-#ranking_engine = create_engine('mysql://root@localhost/ranking')
-ranking_engine = create_engine('sqlite:///ranking.sqlite')
+ranking_engine = create_engine('mysql://root@localhost/ranking')
+#ranking_engine = create_engine('sqlite:///ranking.sqlite',  echo=True)
+RankingSession = scoped_session(sessionmaker(bind=ranking_engine))
 ranking_metadata = ThreadLocalMetaData()
-__metadata__ = ranking_metadata
+#__metadata__ = ranking_metadata
 ranking_metadata.bind = ranking_engine
 
 import datetime 
@@ -22,6 +23,7 @@ class IPs(Entity):
     """
     ip = Field(Unicode(INET6_ADDRSTRLEN), primary_key=True)
     ip_descriptions = OneToMany('IPsDescriptions')
+    using_options(metadata=ranking_metadata, session=RankingSession)
     
     def __repr__(self):
         return 'IP: "%s"' % (self.ip)
@@ -38,6 +40,7 @@ class IPsDescriptions(Entity):
     times = Field(Integer, default=1)
     ip = ManyToOne('IPs')
     asn = ManyToOne('ASNsDescriptions')
+    using_options(metadata=ranking_metadata, session=RankingSession)
   
     def __repr__(self):
         to_return = '[%s] List: "%s" \t %s present %d time(s)' % (self.list_date, self.list_name,\
@@ -53,6 +56,7 @@ class ASNs(Entity):
     """
     asn = Field(Integer, primary_key=True)
     asn_description = OneToMany('ASNsDescriptions')
+    using_options(metadata=ranking_metadata, session=RankingSession)
   
     def __repr__(self):
         return 'ASN: "%s"' % (self.asn)
@@ -70,6 +74,7 @@ class ASNsDescriptions(Entity):
     whois_address = Field(UnicodeText)
     asn = ManyToOne('ASNs')
     ips = OneToMany('IPsDescriptions')
+    using_options(metadata=ranking_metadata, session=RankingSession)
   
     def __repr__(self):
         return '[%s] %s \t Owner: "%s" \t Block: "%s"' % (self.timestamp,\

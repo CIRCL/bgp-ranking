@@ -11,6 +11,8 @@ from socket import *
 import time
 from elixir import *
 
+import errno
+
 def get_server_by_name(server):
     to_return = Assignations.query.filter(Assignations.whois==server).first()
     return to_return
@@ -47,6 +49,8 @@ class WhoisFetcher(object):
     # Doesn't support CIDR queries
     need_an_ip = ['whois.arin.net']
     
+    s = socket(AF_INET, SOCK_STREAM)
+    
     def connect(self):
         self.s = socket(AF_INET, SOCK_STREAM)
         self.s.connect((self.server,self.port))
@@ -66,8 +70,12 @@ class WhoisFetcher(object):
         if self.server in self.has_info_message:
             self.s.recv(1024)
         self.text = ''
-        while self.text == '':
+        loop = 0
+        while self.text == '' and loop < 5  :
             self.text = self.s.recv(1024).rstrip()
+            loop += 1
+        if loop == 5:
+            print("error with query: " + query + " on server " + self.server)
         special_regex = self.regex_whois.get(self.server, None)
         if special_regex:
             self.text = re.findall(special_regex, self.text )

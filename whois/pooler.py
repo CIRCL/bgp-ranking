@@ -61,7 +61,7 @@ def whois_sort():
             continue
         server = get_server_by_query(bloc)
         if not server:
-            print ("error: " + bloc)
+            print ("error, no server found for this block : " + bloc)
             continue
         redis_instance.push(server.whois,  bloc)
         if server.whois not in existing_whois_connectors:
@@ -80,6 +80,7 @@ class Connector(object):
             self.keepalive = True
         self.fetcher = WhoisFetcher(get_server_by_name\
                             (unicode(self.server)))
+        self.connected = False
     
     def __connect(self):
         self.fetcher.connect()   
@@ -90,21 +91,27 @@ class Connector(object):
         self.connected = False
     
     def launch(self):
-        self.__connect()
         while 1:
-            if self.redis_instance.llen(self.server) == 0:
-                self.__disconnect()
-                time.sleep(1)
-                continue
-            ip = self.redis_instance.pop(self.server)
-            if not self.redis_instance.get(ip):
-                if not self.connected:
-                    self.__connect()
-                print(self.server + ": " + ip)
-                whois = self.fetcher.fetch_whois(ip, self.keepalive)
-                self.redis_instance.set(ip, [self.server, whois])
-                if not self.keepalive:
+            try:
+                if self.redis_instance.llen(self.server) == 0:
                     self.__disconnect()
+                    time.sleep(1)
+                    continue
+                ip = self.redis_instance.pop(self.server)
+                if not self.redis_instance.get(ip):
+                    if not self.connected:
+                        self.__connect()
+                    print(self.server + ": " + ip)
+                    whois = self.fetcher.fetch_whois(ip, self.keepalive)
+                    self.redis_instance.set(ip, [self.server, whois])
+                    if not self.keepalive:
+                        self.__disconnect()
+            except IOError, e:
+                if e.errno == errno.ETIMEDOUT:
+                    self.redis_instance.push(self.server,  ip)
+                else:
+                    raise IOError(e)
+                    
 
 def start_connector(server):
     Connector(server).launch()

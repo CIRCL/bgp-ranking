@@ -36,14 +36,16 @@ class WhoisFetcher(object):
         # This whois contains a Korean and an English version, we only save the english one. 
         'whois.nic.or.kr' :  '# ENGLISH\n(.*)'
         }
+    # In case we want to get the RIS informations given by other servers than riswhois.ripe.net
     regex_riswhois = {
         'whois.ripe.net' : '% Information related to*\n(.*)'
         }
+    # Message BEFORE the query 
     has_welcome_message = ['riswhois.ripe.net',  'whois.apnic.net',  'whois.ripe.net', 'whois.afrinic.net']
+    # Message AFTER the query
     has_info_message = ['whois.afrinic.net',  'whois.lacnic.net']
+    # Doesn't support CIDR queries
     need_an_ip = ['whois.arin.net']
-    
-    #FIXME: whois.arin.net refuse CIRD queries... we have to send an IP......
     
     def connect(self):
         self.s = socket(AF_INET, SOCK_STREAM)
@@ -51,6 +53,8 @@ class WhoisFetcher(object):
         if self.server in self.has_welcome_message:
             self.s.recv(1024)
         
+    def disconnect(self):
+        self.s.close()
     
     def fetch_whois(self, query, keepalive = False):
         pre_options = self.pre_options

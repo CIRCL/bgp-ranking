@@ -12,16 +12,24 @@ import time
 
 class FetchASNs():
     """
-    Make an AS whois request and set an ASNsDescriptions to all IPsDescriptions
-    wich do not already have one. 
+    Abstract : Set an ASNsDescriptions to all IPsDescriptions wich do not already have one.
     
-      1. Selection of all IPsDescriptions which do not have asn
-      2. Query to the Ris Server with an IP 
-      3. If the ASN is not already in the table ASNs, it is inserted 
-      4. The description (name of the AS, IP block) of the ASN is inserted 
-         into ASNsDescriptions
-      5. Searching in the list (see 1.) for all IPs which belong to the IP block 
-         of the current AS and set their ASN to the current
+    This class is a little bit complicated, take a look in 
+        doc/uml-diagramms/{Whois\ Fetching.png,RIS\ Fetching.png} 
+    for more informations
+    
+    1. Initialize self.ips_descriptions with all descriptions without ASNsDescriptions
+    2. Push all ips into redit
+    3. For each ip_description: 
+        a. check if the IP is not in a block we have already fetched
+            - set the asn description 
+        b. attempt to get the asn whois from redit
+            - create the new asn description
+            - append the asn description to self.asns_descriptions
+        c. append the ip_description to the deferred list 
+    4. For each asn_description
+        a. attempt to get the asn whois from redit add it to the asn_description
+        b. append the ip_description to the deferred list 
     
     Some IP found in the raw data have no AS (the owner is gone, it is in a legacy 
     block such as 192.0.0.0/8...) We don't delete this IPs from the database because 
@@ -38,7 +46,8 @@ class FetchASNs():
 
     def __init__(self):
         """
-        Push all the new IPs in the memcached server
+        1. Initialize self.ips_descriptions with all descriptions without ASNsDescriptions
+        2. Push all ips into redit
         """
         # get all the IPs_descriptions which don't have asn
         
@@ -93,7 +102,7 @@ class FetchASNs():
         """
         descriptions = self.ips_descriptions
         loop = 0
-        while loop < 10 and len(descriptions) > 0:
+        while len(descriptions) > 0:
             deferred = []
             for description in descriptions:
                 if not self.__in_current_asns_descriptions(description):
@@ -105,7 +114,7 @@ class FetchASNs():
             time.sleep(1)
             descriptions = deferred
             loop += 1
-        print(descriptions)
+            print(len(descriptions))
 
     def __get_whois(self):
         """ 

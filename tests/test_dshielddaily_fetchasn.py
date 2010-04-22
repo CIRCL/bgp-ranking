@@ -7,7 +7,7 @@ d = DshieldDaily()
 d.update()
 
 f = FetchASNs()
-f.fetch_asns()
+f.start()
 
 asns = ASNsDescriptions.query.all()
 

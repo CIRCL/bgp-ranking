@@ -1,6 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+This class is a little bit complicated, take a look in 
+doc/uml-diagramms/{Whois\ Fetching.png,RIS\ Fetching.png} 
+for more informations
+"""
+
 from whois_fetcher import *
 redis_keys = ['ris', 'whois']
 
@@ -48,11 +54,11 @@ class RISConnector(object):
                 self.__connect()
             ip = self.redis_instance.pop(self.key)
             whois = self.fetcher.fetch_whois(ip,  True)
-            self.redis_instance.set(ip, whois)
+            self.redis_instance.set(ip, unicode(whois,  errors="replace"))
 
 def whois_sort():
     existing_whois_connectors = []
-    redis_instance = redis.Redis()
+    redis_instance = redis.Redis(db=0)
     key = redis_keys[1]
     while 1:
         bloc = redis_instance.pop(key)
@@ -70,6 +76,9 @@ def whois_sort():
 
 
 class Connector(object):
+    """
+    Make queries to Whois 
+    """
     keepalive = False
     support_keepalive = ['whois.ripe.net']
     
@@ -97,18 +106,18 @@ class Connector(object):
                     self.__disconnect()
                     time.sleep(1)
                     continue
-                ip = self.redis_instance.pop(self.server)
-                if not self.redis_instance.get(ip):
+                block = self.redis_instance.pop(self.server)
+                if not self.redis_instance.get(block):
                     if not self.connected:
                         self.__connect()
-                    print(self.server + ": " + ip)
-                    whois = self.fetcher.fetch_whois(ip, self.keepalive)
-                    self.redis_instance.set(ip, [self.server, whois])
+                    print(self.server + ": " + block)
+                    whois = self.fetcher.fetch_whois(block, self.keepalive)
+                    self.redis_instance.set(block, [self.server, unicode(whois,  errors="replace")])
                     if not self.keepalive:
                         self.__disconnect()
             except IOError, e:
                 if e.errno == errno.ETIMEDOUT:
-                    self.redis_instance.push(self.server,  ip)
+                    self.redis_instance.push(self.server,  block)
                 else:
                     raise IOError(e)
                     

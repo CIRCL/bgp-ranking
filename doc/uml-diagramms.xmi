@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMI verified="false" xmi.version="1.2" timestamp="2010-04-22T16:08:33" xmlns:UML="http://schema.omg.org/spec/UML/1.3">
+ <XMI.header>
+  <XMI.documentation>
+   <XMI.exporter>umbrello uml modeller http://uml.sf.net</XMI.exporter>
+   <XMI.exporterVersion>1.5.8</XMI.exporterVersion>
+   <XMI.exporterEncoding>UnicodeUTF8</XMI.exporterEncoding>
+  </XMI.documentation>
+  <XMI.metamodel xmi.version="1.3" href="UML.xml" xmi.name="UML"/>
+ </XMI.header>
+ <XMI.content>
+  <UML:Model isSpecification="false" isAbstract="false" isLeaf="false" xmi.id="m1" isRoot="false" name="UML Model">
+   <UML:Namespace.ownedElement>
+    <UML:Stereotype visibility="public" isSpecification="false" namespace="m1" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="folder" name="folder"/>
+    <UML:Stereotype visibility="public" isSpecification="false" namespace="m1" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="datatype" name="datatype"/>
+    <UML:Model stereotype="folder" visibility="public" isSpecification="false" namespace="m1" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Logical View" name="Logical View">
+     <UML:Namespace.ownedElement>
+      <UML:Package stereotype="folder" visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Datatypes" name="Datatypes">
+       <UML:Namespace.ownedElement>
+        <UML:DataType stereotype="datatype" visibility="public" isSpecification="false" namespace="Datatypes" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Yw3ErFZu0zyU" name="int"/>
+        <UML:DataType stereotype="datatype" visibility="public" isSpecification="false" namespace="Datatypes" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="RgGOk5VDO38P" name="char"/>
+        <UML:DataType stereotype="datatype" visibility="public" isSpecification="false" namespace="Datatypes" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="oranp5GZm7TO" name="bool"/>
+        <UML:DataType stereotype="datatype" visibility="public" isSpecification="false" namespace="Datatypes" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="6oAoDo2aZ75m" name="float"/>
+        <UML:DataType stereotype="datatype" visibility="public" isSpecification="false" namespace="Datatypes" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="U8urNrU9i4uW" name="double"/>
+        <UML:DataType stereotype="datatype" visibility="public" isSpecification="false" namespace="Datatypes" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="7A3rHWGMKOAW" name="short"/>
+        <UML:DataType stereotype="datatype" visibility="public" isSpecification="false" namespace="Datatypes" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="CB6lIBWkJQce" name="long"/>
+        <UML:DataType stereotype="datatype" visibility="public" isSpecification="false" namespace="Datatypes" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="G6nwAhSGpW76" name="unsigned int"/>
+        <UML:DataType stereotype="datatype" visibility="public" isSpecification="false" namespace="Datatypes" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="2NSLjbrwkxf2" name="unsigned short"/>
+        <UML:DataType stereotype="datatype" visibility="public" isSpecification="false" namespace="Datatypes" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="6BlNaN1qTmmb" name="unsigned long"/>
+        <UML:DataType stereotype="datatype" visibility="public" isSpecification="false" namespace="Datatypes" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="RDrGjzKjKl44" name="string"/>
+       </UML:Namespace.ownedElement>
+      </UML:Package>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="MbXMEqwxc797" name="Client"/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="GclnEPmHDh2b" name="DshieldDaily">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="elGHhWtSH5q4"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="FxrU3fWPgFmG" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="dXINIMjXKYzL" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="20jRcRgQKh3U" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="GclnEPmHDh2b" xmi.id="elGHhWtSH5q4" parent="veOFqECnoHxu" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="DWktlV7lToC6" name="DshieldTopIPs">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="GrUYWV2A3IVJ"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="1YU2qxLTC9Qx" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="48Vue1DdXhfN" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="uivEjnHCj57V" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="DWktlV7lToC6" xmi.id="GrUYWV2A3IVJ" parent="veOFqECnoHxu" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="dypn5FkzwfBd" name="IPv6Test">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="RSn8Yvdc36Vf"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="HHgJL9yQrF0D" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="0D5aXjenyK6J" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="AxB2ixyiQueX" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="dypn5FkzwfBd" xmi.id="RSn8Yvdc36Vf" parent="veOFqECnoHxu" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="U2hJHhUQdgQL" name="ZeustrackerIpBlockList">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="bM31FfZFqcnN"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Xn9NNwifLrw4" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="2xYhpmbMXiht" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="5UGKjjpcgj8K" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="U2hJHhUQdgQL" xmi.id="bM31FfZFqcnN" parent="veOFqECnoHxu" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="cQYxHU1KwFde" name="FetchASNs">
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="f9Nx9KVoAGNU" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="arkEqASTKpQT" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="l5CehaBepde9" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="8tII9dkvjuXQ" name="start">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="KaleOB5W5LmC" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Ui3HMfPwW98K" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="zW5gPb4rJ59d" name="__update_db_ris">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="UIvibUI69Ob8" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="kYXFhfZzELbc" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Uf6X0sixMnbj" type="RDrGjzKjKl44" value="" name="current"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="OgbglkJUGrjv" type="RDrGjzKjKl44" value="" name="data"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="EJ5b7fITLt74" name="__in_current_asns_descriptions">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="8EfR5mWhB4WR" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="bRYrGHlkYeR7" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="8jBI8nQM6TvD" type="RDrGjzKjKl44" value="" name="ip_description"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="KHCstdz2KBKS" name="__get_asns">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="fFdrK9GePQUI" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="yin2BgGIstjy" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="1RKMacmWKZZU" name="__get_whois">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="pPfCp9UrYnD9" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Enm6gV2JlfA3" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="veOFqECnoHxu" name="IPUpdate">
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="PzfiXCCjzypf" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="1xBYiMh5LKnq" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="RqzCV7DIWsUK" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="XxZUvN8LD7Xg" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="WqCr8xgdvD8o" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="CjzhbR1bOA96" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="aG9lLfSVORCx" name="update">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="TLFMYN87dIsy" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="sBYFLhLrVVhc" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="vKUHjeEcqnr9" name="IPs">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="BXcopVlinDzX"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="wPEjcDEUPJ7M" name="__repr__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="wGeehIAdiMKK" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="FuoIe9023mPm" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="vKUHjeEcqnr9" xmi.id="BXcopVlinDzX" parent="SAzyeea5znRV" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="XXmxquH4m3MR" name="IPsDescriptions">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="DKTG6r015cdm"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="3Ml8yOsqADRH" name="__repr__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="QaN6mjso3duz" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="tMu11U0ZM3rH" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="XXmxquH4m3MR" xmi.id="DKTG6r015cdm" parent="SAzyeea5znRV" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="znp7yGNpaHra" name="ASNs">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="mr76vyNJYkNI"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="inREVoVw2ZOs" name="__repr__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="wDoCyEKe1lrW" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="YpgI3c1WuZaU" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="znp7yGNpaHra" xmi.id="mr76vyNJYkNI" parent="SAzyeea5znRV" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="ZKQbtoSQb8if" name="ASNsDescriptions">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="khBdEj7AxwLt"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="zWhuS0lZfGj3" name="__repr__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="KnKc0jAxFprg" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="ZLyDOVjGShhW" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="ZKQbtoSQb8if" xmi.id="khBdEj7AxwLt" parent="SAzyeea5znRV" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="pcFSrwVQHSbg" name="Thread_ASN">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="t5I8s9mik18Z"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="M9k49tb4VYHZ" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="zpXSNnzStWQj" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="66Yypus774jX" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="BenLsAOCK8ET" type="RDrGjzKjKl44" value="" name="ip_list"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="QGoXKY2UCqp2" name="run">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="2h4tDSabiP91" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="yBDIIRjHHFic" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="xBT7zG7ySKEk" name="__fetch_asns_current_list">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="4f8n2HmxQF4O" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="kwzzBhbBNe4Y" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="TBMvUadEWdDf" name="__update_db">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="5qDb8R7dRcZc" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="ImqdQtATWIGY" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="X0VxDZLgifaC" type="RDrGjzKjKl44" value="" name="ip"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="EBOiobO5MCgm" type="RDrGjzKjKl44" value="" name="data"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="9sHsYr2k0PSp" name="__check_all_ips">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="sOosnHfl3X64" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="0osK1Y54NIeV" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="kl7BOgmXY3N4" type="RDrGjzKjKl44" value="" name="asn_desc"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="4B7RTluDW1Ns" name="setName">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="GRWmQrd6y1I8" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="f9OEAjI275us" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="KYeN3iQ7rXWK" type="RDrGjzKjKl44" value="" name="name"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="pcFSrwVQHSbg" xmi.id="t5I8s9mik18Z" parent="xLuO0ZsKKCwK" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="iY8qd0gxYILc" name="Thread_Whois">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="0lhpGE8WdeG3"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="dINGudINXPmN" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="I97h0iSi2W0n" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="nHylsLKTPrdl" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="jL5KlF9MVWdP" type="RDrGjzKjKl44" value="" name="server"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="8tkdGU03lxod" type="RDrGjzKjKl44" value="" name="asn_list"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="jA9FekcmdNNu" name="run">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="yjX0FWnzeuCI" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="rOxbLkCbrHJp" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="fo3GBQ81m6c5" name="__fetch_whois_current_list">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="Wns8f4OKsRb2" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="omhf4yU0h00v" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="xLuO0ZsKKCwK" name="Thread"/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="iY8qd0gxYILc" xmi.id="0lhpGE8WdeG3" parent="xLuO0ZsKKCwK" name=""/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="qj3andgZPLER" xmi.id="phAg7jivRlVE" parent="JhRyhRtBClJs" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="0WSPHxed7QPb" name="Assignations">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="OaP4C7QGkwV5"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="H5q0zL3guHoj" name="__repr__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="ycOLk3v27l06" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="KUWtbkhgZ9ql" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="SAzyeea5znRV" name="Entity"/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="0WSPHxed7QPb" xmi.id="OaP4C7QGkwV5" parent="SAzyeea5znRV" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="43myLZfd3BWc" name="Global Connector">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="uDHTL7CJhbdS"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="9gjrFMJpsjXB" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="ewuj0LB8zszC" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="9LWcvoN3lkBt" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="FG27xZH6ulgn" name="__connect">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="NI3N80ZLEbRB" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Z3oIm0CQw47v" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="8iH2RvozxcHj" name="__disconnect">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="RnyfNPoV55WW" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="aR7XVEQtUTEc" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="0KVvwneXCj2i" name="launch">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="LjNOmtukBOg5" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="xQZPrl0IWyvt" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="43myLZfd3BWc" xmi.id="uDHTL7CJhbdS" parent="JhRyhRtBClJs" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="9KaL4c1z0YNr" name="Connector">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="JN9qL4hen42X"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="P8xAAzi6r0A8" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="hYbYYmgU4Cj7" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="yKXE5GXQ1plI" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="SwsSJJniPkqX" type="RDrGjzKjKl44" value="" name="server"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="SGVR3HjTDcvU" name="__connect">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="BGaDSHLsVqIW" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="tgAGO1n5XPb6" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="51zHbujSasiw" name="__disconnect">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="KY7oPPKSPKhy" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="tW1QvbU4p3FF" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="CPRlH7hAbhYU" name="launch">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="pT8Cnp8xEXiV" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="I1Y74mMMKRAh" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="9KaL4c1z0YNr" xmi.id="JN9qL4hen42X" parent="JhRyhRtBClJs" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="fOdG5AlLBHQD" name="WhoisFetcher">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="3kZM9i3yBB8y"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="65aFFiDEx4Nk" name="connect">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="j7fDVhrZkRoz" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="e2BcLrdlGzLx" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="7zB54Zpib0Ju" name="disconnect">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="Li747u3ErFHt" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="qwe6wz3d6gra" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="m6aN5tGvnuzh" name="fetch_whois">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="drATSDQvKZDb" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="r1LxfCV1sb5x" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="V6BKJTE5XmRc" type="RDrGjzKjKl44" value="" name="query"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="dhVQZV8QWTLB" type="RDrGjzKjKl44" value="" name="keepalive"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="0PfYB68olcDK" name="__set_values">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="hQmS2zk7ISg2" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="7Lkbm5kNutqK" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="6EDOnRymqdK0" type="RDrGjzKjKl44" value="" name="assignation"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="VRPQIDiMPwjB" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="jDX97GISvFbD" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Lhx9IF9zfuPg" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="r9n8bUA4tYUB" type="RDrGjzKjKl44" value="" name="server"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="SlC7dZnUgZcH" name="__repr__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="rPWme8y6r8CU" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="3lKwJo50zc96" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="JhRyhRtBClJs" name="object"/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="fOdG5AlLBHQD" xmi.id="3kZM9i3yBB8y" parent="JhRyhRtBClJs" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="ixwOWXeXIyTZ" name="Whois">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="kWZk9hoy6Lkj"/>
+       </UML:GeneralizableElement.generalization>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="qj3andgZPLER" name="AbstractWhoisParser">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="phAg7jivRlVE"/>
+       </UML:GeneralizableElement.generalization>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="ixwOWXeXIyTZ" xmi.id="kWZk9hoy6Lkj" parent="qj3andgZPLER" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="gAsgh24PtduZ" name="FetchAsns"/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="3DUhHKtIo17q" name="Redis Server"/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="gtxWC7uIZ625" name="Whois Connector"/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Wy6xdV9b79WQ" name="Whois Server"/>
+     </UML:Namespace.ownedElement>
+     <XMI.extension xmi.extender="umbrello">
+      <diagrams>
+       <diagram showopsig="1" linecolor="#ff0000" snapx="10" showattribassocs="1" snapy="10" linewidth="0" showattsig="1" showpubliconly="1" showpackage="1" showstereotype="1" name="RIS Fetching" font="Inconsolata,9,-1,5,50,0,0,0,0,0" canvasheight="862" canvaswidth="1443" localid="SuC68l8JpVHq" snapcsgrid="0" showgrid="0" showops="1" usefillcolor="1" fillcolor="#ffff00" zoom="100" xmi.id="OQKjdxgNOnxy" documentation="" showscope="1" snapgrid="0" showatts="1" type="3">
+        <widgets>
+         <objectwidget linecolor="#ff0000" usesdiagramfillcolor="0" linewidth="none" usesdiagramusefillcolor="1" instancename="" x="119" decon="0" showstereotype="1" y="48" font="Inconsolata,9,-1,5,50,0,1,0,0,0" localid="O3P1RoL8PGon" width="82" isinstance="0" multipleinstance="0" usefillcolor="1" fillcolor="#ffff00" xmi.id="cQYxHU1KwFde" height="23" drawasactor="0"/>
+         <objectwidget linecolor="#ff0000" usesdiagramfillcolor="0" linewidth="none" usesdiagramusefillcolor="1" instancename="" x="676" decon="0" showstereotype="1" y="48" font="Inconsolata,9,-1,5,50,0,1,0,0,0" localid="ScLpliK0nWgZ" width="124" isinstance="0" multipleinstance="0" usefillcolor="1" fillcolor="#ffff00" xmi.id="43myLZfd3BWc" height="23" drawasactor="0"/>
+         <objectwidget linecolor="#ff0000" usesdiagramfillcolor="0" linewidth="none" usesdiagramusefillcolor="1" instancename="" x="431" decon="0" showstereotype="1" y="48" font="Inconsolata,9,-1,5,50,0,1,0,0,0" localid="kegIzv0ZWYlV" width="100" isinstance="0" multipleinstance="0" usefillcolor="1" fillcolor="#ffff00" xmi.id="3DUhHKtIo17q" height="23" drawasactor="0"/>
+         <objectwidget linecolor="#ff0000" usesdiagramfillcolor="0" linewidth="none" usesdiagramusefillcolor="1" instancename="" x="828" decon="0" showstereotype="1" y="48" font="Inconsolata,9,-1,5,50,0,1,0,0,0" localid="SuC68l8JpVHq" width="118" isinstance="0" multipleinstance="0" usefillcolor="1" fillcolor="#ffff00" xmi.id="gtxWC7uIZ625" height="23" drawasactor="0"/>
+        </widgets>
+        <messages>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="yAAnoVYqZKMs" operation="check if the ip is present" linewidth="none" seqnum="1" usesdiagramusefillcolor="1" x="160" showstereotype="1" y="110" widgetaid="O3P1RoL8PGon" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="329" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="GkrwHmhyL14a" height="32" sequencemessagetype="1000">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="170" showstereotype="1" y="93" text="1: check if the ip is present" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="182" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="yAAnoVYqZKMs" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="3dguyvRZWWMn" operation="else push the ip" linewidth="none" seqnum="2" usesdiagramusefillcolor="1" x="161" showstereotype="1" y="187" widgetaid="O3P1RoL8PGon" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="319" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="ROa51QGVomG5" height="8" sequencemessagetype="1001">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="171" showstereotype="1" y="170" text="2: else push the ip" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="122" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="3dguyvRZWWMn" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="jH3EgdW37qD2" operation="Pop periodically the new ASN requests" linewidth="none" seqnum="A" usesdiagramusefillcolor="1" x="473" showstereotype="1" y="248" widgetaid="ScLpliK0nWgZ" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="265" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="cynUiOqtCt4H" height="32" sequencemessagetype="1000">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="479" showstereotype="1" y="231" text="A: Pop periodically the new ASN requests" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="248" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="jH3EgdW37qD2" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="SuC68l8JpVHq" textid="e6i7t9SqVY6a" operation="Fetch the RIS entry" linewidth="none" seqnum="B" usesdiagramusefillcolor="1" x="738" showstereotype="1" y="334" widgetaid="ScLpliK0nWgZ" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="157" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="gTW1XTO4OO5G" height="32" sequencemessagetype="1000">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="743" showstereotype="1" y="317" text="B: Fetch the RIS entry" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="140" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="e6i7t9SqVY6a" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="X9qN43neHRxx" operation="push the RIS entry" linewidth="none" seqnum="C" usesdiagramusefillcolor="1" x="482" showstereotype="1" y="430" widgetaid="ScLpliK0nWgZ" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="255" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="nkMj8wgoZ7so" height="8" sequencemessagetype="1001">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="593" showstereotype="1" y="413" text="C: push the RIS entry" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="134" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="X9qN43neHRxx" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="S1or3nkzfksB" operation="ask periodically and get the RIS entry if present" linewidth="none" seqnum="3" usesdiagramusefillcolor="1" x="160" showstereotype="1" y="503" widgetaid="O3P1RoL8PGon" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="329" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="hfkysDyhmhn6" height="32" sequencemessagetype="1000">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="165" showstereotype="1" y="486" text="3: ask periodically and get the RIS entry if present" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="320" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="S1or3nkzfksB" height="17"/>
+         </messagewidget>
+        </messages>
+        <associations/>
+       </diagram>
+       <diagram showopsig="1" linecolor="#ff0000" snapx="10" showattribassocs="1" snapy="10" linewidth="0" showattsig="1" showpubliconly="1" showpackage="1" showstereotype="1" name="Whois Fetching" font="Inconsolata,9,-1,5,50,0,0,0,0,0" canvasheight="862" canvaswidth="1443" localid="fvw672j43bOl" snapcsgrid="0" showgrid="0" showops="1" usefillcolor="1" fillcolor="#ffff00" zoom="100" xmi.id="dlHLpC675Zmu" documentation="" showscope="1" snapgrid="0" showatts="1" type="3">
+        <widgets>
+         <objectwidget linecolor="#ff0000" usesdiagramfillcolor="0" linewidth="none" usesdiagramusefillcolor="0" instancename="" x="996" decon="0" showstereotype="1" y="48" font="Inconsolata,9,-1,5,50,0,1,0,0,0" localid="SuC68l8JpVHq" width="118" isinstance="0" multipleinstance="0" usefillcolor="1" fillcolor="#ffff00" xmi.id="gtxWC7uIZ625" height="23" drawasactor="0"/>
+         <objectwidget linecolor="#ff0000" usesdiagramfillcolor="0" linewidth="none" usesdiagramusefillcolor="0" instancename="" x="572" decon="0" showstereotype="1" y="48" font="Inconsolata,9,-1,5,50,0,1,0,0,0" localid="ScLpliK0nWgZ" width="124" isinstance="0" multipleinstance="0" usefillcolor="1" fillcolor="#ffff00" xmi.id="43myLZfd3BWc" height="23" drawasactor="0"/>
+         <objectwidget linecolor="#ff0000" usesdiagramfillcolor="0" linewidth="none" usesdiagramusefillcolor="1" instancename="" x="0" decon="0" showstereotype="1" y="48" font="Inconsolata,9,-1,5,50,0,1,0,0,0" localid="O3P1RoL8PGon" width="82" isinstance="0" multipleinstance="0" usefillcolor="1" fillcolor="#ffff00" xmi.id="cQYxHU1KwFde" height="23" drawasactor="0"/>
+         <objectwidget linecolor="#ff0000" usesdiagramfillcolor="0" linewidth="none" usesdiagramusefillcolor="1" instancename="" x="318" decon="0" showstereotype="1" y="48" font="Inconsolata,9,-1,5,50,0,1,0,0,0" localid="kegIzv0ZWYlV" width="100" isinstance="0" multipleinstance="0" usefillcolor="1" fillcolor="#ffff00" xmi.id="3DUhHKtIo17q" height="23" drawasactor="0"/>
+         <objectwidget linecolor="#ff0000" usesdiagramfillcolor="0" linewidth="none" usesdiagramusefillcolor="1" instancename="" x="1175" decon="0" showstereotype="1" y="48" font="Inconsolata,9,-1,5,50,0,1,0,0,0" localid="fvw672j43bOl" width="100" isinstance="0" multipleinstance="0" usefillcolor="1" fillcolor="#ffff00" xmi.id="Wy6xdV9b79WQ" height="23" drawasactor="0"/>
+        </widgets>
+        <messages>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="yAAnoVYqZKMs" operation="check if the ip block is present" linewidth="none" seqnum="1" usesdiagramusefillcolor="1" x="41" showstereotype="1" y="104" widgetaid="O3P1RoL8PGon" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="335" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="GkrwHmhyL14a" height="32" sequencemessagetype="1000">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="97" showstereotype="1" y="87" text="1: check if the ip block is present" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="218" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="yAAnoVYqZKMs" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="3dguyvRZWWMn" operation="else push the ip block" linewidth="none" seqnum="2" usesdiagramusefillcolor="1" x="42" showstereotype="1" y="184" widgetaid="O3P1RoL8PGon" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="325" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="ROa51QGVomG5" height="8" sequencemessagetype="1001">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="138" showstereotype="1" y="167" text="2: else push the ip block" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="158" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="3dguyvRZWWMn" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="jH3EgdW37qD2" operation="Pop periodically the new Whois requests" linewidth="none" seqnum="A" usesdiagramusefillcolor="1" x="360" showstereotype="1" y="249" widgetaid="ScLpliK0nWgZ" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="274" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="cynUiOqtCt4H" height="32" sequencemessagetype="1000">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="369" showstereotype="1" y="232" text="A: Pop periodically the new Whois requests" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="260" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="jH3EgdW37qD2" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="X9qN43neHRxx" operation="push the server name and the request" linewidth="none" seqnum="C" usesdiagramusefillcolor="1" x="369" showstereotype="1" y="439" widgetaid="ScLpliK0nWgZ" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="264" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="nkMj8wgoZ7so" height="8" sequencemessagetype="1001">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="384" showstereotype="1" y="422" text="C: push the server name and the request" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="242" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="X9qN43neHRxx" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="S1or3nkzfksB" operation="ask periodically and get the RIS entry if present" linewidth="none" seqnum="3" usesdiagramusefillcolor="1" x="41" showstereotype="1" y="708" widgetaid="O3P1RoL8PGon" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="335" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="hfkysDyhmhn6" height="32" sequencemessagetype="1000">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="46" showstereotype="1" y="691" text="3: ask periodically and get the RIS entry if present" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="320" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="S1or3nkzfksB" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="ScLpliK0nWgZ" textid="sojxfVYgfoim" operation="Find the assignation of the ip block " linewidth="none" seqnum="B" usesdiagramusefillcolor="1" x="635" showstereotype="1" y="343" widgetaid="ScLpliK0nWgZ" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="48" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="Ew5Wf5UqFyaA" height="32" sequencemessagetype="1001">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="640" showstereotype="1" y="325" text="B: Find the assignation of the ip block " font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="705" width="248" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="sojxfVYgfoim" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="SuC68l8JpVHq" textid="FxM5mLBouiWY" operation="Start a new processus if there is no connector to this server" linewidth="none" seqnum="B Bis" usesdiagramusefillcolor="1" x="635" showstereotype="1" y="403" widgetaid="ScLpliK0nWgZ" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="419" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="8bmWerAhvBrt" height="8" sequencemessagetype="1001">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="640" showstereotype="1" y="386" text="B Bis: Start a new processus if there is no connector to this server" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="416" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="FxM5mLBouiWY" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="Ab6HbnJePhOf" operation="Pop periodically the Whois Requests to his server" linewidth="none" seqnum="I" usesdiagramusefillcolor="1" x="360" showstereotype="1" y="536" widgetaid="SuC68l8JpVHq" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="695" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="Xg5ACEmHNGf0" height="32" sequencemessagetype="1000">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="730" showstereotype="1" y="519" text="I: Pop periodically the Whois Requests to his server" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="320" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="Ab6HbnJePhOf" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="fvw672j43bOl" textid="DXqloJyMhOJS" operation="Fetch the Whois entry" linewidth="none" seqnum="II" usesdiagramusefillcolor="1" x="1055" showstereotype="1" y="585" widgetaid="SuC68l8JpVHq" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="178" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="vCAyiH0G1evx" height="32" sequencemessagetype="1000">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="1062" showstereotype="1" y="568" text="II: Fetch the Whois entry" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="158" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="DXqloJyMhOJS" height="17"/>
+         </messagewidget>
+         <messagewidget linecolor="none" usesdiagramfillcolor="1" widgetbid="kegIzv0ZWYlV" textid="JTL4cKzWsG0h" operation="push the IP block and the whois entry" linewidth="none" seqnum="III" usesdiagramusefillcolor="1" x="369" showstereotype="1" y="670" widgetaid="SuC68l8JpVHq" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="685" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="KZNoWeo13C18" height="8" sequencemessagetype="1001">
+          <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="790" showstereotype="1" y="653" text="III: push the IP block and the whois entry" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="704" width="260" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="JTL4cKzWsG0h" height="17"/>
+         </messagewidget>
+        </messages>
+        <associations/>
+       </diagram>
+      </diagrams>
+     </XMI.extension>
+    </UML:Model>
+    <UML:Model stereotype="folder" visibility="public" isSpecification="false" namespace="m1" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Use Case View" name="Use Case View">
+     <UML:Namespace.ownedElement/>
+    </UML:Model>
+    <UML:Model stereotype="folder" visibility="public" isSpecification="false" namespace="m1" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Component View" name="Component View">
+     <UML:Namespace.ownedElement/>
+    </UML:Model>
+    <UML:Model stereotype="folder" visibility="public" isSpecification="false" namespace="m1" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Deployment View" name="Deployment View">
+     <UML:Namespace.ownedElement/>
+    </UML:Model>
+    <UML:Model stereotype="folder" visibility="public" isSpecification="false" namespace="m1" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Entity Relationship Model" name="Entity Relationship Model">
+     <UML:Namespace.ownedElement/>
+    </UML:Model>
+   </UML:Namespace.ownedElement>
+  </UML:Model>
+ </XMI.content>
+ <XMI.extensions xmi.extender="umbrello">
+  <docsettings viewid="dlHLpC675Zmu" uniqueid="bzjV3gc1Zd4o" documentation=""/>
+  <listview>
+   <listitem open="1" type="800" id="Views">
+    <listitem open="1" type="801" id="Logical View">
+     <listitem open="0" type="810" id="OQKjdxgNOnxy" label="RIS Fetching"/>
+     <listitem open="0" type="810" id="dlHLpC675Zmu" label="Whois Fetching"/>
+     <listitem open="0" type="813" id="znp7yGNpaHra">
+      <listitem open="0" type="815" id="inREVoVw2ZOs"/>
+     </listitem>
+     <listitem open="0" type="813" id="ZKQbtoSQb8if">
+      <listitem open="0" type="815" id="zWhuS0lZfGj3"/>
+     </listitem>
+     <listitem open="1" type="813" id="qj3andgZPLER"/>
+     <listitem open="0" type="813" id="0WSPHxed7QPb">
+      <listitem open="0" type="815" id="H5q0zL3guHoj"/>
+     </listitem>
+     <listitem open="1" type="813" id="MbXMEqwxc797"/>
+     <listitem open="0" type="813" id="9KaL4c1z0YNr">
+      <listitem open="0" type="815" id="P8xAAzi6r0A8"/>
+      <listitem open="0" type="815" id="SGVR3HjTDcvU"/>
+      <listitem open="0" type="815" id="51zHbujSasiw"/>
+      <listitem open="0" type="815" id="CPRlH7hAbhYU"/>
+     </listitem>
+     <listitem open="0" type="813" id="GclnEPmHDh2b">
+      <listitem open="0" type="815" id="FxrU3fWPgFmG"/>
+     </listitem>
+     <listitem open="0" type="813" id="DWktlV7lToC6">
+      <listitem open="0" type="815" id="1YU2qxLTC9Qx"/>
+     </listitem>
+     <listitem open="1" type="813" id="SAzyeea5znRV"/>
+     <listitem open="0" type="813" id="cQYxHU1KwFde">
+      <listitem open="0" type="815" id="f9Nx9KVoAGNU"/>
+      <listitem open="0" type="815" id="8tII9dkvjuXQ"/>
+      <listitem open="0" type="815" id="zW5gPb4rJ59d"/>
+      <listitem open="0" type="815" id="EJ5b7fITLt74"/>
+      <listitem open="0" type="815" id="KHCstdz2KBKS"/>
+      <listitem open="0" type="815" id="1RKMacmWKZZU"/>
+     </listitem>
+     <listitem open="1" type="813" id="gAsgh24PtduZ"/>
+     <listitem open="0" type="813" id="43myLZfd3BWc">
+      <listitem open="0" type="815" id="9gjrFMJpsjXB"/>
+      <listitem open="0" type="815" id="FG27xZH6ulgn"/>
+      <listitem open="0" type="815" id="8iH2RvozxcHj"/>
+      <listitem open="0" type="815" id="0KVvwneXCj2i"/>
+     </listitem>
+     <listitem open="0" type="813" id="veOFqECnoHxu">
+      <listitem open="0" type="815" id="PzfiXCCjzypf"/>
+      <listitem open="0" type="815" id="XxZUvN8LD7Xg"/>
+      <listitem open="0" type="815" id="aG9lLfSVORCx"/>
+     </listitem>
+     <listitem open="0" type="813" id="vKUHjeEcqnr9">
+      <listitem open="0" type="815" id="wPEjcDEUPJ7M"/>
+     </listitem>
+     <listitem open="0" type="813" id="XXmxquH4m3MR">
+      <listitem open="0" type="815" id="3Ml8yOsqADRH"/>
+     </listitem>
+     <listitem open="0" type="813" id="dypn5FkzwfBd">
+      <listitem open="0" type="815" id="HHgJL9yQrF0D"/>
+     </listitem>
+     <listitem open="1" type="813" id="3DUhHKtIo17q"/>
+     <listitem open="1" type="813" id="xLuO0ZsKKCwK"/>
+     <listitem open="0" type="813" id="pcFSrwVQHSbg">
+      <listitem open="0" type="815" id="M9k49tb4VYHZ"/>
+      <listitem open="0" type="815" id="QGoXKY2UCqp2"/>
+      <listitem open="0" type="815" id="xBT7zG7ySKEk"/>
+      <listitem open="0" type="815" id="TBMvUadEWdDf"/>
+      <listitem open="0" type="815" id="9sHsYr2k0PSp"/>
+      <listitem open="0" type="815" id="4B7RTluDW1Ns"/>
+     </listitem>
+     <listitem open="0" type="813" id="iY8qd0gxYILc">
+      <listitem open="0" type="815" id="dINGudINXPmN"/>
+      <listitem open="0" type="815" id="jA9FekcmdNNu"/>
+      <listitem open="0" type="815" id="fo3GBQ81m6c5"/>
+     </listitem>
+     <listitem open="1" type="813" id="ixwOWXeXIyTZ"/>
+     <listitem open="1" type="813" id="gtxWC7uIZ625"/>
+     <listitem open="1" type="813" id="Wy6xdV9b79WQ"/>
+     <listitem open="0" type="813" id="fOdG5AlLBHQD">
+      <listitem open="0" type="815" id="65aFFiDEx4Nk"/>
+      <listitem open="0" type="815" id="7zB54Zpib0Ju"/>
+      <listitem open="0" type="815" id="m6aN5tGvnuzh"/>
+      <listitem open="0" type="815" id="0PfYB68olcDK"/>
+      <listitem open="0" type="815" id="VRPQIDiMPwjB"/>
+      <listitem open="0" type="815" id="SlC7dZnUgZcH"/>
+     </listitem>
+     <listitem open="0" type="813" id="U2hJHhUQdgQL">
+      <listitem open="0" type="815" id="Xn9NNwifLrw4"/>
+     </listitem>
+     <listitem open="1" type="813" id="JhRyhRtBClJs"/>
+     <listitem open="0" type="830" id="Datatypes">
+      <listitem open="1" type="829" id="oranp5GZm7TO"/>
+      <listitem open="1" type="829" id="RgGOk5VDO38P"/>
+      <listitem open="1" type="829" id="U8urNrU9i4uW"/>
+      <listitem open="1" type="829" id="6oAoDo2aZ75m"/>
+      <listitem open="1" type="829" id="Yw3ErFZu0zyU"/>
+      <listitem open="1" type="829" id="CB6lIBWkJQce"/>
+      <listitem open="1" type="829" id="7A3rHWGMKOAW"/>
+      <listitem open="1" type="829" id="RDrGjzKjKl44"/>
+      <listitem open="1" type="829" id="G6nwAhSGpW76"/>
+      <listitem open="1" type="829" id="6BlNaN1qTmmb"/>
+      <listitem open="1" type="829" id="2NSLjbrwkxf2"/>
+     </listitem>
+    </listitem>
+    <listitem open="1" type="802" id="Use Case View"/>
+    <listitem open="1" type="821" id="Component View"/>
+    <listitem open="1" type="827" id="Deployment View"/>
+    <listitem open="1" type="836" id="Entity Relationship Model"/>
+   </listitem>
+  </listview>
+  <codegeneration>
+   <codegenerator language="C++">
+    <sourcecode value=":&#xa;&quot; Parse the list;urllib.urlretrieve(self.url,self.filename)&#xa;daily=open(self.filename).read()&#xa;self.ips=re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',daily)&#xa;str_date=re.findall('updated (.*)\n',daily)[0]&#xa;self.date=datetime.fromtimestamp(time.mktime(time.strptime(str_date,'%Y-%m-%d %H:%M:%S %Z')))&#xa;tmp_filename=self.filename+str(self.date).replace(' ','-')&#xa;os.rename(self.filename,tmp_filename)&#xa;self.filename=tmp_filename&#xa;f=open(self.filename,'w')&#xa;f.write(daily)&#xa;f.close()" id="FxrU3fWPgFmG"/>
+    <sourcecode value=":&#xa;&quot; Parse the list;urllib.urlretrieve(self.url,self.filename)&#xa;self.ips=re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',open(self.filename).read())" id="1YU2qxLTC9Qx"/>
+    <sourcecode value=":&#xa;&quot; Parse the list;ipv6=open(self.url).read()&#xa;self.ips=re.findall('([0-9a-f:]*[0-9a-f]).*\n',ipv6)" id="HHgJL9yQrF0D"/>
+    <sourcecode value=":&#xa;&quot; Parse the list;urllib.urlretrieve(self.url,self.filename)&#xa;self.ips=re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',open(self.filename).read())&#xa;" id="Xn9NNwifLrw4"/>
+    <sourcecode value=":&#xa;Push all the new IPs in the memcached server&#xa;self.redis=redis.Redis(db=0)&#xa;self.ips_descriptions=IPsDescriptions.query.filter(IPsDescriptions.asn==None).all()&#xa;for ip_description in self.ips_descriptions:&#xa;  self.redis.push(self.redis_keys[0],ip_description.ip.ip)&#xa;&#xa;self.asns_descriptions=[]&#xa;" id="f9Nx9KVoAGNU"/>
+    <sourcecode value=":&#xa;self.__get_asns()&#xa;self.__get_whois()&#xa;r_session=RankingSession()&#xa;r_session.commit()&#xa;r_session.close()&#xa;" id="8tII9dkvjuXQ"/>
+    <sourcecode value=":&#xa;Update the database with the RIS whois informations&#xa;ris_whois=Whois(data,self.risServer)&#xa;if not ris_whois.origin:&#xa;  if not self.default_asn_desc:&#xa;    self.default_asn_desc=\&#xa;    ASNsDescriptions(owner=unicode(&quot;IP without AS, see doc to know why&quot;),\ips_block=unicode('0.0.0.0'),asn=ASNs.query.get(unicode(-1)))&#xa;  current.asn=self.default_asn_desc&#xa;&#xa;else:&#xa;current_asn=ASNs.query.get(unicode(ris_whois.origin))if not current_asn:&#xa;  current_asn=ASNs(asn=unicode(ris_whois.origin))&#xa;&#xa;if not ris_whois.description:&#xa;  ris_whois.description=&quot;This ASN has no description&quot;&#xa;&#xa;asn_desc=ASNsDescriptions(owner=ris_whois.description.decode(&quot;iso-8859-1&quot;),\&#xa;ips_block=unicode(ris_whois.route),asn=current_asn)self.redis.push(self.redis_keys[1],ris_whois.route)self.asns_descriptions.append(asn_desc)current.asn=asn_desc" id="zW5gPb4rJ59d"/>
+    <sourcecode value=":&#xa;for description in self.asns_descriptions:&#xa;  if ip_in_network(ip_description.ip.ip,description.ips_block):&#xa;    ip_description.asn=description&#xa;    return True&#xa;&#xa;&#xa;return False&#xa;" id="EJ5b7fITLt74"/>
+    <sourcecode value=":&#xa;Main function,initialise the WhoisFetcher and connect to riswhois.ripe.net&#xa;Make a new connexion for each list of ris_dict.&#xa;descriptions=self.ips_descriptions&#xa;loop=0&#xa;while loop&lt;10 and len(descriptions)>0:&#xa;  deferred=[]&#xa;  for description in descriptions:&#xa;    if not self.__in_current_asns_descriptions(description):&#xa;      entry=self.redis.get(description.ip.ip)&#xa;      if not entry:&#xa;        deferred.append(description)&#xa;&#xa;      else:&#xa;        self.__update_db_ris(description,entry)&#xa;&#xa;&#xa;&#xa;  time.sleep(1)&#xa;  descriptions=deferred&#xa;  loop+=1&#xa;&#xa;print(descriptions)&#xa;" id="KHCstdz2KBKS"/>
+    <sourcecode value=":&#xa;Make a new connexion for each list of whois_dict.&#xa;descriptions=self.asns_descriptions&#xa;loop=0&#xa;while len(descriptions)>0:&#xa;  deferred=[]&#xa;  for description in descriptions:&#xa;    entry=self.redis.get(description.ips_block)&#xa;    if not entry:&#xa;      deferred.append(description)&#xa;&#xa;    else:&#xa;      description.whois_address=entry[0]&#xa;      description.whois=entry[1]&#xa;&#xa;&#xa;  descriptions=deferred&#xa;  loop+=1&#xa;  time.sleep(1)&#xa;  print(len(descriptions))" id="1RKMacmWKZZU"/>
+    <sourcecode value=":&#xa;self.r_session=RankingSession()&#xa;" id="PzfiXCCjzypf"/>
+    <sourcecode value=":&#xa;Abstract method which has to be implemented in each module:&#xa;the method must at least extract the IPs of the raw data and initialize a list named ips.The class must also define a variable called date.It is the date of creation of the list.If this date is unknown,it should be set to'today'like this:date=datetime.date.today()pass&#xa;" id="XxZUvN8LD7Xg"/>
+    <sourcecode value=":&#xa;Update the databases'IPs'and'IPsDescriptions'.&#xa;ATTENTION:it will*fail*if self.date and self.ips are not definded!&#xa;self.ip_addresses=[]&#xa;self.parse()&#xa;self.ips.sort()&#xa;i=0&#xa;for ip in self.ips:&#xa;  self.ip_addresses.append(str(IPy.IP(ip)))&#xa;&#xa;while i&lt;len(self.ip_addresses):&#xa;  current_ip=self.ip_addresses[i]&#xa;  IP=IPs.query.get(unicode(current_ip))&#xa;  if not IP:&#xa;    IP=IPs(ip=unicode(current_ip))&#xa;&#xa;  desc=IPsDescriptions.query.filter_by(ip=IP,list_name=unicode(self.name),list_date=self.date).first()&#xa;  if not desc:&#xa;    desc=IPsDescriptions(ip=IP,list_name=unicode(self.name),list_date=self.date)&#xa;&#xa;  i+=1&#xa;  desc.times=1&#xa;  while i&lt;len(self.ip_addresses)and current_ip==self.ip_addresses[i]:&#xa;    desc.times+=1&#xa;    i+=1&#xa;&#xa;&#xa;self.r_session.commit()&#xa;self.r_session.close()" id="aG9lLfSVORCx"/>
+    <sourcecode value=":&#xa;return'IP: &quot;%s&quot;'%(self.ip)&#xa;" id="wPEjcDEUPJ7M"/>
+    <sourcecode value=":&#xa;to_return='[%s] List: &quot;%s&quot; \t %s present %d time(s)'%(self.list_date,self.list_name,\&#xa;self.ip,self.times)if self.asn:&#xa;  to_return+='\t %s'%(self.asn.asn)&#xa;&#xa;return to_return&#xa;" id="3Ml8yOsqADRH"/>
+    <sourcecode value=":&#xa;return'ASN: &quot;%s&quot;'%(self.asn)&#xa;" id="inREVoVw2ZOs"/>
+    <sourcecode value=":&#xa;return'[%s] %s \t Owner: &quot;%s&quot; \t Block: &quot;%s&quot;'%(self.timestamp,\&#xa;self.asn,self.owner,self.ips_block)" id="zWhuS0lZfGj3"/>
+    <sourcecode value=":&#xa;Thread.__init__(self)&#xa;self.ip_list=ip_list&#xa;self.r_session=RankingSession()&#xa;self.asn_list=[]&#xa;" id="M9k49tb4VYHZ"/>
+    <sourcecode value=":&#xa;self.server=get_server_by_name(self.risServer)&#xa;self.__fetch_asns_current_list()&#xa;" id="QGoXKY2UCqp2"/>
+    <sourcecode value=":&#xa;Fetch the ris whois for the list,using keepalive because we are on riswhois&#xa;Disconnect when the whole list is done&#xa;self.fetcher=WhoisFetcher(self.server)&#xa;broken_pipe=0&#xa;last=self.ip_list[len(self.ip_list)-1]&#xa;self.fetcher.connect()&#xa;for ip in self.ip_list:&#xa;  print(ip)&#xa;  whois=self.fetcher.fetch_whois(ip,True)&#xa;  if ip==last:&#xa;    whois=self.fetcher.fetch_whois(ip)&#xa;&#xa;  self.asn_list.append(self.__update_db(ip,whois))&#xa;&#xa;self.r_session.commit()&#xa;self.r_session.close()&#xa;" id="xBT7zG7ySKEk"/>
+    <sourcecode value=":&#xa;Update the database with the RIS whois informations and initialize whois_dict&#xa;in order to make the whois requests,by whois server.&#xa;current=IPsDescriptions.query.filter(and_(IPsDescriptions.asn==None,IPsDescriptions.ip_ip==ip))&#xa;ris_whois=Whois(data,self.risServer)&#xa;if not ris_whois.origin:&#xa;  if not self.default_asn_desc:&#xa;    self.default_asn_desc=\&#xa;    ASNsDescriptions(owner=unicode(&quot;IP without AS, see doc to know why&quot;),\ips_block=unicode('0.0.0.0'),asn=ASNs.query.get(unicode(-1)))&#xa;  current.asn=self.default_asn_desc&#xa;&#xa;else:&#xa;current_asn=ASNs.query.get(unicode(ris_whois.origin))if not current_asn:&#xa;  current_asn=ASNs(asn=unicode(ris_whois.origin))&#xa;&#xa;if not ris_whois.description:&#xa;  ris_whois.description=&quot;This ASN has no description&quot;&#xa;&#xa;asn_desc=ASNsDescriptions(owner=ris_whois.description.decode(\&#xa;&quot;iso-8859-1&quot;),ips_block=unicode(ris_whois.route),asn=current_asn)current.asn=asn_desc return asn_desc" id="TBMvUadEWdDf"/>
+    <sourcecode value=":&#xa;Check if the ips are in an ip block we already know and drop them from the list&#xa;it=0&#xa;while it&lt;len(self.ip_list):&#xa;  desc=self.ip_list[it]&#xa;  if ip_in_network(desc.ip.ip,asn_desc.ips_block):&#xa;    desc.asn=asn_desc&#xa;    self.ip_list.pop(it)&#xa;&#xa;  else:&#xa;    it=it+1&#xa;&#xa;&#xa;" id="9sHsYr2k0PSp"/>
+    <sourcecode value=":&#xa;self.name=name&#xa;" id="4B7RTluDW1Ns"/>
+    <sourcecode value=":&#xa;Thread.__init__(self)&#xa;self.server=server&#xa;self.asn_list=asn_list&#xa;self.ranking_session=scoped_session(sessionmaker(bind=ranking_engine))&#xa;" id="dINGudINXPmN"/>
+    <sourcecode value=":&#xa;self.__fetch_whois_current_list()&#xa;" id="jA9FekcmdNNu"/>
+    <sourcecode value=":&#xa;Fetch the whois for the list,using keepalive if possible&#xa;fetch_server=get_server_by_name(self.server)&#xa;keepalive_capable=(fetch_server.keepalive_options!='')&#xa;whois_fetcher=WhoisFetcher(fetch_server)&#xa;if keepalive_capable:&#xa;  whois_fetcher.connect()&#xa;  while len(self.asn_list)>0:&#xa;    description=self.asn_list.pop()&#xa;    if len(self.asn_list)!=0:&#xa;      whois=whois_fetcher.fetch_whois(description.ips_block,True)&#xa;&#xa;    else:&#xa;      whois=whois_fetcher.fetch_whois(description.ips_block)&#xa;&#xa;    description.whois=whois&#xa;    description.whois_address=self.server&#xa;&#xa;&#xa;else:&#xa;  for description in self.asn_list:&#xa;    whois_fetcher.connect()&#xa;    whois=whois_fetcher.fetch_whois(description.ips_block)&#xa;    description.whois=whois&#xa;    description.whois_address=self.server&#xa;&#xa;&#xa;self.r_session.commit()&#xa;self.r_session.close()" id="fo3GBQ81m6c5"/>
+    <sourcecode value=":&#xa;return'Block: &quot;%s&quot;\t Whois Server: &quot;%s&quot;'%(self.block,self.whois)&#xa;" id="H5q0zL3guHoj"/>
+    <sourcecode value=":&#xa;self.redis_instance=redis.Redis(db=0)&#xa;self.fetcher=WhoisFetcher(get_server_by_name\&#xa;(unicode(self.server)))" id="9gjrFMJpsjXB"/>
+    <sourcecode value=":&#xa;self.fetcher.connect()&#xa;self.connected=True&#xa;" id="FG27xZH6ulgn"/>
+    <sourcecode value=":&#xa;self.fetcher.disconnect()&#xa;self.connected=False&#xa;" id="8iH2RvozxcHj"/>
+    <sourcecode value=":&#xa;self.__connect()&#xa;while 1:&#xa;  if self.redis_instance.llen(self.key)==0:&#xa;    self.__disconnect()&#xa;    time.sleep(5)&#xa;    continue&#xa;&#xa;  if not self.connected:&#xa;    self.__connect()&#xa;&#xa;  ip=self.redis_instance.pop(self.key)&#xa;  whois=self.fetcher.fetch_whois(ip,True)&#xa;  self.redis_instance.set(ip,whois)&#xa;&#xa;" id="0KVvwneXCj2i"/>
+    <sourcecode value=":&#xa;self.redis_instance=redis.Redis(db=0)&#xa;self.server=server&#xa;if self.server in self.support_keepalive:&#xa;  self.keepalive=True&#xa;&#xa;self.fetcher=WhoisFetcher(get_server_by_name\&#xa;(unicode(self.server)))self.connected=False&#xa;" id="P8xAAzi6r0A8"/>
+    <sourcecode value=":&#xa;self.fetcher.connect()&#xa;self.connected=True&#xa;" id="SGVR3HjTDcvU"/>
+    <sourcecode value=":&#xa;self.fetcher.disconnect()&#xa;self.connected=False&#xa;" id="51zHbujSasiw"/>
+    <sourcecode value=":&#xa;while 1:&#xa;  try:&#xa;    if self.redis_instance.llen(self.server)==0:&#xa;      self.__disconnect()&#xa;      time.sleep(1)&#xa;      continue&#xa;&#xa;    ip=self.redis_instance.pop(self.server)&#xa;    if not self.redis_instance.get(ip):&#xa;      if not self.connected:&#xa;        self.__connect()&#xa;&#xa;      print(self.server+&quot;: &quot;+ip)&#xa;      whois=self.fetcher.fetch_whois(ip,self.keepalive)&#xa;      self.redis_instance.set(ip,[self.server,whois])&#xa;      if not self.keepalive:&#xa;        self.__disconnect()&#xa;&#xa;&#xa;&#xa;  except IOError,e:&#xa;    if e.errno==errno.ETIMEDOUT:&#xa;      self.redis_instance.push(self.server,ip)&#xa;&#xa;    else:&#xa;      raise IOError(e)&#xa;&#xa;&#xa;&#xa;" id="CPRlH7hAbhYU"/>
+    <sourcecode value=":&#xa;self.s=socket(AF_INET,SOCK_STREAM)&#xa;self.s.connect((self.server,self.port))&#xa;if self.server in self.has_welcome_message:&#xa;  self.s.recv(1024)&#xa;&#xa;" id="65aFFiDEx4Nk"/>
+    <sourcecode value=":&#xa;self.s.close()&#xa;" id="7zB54Zpib0Ju"/>
+    <sourcecode value=":&#xa;pre_options=self.pre_options&#xa;if keepalive:&#xa;  pre_options+=self.keepalive_options&#xa;&#xa;if self.server in self.need_an_ip:&#xa;  query=first_ip(query)&#xa;&#xa;self.s.send(pre_options+query+self.post_options+' \n')&#xa;if self.server in self.has_info_message:&#xa;  self.s.recv(1024)&#xa;&#xa;self.text=''&#xa;loop=0&#xa;while self.text==''and loop&lt;5:&#xa;  self.text=self.s.recv(1024).rstrip()&#xa;  loop+=1&#xa;&#xa;if loop==5:&#xa;  print(&quot;error with query: &quot;+query+&quot; on server &quot;+self.server)&#xa;&#xa;special_regex=self.regex_whois.get(self.server,None)&#xa;if special_regex:&#xa;  self.text=re.findall(special_regex,self.text)&#xa;&#xa;if not keepalive:&#xa;  self.s.close()&#xa;&#xa;return self.text&#xa;" id="m6aN5tGvnuzh"/>
+    <sourcecode value=":&#xa;self.server=assignation.whois&#xa;self.pre_options=assignation.pre_options&#xa;self.post_options=assignation.post_options&#xa;self.keepalive_options=assignation.keepalive_options&#xa;self.port=assignation.port&#xa;" id="0PfYB68olcDK"/>
+    <sourcecode value=":&#xa;self.__set_values(server)&#xa;" id="VRPQIDiMPwjB"/>
+    <sourcecode value=":&#xa;return self.text" id="SlC7dZnUgZcH"/>
+   </codegenerator>
+  </codegeneration>
+ </XMI.extensions>
+</XMI>

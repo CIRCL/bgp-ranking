@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-# http://bazaar.launchpad.net/~ubuntu-branches/ubuntu/lucid/whois/lucid/files
-# to get the address assignations
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.schema import ThreadLocalMetaData
@@ -11,7 +9,6 @@ whois_engine = create_engine('mysql://root@localhost/whois')
 #whois_engine = create_engine('sqlite:///whois.sqlite',  echo=True)
 WhoisSession = scoped_session(sessionmaker(bind=whois_engine))
 whois_metadata = ThreadLocalMetaData()
-#__metadata__ = whois_metadata
 whois_metadata.bind = whois_engine
 import re
 

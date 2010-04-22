@@ -14,10 +14,18 @@ from elixir import *
 import errno
 
 def get_server_by_name(server):
+    """
+    Return the entry of 'server' from the Assignation's database
+    """
     to_return = Assignations.query.filter(Assignations.whois==server).first()
     return to_return
 
 def get_server_by_query(query):
+    """
+    Return the server entry corresponing to 'query' from the Assignation's database
+    Query is an IP address and is included in one of the block of the database. We have to find the 
+    smallest to fetch the more accurate informations. 
+    """
     assignations = Assignations.query.filter(Assignations.block!=unicode('')).all()
     server = None
     for assignation in assignations:
@@ -52,15 +60,24 @@ class WhoisFetcher(object):
     s = socket(AF_INET, SOCK_STREAM)
     
     def connect(self):
+        """
+        TCP connection to one on the whois servers
+        """
         self.s = socket(AF_INET, SOCK_STREAM)
         self.s.connect((self.server,self.port))
         if self.server in self.has_welcome_message:
             self.s.recv(1024)
         
     def disconnect(self):
+        """
+        Close the TCP connection 
+        """
         self.s.close()
     
     def fetch_whois(self, query, keepalive = False):
+        """
+        Fetch the whois informations. Keep the connection alive if needed. 
+        """
         pre_options = self.pre_options
         if keepalive:
             pre_options += self.keepalive_options
@@ -84,6 +101,9 @@ class WhoisFetcher(object):
         return self.text
 
     def __set_values(self,  assignation):
+        """
+        Set the needed informations concerning the server we want to use
+        """
         self.server = assignation.whois
         self.pre_options = assignation.pre_options
         self.post_options = assignation.post_options

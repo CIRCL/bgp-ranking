@@ -27,6 +27,8 @@ def get_server_by_query(query):
     smallest to fetch the more accurate informations. 
     """
     assignations = Assignations.query.filter(Assignations.block!=unicode('')).all()
+    while len(assignations) == 1:
+        assignations = Assignations.query.filter(Assignations.block!=unicode('')).all()
     server = None
     for assignation in assignations:
         if ip_in_network(query, assignation.block):
@@ -35,6 +37,9 @@ def get_server_by_query(query):
             else:
                 if ip_in_network(assignation.block, server.block ):
                     server = assignation
+    print(query + ': ' + str(server))
+    if not server:
+        print(assignations)
     return server
 
 class WhoisFetcher(object):
@@ -55,7 +60,7 @@ class WhoisFetcher(object):
     # Message AFTER the query
     has_info_message = ['whois.afrinic.net',  'whois.lacnic.net']
     # Doesn't support CIDR queries
-    need_an_ip = ['whois.arin.net']
+    need_an_ip = ['whois.arin.net', 'whois.nic.or.kr']
     
     s = socket(AF_INET, SOCK_STREAM)
     

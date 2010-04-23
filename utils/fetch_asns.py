@@ -74,7 +74,8 @@ class FetchASNs():
             if not self.default_asn_desc:
                 self.default_asn_desc = \
                     ASNsDescriptions(owner=unicode("IP without AS, see doc to know why"), \
-                    ips_block=unicode('0.0.0.0'), asn=ASNs.query.get(unicode(-1)))
+                    ips_block=unicode('0.0.0.0'), asn=ASNs.query.get(unicode(-1)),  \
+                    whois=unicode('None'), whois_address=unicode('None') )
             current.asn = self.default_asn_desc
         else: 
             current_asn = ASNs.query.get(unicode(ris_whois.origin))
@@ -114,13 +115,14 @@ class FetchASNs():
             time.sleep(1)
             descriptions = deferred
             loop += 1
-            print(len(descriptions))
+        print('ASN Desc: ' + str(len(self.asns_descriptions)))
+
 
     def __get_whois(self):
         """ 
         Make a new connexion for each list of whois_dict. 
         """
-        descriptions = self.asns_descriptions
+        descriptions = ASNsDescriptions.query.filter(ASNsDescriptions.whois==None).all()
         loop = 0
         while len(descriptions) > 0:
             deferred = []
@@ -129,9 +131,10 @@ class FetchASNs():
                 if not entry:
                     deferred.append(description)
                 else:
-                    description.whois_address = entry[0]
-                    description.whois = entry[1]
+                    splitted = re.findall('(.*)\n(.*)',  entry)[0]
+                    description.whois_address = splitted[0]
+                    description.whois = splitted[1]
             descriptions = deferred
             loop += 1
             time.sleep(1)
-            print(len(descriptions))
+            print('Descriptions to fetch: ' + str(len(descriptions)))

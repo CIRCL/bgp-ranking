@@ -40,6 +40,7 @@ class Pooler():
             print('blocs to whois: ' + str(redis_instance.llen(key)))
             bloc = redis_instance.pop(key)
             if not bloc:
+                print('no bloc! Waiting...')
                 time.sleep(process_sleep)
                 continue
             server = get_server_by_query(bloc)

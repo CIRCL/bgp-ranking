@@ -49,7 +49,7 @@ class WhoisFetcher(object):
     # Some funny whois implementations.... 
     regex_whois = {
         # This whois contains a Korean and an English version, we only save the english one. 
-        'whois.nic.or.kr' :  '# ENGLISH\n(.*)'
+        'whois.nic.or.kr' :  "ENGLISH\n\n([\w\s.:\-\[\],@\+]*)"
         }
     # In case we want to get the RIS informations given by other servers than riswhois.ripe.net
     regex_riswhois = {
@@ -61,6 +61,8 @@ class WhoisFetcher(object):
     has_info_message = ['whois.afrinic.net',  'whois.lacnic.net']
     # Doesn't support CIDR queries
     need_an_ip = ['whois.arin.net', 'whois.nic.or.kr']
+    # The response is splitted....
+    splitted = ['whois.nic.or.kr']
     
     s = socket(AF_INET, SOCK_STREAM)
     
@@ -90,17 +92,19 @@ class WhoisFetcher(object):
             query = first_ip(query)
         self.s.send(pre_options + query + self.post_options +' \n')
         if self.server in self.has_info_message:
-            self.s.recv(1024)
+            self.s.recv(2048)
         self.text = ''
         loop = 0
         while self.text == '' and loop < 5  :
-            self.text = self.s.recv(1024).rstrip()
+            self.text = self.s.recv(4096).rstrip()
             loop += 1
+            if self.text != '' and self.server in self.splitted:
+                self.text += self.s.recv(4096).rstrip()
         if loop == 5:
             print("error with query: " + query + " on server " + self.server)
         special_regex = self.regex_whois.get(self.server, None)
         if special_regex:
-            self.text = re.findall(special_regex, self.text )
+            self.text = re.findall(special_regex, self.text )[0]
         if not keepalive:
             self.s.close()
         return self.text

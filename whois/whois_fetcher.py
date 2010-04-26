@@ -37,7 +37,6 @@ def get_server_by_query(query):
             else:
                 if ip_in_network(assignation.block, server.block ):
                     server = assignation
-    print(query + ': ' + str(server))
     if not server:
         print(assignations)
     return server
@@ -47,9 +46,10 @@ class WhoisFetcher(object):
     """
     
     # Some funny whois implementations.... 
-    regex_whois = {
-        # This whois contains a Korean and an English version, we only save the english one. 
-        'whois.nic.or.kr' :  "ENGLISH\n\n([\w\s.:\-\[\],@\+]*)"
+    whois_part = {
+        # This whois contains a Korean and an English version, we only need the english one, \
+        # which comes after "ENGLISH\n"
+        'whois.nic.or.kr' :  "ENGLISH\n"
         }
     # In case we want to get the RIS informations given by other servers than riswhois.ripe.net
     regex_riswhois = {
@@ -101,10 +101,10 @@ class WhoisFetcher(object):
             if self.text != '' and self.server in self.splitted:
                 self.text += self.s.recv(4096).rstrip()
         if loop == 5:
-            print("error with query: " + query + " on server " + self.server)
-        special_regex = self.regex_whois.get(self.server, None)
-        if special_regex:
-            self.text = re.findall(special_regex, self.text )[0]
+            print("error (no response) with query: " + query + " on server " + self.server)
+        part = self.whois_part.get(self.server, None)
+        if part:
+            self.text = self.text.partition(part)[2]
         if not keepalive:
             self.s.close()
         return self.text

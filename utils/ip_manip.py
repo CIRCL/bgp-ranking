@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-# Python 2.6 need an external module :
-#     netaddr => http://code.google.com/p/netaddr/
-# Python 2.7 and Python 3.* have already a module : ipaddr
 
 from sys import version_info
 

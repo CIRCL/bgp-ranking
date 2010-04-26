@@ -72,6 +72,7 @@ class ASNsDescriptions(Entity):
     ips_block = Field(Unicode(INET6_ADDRSTRLEN), required=True)
     whois = Field(Binary)
     whois_address = Field(UnicodeText)
+    riswhois_origin = Field(UnicodeText)
     asn = ManyToOne('ASNs')
     ips = OneToMany('IPsDescriptions')
     using_options(metadata=ranking_metadata, session=RankingSession)

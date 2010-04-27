@@ -31,6 +31,19 @@ class Pooler():
     whois_sorting_processes = 1
     whois_connectors_by_server = 1
     
+    def kill_all(self):
+        self.kill_sorters()
+        self.kill_connectors()
+    
+    def kill_sorters(self):
+        for sorter in self.whois_sorters:
+            sorter.terminate()
+    
+    def kill_connectors(self):
+        for server, processes in self.whois_connectors.iteritems():
+            for process in processes:
+                process.terminate()
+    
     def status_all(self):
         self.status_sorters()
         self.status_connectors()
@@ -54,9 +67,6 @@ class Pooler():
         Connector(server).launch()
 
     def __whois_sort(self):
-        logger = multiprocessing.log_to_stderr()
-        logger.setLevel(multiprocessing.SUBDEBUG)
-        m = multiprocessing.Manager()
         temp_db = redis.Redis(db=temp_reris_db)
         key = redis_keys[1]
         while 1:
@@ -95,68 +105,3 @@ class Pooler():
                 self.whois_connectors[server].append(p)
                 p.start()
             print('Connectors started: ' + server)
-
-class Connector(object):
-    """
-    Make queries to Whois 
-    """
-    keepalive = False
-    support_keepalive = ['riswhois.ripe.net', 'whois.ripe.net']
-    
-    def __init__(self, server):
-        self.cache_db = redis.Redis(db=cache_reris_db)
-        self.temp_db = redis.Redis(db=temp_reris_db)
-        self.server = server
-        if self.server == 'riswhois.ripe.net':
-            self.key = redis_keys[0]
-        else:
-            self.key = self.server
-        if self.server in self.support_keepalive:
-            self.keepalive = True
-        self.fetcher = WhoisFetcher(get_server_by_name\
-                            (unicode(self.server)))
-        self.connected = False
-    
-    def __connect(self):
-        self.fetcher.connect()   
-        self.connected = True
-
-    def __disconnect(self):
-        self.fetcher.disconnect()
-        self.connected = False
-    
-    def launch(self):
-        while 1:
-            try:
-#                print(self.server + ', llen: ' + str(self.redis_instance.llen(self.key)))
-                entry = self.temp_db.pop(self.key)
-                if not entry:
-                    self.__disconnect()
-                    time.sleep(process_sleep)
-                    continue
-                if not self.cache_db.get(entry):
-                    if not self.connected:
-                        self.__connect()
-#                    print(self.server + ", query : " + str(entry))
-                    whois = self.fetcher.fetch_whois(entry, self.keepalive)
-                    if whois == '':
-                        self.temp_db.push(self.key, entry)
-                    else:
-                        self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
-                    if not self.keepalive:
-                        self.__disconnect()
-            except IOError, e:
-                if e.errno == errno.ETIMEDOUT:
-                    self.temp_db.push(self.server,entry)
-                    print("timeout on " + self.server)
-                    self.connected = False
-                elif e.errno == errno.EPIPE:
-                    self.temp_db.push(self.server,entry)
-                    print("Broken pipe " + self.server)
-                    self.connected = False
-                else:
-                    raise IOError(e)
-
-if __name__ == '__main__':
-    p = Pooler()
-    p.start_all()

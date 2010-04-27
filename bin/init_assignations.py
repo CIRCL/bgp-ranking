@@ -1,6 +1,7 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from model import *
+from whois.model import *
 
 import IPy
 

@@ -1,6 +1,7 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from models import *
+from utils.models import *
 
 ranking_metadata.drop_all()
 ranking_metadata.create_all()

@@ -13,6 +13,13 @@ from elixir import *
 
 import errno
 
+def get_all_servers():
+    to_return = set()
+    servers = Assignations.query.all()
+    for server in servers:
+        to_return.add(server.whois)
+    return to_return
+
 def get_server_by_name(server):
     """
     Return the entry of 'server' from the Assignation's database

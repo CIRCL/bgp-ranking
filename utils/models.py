@@ -38,12 +38,13 @@ class IPsDescriptions(Entity):
     timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow)
     list_date = Field(DateTime(timezone=True), required=True)
     times = Field(Integer, default=1)
+    raw_informations = Field(UnicodeText, default=None)
     ip = ManyToOne('IPs')
     asn = ManyToOne('ASNsDescriptions')
     using_options(metadata=ranking_metadata, session=RankingSession)
   
     def __repr__(self):
-        to_return = '[%s] List: "%s" \t %s present %d time(s)' % (self.list_date, self.list_name,\
+        to_return = '[%s] List: "%s" \t %s present %s time(s)' % (self.list_date, self.list_name,\
                     self.ip,  self.times)
         if self.asn:
             to_return += '\t %s' % (self.asn.asn)

@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+
+
+import re
+import time
+import os
+import glob
+import csv
+
+from datetime import datetime
+from utils.ip_update import IPUpdate
+
+
+class ShadowserverSinkhole(IPUpdate):
+    name = 'Shadowserver sinkhole'
+    directory = 'datas/shadowserver/sinkhole/'
+    
+    def __init__(self):
+        IPUpdate.__init__(self)
+        self.module_type = 2
+
+    def parse(self):
+        """ Parse the list
+        """
+        self.ips = []
+        for file in  glob.glob( os.path.join(self.directory, '*.*') ):
+            reader = csv.reader(open(file), delimiter=',')
+            reader.next()
+            for row in reader:
+                date = datetime.fromtimestamp(time.mktime(time.strptime(row[0], '%Y-%m-%d %H:%M:%S')))
+                full_line =', '.join(row)
+                self.ips.append([row[1], date, full_line])

@@ -4,15 +4,18 @@ import redis
 from whois_fetcher import *
 import errno
 
-
+# query keys, ris for ris queries, whois for whois queries 
 redis_keys = ['ris', 'whois']
 # Temporary redis database, used to push ris and whois requests
 temp_reris_db = 0
-# Cqche redis database, used to set ris and whois responses
+# Cache redis database, used to set ris and whois responses
 cache_reris_db = 1
 
+# In case there is nothing to fetch, the process will sleep 5 seconds 
 process_sleep = 5
 
+# Set the ttl of the cached entries to 1 day 
+cache_ttl = 86400
 
 class Connector(object):
     """
@@ -61,6 +64,7 @@ class Connector(object):
                         self.temp_db.push(self.key, entry)
                     else:
                         self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
+                        self.cache_db.expire(entry, cache_ttl)
                     if not self.keepalive:
                         self.__disconnect()
             except IOError, e:

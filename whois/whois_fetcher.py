@@ -17,7 +17,8 @@ def get_all_servers():
     to_return = set()
     servers = Assignations.query.all()
     for server in servers:
-        to_return.add(server.whois)
+        if server.whois not in [ 'UNALLOCATED',  '6to4',  'teredo' ]:
+            to_return.add(server.whois)
     return to_return
 
 def get_server_by_name(server):
@@ -65,7 +66,7 @@ class WhoisFetcher(object):
     # Message BEFORE the query 
     has_welcome_message = ['riswhois.ripe.net',  'whois.apnic.net',  'whois.ripe.net', 'whois.afrinic.net']
     # Message AFTER the query
-    has_info_message = ['whois.afrinic.net',  'whois.lacnic.net']
+    has_info_message = ['whois.ripe.net', 'whois.afrinic.net',  'whois.lacnic.net']
     # Doesn't support CIDR queries
     need_an_ip = ['whois.arin.net', 'whois.nic.or.kr']
     # The response is splitted....

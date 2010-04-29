@@ -65,6 +65,9 @@ class FetchASNs():
 
     def start(self):
         self.__get_asns()
+        r_session = RankingSession()
+        r_session.commit()
+        r_session.close()
         self.__get_whois()
         r_session = RankingSession()
         r_session.commit()

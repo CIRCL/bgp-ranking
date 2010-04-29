@@ -80,5 +80,10 @@ class Connector(object):
                     self.temp_db.push(self.server,entry)
                     print("Reset by peer:  " + self.server)
                     self.connected = False
+                elif e.errno == errno.ECONNREFUSED:
+                    self.temp_db.push(self.server,entry)
+                    print("Reset by peer:  " + self.server)
+                    self.connected = False
+                    time.sleep(process_sleep)
                 else:
                     raise IOError(e)

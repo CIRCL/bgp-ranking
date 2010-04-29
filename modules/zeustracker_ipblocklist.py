@@ -1,35 +1,26 @@
 # -*- coding: utf-8 -*-
-
-try:
-    import urllib.request, urllib.parse, urllib.error
-except ImportError:
-    import urllib
-
-
 import re
 import datetime 
+import os
+import glob
 
 from utils.ip_update import IPUpdate
 
 
 class ZeustrackerIpBlockList(IPUpdate):
-    url = 'http://www.abuse.ch/zeustracker/blocklist.php?download=ipblocklist'
     name = 'Zeustracker\'s ipblocklist'
     # Dshield doesn't give a date for his TopIPs list. So we assume that 
     # the list is updated every days
     date = datetime.date.today()
-    filename = 'datas/zeus/ipblocklist.' + str(date)
+    directory = 'datas/zeus/ipblocklist/'
  
     def parse(self):
         """ Parse the list
         """
-        urllib.urlretrieve(self.url,self.filename)
-        self.ips = re.findall('((?:\d{1,3}\.){3}\d{1,3}).*', open(self.filename).read())
-#        print self.ips
-
-
-if __name__ == "__main__":
-    #Just to check the url and print the result (ip addresses)
-    d = ZeustrackerIpBlockList()
-    d.parse()
-
+        self.ips = []
+        for file in  glob.glob( os.path.join(self.directory, '*') ):
+            if not os.path.isdir(file):
+                blocklist = open(file)
+                self.ips += re.findall('((?:\d{1,3}\.){3}\d{1,3}).*', blocklist.read())
+                new_filename = self.directory + 'old/' + os.path.basename(file)
+                os.rename(file, new_filename)

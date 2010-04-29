@@ -2,7 +2,7 @@ import os
 import platform
 import subprocess
 
-whois_fetch_path = os.getcwd() + '/whois/pids'
+whois_fetch_path = os.getcwd() + '/pids/'
 
 def service_start(servicename = None, param = None):
     if servicename is not None :

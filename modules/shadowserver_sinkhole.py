@@ -23,10 +23,14 @@ class ShadowserverSinkhole(IPUpdate):
         """ Parse the list
         """
         self.ips = []
-        for file in  glob.glob( os.path.join(self.directory, '*.*') ):
-            reader = csv.reader(open(file), delimiter=',')
-            reader.next()
-            for row in reader:
-                date = datetime.fromtimestamp(time.mktime(time.strptime(row[0], '%Y-%m-%d %H:%M:%S')))
-                full_line =', '.join(row)
-                self.ips.append([row[1], date, full_line])
+        for file in  glob.glob( os.path.join(self.directory, '*') ):
+            if not os.path.isdir(file):
+                reader = csv.reader(open(file), delimiter=',')
+                reader.next()
+                for row in reader:
+                    date = datetime.fromtimestamp(time.mktime(time.strptime(row[0], '%Y-%m-%d %H:%M:%S')))
+                    full_line =', '.join(row)
+                    self.ips.append([row[1], date, full_line])
+                new_filename = self.directory + 'old/' + os.path.basename(file)
+                os.rename(file, new_filename)
+

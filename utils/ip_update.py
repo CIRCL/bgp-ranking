@@ -87,6 +87,7 @@ class IPUpdate ():
         Update the databases 'IPs' and 'IPsDescriptions'.
         """
         self.parse()
+        print(self.ips)
         self.before_insertion[self.module_type]()
         self.insertion[self.module_type]()
         self.r_session = RankingSession()

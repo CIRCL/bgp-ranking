@@ -23,8 +23,8 @@ if sys.argv[1] == "start":
     print "Starting fetching..."
     for option in whois_service_options:
         print option+" to start..."
-        pid = service_start(servicename = service, param = option)
-        writepid(processname = option, pid = pid)
+        proc = service_start(servicename = service, param = option)
+        writepid(processname = option, proc = proc)
         print pidof(processname=option)
 
 elif sys.argv[1] == "stop":

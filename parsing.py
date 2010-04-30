@@ -17,7 +17,7 @@ if len(sys.argv) < 2:
 
 modules = \
     {'DshieldTopIPs' : DshieldTopIPs, 
-#    'DshieldDaily' : DshieldDaily, 
+    'DshieldDaily' : DshieldDaily, 
     'ZeustrackerIpBlockList' : ZeustrackerIpBlockList, 
     'ShadowserverSinkhole' : ShadowserverSinkhole,  
     'ShadowserverReport' : ShadowserverReport,  

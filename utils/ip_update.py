@@ -53,7 +53,13 @@ class IPUpdate ():
     def __preinsert_type1(self):
         self.ip_addresses = {}
         for ip in self.ips:
-            current_ip = str(IPy.IP(ip))
+            checked = ''
+            try:
+                checked = str(IPy.IP(ip))
+            except :
+                print('error with IP:' + ip)
+                continue
+            current_ip = checked
             if not self.ip_addresses.get(current_ip,  None):
                 self.ip_addresses[current_ip] = 1
             else:
@@ -71,7 +77,13 @@ class IPUpdate ():
     #  self.ips format : [[ip1,timestamp1,text1],[ip2,timestamp2,text2],[ip3,timestamp3,text3]]
     def __preinsert_type2(self):
         for ip in self.ips:
-            ip[0] = str(IPy.IP(ip[0]))
+            checked = ''
+            try:
+                checked = str(IPy.IP(ip[0]))
+            except :
+                print('error with IP:' + ip[0])
+                continue
+            ip[0] = checked
     
     def __insert_type2(self):
         for current_ip, current_timestamp, current_text in self.ips:
@@ -87,7 +99,6 @@ class IPUpdate ():
         Update the databases 'IPs' and 'IPsDescriptions'.
         """
         self.parse()
-        print(self.ips)
         self.before_insertion[self.module_type]()
         self.insertion[self.module_type]()
         self.r_session = RankingSession()

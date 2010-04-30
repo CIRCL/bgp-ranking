@@ -20,8 +20,8 @@ if sys.argv[1] == "start":
 
     print "Starting sorting..."
     print service+" to start..."
-    pid = service_start(servicename = service)
-    writepid(processname = service, pid = pid)
+    proc = service_start(servicename = service)
+    writepid(processname = service, proc = proc)
     print pidof(processname=service)
 
 elif sys.argv[1] == "stop":

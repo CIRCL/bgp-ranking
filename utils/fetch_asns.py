@@ -58,21 +58,11 @@ class FetchASNs():
         
         self.cache_db = redis.Redis(db=cache_reris_db)
         self.temp_db = redis.Redis(db=temp_reris_db)
-        self.ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.asn==None).all()
-        for ip_description in self.ips_descriptions:
-            self.temp_db.push(redis_keys[0],  ip_description.ip.ip)
-        self.asns_descriptions = []
 
-    def start(self):
-        self.__get_asns()
+    def __commit(self):
         r_session = RankingSession()
         r_session.commit()
         r_session.close()
-        self.__get_whois()
-        r_session = RankingSession()
-        r_session.commit()
-        r_session.close()
-        
     
     def __update_db_ris(self, current,  data):
         """ 
@@ -100,9 +90,10 @@ class FetchASNs():
                                         ips_block=unicode(ris_whois.route), asn=current_asn, \
                                         riswhois_origin=unicode(ris_origin) )
             self.temp_db.push(redis_keys[1], ris_whois.route)
-            self.asns_descriptions.append(asn_desc)
+#            self.asns_descriptions.append(asn_desc)
             current.asn = asn_desc
 
+    # this function cqn only be used if all the ips are inserted in one process. It's not the case anymore.
     def __in_current_asns_descriptions(self,  ip_description):
         for description in self.asns_descriptions:
             if ip_in_network(ip_description.ip.ip,description.ips_block):
@@ -110,37 +101,37 @@ class FetchASNs():
                 return True
         return False
 
-    def __get_asns(self):
+    def get_asns(self, limit_first, limit_last):
         """ 
         Main function, initialise the WhoisFetcher and connect to riswhois.ripe.net
         Make a new connexion for each list of ris_dict. 
         """
-        descriptions = self.ips_descriptions
-        loop = 0
-        while len(descriptions) > 0:
+        self.ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.asn==None)[limit_first:limit_last]
+        for ip_description in self.ips_descriptions:
+            self.temp_db.push(redis_keys[0],  ip_description.ip.ip)
+        while len(self.ips_descriptions) > 0:
             deferred = []
-            for description in descriptions:
-                if not self.__in_current_asns_descriptions(description):
-                    entry = self.cache_db.get(description.ip.ip)
-                    if not entry:
-                        deferred.append(description)
-                    else:
-                        self.__update_db_ris(description, entry)
+            for description in self.ips_descriptions:
+#                if not self.__in_current_asns_descriptions(description):
+                entry = self.cache_db.get(description.ip.ip)
+                if not entry:
+                    deferred.append(description)
+                else:
+                    self.__update_db_ris(description, entry)
+            self.ips_descriptions = deferred
             time.sleep(1)
-            descriptions = deferred
-            loop += 1
-        print('ASN Desc: ' + str(len(self.asns_descriptions)))
+            print('IP Desc: ' + str(len(self.ips_descriptions)))
+        self.__commit()
 
 
-    def __get_whois(self):
+    def get_whois(self, limit_first, limit_last):
         """ 
         Make a new connexion for each list of whois_dict. 
         """
-        descriptions = ASNsDescriptions.query.filter(ASNsDescriptions.whois==None).all()
-        loop = 0
-        while len(descriptions) > 0:
+        asns_descriptions = ASNsDescriptions.query.filter(ASNsDescriptions.whois==None)[limit_first:limit_last]
+        while len(asns_descriptions) > 0:
             deferred = []
-            for description in descriptions:
+            for description in asns_descriptions:
                 entry = self.cache_db.get(description.ips_block)
                 if not entry:
                     deferred.append(description)
@@ -148,7 +139,7 @@ class FetchASNs():
                     splitted = entry.partition('\n')
                     description.whois_address = splitted[0]
                     description.whois = splitted[2]
-            descriptions = deferred
-            loop += 1
+            asns_descriptions = deferred
             time.sleep(1)
-            print('Descriptions to fetch: ' + str(len(descriptions)))
+            print('Descriptions to fetch: ' + str(len(asns_descriptions)))
+        self.__commit()

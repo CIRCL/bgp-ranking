@@ -8,7 +8,7 @@ service = "raw_fetching"
 
 options = \
         {'dshield_topips' : 'datas/dshield/topips/ http://www.dshield.org/feeds/topips.txt', 
-#        'dshield_daily' : 'datas/dshield/daily/ http://www.dshield.org/feeds/daily_sources', 
+        'dshield_daily' : 'datas/dshield/daily/ http://www.dshield.org/feeds/daily_sources', 
         'zeus_ipblocklist' : 'datas/zeus/ipblocklist/ http://www.abuse.ch/zeustracker/blocklist.php?download=ipblocklist'}
 
 print "Starting fetching..."

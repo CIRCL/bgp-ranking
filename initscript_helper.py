@@ -11,15 +11,15 @@ def service_start(servicename = None, param = None):
             proc =  subprocess.Popen(["python",service])
         else:
             proc =  subprocess.Popen(["python",service, param])
-        return proc.pid
+        return proc
     return False
 
-def writepid (processname = None, pid = None):
+def writepid (processname = None, proc = None):
     pidpath = os.path.join(whois_fetch_path,processname+".pid")
 
-    if processname is not None and pid is not None:
+    if processname is not None and proc is not None:
         f = open (pidpath,"a")
-        f.write(str(pid)+'\n')
+        f.write(str(proc.pid)+'\n')
         f.close()
         return True
     else:

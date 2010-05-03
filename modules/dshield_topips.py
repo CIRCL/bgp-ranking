@@ -22,5 +22,4 @@ class DshieldTopIPs(IPUpdate):
             if not os.path.isdir(file):
                 topips = open(file)
                 self.ips += re.findall('((?:\d{1,3}\.){3}\d{1,3}).*', topips.read())
-                new_filename = self.directory + 'old/' + os.path.basename(file)
-                os.rename(file, new_filename)
+                self.move_file(file)

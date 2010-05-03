@@ -7,6 +7,7 @@ from modules.dshield_topips import DshieldTopIPs
 from modules.shadowserver_sinkhole import ShadowserverSinkhole
 from modules.shadowserver_report import ShadowserverReport
 from modules.shadowserver_report2 import ShadowserverReport2
+from modules.atlas import Atlas
 
 def usage():
     print "parsing.py name"
@@ -21,7 +22,8 @@ modules = \
     'ZeustrackerIpBlockList' : ZeustrackerIpBlockList, 
     'ShadowserverSinkhole' : ShadowserverSinkhole,  
     'ShadowserverReport' : ShadowserverReport,  
-    'ShadowserverReport2' : ShadowserverReport2}
+    'ShadowserverReport2' : ShadowserverReport2, 
+    'Atlas' : Atlas}
 
 module = modules[sys.argv[1]]()
 module.update()

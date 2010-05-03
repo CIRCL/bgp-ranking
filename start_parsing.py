@@ -15,7 +15,8 @@ options = \
     'ZeustrackerIpBlockList', 
     'ShadowserverSinkhole',  
     'ShadowserverReport',  
-    'ShadowserverReport2'
+    'ShadowserverReport2', 
+    'Atlas'
     ]
 
 

@@ -23,5 +23,4 @@ class DshieldDaily(IPUpdate):
                 self.ips += re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',daily)
                 str_date = re.findall('updated (.*)\n', daily)[0]
                 self.date = datetime.fromtimestamp(time.mktime(time.strptime(str_date, '%Y-%m-%d %H:%M:%S %Z')))
-                new_filename = self.directory + 'old/' + str(self.date).replace(' ','-')
-                os.rename(file, new_filename)
+                self.move_file(file)

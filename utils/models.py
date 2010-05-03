@@ -38,6 +38,7 @@ class IPsDescriptions(Entity):
     timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow)
     list_date = Field(DateTime(timezone=True), required=True)
     times = Field(Integer, default=1)
+    infection = Field(UnicodeText, default=None)
     raw_informations = Field(UnicodeText, default=None)
     ip = ManyToOne('IPs')
     asn = ManyToOne('ASNsDescriptions')

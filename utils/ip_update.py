@@ -4,6 +4,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from abc import ABCMeta, abstractmethod
 from models import *
 
+import os
+
 try : 
     from ipaddr import IP
 except ImportError:
@@ -74,7 +76,7 @@ class IPUpdate ():
             if not desc:
                 desc = IPsDescriptions(ip=IP, list_name=unicode(self.name), list_date=self.date,  times=current_times)
     
-    #  self.ips format : [[ip1,timestamp1,text1],[ip2,timestamp2,text2],[ip3,timestamp3,text3]]
+    #  self.ips format : [[ip1,timestamp1,infection1,text1],[ip2,timestamp2,infection2,text2]]
     def __preinsert_type2(self):
         for ip in self.ips:
             checked = ''
@@ -86,13 +88,14 @@ class IPUpdate ():
             ip[0] = checked
     
     def __insert_type2(self):
-        for current_ip, current_timestamp, current_text in self.ips:
+        for current_ip, current_timestamp, current_infection, current_text in self.ips:
             IP = IPs.query.get(unicode(current_ip))
             if not IP:
                 IP = IPs(ip=unicode(current_ip))
             desc = IPsDescriptions.query.filter_by(ip=IP, list_name=unicode(self.name), list_date=current_timestamp).first()
             if not desc:
-                desc = IPsDescriptions(ip=IP, list_name=unicode(self.name), list_date=current_timestamp, raw_informations=unicode(current_text), times=1)
+                IPsDescriptions(ip=IP, list_name=unicode(self.name), list_date=current_timestamp, \
+                                infection=current_infection, raw_informations=unicode(current_text), times=1)
     
     def update(self):
         """
@@ -105,3 +108,6 @@ class IPUpdate ():
         self.r_session.commit()
         self.r_session.close()
         
+    def move_file(self, file):
+        new_filename = self.directory + 'old/' + str(self.date).replace(' ','-')
+        os.rename(file, new_filename)

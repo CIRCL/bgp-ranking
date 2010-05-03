@@ -22,5 +22,4 @@ class ZeustrackerIpBlockList(IPUpdate):
             if not os.path.isdir(file):
                 blocklist = open(file)
                 self.ips += re.findall('((?:\d{1,3}\.){3}\d{1,3}).*', blocklist.read())
-                new_filename = self.directory + 'old/' + os.path.basename(file)
-                os.rename(file, new_filename)
+                self.move_file(file)

@@ -10,7 +10,7 @@ import csv
 from datetime import datetime
 import dateutil.parser
 from utils.ip_update import IPUpdate
-from xml.dom import minidom
+import feedparser
 
 class Atlas(IPUpdate):
     name = 'Atlas'
@@ -26,9 +26,9 @@ class Atlas(IPUpdate):
         self.ips = []
         for file in  glob.glob( os.path.join(self.directory, '*') ):
             if not os.path.isdir(file):
-                parse = minidom.parse(file)
-                self.date = parse.getElementsByTagName('updated')[0].firstChild.data
-                values = self.extract_from_xml(parse)
+                rss = feedparser.parse(file)
+                self.date = rss['feed']['updated']
+                values = self.extract_from_xml(rss)
                 for value in values:
                     self.ips.append(value)
                 self.move_file(file)
@@ -43,19 +43,19 @@ class Atlas(IPUpdate):
         3. url for more informations, coverage, category of the attack 
         """
         toReturn = []
-        title = entry.getElementsByTagName('title')[0].firstChild.data.split(' | ')
+        title = entry['title'].split(' | ')
         toReturn.append(title[1])
-        toReturn.append(dateutil.parser.parse(entry.getElementsByTagName('updated')[0].firstChild.data))
+        toReturn.append(dateutil.parser.parse(entry['updated']))
         toReturn.append(title[0])
-        url = entry.getElementsByTagName('id')[0].firstChild.data
-        coverage = entry.getElementsByTagName('dc:coverage')[0].firstChild.data
-        category_xml_values = entry.getElementsByTagName('category')[0].attributes.values()
-        category = category_xml_values[0].value + ' - ' + category_xml_values[2].value
+        url = entry['id']
+        coverage = entry['dc_coverage']
+        category_xml_values = entry['tags'][0]['term']
+        category = entry['tags'][0]['term'] + ' - ' + entry['tags'][0]['label']
         toReturn.append(url + ', ' + coverage + ', ' + category)
         return toReturn
     
-    def extract_from_xml(self, xmldoc):
-        entries = xmldoc.getElementsByTagName('entry')
+    def extract_from_xml(self, rss):
+        entries = rss['entries']
         extracted_values = []
         for entry in entries:
             extracted_values.append(self.parse_entry(entry))

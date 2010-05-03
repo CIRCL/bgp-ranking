@@ -95,7 +95,7 @@ class IPUpdate ():
             desc = IPsDescriptions.query.filter_by(ip=IP, list_name=unicode(self.name), list_date=current_timestamp).first()
             if not desc:
                 IPsDescriptions(ip=IP, list_name=unicode(self.name), list_date=current_timestamp, \
-                                infection=current_infection, raw_informations=unicode(current_text), times=1)
+                                infection=unicode(current_infection), raw_informations=unicode(current_text), times=1)
     
     def update(self):
         """

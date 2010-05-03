@@ -4,6 +4,7 @@ import re
 import time
 import os
 import glob
+import csv
 
 from datetime import datetime
 from utils.ip_update import IPUpdate

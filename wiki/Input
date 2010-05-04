@@ -1,0 +1,58 @@
+# Introduction
+
+ The idea is to build a ranking system to rank autonomous system number (ASN) over time on the Internet. The main part of the project is to gather and collect datasets across Internet
+to come with the required information for creating the ranking. The ranking system is mainly there to give information about the "security" quality of an ASN and maybe his neighbours (upstream
+or downstream). The ranking is value between 0 - 100 specifying the risk associated with an ASN. 0  means that the trust is high / 100 means the trust is low and risk is very high. 
+
+## Internet dataset
+
+* List of "suspicious IP" - http://www.dshield.org/xml.html (a good start for feeding the initial database structure) and https://zeustracker.abuse.ch/blocklist.php
+* RIPE RIS - Where to get which networks are announced by which ASN? - http://www.ripe.net/ris/riswhois.html 
+* [Python script](http://bsd.dischaos.com/2009/07/22/getting-all-prefixes-advertised-by-an-as/) for information, get all the IPs of an AS
+* [Wrapper for whois](http://code.google.com/p/pywhois/), python, MIT Licence, might be a good start to make a real wrapper 
+* Overall allocation of ASN to RIR - http://www.iana.org/assignments/as-numbers/ -  
+
+## Flow/import process
+
+* (at regular interval, every day?) - import of existing ASN number with their description - to trace evolution of ASN
+* (at regular interval, every day) - import list of suspicious IP from dshield 
+** Importing ASN announcing the suspicious IP
+** Importing ASN all announced networks
+* Calculating over a specific time period (per 24 hours), the ranking based on the number of suspicious versus the
+total announced network from the ASN
+* Voting mechanism to increase risk ranking or not
+
+
+## Data structure
+
+### ASN table
+
+<pre>
+ ASN int(32bits)
+ date varchar
+ description varchar
+ whois varchar
+</pre>
+
+If the ASN number is evolving when compared (as fetched at a regular interval), a new entry is created. To keep track of AS previously used by other ISP.
+
+### net object announced
+
+<pre>
+ net varchar
+ ASN int(32bits)
+ firstseen date
+ lastseen date
+ whois varchar
+</pre>
+
+### suspicious IP
+
+<pre>
+ net varchar
+ source int
+ ASN int(32bits)
+ firstseen date
+ lastseen date
+</pre>
+

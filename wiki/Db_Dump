@@ -1,0 +1,12 @@
+How to get a dump of the database: 
+
+* whois.nic.ad.jp: Impossible
+* whois.arin.net: [Informations](https://www.arin.net/resources/request/bulkwhois.html), fill this [form](https://www.arin.net/resources/agreements/bulkwhois.pdf) and send it by postal mail
+* whois.apnic.net: [Informations](http://www.apnic.net/publications/media-library/documents/resource-guidelines/availability#BulkAccess) and fill this [form](http://ftp.apnic.net/apnic/docs/apnic-whois-agreement.pdf) and send it by postal mail
+* whois.nic.br: Impossible
+* whois.twnic.net: Impossible
+* rwhois.gin.ntt.net: Impossible
+* whois.afrinic.net: [Informations](http://www.afrinic.net/rs/bulk-whois.htm) and fill this [form](http://www.afrinic.net/forms/affrm-blk200509-new.pdf) and send it by e-mail or fax
+* whois.ripe.net: [Dump](ftp://ftp.ripe.net/ripe/dbase/)
+* whois.lacnic.net: [Informations](http://lacnic.net/en/politicas/manual8.html) anf fill this [form](http://lacnic.net/documentos/politicas/bulkwhoisII-en.pdf) and send it by postal mail
+* whois.nic.or.kr: Impossible

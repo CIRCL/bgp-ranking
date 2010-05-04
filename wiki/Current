@@ -1,0 +1,33 @@
+# Data source - Modules
+
+To add a new data source, we just have to create a new module, every module need and use:
+
+* An url (to fetch the data)
+* A name (should be unique) 
+* A date (the date of generation of the list) 
+* A list of IPs (obvious...) 
+
+The module is a class which extends _IPUpdate_ and has to implements the function parse (abstract in _IPUpdate_). This function has to parse the data to generate a list of IPs and extract the date of generation of the list (if possible). 
+If the date is not in the data, it might be set to _today_ (datetime.date.today())
+
+Both IPv4 and IPv6 are supported. There is one important thing to know when you make a module which parse IPv6 address: they might be badly compressed and look like that: _123:123:_ the last _:_  should not be there and the IP has to be cleaned before the insertion. 
+Example of regex for IPv6: ([0-9a-f:]\*[0-9a-f]).\*\n 
+Example of regex for IPv4: ((?:\d{1,3}\\.){3}\d{1,3}).*
+
+
+# Insertion of the IPs in the database
+
+1. If the IP is not already in the table _IPs_, it is inserted 
+2. The description (name of the data set, date of the list) of the IP is inserted into _IPsDescriptions_
+
+# Fetching and insertion of the ASNs in the database
+
+1. Selection of all IPsDescriptions which do not have asn
+2. Query to the Ris Server concerning an IP 
+3. If the ASN is not already in the table _ASNs_, it is inserted 
+4. The description (name of the AS, IP block) of the ASN is inserted into _ASNsDescriptions_
+5. Searching in the list (see 1.) for all IPs which belong to the IP block of the current AS and set their ASN to the current
+
+
+# To improve
+* it is complicated to run a whois at the same time we insert the IPs in the database: a lot of whois queries take more than one second to complete ! Multi threading is a must + local db !

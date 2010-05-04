@@ -1,0 +1,27 @@
+# Tests & results #
+
+The current code allows us to do some tests. 
+The firsts results, with this file: http://www.dshield.org /feeds/daily_sources (**/!\ you don't want to click** : 40Mo and ~590000 different addresses): 
+1. I takes **a lot** of time ! more than 1 hour. It needs to be multi-threaded. I'm not sure that ripwhois will allow that... (currently : <s>**~8s for 100 IPs**!!</s> )
+1.1 Threaded. 100 IPs, 10 Threads => ~1s 
+2. 829 different AS
+3. The (really) bad guys : 
+<pre>('4134', 686, 'CHINANET-BACKBONE No.31,Jin-rong Street'),
+('3462', 765, 'HINET Data Communication Business Group') </pre>
+
+# Caching and merging subnet #
+
+Just some ideas or open questions.
+
+1. Maybe some "matching" IP are closed to each other. Instead of doing a lookup for each IP, the shortest subnet (/24) could be match against?
+2. Caching can be done especially if we are doing lookup on same IPs (quite common on shared datasets) (but linked to the important comment)
+3. Ranking versus the number of announced subnets per AS. To see the distribution of bad host versus good host in a subnet or in a AS.
+
+# An important comment #
+
+1. The process of collecting and storing IP/ASN tuple should be independent from the ranking process. Usually because you can make apply various scheme of ranking while just using the data stored (IP/ASN and others).
+
+I would really suggest to concentrate on a common data store (we could start with a simple MySQL with the appropriate schema) and to update each separate process to use or update that datastore.
+
+> yes, we will to that now, the actual code is more a personal test to learn how to use python.
+Till we got the appropriate schema, we will use an sqlite database (it is easier to drop :) ). Today I did a little test with Elixir (implementation of Active Record) and a database for the IPs, it seems to work but need even more work.

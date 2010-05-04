@@ -1,0 +1,3 @@
+# Modularity
+* we will create a module for each blacklist. So it will be easy to import new data. 
+* the class IP_Update contains an abstract method : parse(). This method will be (re)defined for all the files we want to use and extract the IPs and the creation date of the file (if it exists). We need also a (different) name for every file, it will be defined in the sub-class too. 

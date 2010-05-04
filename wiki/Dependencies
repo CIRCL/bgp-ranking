@@ -1,0 +1,14 @@
+The core project depends on the following libraries: 
+
+* python-dateutil: convert any date-string into datetime object
+* redis and pyredis: shared memory and cache between fetching of the whois and core of the program
+* IPy: all manipulations on the IP addresses
+* elixir and sqlalchemy: Active record
+* feedparser: parse the rss files 
+
+The website depends on: 
+
+* cherrypy: server 
+* Cheetah: templates
+
+The code is currently only tested with Python 2.6 and should not work with Python 3.X. Python 3.X will be supported till all used dependency support Python 3.X.

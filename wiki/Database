@@ -1,0 +1,30 @@
+# Storage of the IPs
+* table IPs
+<pre>
+ip : the IP address (IPv4/IPv6)
+ip_descriptions : relation one to many with the table IPs_descriptions
+</pre>
+* table IPs_descriptions (information concerning the IPs)<pre>
+list_name : obviously.. the name of the list where the ip come from
+fetch_date : date we fetch the list (set by default to datetime.datetime.now)
+list_date : date of creation of the list
+ip : relation many to one with the table IPs
+asn : relation many to one with the table ASNs_descriptions</pre>
+_list_date_ should be found in the fetched list. *But* it is often not so, for example in the Dshield Top IPs list. In this case, _list_date_ has to be set, for example to today (datetime.date.today()). It is important because this date will be used to verify that this entry is not already in the database! 
+
+* Later: table of comments 
+
+# Storage of the ASNs
+
+* table ASNs
+<pre>
+asn : the AS Number
+asn_description : relation one to many with the table ASNs_descriptions</pre>
+* table ASNs_descriptions
+<pre>
+seen: date we see the AS (set by default to datetime.datetime.now)
+owner: of the AS
+ips_block: block of the IP owned by the AS
+asn: relation many to one with ASNs
+ips: relation one to many with IPs_descriptions</pre>
+an ASNs_description might have more than one IPs_description: we will probably find for each ips_block more than one IP in the data sets. 

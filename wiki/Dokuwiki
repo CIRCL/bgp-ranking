@@ -1,0 +1,17 @@
+** Disclaimer: this entry has no relation with the BGP Ranking **
+
+When a new page is saved some files are created by [dokuwiki](http://www.dokuwiki.org/dokuwiki):
+<pre>$DOKUWIKI_HOME/data/meta/pagename.{changes,indexed,meta}
+$DOKUWIKI_HOME/data/pages/pagename.txt</pre>
+
+The length of pagename is not checked and dokuwiki attempt to save the files directly, It is a problem because of the maximal length of the file name authorized by the file system. 
+
+## Example: 
+
+If the file system is ext4, the maximal length is 256 bytes (256 chars in UTF-8). If the page name length equals 250, dokuwiki will only be able to create  
+<pre>$DOKUWIKI_HOME/data/meta/pagename.meta and 
+$DOKUWIKI_HOME/data/pages/pagename.txt</pre>
+
+This two files are enough to see the content and to edit the page but the revisions are not saved!
+
+This bug has been found in collaboration with [Andre Kuhn](http://gitorious.org/~mccsecurity).

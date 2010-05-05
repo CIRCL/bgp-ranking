@@ -19,7 +19,7 @@ def usage():
 if len(sys.argv) < 2:
     usage()
 
-service = "whois_fetching"
+service += "whois_fetching"
 whois_service_options = get_all_servers_urls()
 
 if sys.argv[1] == "start":

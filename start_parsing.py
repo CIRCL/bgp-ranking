@@ -11,7 +11,7 @@ from initscript_helper import *
 Start a process for all the modules listed in 'options'
 """
 
-service = "parsing"
+service += "parsing"
 options = \
     ['DshieldTopIPs', 
     'DshieldDaily', 

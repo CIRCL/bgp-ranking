@@ -8,7 +8,7 @@ from initscript_helper import *
 Launch the raw fetching processes 
 """
 
-service = "raw_fetching"
+service += "raw_fetching"
 
 options = \
         {'dshield_topips' : 'datas/dshield/topips/ http://www.dshield.org/feeds/topips.txt', 

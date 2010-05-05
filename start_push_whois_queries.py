@@ -31,7 +31,7 @@ def update_running_pids(old_procs):
     return new_procs
 
 
-service = "push_whois_queries"
+service += "push_whois_queries"
 
 ips_by_process = 100
 max_processes = 5
@@ -60,7 +60,7 @@ while ip_counter['total_ips'] > 0:
 
 
 # Launch getting processes 
-service = "get_whois_queries"
+service += "get_whois_queries"
 
 ips_by_process = 100
 max_processes = 5

@@ -9,6 +9,8 @@ Standard functions used by the init scripts
 
 whois_fetch_path = os.getcwd() + '/pids/'
 
+service = 'services/'
+
 def service_start(servicename = None, param = None):
     """
     Launch a Process

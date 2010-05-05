@@ -18,7 +18,7 @@ def usage():
 if len(sys.argv) < 2:
     usage()
 
-service = "whois_sorting"
+service += "whois_sorting"
 
 if sys.argv[1] == "start":
 

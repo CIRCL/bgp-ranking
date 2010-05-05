@@ -25,11 +25,15 @@ whois_post_options = {
 
 def check_network_validity(ip):
     return str(IPy.IP(ip))
+    
+not_a_dns = [ 'UNALLOCATED',  '6to4',  'teredo' ]
+derouted = ['6bone', 'v6nic']
+
+to_drop = not_a_dns + derouted
 
 def insert(assignations): 
     for ip,url in assignations:
-        if url not in [ 'UNALLOCATED',  '6to4',  'teredo' ] \
-                and not re.findall('\.',url):
+        if url not in to_drop and not re.findall('\.',url):
             url = 'whois.' + url + '.net'
         # Buggy networks
         if ip == '210.71.128.0/16':

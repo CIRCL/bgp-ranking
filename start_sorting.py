@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 # Inspired by : http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
+"""
+Start/stop a script which sort the queries between connectors
+"""
+
 import sys
 import os
 import signal

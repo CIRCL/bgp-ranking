@@ -19,12 +19,16 @@ cache_ttl = 86400
 
 class Connector(object):
     """
-    Make queries to Whois 
+    Make queries to a specific Whois server
     """
     keepalive = False
     support_keepalive = ['riswhois.ripe.net', 'whois.ripe.net']
     
     def __init__(self, server):
+        """
+        Initialize the two connectors to the redis server, set variables depending on the server
+        Initialize a whois fetcher on this server
+        """
         self.cache_db = redis.Redis(db=cache_reris_db)
         self.temp_db = redis.Redis(db=temp_reris_db)
         self.server = server
@@ -39,14 +43,23 @@ class Connector(object):
         self.connected = False
     
     def __connect(self):
+        """
+        Connect the fetcher
+        """
         self.fetcher.connect()   
         self.connected = True
 
     def __disconnect(self):
+        """
+        Disconnect the fetcher
+        """
         self.fetcher.disconnect()
         self.connected = False
     
     def launch(self):
+        """
+        Fetch all the whois entry to the server of this connector 
+        """
         while 1:
             try:
 #                print(self.server + ', llen: ' + str(self.redis_instance.llen(self.key)))
@@ -82,7 +95,7 @@ class Connector(object):
                     self.connected = False
                 elif e.errno == errno.ECONNREFUSED:
                     self.temp_db.push(self.server,entry)
-                    print("Reset by peer:  " + self.server)
+                    print("Connexion refused by peer:  " + self.server)
                     self.connected = False
                     time.sleep(process_sleep)
                 else:

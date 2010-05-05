@@ -2,10 +2,14 @@
 # -*- coding: utf-8 -*-
 # Inspired by : http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
+"""
+Start/stop a connector to each whois server we know. 
+"""
+
 import sys
 import os
 import signal
-from whois.whois_fetcher import get_all_servers
+from whois.whois_fetcher import get_all_servers_urls
 from initscript_helper import *
 
 def usage():
@@ -16,7 +20,7 @@ if len(sys.argv) < 2:
     usage()
 
 service = "whois_fetching"
-whois_service_options = get_all_servers()
+whois_service_options = get_all_servers_urls()
 
 if sys.argv[1] == "start":
 

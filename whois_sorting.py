@@ -2,6 +2,10 @@ import redis
 from whois.whois_fetcher import get_server_by_query
 import time
 
+"""
+A sorting processes which sort the queries by dest whois server 
+"""
+
 
 redis_keys = ['ris', 'whois']
 # Temporary redis database, used to push ris and whois requests

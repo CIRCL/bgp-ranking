@@ -55,6 +55,9 @@ class Atlas(IPUpdate):
         return toReturn
     
     def extract_from_xml(self, rss):
+        """
+        Extract each entry & loop
+        """
         entries = rss['entries']
         extracted_values = []
         for entry in entries:

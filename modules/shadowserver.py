@@ -17,7 +17,19 @@ class Shadowserver(IPUpdate):
     - a line parser whitch return a table : [ip, date, infection, rest of the line]
     """
     
+    __metaclass__ = ABCMeta    
+    @abstractmethod
+    def parse_line(self):
+        """
+        Abstract method, parse a line of the csv file. 
+        The only difference between all the sub-classes is the place of the infections type 
+        """
+        pass
+    
     def __init__(self):
+        """
+        Set the type to 2 
+        """
         IPUpdate.__init__(self)
         self.module_type = 2
 
@@ -34,5 +46,8 @@ class Shadowserver(IPUpdate):
                 self.move_file(file)
     
     def move_file(self, file):
+        """
+        Move the file without changing the name 
+        """
         new_filename = self.directory + 'old/' + os.path.basename(file)
         os.rename(file, new_filename)

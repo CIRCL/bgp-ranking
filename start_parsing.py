@@ -7,11 +7,14 @@ import os
 import signal
 from initscript_helper import *
 
+"""
+Start a process for all the modules listed in 'options'
+"""
 
 service = "parsing"
 options = \
     ['DshieldTopIPs', 
-#    'DshieldDaily', 
+    'DshieldDaily', 
     'ZeustrackerIpBlockList', 
     'ShadowserverSinkhole',  
     'ShadowserverReport',  

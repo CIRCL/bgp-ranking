@@ -5,6 +5,11 @@ try:
     import urllib.request, urllib.parse, urllib.error
 except ImportError:
     import urllib
+    
+    
+"""
+Fetch the raw file
+"""
 
 def usage():
     print "raw_fetching.py dir url"

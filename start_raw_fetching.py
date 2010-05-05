@@ -4,6 +4,10 @@
 
 from initscript_helper import *
 
+"""
+Launch the raw fetching processes 
+"""
+
 service = "raw_fetching"
 
 options = \

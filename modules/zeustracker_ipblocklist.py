@@ -9,8 +9,6 @@ from utils.ip_update import IPUpdate
 
 class ZeustrackerIpBlockList(IPUpdate):
     name = 'Zeustracker\'s ipblocklist'
-    # Dshield doesn't give a date for his TopIPs list. So we assume that 
-    # the list is updated every days
     date = datetime.date.today()
     directory = 'datas/zeus/ipblocklist/'
  

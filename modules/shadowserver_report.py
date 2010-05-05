@@ -8,6 +8,9 @@ class ShadowserverReport(Shadowserver):
     directory = 'datas/shadowserver/report/'
     
     def parse_line(self, line):
+        """
+        Parse a line 
+        """
         ip = line[1]
         date = dateutil.parser.parse(line[0])
         infection = line[11]

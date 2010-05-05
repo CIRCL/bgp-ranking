@@ -14,8 +14,10 @@ import time
 redis_keys = ['ris', 'whois']
 # Temporary redis database, used to push ris and whois requests
 temp_reris_db = 0
-# Cqche redis database, used to set ris and whois responses
+# Cache redis database, used to set ris and whois responses
 cache_reris_db = 1
+# Sleep before fetch the deferred queries
+sleep_timer = 1
 
 class FetchASNs():
     """
@@ -51,15 +53,15 @@ class FetchASNs():
 
     def __init__(self):
         """
-        1. Initialize self.ips_descriptions with all descriptions without ASNsDescriptions
-        2. Push all ips into redit
-        """
-        # get all the IPs_descriptions which don't have asn
-        
+        Initialize the two connectors to the redis server 
+        """        
         self.cache_db = redis.Redis(db=cache_reris_db)
         self.temp_db = redis.Redis(db=temp_reris_db)
 
     def __commit(self):
+        """
+        Commit the pending modifications in the database 
+        """
         r_session = RankingSession()
         r_session.commit()
         r_session.close()
@@ -67,6 +69,7 @@ class FetchASNs():
     def __update_db_ris(self, current,  data):
         """ 
         Update the database with the RIS whois informations
+        Push the routes into redis (the whois queries will be done with it)
         """
         splitted = data.partition('\n')
         ris_origin = splitted[0]
@@ -86,25 +89,21 @@ class FetchASNs():
                 current_asn = ASNs(asn=unicode(ris_whois.origin))
             if not ris_whois.description:
                 ris_whois.description = "This ASN has no description"
-            asn_desc = ASNsDescriptions(owner=ris_whois.description.decode("iso-8859-1"), \
-                                        ips_block=unicode(ris_whois.route), asn=current_asn, \
-                                        riswhois_origin=unicode(ris_origin) )
+            asn_desc = ASNsDescriptions.query.filter_by(asn=current_asn, ips_block=unicode(ris_whois.route),\
+                                                        owner=ris_whois.description.decode("iso-8859-1"),\
+                                                        riswhois_origin=unicode(ris_origin)).first()
+            if not asn_desc:
+                asn_desc = ASNsDescriptions(asn=current_asn, ips_block=unicode(ris_whois.route), \
+                                            owner=ris_whois.description.decode("iso-8859-1"), \
+                                            riswhois_origin=unicode(ris_origin))
             self.temp_db.push(redis_keys[1], ris_whois.route)
-#            self.asns_descriptions.append(asn_desc)
             current.asn = asn_desc
 
-    # this function cqn only be used if all the ips are inserted in one process. It's not the case anymore.
-    def __in_current_asns_descriptions(self,  ip_description):
-        for description in self.asns_descriptions:
-            if ip_in_network(ip_description.ip.ip,description.ips_block):
-                ip_description.asn = description
-                return True
-        return False
 
     def get_asns(self, limit_first, limit_last):
         """ 
-        Main function, initialise the WhoisFetcher and connect to riswhois.ripe.net
-        Make a new connexion for each list of ris_dict. 
+        Push the IP addresses of the IPsDescriptions without asn into redis and loop until all 
+        the RIS Whois descriptions are found in the cache database of redis
         """
         self.ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.asn==None)[limit_first:limit_last]
         for ip_description in self.ips_descriptions:
@@ -112,26 +111,27 @@ class FetchASNs():
         while len(self.ips_descriptions) > 0:
             deferred = []
             for description in self.ips_descriptions:
-#                if not self.__in_current_asns_descriptions(description):
                 entry = self.cache_db.get(description.ip.ip)
                 if not entry:
                     deferred.append(description)
                 else:
                     self.__update_db_ris(description, entry)
             self.ips_descriptions = deferred
-            time.sleep(1)
+            time.sleep(sleep_timer)
             print('IP Desc: ' + str(len(self.ips_descriptions)))
         self.__commit()
 
 
     def get_whois(self, limit_first, limit_last):
         """ 
-        Make a new connexion for each list of whois_dict. 
+        Loop until all the Whois entry of the ASNsDescriptions (without whois entry...)
+        are found in the cache database of redis
         """
         asns_descriptions = ASNsDescriptions.query.filter(ASNsDescriptions.whois==None)[limit_first:limit_last]
         while len(asns_descriptions) > 0:
             deferred = []
             for description in asns_descriptions:
+                #FIXME: use sets and redis tags => http://simonwillison.net/static/2010/redis-tutorial/
                 entry = self.cache_db.get(description.ips_block)
                 if not entry:
                     deferred.append(description)
@@ -140,6 +140,6 @@ class FetchASNs():
                     description.whois_address = splitted[0]
                     description.whois = splitted[2]
             asns_descriptions = deferred
-            time.sleep(1)
+            time.sleep(sleep_timer)
             print('Descriptions to fetch: ' + str(len(asns_descriptions)))
         self.__commit()

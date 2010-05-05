@@ -8,7 +8,15 @@ import time
 
 import signal
 
+"""
+Start the pushing and getting processes on an interval of entry to process: 
+use *a way* less memory and multithreaded 
+"""
+
 def update_running_pids(old_procs):
+    """
+    Update the list of the running process
+    """
     new_procs = []
     for proc in old_procs:
         if proc.poll():
@@ -18,14 +26,14 @@ def update_running_pids(old_procs):
             try:
                 os.kill (proc.pid, signal.SIGKILL)
             except:
-                # the process is just allready gone
+                # the process is just already gone
                 pass
     return new_procs
 
 
 service = "push_whois_queries"
 
-ips_by_process = 500
+ips_by_process = 100
 max_processes = 5
 pids = []
 ip_counter = {}
@@ -35,6 +43,7 @@ def init_ip_counter():
     ip_counter['interval_max'] = ips_by_process
     return ip_counter
 
+# Launch pushing processes 
 print "Starting pushing..."
 ip_counter = init_ip_counter()
 while ip_counter['total_ips'] > 0:
@@ -50,6 +59,7 @@ while ip_counter['total_ips'] > 0:
     ip_counter = init_ip_counter()
 
 
+# Launch getting processes 
 service = "get_whois_queries"
 
 ips_by_process = 100

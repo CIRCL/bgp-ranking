@@ -13,12 +13,28 @@ from elixir import *
 
 import errno
 
-def get_all_servers():
+unused_entries = [ 'UNALLOCATED',  '6to4', 'teredo', '6bone', 'v6nic' ]
+
+def get_all_servers_urls():
+    """
+    Get the URLs of all the whois servers 
+    """
     to_return = set()
     servers = Assignations.query.all()
     for server in servers:
-        if server.whois not in [ 'UNALLOCATED',  '6to4',  'teredo' ]:
+        if server.whois not in unused_entries:
             to_return.add(server.whois)
+    return to_return
+    
+def get_all_servers():
+    """
+    Get all the whois servers 
+    """
+    to_return = set()
+    servers = Assignations.query.all()
+    for server in servers:
+        if server.whois not in unused_entries:
+            to_return.add(server)
     return to_return
 
 def get_server_by_name(server):
@@ -35,6 +51,7 @@ def get_server_by_query(query):
     smallest to fetch the more accurate informations. 
     """
     assignations = Assignations.query.filter(Assignations.block!=unicode('')).all()
+    # FIXME: wtf?! 
     while len(assignations) == 1:
         assignations = Assignations.query.filter(Assignations.block!=unicode('')).all()
     server = None

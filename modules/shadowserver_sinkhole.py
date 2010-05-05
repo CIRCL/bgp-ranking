@@ -8,6 +8,9 @@ class ShadowserverSinkhole(Shadowserver):
     directory = 'datas/shadowserver/sinkhole/'
     
     def parse_line(self, line):
+        """
+        Parse a line 
+        """
         ip = line[1]
         date = dateutil.parser.parse(line[0])
         infection = line[5]

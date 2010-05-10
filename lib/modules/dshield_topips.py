@@ -21,9 +21,8 @@ class DshieldTopIPs(IPUpdate):
     def parse(self):
         """ Parse the list
         """
-        print(self.directory)
         self.ips = []
-        for file in  glob.glob( os.path.join(self.directory, '*') ):
+        for file in self.files:
             if not os.path.isdir(file):
                 topips = open(file)
                 self.ips += re.findall('((?:\d{1,3}\.){3}\d{1,3}).*', topips.read())

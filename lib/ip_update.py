@@ -14,6 +14,7 @@ from abc import ABCMeta, abstractmethod
 from db_models.ranking import *
 
 import os
+import glob
 
 import IPy
 
@@ -44,6 +45,13 @@ class IPUpdate ():
                 1 : self.__insert_type1, 
                 2 : self.__insert_type2
             }
+            
+    def __glob_only_files(self):
+        allfiles = glob.glob( self.directory + '/*')
+        self.files = []
+        for file in allfiles:
+            if not os.path.isdir(file):
+                self.files.append(file)
 
     __metaclass__ = ABCMeta    
     @abstractmethod
@@ -121,12 +129,17 @@ class IPUpdate ():
         """
         Update the databases 'IPs' and 'IPsDescriptions'.
         """
-        self.parse()
-        self.before_insertion[self.module_type]()
-        self.insertion[self.module_type]()
-        self.r_session = RankingSession()
-        self.r_session.commit()
-        self.r_session.close()
+        self.__glob_only_files()
+        if len(self.files) > 0:
+            self.parse()
+            self.before_insertion[self.module_type]()
+            self.insertion[self.module_type]()
+            self.r_session = RankingSession()
+            self.r_session.commit()
+            self.r_session.close()
+            return True
+        else:
+            return False
         
     def move_file(self, file):
         """

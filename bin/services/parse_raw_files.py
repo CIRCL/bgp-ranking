@@ -16,9 +16,13 @@ from modules.shadowserver_report import ShadowserverReport
 from modules.shadowserver_report2 import ShadowserverReport2
 from modules.atlas import Atlas
 
+import time
+
 """
 Parse the file of a module
 """
+
+sleep_timer = 5
 
 def usage():
     print "parse_raw_files.py name"
@@ -36,7 +40,10 @@ modules = \
     'ShadowserverReport2' : ShadowserverReport2,
     'Atlas' : Atlas}
 
-module = modules[sys.argv[1]](raw_data)
-module.update()
-
-print('Done with ' + sys.argv[1])
+while 1:
+    module = modules[sys.argv[1]](raw_data)
+    if module.update():
+        print('Done with ' + sys.argv[1])
+    else:
+        print('No files to parse for ' + sys.argv[1])
+    time.sleep(sleep_timer)

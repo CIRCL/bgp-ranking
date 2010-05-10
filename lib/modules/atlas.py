@@ -25,7 +25,7 @@ class Atlas(IPUpdate):
         """ Parse the list
         """
         self.ips = []
-        for file in  glob.glob( os.path.join(self.directory, '*') ):
+        for file in self.files:
             if not os.path.isdir(file):
                 rss = feedparser.parse(file)
                 self.date = rss['feed']['updated']

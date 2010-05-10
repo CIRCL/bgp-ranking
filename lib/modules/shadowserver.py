@@ -38,7 +38,7 @@ class Shadowserver(IPUpdate):
         """ Parse the list
         """
         self.ips = []
-        for file in  glob.glob( os.path.join(self.directory, '*') ):
+        for file in self.files:
             if not os.path.isdir(file):
                 reader = csv.reader(open(file), delimiter=',')
                 reader.next()

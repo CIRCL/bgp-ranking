@@ -1,0 +1,10 @@
+Whois Client: 
+- add support of ReferralServer
+- add support of whois entries send in more than one time
+
+
+General: 
+- Implement logging
+- Improve configuration
+- Improve documentation 
+- Make changelog 

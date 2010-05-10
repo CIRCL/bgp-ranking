@@ -10,36 +10,39 @@ config.read("../bgp-ranking.conf")
 root_dir = config.get('global','root')
 sys.path.append(os.path.join(root_dir,config.get('global','lib')))
 services_dir = os.path.join(root_dir,config.get('global','services'))
-
-
-from helpers.initscript import *
-from db_models.ranking import *
-import time
+raw_data = os.path.join(root_dir,config.get('global','raw_data'))
 
 import signal
 
+from helpers.initscript import *
+
 """
-Start the getting processes on an interval of entry to process: 
-use *a way* less memory and is multithreaded 
+Launch the raw fetching processes 
 """
 
 service = os.path.join(services_dir, "get_whois_entries")
 
-sleep_timer = 5
-pids = []
+def usage():
+    print "start_sort_whois_queries.py (start|stop)"
+    exit (1)
 
-ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.whois==None).count())
+if len(sys.argv) < 2:
+    usage()
 
-print "Start getting whois entries..."
-while ip_counter['total_ips'] > 0:
-    while len(pids) < ip_counter['processes'] :
-        option = str(ip_counter['min']) + ' ' + str(ip_counter['max'])
-        print('Starting interval: '+ option + '. Total ips: ' + str(ip_counter['total_ips']))
-        pids.append(service_start(servicename = service, param = option))
-        ip_counter['min'] = ip_counter['max'] +1
-        ip_counter['max'] += ip_counter['interval']
-    while len(pids) == ip_counter['processes']:
-        time.sleep(sleep_timer)
-        pids = update_running_pids(pids)
-    ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.whois==None).count())
-
+if sys.argv[1] == "start":
+    print('Start getting whois entries ')
+    service_start_once(servicename = service, param = '',  processname = service)
+elif sys.argv[1] == "stop":
+    print('Stop getting whois entries ')
+    pid = pidof(processname=service)
+    if pid:
+        pid = pid[0]
+        try:
+            os.kill(int(pid), signal.SIGKILL)
+        except OSError, e:
+            print service +  " unsuccessfully stopped"
+        rmpid(processname=service )
+    else:
+        print('Not getting whois entries')
+else:
+    usage()

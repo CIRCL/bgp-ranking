@@ -15,12 +15,11 @@ root_dir = config.get('global','root')
 sys.path.append(os.path.join(root_dir,config.get('global','lib')))
 services_dir = os.path.join(root_dir,config.get('global','services'))
 
-
 from helpers.initscript import *
 import signal
 
 def usage():
-    print "start_sorting.py (start|stop|forcestop)"
+    print "start_sort_whois_queries.py (start|stop)"
     exit (1)
 
 if len(sys.argv) < 2:
@@ -33,7 +32,6 @@ if sys.argv[1] == "start":
     print service+" to start..."
     proc = service_start(servicename = service)
     writepid(processname = service, proc = proc)
-    print pidof(processname=service)
 
 elif sys.argv[1] == "stop":
 
@@ -48,11 +46,6 @@ elif sys.argv[1] == "stop":
                 print service+  " unsuccessfully stopped"
         print service
         rmpid(processname=service)
-
-elif sys.argv[1] == "forcestop":
-    
-    print "(forced) Stopping sorting..."
-    nppidof()
 
 else:
     usage()

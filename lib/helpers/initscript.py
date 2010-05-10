@@ -16,6 +16,14 @@ pid_path = os.path.join(root_dir,config.get('global','pids'))
 Standard functions used by the init scripts
 """
 
+def service_start_once(servicename = None, param = None, processname = None):
+    pidpath = os.path.join(pid_path,processname+".pid")
+    if not os.path.exists(pidpath):
+        proc = service_start(servicename, param)
+        writepid(processname, proc)
+    else:
+        print(param + ' already running on pid ' + str(pidof(processname)[0]))
+
 def service_start(servicename = None, param = None):
     """
     Launch a Process
@@ -96,7 +104,7 @@ def update_running_pids(old_procs):
 # FIXME : put it in the config
 min_ips_by_process = 100
 max_ips_by_process = 500
-max_processes = 5
+max_processes = 1
 
 def init_counter(total_ips):
     ip_counter = {}

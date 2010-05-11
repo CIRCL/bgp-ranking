@@ -1,0 +1,68 @@
+----------
+Installation of Net::DelCheck
+----------
+Dependencies:
+	Net::DNS::SEC
+	Net::DNS::TestNS
+	XML::DOM
+
+Present as package in ubuntu: libnet-dns-sec-perl
+The rest has to be installed with cpan.
+
+----------
+Compilation of the server on ubuntu server 10.04 LTS 
+----------
+perl Install.PL --verbose --configure --prefix=$HOME/bin/whoisserver --sqluser=root --sqlpass=root --dbname=ripe
+connexion as root because the install script want to create the database ripe_'name after --dbname='
+
+Install.PL want javac 'in the PATH', the check looks like that: 
+	my $java = `locate javac | grep bin | head -1 | xargs dirname`;
+it's weird.
+We also have to install openjdk-6-jdk and run updatedb.
+
+Dependencies: 
+	openjdk-6-jdk
+	libtool
+	automake
+	libssl-dev
+	libglib2.0-dev
+	libmysqld-dev
+	flex
+	bison
+	libc-client-dev
+	libperl-dev
+
+third party libs: 
+	libxslt-dev
+	libxml2-dev
+
+
+./build.sh has to be run by bash, not sh (errors with pushd and popd)
+desactivate the compilation of the third party libraries imap-2004, libxslt and libxml : CCCOMP=0, LIBXMLCOMP=0 and LIBXSLTCOMP=0 in build.sh
+
+Changes in Install.PL: 
+set debug mode : my $Debug       = 1;
+configure --with-rdns --prefix=$DbPrefix --with-erl=$^X --with-rpslvariant=$RPSLVariant --with-cclientinc=$Cwd/third-party/lib-c-client --with-cclientlib=$Cwd/third-party/lib-c-client ] );
+(add --with-cclientinc and --with-cclientlib)
+
+make cannot find libxml/tree.h: export C_INCLUDE_PATH=/usr/include/libxml2/
+
+Hardcoded library paths: 
+third-party/libxslt_1.1.12-8/lib/libxslt.a: No such file or directory
+	mkdir third-party/libxslt_1.1.12-8/lib/ ; cd third-party/libxslt_1.1.12-8/lib/ &&  ln -s /usr/lib/libxslt.a && cd -
+third-party/libxml2_2.6.16-7sarge1/lib/libxml2.a: No such file or directory
+	mkdir third-party/libxml2_2.6.16-7sarge1/lib/ ; cd third-party/libxml2_2.6.16-7sarge1/lib/ &&  ln -s /usr/lib/libxml2.a && cd -
+
+
+--------------
+Compilation of c-client
+--------------
+
+In the c-client directory: 
+make lsu SSLTYPE=unix.nopwd 'EXTRACFLAGS=-O2 -mtune=native -pipe -fPIC'
+
+In the server Directory: 
+Set lib and src for the server: 
+	cd third-party && ln -s /home/raphael/whois/c-client/imap-2007e/c-client/ lib-c-client && cd -
+
+

@@ -10,25 +10,22 @@ config.read("../bgp-ranking.conf")
 root_dir = config.get('global','root')
 sys.path.append(os.path.join(root_dir,config.get('global','lib')))
 services_dir = os.path.join(root_dir,config.get('global','services'))
-raw_data = os.path.join(root_dir,config.get('global','raw_data'))
 
 import signal
 
 from helpers.initscript import *
 
 """
-Launch the raw fetching processes 
+Launch the fetching of the whois databases
 """
 
-service = os.path.join(services_dir, "fetch_raw_files")
+service = os.path.join(services_dir, "fetch_db_dumps")
 
 options = \
-        {'DshieldTopIPs'        :   os.path.join(raw_data, 'dshield/topips/')  + ' http://www.dshield.org/feeds/topips.txt', 
-        'DshieldDaily'          :   os.path.join(raw_data, 'dshield/daily/')   + ' http://www.dshield.org/feeds/daily_sources', 
-        'ZeustrackerIpBlockList':   os.path.join(raw_data, 'zeus/ipblocklist/')+ ' http://www.abuse.ch/zeustracker/blocklist.php?download=ipblocklist'}
+        {'RIPE'     :   'ftp://ftp.ripe.net/ripe/dbase/RIPE.CURRENTSERIAL ftp://ftp.ripe.net/ripe/dbase/ripe.db.gz'}
 
 def usage():
-    print "start_fetch_raw_files.py (start|stop)"
+    print "start_fetch_db_dumps.py (start|stop)"
     exit (1)
 
 if len(sys.argv) < 2:

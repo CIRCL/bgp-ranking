@@ -17,6 +17,7 @@ Standard functions used by the init scripts
 """
 
 def service_start_once(servicename = None, param = None, processname = None):
+    processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
     if not os.path.exists(pidpath):
         proc = service_start(servicename, param)
@@ -41,6 +42,7 @@ def writepid (processname = None, proc = None):
     """
     Append the pid to the pids-list of this process
     """
+    processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
 
     if processname is not None and proc is not None:
@@ -55,6 +57,7 @@ def rmpid (processname = None):
     """
     Delete the pids-file
     """
+    processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
     if os.path.exists(pidpath):
         os.unlink(pidpath)
@@ -66,6 +69,7 @@ def pidof(processname = None):
     """
     Get the pid of a process 
     """
+    processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
     if processname is not None and os.path.exists(pidpath):
         f = open (pidpath)

@@ -17,7 +17,6 @@ connexion as root because the install script want to create the database ripe_'n
 
 Install.PL want javac 'in the PATH', the check looks like that: 
 	my $java = `locate javac | grep bin | head -1 | xargs dirname`;
-it's weird.
 We also have to install openjdk-6-jdk and run updatedb.
 
 Dependencies: 

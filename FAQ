@@ -1,0 +1,44 @@
+What is the directory structure? 
+
+/
+ +- bin/
+ |  +- services/
+ |  |  +- Services, it is possible to start them by hand
+ |  |  +- but the initscripts do normally the job
+ |  +- Some scripts/wrappers to generate some particular queries 
+ +- doc/
+ |  +- UML Diagrams, dump of the wiki, documentation on third party softwares...
+ +- etc/
+ |  +- init.d/
+ |  |  +- Initscripts 
+ |  +- bgp-ranking.conf config file used mostly by the initscripts
+ +- lib/
+ |  +- db_init/
+ |  |  +- Scripts to initialize the databases (whois client and server and ranking)
+ |  +- db_models/
+ |  |  +- Databases models (whois client and ranking) 
+ |  +- helpers/
+ |  |  +- some helpers (fot the initscripts and the manipulation of the ips)
+ |	|  +- used very often in the project
+ |  +- modules/
+ |  |  +- all the modules to parse the differents raw files
+ |  +- tests/
+ |  |  +- some tests for the modules
+ |  +- whois_client/
+ |  |  +- whois fetcher and connector for the whois client
+ |  +- whois_parser/
+ |  |  +- parsers to extract particular informations of the whois response
+ |  +- fetch_asns.py : push the whois responses in the database
+ |  +- ip_update.py : push the ip in the database 
+ +- var/
+ |  +- raw_data/
+ |  |  +- source_name/ : name of the source of the file
+ |  |  |  +- old/ : directory to put the old files (already parsed) 
+ |  |  |  +- temp/ : directory where the lists are downloaded 
+ |  |  |  +- file(s) to parse 
+ |  |  +- whois_db/
+ |  |  |  +- temp/ : directory where the dumps are downloaded
+ |  |  |  +- unpack/ : directory the dumps are unpacked 
+ |  |  |  +- dumps to push in the whois server
+ |  +- run/
+ |  |  +- pid files of the unning processes 

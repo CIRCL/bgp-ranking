@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import os 
 import sys
@@ -62,146 +63,52 @@ limerick_entries = []
 key_cert_entries = []
 inet_rtr_entries = []
 filter_set_entries = [] 
+errors = []
+
+keys_ripe =  [
+  ['^aut-num:'   , aut_num_entries],
+  ['^route:'     , route_entries],
+  ['^route6:'    , route6_entries],
+  ['^as-block:'  , as_block_entries],
+  ['^as-set:'    , as_set_entries],
+  ['^domain:'    , domain_entries],
+  ['^rtr-set:'   , rtr_set_entries],
+  ['^route-set:' , route_set_entries],
+  ['^inet6num:'  , inet6num_entries],
+  ['^inetnum:'   , inetnum_entries],
+  ['^org:'       , org_entries],
+  ['^poetic-form:', poetic_form_entries],
+  ['^poem:'      , poem_entries],
+  ['^peering-set:', peering_set_entries],
+  ['^limerick:'  , limerick_entries],
+  ['^key-cert:'  , key_cert_entries],
+  ['^inet-rtr:'  ,  inet_rtr_entries],
+  ['^filter_set' , filter_set_entries]]
+
 
 while len(splitted) > 0:
     entry = splitted.pop()
     if len(entry) > 0 and not re.match('^#', entry):
-        if re.match('^aut-num:', entry):
-            aut_num_entries.append(entry)
-        elif re.match('^route:', entry):
-            routes6_entries.append(entry)
-        elif re.match('^route6:', entry):
-            routes_entries.append(entry)
-        elif re.match('^as-block:', entry):
-            as_block_entries.append(entry)
-        elif re.match('^as-set:', entry):
-            as_set_entries.append(entry)
-        elif re.match('^domain:', entry):
-            domain_entries.append(entry)
-        elif re.match('^rtr-set:', entry):
-            rtr_set_entries.append(entry)
-        elif re.match('^route-set:', entry):
-            route_set_entries.append(entry)
-        elif re.match('^inet6num:', entry):
-            inet6num_entries.append(entry)
-        elif re.match('^inetnum:', entry):
-            inetnum_entries.append(entry)
-        elif re.match('^org:', entry):
-            org_entries.append(entry)
-        elif re.match('^poetic-form:', entry):
-            poetic_form_entries.append(entry)
-        elif re.match('^poem:', entry):
-            poem_entries.append(entry)
-        elif re.match('^peering-set:', entry):
-            peering_set_entries.append(entry)
-        elif re.match('^limerick:', entry):
-            limerick_entries.append(entry)
-        elif re.match('^key-cert:', entry):
-            key_cert_entries.append(entry)
-        elif re.match('^inet-rtr:', entry):
-            inet_rtr_entries.append(entry)
-        elif re.match('^filter-set:', entry):
-            filter_set_entries.append(entry)
-        else:
-            print(entry)
-            sys.exit(1)
+		ok = False
+        for key, entries in keys_ripe:
+            if re.match(key, entry):
+                entries.append(entry)
+				ok = true
+                break
+		if not ok: 
+			errors.append(entry)
 
+print (errors)
 sys.exit(1)
 import redis 
+whois_redis_db = 10 
+redis_whois_server = redis.Redis(db=whois_redis_db)
 
-redis_whois_server = redis.Redis(db=10)
-
-for entry in filter_set_entries:
-    filter_set = re.findall('inet-rtr:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(filter_set, entry)
-filter_set_entries = None
-
-for entry in inet_rtr_entries:
-    inet_rtr = re.findall('inet-rtr:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(inet_rtr, entry)
-inet_rtr_entries = None
-
-for entry in key_cert_entries:
-    key_cert = re.findall('key-cert:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(key_cert, entry)
-key_cert_entries = None
-
-for entry in peering_set_entries:
-    peering_set = re.findall('peering-set:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(peering_set, entry)
-peering_set_entries = None
-
-for entry in limerick_entries:
-    limerick = re.findall('limerick:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(limerick, entry)
-limerick_entries = None
-
-
-for entry in inetnum_entries:
-    route_set = re.findall('inetnum:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(route_set.replace(' ', '_'), entry)
-inetnum_entries = None
-
-for entry in poem_entries:
-    poem = re.findall('poem:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(poem, entry)
-poem_entries = None
-
-for entry in poetic_form_entries:
-    poetic_form = re.findall('poetic-form:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(poetic_form, entry)
-poetic_form_entries = None
-
-for entry in org_entries:
-    org = re.findall('org:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(org, entry)
-org_entries = None
-
-
-for entry in aut_num_entries:
-    asn = re.findall('aut-num:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(asn, entry)
-aut_num_entries = None
-    
-for entry in routes6_entries:
-    route = re.findall('route[6]?:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(route, entry)
-routes6_entries = None
-
-for entry in routes_entries:
-    route = re.findall('route[6]?:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(route, entry)
-routes_entries = None
-    
-for entry in as_block_entries:
-    as_block = re.findall('as-block:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(as_block.replace(' ', '_'), entry)
-as_block_entries = None
-
-for entry in as_set_entries:
-    as_set = re.findall('as-set:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(as_set, entry)
-as_set_entries = None
-
-for entry in domain_entries:
-    domain = re.findall('domain:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(domain, entry)
-domain_entries = None
-
-for entry in rtr_set_entries:
-    rtr_set = re.findall('rtr-set:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(rtr_set, entry)
-rtr_set_entries = None
-
-for entry in route_set_entries:
-    route_set = re.findall('route-set:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(route_set, entry)
-route_set_entries = None
-
-for entry in inet6num_entries:
-    route6_set = re.findall('inet6num:[ \t]*(.*)', entry)[0]
-    redis_whois_server.set(route6_set, entry)
-inet6num_entries = None
+for key,entries in key_ripe:
+	for entry in entries:
+		redis_key = re.findall(key + '[ \t]*(.*)', entry)[0]
+		redis_whois_server.set(redis_key.replace(' ', '_'), entry)
+	entries = None
 
 
 if use_tmpfs:

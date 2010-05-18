@@ -14,7 +14,7 @@ class InitARIN(InitWhoisServer):
     ash = '^ASHandle:'
     poc = '^POCHandle:'
     
-    separator = '%'
+    separator = ' '
     pocs_flag = ':pocs'
     orgid_flag = ':orgid'
     parent_flag = ':parent'
@@ -44,45 +44,41 @@ class InitARIN(InitWhoisServer):
         self.redis_whois_server.set(redis_key + self.orgid_flag, orgid)
         
     def __push_parent(self, parser, redis_key):
-        parent = parser.parent[0]
+        parent = parser.parent
         if parent:
-            self.redis_whois_server.set(redis_key + self.parent_flag, parent)
+            self.redis_whois_server.set(redis_key + self.parent_flag, parent[0])
 
-    def __push_networkv4(self, parser, redis_key):
-        netrange = parser.netrange[0]
-        try:
-            network = IPy.IP(netrange)
-            self.redis_whois_server.set(network, redis_key)
-        except ValueError:
-            print (netrange)
-
-    # IPy doesn't support "first-last notation" for IPv6: 
-    # IPy.IP('2607:F3D0:001A:0700:0000:0000:0000:0000 - 2607:F3D0:001A:07FF:FFFF:FFFF:FFFF:FFFF')
-    def __push_networkv6(self, parser, redis_key):
-        first_ip = parser.netrange[0].split(' ')[0]
-        self.redis_whois_server.set(first_ip, redis_key)
+    # we cannot push the IP ranges as networks... because they are not always!
+    def __push_range(self, parser, redis_key):
+        first = IPy.IP(parser.netrange[0][0]).int()
+        last = IPy.IP(parser.netrange[0][1]).int()
+        self.redis_whois_server.set(first, redis_key)
+        self.redis_whois_server.set(last, redis_key)
 
     def push_helper_keys(self, key, redis_key, entry):
        parser = ARINWhois(entry,  key)
-       try:
-           if key == self.orgid:
-                self.__push_poc(parser, redis_key)
-           elif key == self.net:
-               self.__push_poc(parser, redis_key)
-               self.__push_origid(parser, redis_key)
-               self.__push_parent(parser, redis_key)
-               self.__push_networkv4(parser, redis_key)
-           elif key == self.v6net:
-               self.__push_poc(parser, redis_key)
-               self.__push_origid(parser, redis_key)
-               self.__push_parent(parser, redis_key)
-               self.__push_networkv6(parser, redis_key)
-           elif key == self.ash:
-               self.__push_poc(parser, redis_key)
-               self.__push_origid(parser, redis_key)
-       except AttributeError:
-           print(parser)
+       if key == self.orgid:
+            self.__push_poc(parser, redis_key)
+       elif key == self.net:
+           self.__push_poc(parser, redis_key)
+           self.__push_origid(parser, redis_key)
+           self.__push_parent(parser, redis_key)
+           self.__push_range(parser, redis_key)
+       elif key == self.v6net:
+           self.__push_poc(parser, redis_key)
+           self.__push_origid(parser, redis_key)
+           self.__push_parent(parser, redis_key)
+           self.__push_range(parser, redis_key)
+       elif key == self.ash:
+           self.__push_poc(parser, redis_key)
+           self.__push_origid(parser, redis_key)
 
 if __name__ == "__main__":
+    """
+    $ time python init_arin.py
+    real	22m20.303s
+    user	8m48.957s
+    sys	1m52.647s
+    """
     arin = InitARIN()
     arin.start()

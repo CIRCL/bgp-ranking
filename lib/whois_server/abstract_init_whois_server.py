@@ -14,6 +14,8 @@ import re
 import redis 
 from abc import ABCMeta, abstractmethod
 
+import gc
+
 class InitWhoisServer:
     """
     Generic functions to initialize the redis database for a particular whois server. 
@@ -23,6 +25,9 @@ class InitWhoisServer:
     - archive_name: the name of the db dump, gzip compressed
     - dump_name: the name of the db dump, extracted
     """
+    
+    max_pending_keys = 1000000
+    pending_keys = 0
     
     __metaclass__ = ABCMeta    
     @abstractmethod
@@ -58,19 +63,25 @@ class InitWhoisServer:
         os.popen('gunzip -c ' + archive + ' > ' + self.extracted)
     
     def dispatch_by_key(self):
-        splitted = re.split('\n\n',open(self.extracted).read())
-        errors = []
-        while len(splitted) > 0:
-            entry = splitted.pop()
-            if len(entry) > 0 and not re.match('^#', entry):
-                ok = False
-                for key, entries in self.keys:
-                    if re.match(key, entry):
-                        entries.append(entry)
-                        ok = True
-                        break
-                if not ok:
-                    errors.append(entry)
+        file = open(self.extracted)
+        entry = ''
+        for line in file:
+            if line == '\n':
+                if len(entry) > 0 and not re.match('^#', entry):
+                    key_found = False
+                    for key, entries in self.keys:
+                        if re.match(key, entry):
+                            entries.append(entry)
+                            key_found = True
+                            break
+                    if not key_found:
+                        errors.append(entry)
+                entry = ''
+                self.pending_keys += 1
+                if self.pending_keys >= self.max_pending_keys:
+                    self.push_into_db()
+            else :
+                entry += line
     
     def push_into_db(self):
         self.redis_whois_server = redis.Redis(db=int(config.get('whois_server','redis_db')) )
@@ -82,7 +93,7 @@ class InitWhoisServer:
                 redis_key = re.findall(key + '[ \t]*(.*)', entry)[0].replace(' ', '_')
                 self.redis_whois_server.set(redis_key, entry)
                 self.push_helper_keys(key, redis_key, entry)
-            entries = []
+        self.pending_keys = 0
     
     def clean_system(self):
         if self.use_tmpfs:

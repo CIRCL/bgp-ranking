@@ -24,7 +24,7 @@ NetHandle = {
     'orgid'     : 'OrgID:[ ]*(.*)', 
     'parent'    : 'Parent:[ ]*(.*)', 
     'pochandles' : '(?:TechHandle|AbuseHandle|NOCHandle|OrgTechHandle|OrgAbuseHandle|OrgNOCHandle|OrgAdminHandle):[ ]*(.*)', 
-    'netrange'  : 'NetRange:[ ]*(.*)'
+    'netrange'  : 'NetRange:[ ]*(.*) - (.*)'
 
 }
 
@@ -32,7 +32,7 @@ V6NetHandle = {
     'orgid'     : 'OrgID:[ ]*(.*)', 
     'parent'    : 'Parent:[ ]*(.*)', 
     'pochandles' : '(?:TechHandle|AbuseHandle|NOCHandle|OrgTechHandle|OrgAbuseHandle|OrgNOCHandle|OrgAdminHandle):[ ]*(.*)', 
-    'netrange'  : 'NetRange:[ ]*(.*)'
+    'netrange'  : 'NetRange:[ ]*(.*) - (.*)'
 }
 
 ASHandle = {

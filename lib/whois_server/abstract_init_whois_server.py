@@ -26,7 +26,7 @@ class InitWhoisServer:
     - dump_name: the name of the db dump, extracted
     """
     
-    max_pending_keys = 1000000
+    max_pending_keys = 100000
     pending_keys = 0
     
     __metaclass__ = ABCMeta    
@@ -89,8 +89,7 @@ class InitWhoisServer:
 #            print('Begin' + key)
             while len(entries) > 0 :
                 entry = entries.pop()
-                # TODO: remode replace when redis support ' ' in a key 
-                redis_key = re.findall(key + '[ \t]*(.*)', entry)[0].replace(' ', '_')
+                redis_key = re.findall(key + '[ \t]*(.*)', entry)[0]
                 self.redis_whois_server.set(redis_key, entry)
                 self.push_helper_keys(key, redis_key, entry)
         self.pending_keys = 0

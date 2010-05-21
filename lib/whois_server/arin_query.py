@@ -51,24 +51,24 @@ class ARINQuery(WhoisQuery):
             if self.ipv4 :
                 key = re.findall('.*[.]', key)
             else: 
-                print('IPv6 not implemented')
-                sys.exit(0)
+                key = re.findall('.*[:]', key)
             if len(key) != 0:
                key = key[0][:-1]
             else:
                 break
             ranges = self.redis_whois_server.smembers(key)
-        
+        best_range = None
         for range in ranges:
-            print range
             splitted = range.split('_')
-            print splitted
             ip_int = ip.int()
-            print ip_int
-            if int(splitted[0]) <= ip_int and int(splitted[1]) >= ip_int:
-                to_return = self.redis_whois_server.get(range)
-                print to_return
-                break
+            if best_range:
+                br_splitted = best_range.split('_')
+                if int(splitted[0]) > br_splitted[0] and int(splitted[1]) < br_splitted[1]:
+                    best_range = range
+            elif int(splitted[0]) <= ip_int and int(splitted[1]) >= ip_int:
+                best_range = range
+        if best_range:
+            to_return = self.redis_whois_server.get(best_range)
         return to_return
 
 
@@ -77,10 +77,12 @@ class ARINQuery(WhoisQuery):
         ip = IPy.IP(ip)
         if ip.version() == 4:
             self.ipv4 = True
+        else:
+            self.ipv4 = False
         key = self.__find_key(ip)
         to_return = ''
         if not key:
-            to_return += 'IP not found.'
+            to_return += 'IP ' + str(ip) + ' not found.'
         else:
             to_return += self.redis_whois_server.get(key)
             to_return += self.__get_orgid_with_contacts(key)

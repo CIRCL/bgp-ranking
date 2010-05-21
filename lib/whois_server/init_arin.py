@@ -100,27 +100,50 @@ class InitARIN(InitWhoisServer):
                 intermediate = self.__intermediate_between(int(first_index[2]) , int(last_index[2]), first_index[0] + '.' + first_index[1] + '.')
             elif first_index[2] == last_index[2]:
                 intermediate.append(first_index[0] + '.' + first_index[1] + '.' + first_index[2])
-        # TODO : ipv6.....
         else:
-            print('ipv6 not supported for now')     
+            first_index = first_set.split(':')
+            last_index = last_set.split(':')
+            i = 0
+            key = ''
+            while first_index[i] == last_index[i]:
+                if i > 0 :
+                     key += ':'
+                key += first_index[i]
+                i += 1
+            if first_index[i] != '' :
+                hex_first = int('0x' + first_index[i], 16)
+                hex_last = int('0x' + last_index[i], 16)
+                while hex_first <= hex_last:
+                    key_end = ('%X' % hex_first).lower()
+                    intermediate.append(key + ':' + key_end)
+                    hex_first += 1
+                i += 1
+                if first_index[i] != '' :
+                    #FIXME: well, handle this case...
+                    print('I hope never see this line')
+                    print(first_set)
+                    print(last_set)
+            else:
+                intermediate.append(key)
         return intermediate
-                
+
 
     def __push_range(self, parser, net_key):
         first = IPy.IP(parser.netrange[0][0])
         last = IPy.IP(parser.netrange[0][1])
+        if first.version() == 4:
+            ipv4 = True
+        else:
+            ipv4 = False
         range_key = str(first.int()) + '_' + str(last.int())
         first = str(first)
         last = str(last)
-        first_set = re.findall('.*[.]',first)
-        if len(first_set) > 0 :
-            first_set = first_set[0][:-1]
+        if ipv4:
+            first_set = re.findall('.*[.]',first)[0][:-1]
             last_set = re.findall('.*[.]',last)[0][:-1]
-            ipv4 = True
         else:
-            first_set = re.findall('.*[:]',first)[0][:-1]
-            last_set = re.findall('.*[:]',last)[0][:-1]
-            ipv4 = False
+            first_set = first
+            last_set = last
         intermediate_sets = []
         intermediate_sets = self.__intermediate_sets(first_set, last_set, ipv4)
         for intermediate_set in intermediate_sets:
@@ -147,10 +170,13 @@ class InitARIN(InitWhoisServer):
 
 if __name__ == "__main__":
     """
-    $ time python init_arin.py
-    real	22m20.303s
-    user	8m48.957s
-    sys	1m52.647s
+    $ time python init_arin.py 
+
+    real	32m46.930s
+    user	12m42.908s
+    sys	2m14.784s
+
+    12197608 keys
     """
     arin = InitARIN()
     arin.start()

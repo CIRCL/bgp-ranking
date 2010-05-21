@@ -16,24 +16,95 @@ from whois_parser.abstract_whois import AbstractWhoisParser
 
 import re
 
-inetnum = { }
-domain = { }
-inet6num = { }
-aut_num = { }
-route = { }
-route6 = { }
-as_block = { }
-as_set = { }
-rtr_set = { }
-route_set = { }
-org = { }
-poetic_form = { }
-poem = { }
-peering_set = { }
-limerick = { }
-key_cert = { }
-inet_rtr = { }
-filter_set= { }
+# Helpers
+dict_contact_global = { 
+        'mnt_by'    : 'mnt-by:[ ]*(.*)', # person
+        'tech_c'    : 'tech-c:[ ]*(.*)', # person
+        'admin_c'   : 'admin-c:[ ]*(.*)' # mntner
+    }
+dict_poem = { 
+        'mnt_by'    : 'mnt-by:[ ]*(.*)', 
+        'author'    : 'author:[ ]*(.*)', 
+        'admin_c'   : 'admin-c:[ ]*(.*)' 
+    }
+routes = { 
+        'mnt_by'    : 'mnt-by:[ ]*(.*)',        # mntner
+        'origin'    : 'origin:[ ]*(.*)'         # aut-num
+    }
+# ------------------------
+
+inetnum = { 'inetnum'  : 'inetnum:[ ]*(.*) - (.*)' }
+inetnum.update(dict_contact_global)
+    
+domain = { 'zone_c'    : 'zone-c:[ ]*(.*)' }
+domain.update(dict_contact_global)
+    
+inet6num = { 'inet6num'  : 'inet6num:[ ]*(.*)' }
+inet6num.update(dict_contact_global)
+    
+aut_num = { 'org'       : 'org:[ ]*(.*)' }       # organisation
+aut_num.update(dict_contact_global)
+
+route = routes
+    
+route6 = { 
+        'mnt_lower' : 'mnt-lower:[ ]*(.*)', # mntner
+        'mnt_routes': 'mnt-routes:[ ]*(.*)' # mntner
+    }
+route6.update(routes)
+    
+as_block = { 
+        'mnt_lower' : 'mnt-lower:[ ]*(.*)', 
+        'org'       : 'org:[ ]*(.*)'        # organisation
+    }
+as_block.update(dict_contact_global)
+
+as_set = { 'members'   : 'members:[ ]*(.*)' }
+as_set.update(dict_contact_global)
+    
+rtr_set = dict_contact_global
+    
+route_set = dict_contact_global
+    
+poetic_form = dict_contact_global
+    
+poem = { 'form'      : 'form:[ ]*(.*)' }
+poem.update(dict_poem)
+
+peering_set = dict_contact_global
+    
+limerick = dict_poem
+    
+key_cert = { 'mnt_by'    : 'mnt-by:[ ]*(.*)' }
+    
+inet_rtr = {        
+        'tech_c'    : 'tech-c:[ ]*(.*)', 
+        'admin_c'   : 'admin-c:[ ]*(.*)', 
+        'nic_hdl'   : 'nic-hdl:[ ]*(.*)',   # person
+        'local_as'  : 'local-as:[ ]*(.*)'   # aut-num
+    }
+filter_set= dict_contact_global
+
+irt = dict_contact_global
+    
+mntner = {
+        'admin_c'       : 'admin-c:[ ]*(.*)', 
+        'mnt_by'        : 'mnt-by:[ ]*(.*)', 
+        'referral_by'   : 'referral-by:[ ]*(.*)'    # mntner
+    }
+    
+organisation = {
+        'mnt_ref'       : 'mnt-ref:[ ]*(.*)',       # mntner
+        'mnt_by'        : 'mnt-by:[ ]*(.*)'
+    }
+    
+person = {}
+
+role = {        
+        'tech_c'    : 'tech-c:[ ]*(.*)', 
+        'admin_c'   : 'admin-c:[ ]*(.*)', 
+        'nic_hdl'   : 'nic-hdl:[ ]*(.*)'
+    }
 
 class RIPEWhois(AbstractWhoisParser):
     """
@@ -52,14 +123,19 @@ class RIPEWhois(AbstractWhoisParser):
         '^as-set:'     : as_set,
         '^rtr-set:'    : rtr_set,
         '^route-set:'  : route_set,
-        '^org:'        : org,
         '^poetic-form:': poetic_form,
         '^poem:'       : poem,
         '^peering-set:': peering_set,
         '^limerick:'   : limerick,
         '^key-cert:'   : key_cert,
         '^inet-rtr:'   : inet_rtr,
-        '^filter-set'  : filter_set
+        '^filter-set:'  : filter_set, 
+        #Dummy
+        '^irt:'         : irt , 
+        '^mntner:'      : mntner , 
+        '^organisation:': organisation , 
+        '^person:'      : person ,  
+        '^role:'        : role 
         }
     
     def __getattr__(self, attr):

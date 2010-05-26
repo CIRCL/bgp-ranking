@@ -16,95 +16,52 @@ from whois_parser.abstract_whois import AbstractWhoisParser
 
 import re
 
-# Helpers
-dict_contact_global = { 
-        'mnt_by'    : 'mnt-by:[ ]*(.*)', # person
-        'tech_c'    : 'tech-c:[ ]*(.*)', # person
-        'admin_c'   : 'admin-c:[ ]*(.*)' # mntner
-    }
-dict_poem = { 
-        'mnt_by'    : 'mnt-by:[ ]*(.*)', 
-        'author'    : 'author:[ ]*(.*)', 
-        'admin_c'   : 'admin-c:[ ]*(.*)' 
-    }
-routes = { 
-        'mnt_by'    : 'mnt-by:[ ]*(.*)',        # mntner
-        'origin'    : 'origin:[ ]*(.*)'         # aut-num
-    }
-# ------------------------
+# Dict entries 
+mnt_by      = { 'mnt_by'    : '\nmnt-by:[ ]*(.*)' }       # mntner
+mnt_lower   = { 'mnt_lower' : '\nmnt-lower:[ ]*(.*)' }    # mntner
+mnt_routes  = { 'mnt_routes': '\nmnt-routes:[ ]*(.*)' }   # mntner
+mnt_ref     = { 'mnt_ref'   : '\nmnt-ref:[ ]*(.*)' }      # mntner
 
-inetnum = { 'inetnum'  : 'inetnum:[ ]*(.*) - (.*)' }
-inetnum.update(dict_contact_global)
-    
-domain = { 'zone_c'    : 'zone-c:[ ]*(.*)' }
-domain.update(dict_contact_global)
-    
-inet6num = { 'inet6num'  : 'inet6num:[ ]*(.*)' }
-inet6num.update(dict_contact_global)
-    
-aut_num = { 'org'       : 'org:[ ]*(.*)' }       # organisation
-aut_num.update(dict_contact_global)
+mnt_irt     = { 'mnt_irt'   : '\nmnt-irt:[ ]*(.*)' }      # irt
 
-route = routes
-    
-route6 = { 
-        'mnt_lower' : 'mnt-lower:[ ]*(.*)', # mntner
-        'mnt_routes': 'mnt-routes:[ ]*(.*)' # mntner
-    }
-route6.update(routes)
-    
-as_block = { 
-        'mnt_lower' : 'mnt-lower:[ ]*(.*)', 
-        'org'       : 'org:[ ]*(.*)'        # organisation
-    }
-as_block.update(dict_contact_global)
+tech_c      = { 'tech_c'    : '\ntech-c:[ ]*(.*)' }       # person
+admin_c     = { 'admin_c'   : '\nadmin-c:[ ]*(.*)' }      # person
+author      = { 'author'    : '\nauthor:[ ]*(.*)' }       # person
+zone_c      = { 'zone_c'    : '\nzone-c:[ ]*(.*)' }       # person
+nic_hdl     = { 'nic_hdl'   : '\nnic-hdl:[ ]*(.*)' }      # person
 
-as_set = { 'members'   : 'members:[ ]*(.*)' }
-as_set.update(dict_contact_global)
-    
-rtr_set = dict_contact_global
-    
-route_set = dict_contact_global
-    
-poetic_form = dict_contact_global
-    
-poem = { 'form'      : 'form:[ ]*(.*)' }
-poem.update(dict_poem)
+origin      = { 'origin'    : '\norigin:[ ]*(.*)' }       # aut-num
+members     = { 'members'   : '\nmembers:[ ]*(.*)' }      # aut-num
+local_as    = { 'local_as'  : '\nlocal-as:[ ]*(.*)' }     # aut-num
 
-peering_set = dict_contact_global
-    
-limerick = dict_poem
-    
-key_cert = { 'mnt_by'    : 'mnt-by:[ ]*(.*)' }
-    
-inet_rtr = {        
-        'tech_c'    : 'tech-c:[ ]*(.*)', 
-        'admin_c'   : 'admin-c:[ ]*(.*)', 
-        'nic_hdl'   : 'nic-hdl:[ ]*(.*)',   # person
-        'local_as'  : 'local-as:[ ]*(.*)'   # aut-num
-    }
-filter_set= dict_contact_global
+# Sometimes, the second IP is on the next line....
+inum        = { 'inetnum'   : '^inetnum:[ ]*(.*)[ ]*-[ ]*(.*)' , 'inetnum2l'   : '^inetnum:[ ]*(.*)[ \n]*-[ ]*(.*)'}
+i6num       = { 'inet6num'  : '^inet6num:[ ]*(.*)' }
 
-irt = dict_contact_global
-    
-mntner = {
-        'admin_c'       : 'admin-c:[ ]*(.*)', 
-        'mnt_by'        : 'mnt-by:[ ]*(.*)', 
-        'referral_by'   : 'referral-by:[ ]*(.*)'    # mntner
-    }
-    
-organisation = {
-        'mnt_ref'       : 'mnt-ref:[ ]*(.*)',       # mntner
-        'mnt_by'        : 'mnt-by:[ ]*(.*)'
-    }
-    
-person = {}
+org         = { 'org'       : '\norg:[ ]*(.*)' }          # organisation
+form        = { 'form'      : '\nform:[ ]*(.*)' }         # poetic-form
 
-role = {        
-        'tech_c'    : 'tech-c:[ ]*(.*)', 
-        'admin_c'   : 'admin-c:[ ]*(.*)', 
-        'nic_hdl'   : 'nic-hdl:[ ]*(.*)'
-    }
+all_possible_keys = {}
+
+all_possible_keys.update(mnt_by) 
+all_possible_keys.update(mnt_lower)
+all_possible_keys.update(mnt_routes) 
+all_possible_keys.update(mnt_ref) 
+all_possible_keys.update(mnt_irt) 
+
+all_possible_keys.update(tech_c) 
+all_possible_keys.update(admin_c) 
+all_possible_keys.update(author)
+all_possible_keys.update(zone_c)
+
+all_possible_keys.update(inum)
+all_possible_keys.update(i6num)
+
+all_possible_keys.update(origin)
+all_possible_keys.update(members)
+all_possible_keys.update(local_as)
+all_possible_keys.update(org)
+all_possible_keys.update(form)
 
 class RIPEWhois(AbstractWhoisParser):
     """
@@ -112,46 +69,118 @@ class RIPEWhois(AbstractWhoisParser):
     Til we have a real implementation of whois in python, 
     we will use this class to return all the informations
     """
-    possible_regex = {
-        '^inetnum:'    : inetnum,
-        '^domain:'     : domain,
-        '^inet6num:'   : inet6num,
-        '^aut-num:'    : aut_num,
-        '^route:'      : route,
-        '^route6:'     : route6,
-        '^as-block:'   : as_block,
-        '^as-set:'     : as_set,
-        '^rtr-set:'    : rtr_set,
-        '^route-set:'  : route_set,
-        '^poetic-form:': poetic_form,
-        '^poem:'       : poem,
-        '^peering-set:': peering_set,
-        '^limerick:'   : limerick,
-        '^key-cert:'   : key_cert,
-        '^inet-rtr:'   : inet_rtr,
-        '^filter-set:'  : filter_set, 
-        #Dummy
-        '^irt:'         : irt , 
-        '^mntner:'      : mntner , 
-        '^organisation:': organisation , 
-        '^person:'      : person ,  
-        '^role:'        : role 
-        }
+#    possible_regex = {
+#        '^inetnum:'    : inetnum,
+#        '^domain:'     : domain,
+#        '^inet6num:'   : inet6num,
+#        '^aut-num:'    : aut_num,
+#        '^route:'      : route,
+#        '^route6:'     : route6,
+#        '^as-block:'   : as_block,
+#        '^as-set:'     : as_set,
+#        '^rtr-set:'    : rtr_set,
+#        '^route-set:'  : route_set,
+#        '^poetic-form:': poetic_form,
+#        '^poem:'       : poem,
+#        '^peering-set:': peering_set,
+#        '^limerick:'   : limerick,
+#        '^key-cert:'   : key_cert,
+#        '^inet-rtr:'   : inet_rtr,
+#        '^filter-set:'  : filter_set, 
+#        #Dummy
+#        '^irt:'         : irt , 
+#        '^mntner:'      : mntner , 
+#        '^organisation:': organisation , 
+#        '^person:'      : person ,  
+#        '^role:'        : role 
+#        }
+
+    def __init__(self, text, server):
+        self.text = text
+        self.server = server
+        self._whois_regs = all_possible_keys
     
     def __getattr__(self, attr):
         """The first time an attribute is called it will be calculated here.
         The attribute is then set to be accessed directly by subsequent calls.
         """
-        try: 
-            return getattr(self.__class__, attr)
-        except AttributeError:
-            whois_reg = self._whois_regs.get(attr)
-            if whois_reg:
+        to_return = getattr(self.__class__, attr, None)
+        if to_return is None:
+            whois_reg = self._whois_regs.get(attr, None)
+            if whois_reg is not None:
                 value = re.findall(whois_reg, self.text)
-                if not value:
+                if len(value) == 0 :
                     setattr(self, attr, None)
                 else:
                     setattr(self, attr, value)
-                return getattr(self, attr)
+                to_return = getattr(self, attr)
             else:
-                raise KeyError("Unknown attribute: %s" % attr)
+                print("Unknown attribute: %s" % attr)
+        return to_return
+
+
+# Should not be used anymore
+#inetnum = {}
+#inetnum.update(inum, mnt_by, mnt_lower, mnt_routes, tech_c, admin_c)
+#    
+#domain = {}
+#domain.update(zone_c, tech_c, admin_c, mnt_by)
+#    
+#inet6num = {}
+#inet6num.update(i6num, tech_c, admin_c, mnt_by, mnt_lower, mnt_routes)
+#    
+#aut_num = {}
+#aut_num.update(org, mnt_by, tech_c, admin_c, mnt_routes, mnt_lower)
+#
+#route = {}
+#route.update(mnt_by, origin)
+#    
+#route6 = route
+#route6.update(mnt_lower, mnt_routes)
+#    
+#as_block = {}
+#as_block.update(tech_c, admin_c, mnt_by, mnt_lower, org)
+#
+#as_set = {}
+#as_set.update(members, tech_c, admin_c, mnt_by)
+#    
+#rtr_set = {}
+#rtr_set.update(tech_c, admin_c, mnt_by)
+#    
+#route_set = {}
+#route_set.update(tech_c, admin_c, mnt_by)
+#    
+#poetic_form = {}
+#poetic_form.update(tech_c, admin_c, mnt_by)
+#    
+#poem = {}
+#poem.update(form, mnt_by, author, admin_c)
+#
+#peering_set = {}
+#peering_set.update(tech_c, admin_c, mnt_by)
+#    
+#limerick = {}
+#limerick.update(mnt_by, author, admin_c)
+#    
+#key_cert = mnt_by
+#    
+#inet_rtr = {}
+#inet_rtr.update(tech_c, admin_c, nic_hdl, local_as)
+#
+#
+#filter_set = {}
+#filter_set.update(tech_c, admin_c, mnt_by)
+#
+#irt = {}
+#irt.update(tech_c, admin_c, mnt_by)
+#    
+#mntner = {}
+#mntner.update(admin_c, mnt_by, referral_by)
+#    
+#organisation = {}
+#organisation.update(mnt_ref, mnt_by)
+#    
+#person = {}
+#
+#role = {}
+#role.update(tech_c, admin_c, nic_hdl)

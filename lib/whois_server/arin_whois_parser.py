@@ -16,31 +16,17 @@ from whois_parser.abstract_whois import AbstractWhoisParser
 
 import re
 
-OrgID = { 
-    'pochandles' : '(?:TechHandle|AbuseHandle|NOCHandle|OrgTechHandle|OrgAbuseHandle|OrgNOCHandle|OrgAdminHandle):[ ]*(.*)'
-}
+# Dict entries 
+pochandles  = { 'pochandles' : '(?:TechHandle|AbuseHandle|NOCHandle|OrgTechHandle|OrgAbuseHandle|OrgNOCHandle|OrgAdminHandle):[ ]*(.*)' }
+orgid       = { 'orgid'      : 'OrgID:[ ]*(.*)' }
+parent      = { 'parent'     : 'Parent:[ ]*(.*)' }
+netrange    = { 'netrange'   : 'NetRange:[ ]*(.*) - (.*)' }
 
-NetHandle = {
-    'orgid'     : 'OrgID:[ ]*(.*)', 
-    'parent'    : 'Parent:[ ]*(.*)', 
-    'pochandles' : '(?:TechHandle|AbuseHandle|NOCHandle|OrgTechHandle|OrgAbuseHandle|OrgNOCHandle|OrgAdminHandle):[ ]*(.*)', 
-    'netrange'  : 'NetRange:[ ]*(.*) - (.*)'
-
-}
-
-V6NetHandle = {
-    'orgid'     : 'OrgID:[ ]*(.*)', 
-    'parent'    : 'Parent:[ ]*(.*)', 
-    'pochandles' : '(?:TechHandle|AbuseHandle|NOCHandle|OrgTechHandle|OrgAbuseHandle|OrgNOCHandle|OrgAdminHandle):[ ]*(.*)', 
-    'netrange'  : 'NetRange:[ ]*(.*) - (.*)'
-}
-
-ASHandle = {
-    'pochandles' : '(?:TechHandle|AbuseHandle|NOCHandle|OrgTechHandle|OrgAbuseHandle|OrgNOCHandle|OrgAdminHandle):[ ]*(.*)', 
-    'orgid':  'OrgID:[ ]*(.*)'
-}
-
-POCHandle = { }
+all_possible_keys = {}
+all_possible_keys.update(orgid)
+all_possible_keys.update(parent)
+all_possible_keys.update(netrange)
+all_possible_keys.update(pochandles)
 
 class ARINWhois(AbstractWhoisParser):
     """
@@ -48,13 +34,18 @@ class ARINWhois(AbstractWhoisParser):
     Til we have a real implementation of whois in python, 
     we will use this class to return all the informations
     """
-    possible_regex = {
-        '^OrgID:'       : OrgID, 
-        '^NetHandle:'   : NetHandle, 
-        '^V6NetHandle:' : V6NetHandle, 
-        '^ASHandle:'    : ASHandle, 
-        '^POCHandle:'   : POCHandle
-        }
+#    possible_regex = {
+#        '^OrgID:'       : OrgID, 
+#        '^NetHandle:'   : NetHandle, 
+#        '^V6NetHandle:' : V6NetHandle, 
+#        '^ASHandle:'    : ASHandle, 
+#        '^POCHandle:'   : POCHandle
+#        }
+
+    def __init__(self, text, server):
+        self.text = text
+        self.server = server
+        self._whois_regs = all_possible_keys
     
     def __getattr__(self, attr):
         """The first time an attribute is called it will be calculated here.

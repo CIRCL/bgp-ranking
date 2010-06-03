@@ -5,7 +5,7 @@ from db_models.ranking import *
 
 from abstract_graf import *
 
-class IPGraf(AbstractGraf):
+class ASGraf(AbstractGraf):
     
     def prepare_graf(self, descriptions):
         if len(descriptions) == 0:
@@ -14,9 +14,9 @@ class IPGraf(AbstractGraf):
         for desc in descriptions:
             data = datas.get(desc.timestamp.date(), None)
             if data is None:
-               datas[desc.timestamp.date()] = desc.times
+               datas[desc.timestamp.date()] = len(desc.ips)
             else:
-               datas[desc.timestamp.date()] += desc.times
+               datas[desc.timestamp.date()] += len(desc.ips)
         self.dates = [ d for d in datas.keys() ]
         self.times = [ t for t in datas.values() ]
         return True

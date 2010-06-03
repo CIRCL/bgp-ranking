@@ -1,0 +1,36 @@
+#extends master
+#attr title = "Querying"
+#attr last_query = "IP or AS Number"
+#attr query = ""
+#attr whois_entry = "No entry"
+#attr image = ""
+
+#block q
+    <p>
+        Your query :
+        <form method="POST" action=".">
+            <input type="text" name="query" value="$last_query">
+            <input type="submit" value="Submit">
+        </form>
+        <br/>
+    </p>
+#if len($query) > 0
+    #attr title = "Response"
+    Your last query was $query.
+    <pre>
+        $whois_entry
+    </pre>
+    <br/>
+    #if len($image) > 0
+        <img src="images/${image}.png"/>
+    #else
+        Unable to generate the graf...
+    #end if
+#else 
+        #if $last_query != "IP or AS Number"
+            Your request is invalid or no entry in the database 
+        #else
+            Please ask something...
+        #end if
+#end if
+#end block q

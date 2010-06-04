@@ -32,13 +32,13 @@ temp_db = redis.Redis(db=temp_reris_db)
 key = redis_keys[1]
 while 1:
     print('blocs to whois: ' + str(temp_db.llen(key)))
-    bloc = temp_db.pop(key)
+    bloc = temp_db.lpop(key)
     if not bloc:
         time.sleep(process_sleep)
         continue
     server = get_server_by_query(bloc)
     if not server:
         print ("error, no server found for this block : " + bloc)
-        temp_db.push(key, block)
+        temp_db.rpush(key, block)
         continue
-    temp_db.push(server.whois,  bloc)
+    temp_db.lpush(server.whois,  bloc)

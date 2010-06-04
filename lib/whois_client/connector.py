@@ -41,8 +41,7 @@ class Connector(object):
             self.cache_db = redis.Redis(db=whois_cache_reris_db)
         if self.server in self.support_keepalive:
             self.keepalive = True
-        self.fetcher = WhoisFetcher(get_server_by_name\
-                            (unicode(self.server)))
+        self.fetcher = WhoisFetcher(self.server)
         self.connected = False
     
     def __connect(self):
@@ -66,27 +65,27 @@ class Connector(object):
         while 1:
             try:
 #                print(self.server + ', llen: ' + str(self.redis_instance.llen(self.key)))
-                entry = self.temp_db.pop(self.key)
+                entry = self.temp_db.lpop(self.key)
                 if not entry:
                     self.__disconnect()
                     time.sleep(process_sleep)
                     continue
                 # we are blacklisted by afrinic...
-                if self.server == 'whois.afrinic.net':
-                    whois = 'we are blacklisted by afrinic...'
-                    self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
-                    continue
-                if self.server == 'whois.apnic.net':
-                    whois = 'we are probably blacklisted by apnic...'
-                    self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
-                    continue
-                if not self.cache_db.get(entry):
+#                if self.server == 'whois.afrinic.net':
+#                    whois = 'we are blacklisted by afrinic...'
+#                    self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
+#                    continue
+#                if self.server == 'whois.apnic.net':
+#                    whois = 'we are probably blacklisted by apnic...'
+#                    self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
+#                    continue
+                if self.cache_db.get(entry) is None:
                     if not self.connected:
                         self.__connect()
 #                    print(self.server + ", query : " + str(entry))
                     whois = self.fetcher.fetch_whois(entry, self.keepalive)
                     if whois == '':
-                        self.temp_db.push(self.key, entry)
+                        self.temp_db.rpush(self.key, entry)
                     else:
                         self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
                         self.cache_db.expire(entry, cache_ttl)

@@ -13,6 +13,10 @@ from elixir import *
 
 import errno
 
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../../etc/bgp-ranking.conf")
+
 unused_entries = [ 'UNALLOCATED',  '6to4', 'teredo', '6bone', 'v6nic' ]
 
 def get_all_servers_urls():
@@ -89,6 +93,9 @@ class WhoisFetcher(object):
     # The response is splitted....
     splitted = ['whois.nic.or.kr']
     
+    # Databases implemented in my whois server -> http://gitorious.org/whois-server
+    local_query = ['whois.arin.net']
+    
     s = socket(AF_INET, SOCK_STREAM)
     
     def connect(self):
@@ -146,7 +153,12 @@ class WhoisFetcher(object):
         self.port = assignation.port
 
     def __init__(self, server):
-        self.__set_values(server)
+        assign = None
+        if server in self.local_query:
+            assign = Assignations.query.filter(Assignations.whois==unicode(config.get('global', 'local_whois_server'))).first()
+        else:
+            assign = get_server_by_name(unicode(server))
+        self.__set_values(assign)
     
     def __repr__(self):
         return self.text

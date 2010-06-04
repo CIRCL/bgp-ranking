@@ -112,7 +112,7 @@ class FetchASNs():
         """
         self.ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.asn==None)[limit_first:limit_last]
         for ip_description in self.ips_descriptions:
-            self.temp_db.push(redis_keys[0],  ip_description.ip.ip)
+            self.temp_db.rpush(redis_keys[0],  ip_description.ip.ip)
         while len(self.ips_descriptions) > 0:
             deferred = []
             for description in self.ips_descriptions:
@@ -135,7 +135,7 @@ class FetchASNs():
         self.ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.whois==None)[limit_first:limit_last]
         for ip_description in self.ips_descriptions:
             if not self.cache_db_whois.exists(ip_description.ip.ip):
-                self.temp_db.push(redis_keys[1], ip_description.ip.ip)
+                self.temp_db.rpush(redis_keys[1], ip_description.ip.ip)
         while len(self.ips_descriptions) > 0:
             deferred = []
             for description in self.ips_descriptions:
@@ -145,8 +145,8 @@ class FetchASNs():
                     deferred.append(description)
                 else:
                     splitted = entry.partition('\n')
-                    description.whois_address = splitted[0]
-                    description.whois = splitted[2]
+                    description.whois_address = unicode(splitted[0])
+                    description.whois = unicode(splitted[2])
             self.ips_descriptions = deferred
             time.sleep(sleep_timer)
             print('Descriptions to fetch: ' + str(len(self.ips_descriptions)))

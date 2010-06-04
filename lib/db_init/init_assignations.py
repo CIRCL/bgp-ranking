@@ -75,6 +75,9 @@ insert(assignations)
 # Self defined servers
 # to do the RIS Requests
 Assignations(whois=unicode('riswhois.ripe.net'))
+# local queries -> http://gitorious.org/whois-server
+Assignations(whois=unicode(config.get('global', 'local_whois_server')), \
+              port=unicode(config.get('global', 'local_whois_server_port')))
 
 set_options()
 

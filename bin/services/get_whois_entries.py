@@ -6,17 +6,15 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.read("../bgp-ranking.conf")
+config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('global','root')
 sys.path.append(os.path.join(root_dir,config.get('global','lib')))
 services_dir = os.path.join(root_dir,config.get('global','services'))
-
+sleep_timer = int(config.get('global','sleep_timer_short'))
 
 from helpers.initscript import *
 from db_models.ranking import *
 import time
-
-import signal
 
 """
 Start the getting processes on an interval of entry to process: 
@@ -24,8 +22,6 @@ use *a way* less memory and is multithreaded
 """
 
 service = os.path.join(services_dir, "get_range_whois_entries")
-
-sleep_timer = 5
 pids = []
 
 ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.whois==None).count())

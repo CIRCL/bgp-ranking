@@ -4,20 +4,25 @@ import redis
 from whois_fetcher import *
 import errno
 
-# query keys, ris for ris queries, whois for whois queries 
-redis_keys = ['ris', 'whois']
-# Temporary redis database, used to push ris and whois requests
-temp_reris_db = 0
-# Cache redis database, used to set ris responses
-ris_cache_reris_db = 1
-# Cache redis database, used to set whois responses
-whois_cache_reris_db = 2
 
+import os 
+import sys
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../../etc/bgp-ranking.conf")
+root_dir = config.get('global','root')
 # In case there is nothing to fetch, the process will sleep 5 seconds 
-process_sleep = 5
+process_sleep = int(config.get('global','sleep_timer_short'))
+
+# Temporary redis database, used to push ris and whois requests
+temp_reris_db = int(config.get('redis','temp_reris_db'))
+# Cache redis database, used to set ris responses
+ris_cache_reris_db = int(config.get('redis','ris_cache_reris_db'))
+# Cache redis database, used to set whois responses
+whois_cache_reris_db = int(config.get('redis','whois_cache_reris_db'))
 
 # Set the ttl of the cached entries to 1 day 
-cache_ttl = 86400
+cache_ttl = int(config.get('redis','cache_entries'))
 
 class Connector(object):
     """
@@ -35,7 +40,7 @@ class Connector(object):
         self.server = server
         if self.server == 'riswhois.ripe.net':
             self.cache_db = redis.Redis(db=ris_cache_reris_db)
-            self.key = redis_keys[0]
+            self.key = config.get('redis','key_temp_ris')
         else:
             self.key = self.server
             self.cache_db = redis.Redis(db=whois_cache_reris_db)

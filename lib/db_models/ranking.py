@@ -4,7 +4,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.schema import ThreadLocalMetaData
 from elixir import *
 
-ranking_engine = create_engine('mysql://root@localhost/ranking')
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../../etc/bgp-ranking.conf")
+login = config.get('mysql','login')
+password = config.get('mysql','password')
+host = config.get('mysql','hostname')
+dbname = config.get('mysql','dbname_ranking')
+
+ranking_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname )
 RankingSession = scoped_session(sessionmaker(bind=ranking_engine))
 ranking_metadata = ThreadLocalMetaData()
 ranking_metadata.bind = ranking_engine
@@ -17,7 +25,7 @@ class IPs(Entity):
     """ 
     Table which contains the IPs 
     """
-    ip = Field(Unicode(INET6_ADDRSTRLEN), primary_key=True)
+    ip = Field(UnicodeText, primary_key=True)
     ip_descriptions = OneToMany('IPsDescriptions')
     using_options(metadata=ranking_metadata, session=RankingSession, tablename='IPs')
     

@@ -2,11 +2,10 @@
 
 import os 
 import sys
-#import ConfigParser
-#config = ConfigParser.RawConfigParser()
-#config.read("../etc/bgp-ranking.conf")
-#print(os.getcwd())
-#root_dir = config.get('global','root')
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../etc/bgp-ranking.conf")
+root_dir = config.get('global','root')
 
 
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -145,5 +144,5 @@ class IPUpdate ():
         """
         Move /from/some/dir/file to /from/some/dir/old/file
         """
-        new_filename = self.directory + 'old/' + str(self.date).replace(' ','-')
+        new_filename = os.path.join(self.directory, config.get('fetch_files','old_dir'), str(self.date).replace(' ','-'))
         os.rename(file, new_filename)

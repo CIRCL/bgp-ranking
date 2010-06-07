@@ -4,7 +4,7 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.read("../bgp-ranking.conf")
+config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('global','root')
 sys.path.append(os.path.join(root_dir,config.get('global','lib')))
 

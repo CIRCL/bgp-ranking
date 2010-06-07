@@ -1,13 +1,16 @@
 #!/usr/bin/python
+import os 
+import sys
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../../etc/bgp-ranking.conf")
+
+temporary_dir = config.get('fetch_files','tmp_dir')
+old_dir = config.get('fetch_files','old_dir')
+sleep_timer = int(config.get('global','sleep_timer'))
 
 import datetime 
-import sys
-
-try:
-    import urllib.request, urllib.parse, urllib.error
-except ImportError:
-    import urllib
-import os 
+import urllib
 import filecmp
 import glob
 import time
@@ -15,9 +18,6 @@ import time
 """
 Fetch the raw file
 """
-
-temporary_dir = 'temp'
-sleep_timer = 5
 
 def usage():
     print "fetch_raw_files.py dir url"
@@ -28,16 +28,15 @@ if len(sys.argv) < 2:
 
 args = sys.argv[1].split(' ')
 
-temp_filename = os.path.join(args[0], temporary_dir,  str(datetime.date.today()))
+temp_filename = os.path.join(args[0], temporary_dir, str(datetime.date.today()))
 filename = os.path.join(args[0], str(datetime.date.today()))
-old_directory = os.path.join(args[0], 'old')
-
+old_directory = os.path.join(args[0], old_dir)
 
 while 1:
     urllib.urlretrieve(args[1], temp_filename)
     drop_file = False
-    to_check = glob.glob( old_directory + '/*')
-    to_check += glob.glob(args[0] + '/*')
+    to_check = glob.glob( os.path.join(old_directory, '*') )
+    to_check += glob.glob( os.path.join(args[0], '*') )
     for file in to_check:
         if filecmp.cmp(temp_filename, file):
             drop_file = True

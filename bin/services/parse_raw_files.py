@@ -3,10 +3,11 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.read("../bgp-ranking.conf")
+config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('global','root')
 sys.path.append(os.path.join(root_dir,config.get('global','lib')))
 raw_data = os.path.join(root_dir,config.get('global','raw_data'))
+sleep_timer = int(config.get('global','sleep_timer_short'))
 
 from modules.zeustracker_ipblocklist import ZeustrackerIpBlockList
 from modules.dshield_daily import DshieldDaily
@@ -21,8 +22,6 @@ import time
 """
 Parse the file of a module
 """
-
-sleep_timer = 5
 
 def usage():
     print "parse_raw_files.py name"

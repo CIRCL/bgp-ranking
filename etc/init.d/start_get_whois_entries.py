@@ -23,7 +23,7 @@ Launch the raw fetching processes
 service = os.path.join(services_dir, "get_whois_entries")
 
 def usage():
-    print "start_sort_whois_queries.py (start|stop)"
+    print "start_get_whois_queries.py (start|stop)"
     exit (1)
 
 if len(sys.argv) < 2:

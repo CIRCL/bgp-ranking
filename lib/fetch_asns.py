@@ -6,20 +6,22 @@ from whois_client.whois_fetcher import get_server_by_query
 from helpers.ip_manip import ip_in_network
 from whois_parser.whois_parsers import *
 
+import os 
+import sys
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../../etc/bgp-ranking.conf")
+sleep_timer = int(config.get('global','sleep_timer_short'))
 
 import redis
 import time
 
-# Query keys 
-redis_keys = ['ris', 'whois']
 # Temporary redis database, used to push ris and whois requests
-temp_reris_db = 0
+temp_reris_db = int(config.get('redis','temp_reris_db'))
 # Cache redis database, used to set ris responses
-ris_cache_reris_db = 1
+ris_cache_reris_db = int(config.get('redis','ris_cache_reris_db'))
 # Cache redis database, used to set whois responses
-whois_cache_reris_db = 2
-# Sleep before fetch the deferred queries
-sleep_timer = 1
+whois_cache_reris_db = int(config.get('redis','whois_cache_reris_db'))
 
 class FetchASNs():
     """
@@ -112,7 +114,7 @@ class FetchASNs():
         """
         self.ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.asn==None)[limit_first:limit_last]
         for ip_description in self.ips_descriptions:
-            self.temp_db.rpush(redis_keys[0],  ip_description.ip.ip)
+            self.temp_db.rpush(config.get('redis','key_temp_ris'),  ip_description.ip.ip)
         while len(self.ips_descriptions) > 0:
             deferred = []
             for description in self.ips_descriptions:
@@ -135,7 +137,7 @@ class FetchASNs():
         self.ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.whois==None)[limit_first:limit_last]
         for ip_description in self.ips_descriptions:
             if not self.cache_db_whois.exists(ip_description.ip.ip):
-                self.temp_db.rpush(redis_keys[1], ip_description.ip.ip)
+                self.temp_db.rpush(config.get('redis','key_temp_whois'), ip_description.ip.ip)
         while len(self.ips_descriptions) > 0:
             deferred = []
             for description in self.ips_descriptions:

@@ -10,6 +10,13 @@ from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from ip_update import IPUpdate
 
+import os 
+import sys
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../etc/bgp-ranking.conf")
+root_dir = config.get('global','root')
+
 class Shadowserver(IPUpdate):
     """
     Super class used for all shadowserver reports: the subclass has only to define 
@@ -50,5 +57,5 @@ class Shadowserver(IPUpdate):
         """
         Move the file without changing the name 
         """
-        new_filename = self.directory + 'old/' + os.path.basename(file)
+        new_filename = os.path.join(self.directory, config.get('fetch_files','old_dir'), os.path.basename(file))
         os.rename(file, new_filename)

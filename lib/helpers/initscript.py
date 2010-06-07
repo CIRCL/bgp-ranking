@@ -1,16 +1,12 @@
-import os
-import platform
-import subprocess
-
-
 import os 
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.read("../bgp-ranking.conf")
+config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('global','root')
-sys.path.append(os.path.join(root_dir,config.get('global','lib')))
 pid_path = os.path.join(root_dir,config.get('global','pids'))
+
+import subprocess
 
 """
 Standard functions used by the init scripts
@@ -79,15 +75,6 @@ def pidof(processname = None):
     else:
         return False
 
-def nppidof(processname = None):
-    """
-    Force the kill of the process (not used)
-    """
-
-    if platform.system() is not "Windows":
-        #os.system("ps ax | grep forban_ | grep python | cut -d\" \" -f1 | sed -e '$!N;N;N; s/\\n/,/g'")
-        return True
-
 def update_running_pids(old_procs):
     """
     Update the list of the running process
@@ -105,7 +92,7 @@ def update_running_pids(old_procs):
                 pass
     return new_procs
 
-# FIXME : put it in the config
+#FIXME : put it in the config
 min_ips_by_process = 100
 max_ips_by_process = 500
 max_processes = 1

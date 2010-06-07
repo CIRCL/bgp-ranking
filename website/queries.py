@@ -4,10 +4,6 @@ import os
 import cherrypy
 from Cheetah.Template import Template
 
-
-APPDIR = os.path.dirname(os.path.abspath(__file__))
-INI_FILENAME = os.path.join(APPDIR, "config/bgp-ranking_website.ini")
-
 import ConfigParser
 import sys
 config = ConfigParser.RawConfigParser()
@@ -15,8 +11,9 @@ config.read("../etc/bgp-ranking.conf")
 
 server_root_dir =  config.get('global','root')
 sys.path.append(os.path.join(server_root_dir,config.get('global','lib')))
-website_root_dir =  os.path.join(server_root_dir,config.get('website','root'))
-website_images_dir =  os.path.join(website_root_dir,config.get('website','images'))
+website_root_dir =  os.path.join(server_root_dir,config.get('web','root'))
+website_images_dir =  os.path.join(website_root_dir,config.get('web','images'))
+config_file = config.get('web','config_file')
 
 from db_models.ranking import *
 
@@ -83,9 +80,6 @@ class Queries(object):
         else:
             return False
 
-def main():
-    cherrypy.quickstart(Queries(), config = INI_FILENAME)
-
 
 if __name__ == "__main__":
-    main()
+    cherrypy.quickstart(Queries(), config = config_file)

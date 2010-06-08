@@ -1,0 +1,40 @@
+body{
+    margin:0;
+    padding:0;
+}
+
+#main{
+    width: 1024px;
+    margin: 0 auto;
+}
+
+#top{
+    background: #FF8C00;
+    height: 90px;
+}
+
+#content{
+    float: left;
+    width: 100%;
+    
+}
+
+#contentcolumn{
+    margin-left: 150px;
+    background: #1FA610;   
+    height: 500px;
+}
+
+#menu{
+    float: left;
+    width: 150px;
+    margin-left: -1024px;
+    background: #FFD700;
+    height: 500px;
+}
+
+#footer{
+    width: 100%;
+    text-align: center;
+    background: #DAA520;
+}

@@ -4,6 +4,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.schema import ThreadLocalMetaData
 from elixir import *
 
+import os
+precdir = os.path.realpath(os.curdir)
+os.chdir(os.path.dirname(__file__))
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
@@ -11,6 +14,7 @@ login = config.get('mysql','login')
 password = config.get('mysql','password')
 host = config.get('mysql','hostname')
 dbname = config.get('mysql','dbname_whois')
+os.chdir(precdir) 
 
 ranking_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname )
 WhoisSession = scoped_session(sessionmaker(bind=whois_engine))
@@ -24,7 +28,7 @@ class Assignations(Entity):
     """ 
     Ip assignations
     """
-    block = Field(UnicodeText, default=unicode(''))
+    block = Field(Unicode(INET6_ADDRSTRLEN), default=unicode(''))
     whois = Field(UnicodeText, required=True)
     pre_options = Field(UnicodeText, default=unicode(''))
     post_options = Field(UnicodeText, default=unicode(''))

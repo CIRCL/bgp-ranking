@@ -9,6 +9,12 @@ sys.path.append(os.path.join(root_dir,config.get('global','lib')))
 raw_data = os.path.join(root_dir,config.get('global','raw_data'))
 sleep_timer = int(config.get('global','sleep_timer_short'))
 
+import logging
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)-8s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S',
+                    filename=os.path.join(root_dir,config.get('global','log_parse_raw_files')))
+
 from modules.zeustracker_ipblocklist import ZeustrackerIpBlockList
 from modules.dshield_daily import DshieldDaily
 from modules.dshield_topips import DshieldTopIPs
@@ -43,6 +49,8 @@ while 1:
     module = modules[sys.argv[1]](raw_data)
     if module.update():
         print('Done with ' + sys.argv[1])
+        logging.info('Done with ' + sys.argv[1])
     else:
         print('No files to parse for ' + sys.argv[1])
+        logging.info('No files to parse for ' + sys.argv[1])
     time.sleep(sleep_timer)

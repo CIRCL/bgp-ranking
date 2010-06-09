@@ -12,6 +12,12 @@ sys.path.append(os.path.join(root_dir,config.get('global','lib')))
 services_dir = os.path.join(root_dir,config.get('global','services'))
 sleep_timer = int(config.get('global','sleep_timer_short'))
 
+import logging
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)-8s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S',
+                    filename=os.path.join(root_dir,config.get('global','log_get_ris_entries')))
+
 from helpers.initscript import *
 from db_models.ranking import *
 import time
@@ -27,10 +33,12 @@ pids = []
 ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.asn==None).count())
 while 1: 
     print "Start getting RIS entries..."
+    logging.info("Start getting RIS entries...")
     while ip_counter['total_ips'] > 0:
         while len(pids) < ip_counter['processes'] :
             option = str(ip_counter['min']) + ' ' + str(ip_counter['max'])
             print('Starting interval: '+ option + '. Total ips: ' + str(ip_counter['total_ips']))
+            logging.info('Starting interval: '+ option + '. Total ips: ' + str(ip_counter['total_ips']))
             pids.append(service_start(servicename = service, param = option))
             ip_counter['min'] = ip_counter['max'] +1
             ip_counter['max'] += ip_counter['interval']

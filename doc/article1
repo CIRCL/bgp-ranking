@@ -1,0 +1,51 @@
+BGP AS / ISP Security Ranking - Introduction and Datasets 
+
+I am currently working on a project which aims to provide a whole architecture to parse the dataset of compromised systems, get the whois informations to know the owners of the IPs/Networks/ASNs and generate reports based on this informations.
+It is open source and available there: http://gitorious.org/bgp-ranking
+
+* Dataset
+
+The datasets may be freely available on the Internet such as http://www.dshield.org/xml.html and http://www.abuse.ch/zeustracker/blocklist.php. Some other are not, it is the case for atlas and shadowserver for example. 
+
+Each dataset needs a proper 'module' to extract the informations we need. There is actually two possibilities: either only the ip addresses are extracted or... more informations :) .
+
+** First case 
+
+The freely available datasets contains the ip addresses and sometimes a reverse dns but this information is so easily falsified that it is totally unnecessary to save it. 
+The dataset may contain the date of generation of the report, it will be extracted too. If there is no date in the file, the date will be set to 'today' (datetime.date.today()).
+
+** Second case
+
+Shadowserver and Atlas provide more informations on the attackers. They provide obviously the ip but also the time of the attack, and the attack (the name of the malware, if known). 
+
+Atlas provide some more informations such as an url to get more informations, the coverage time and category of the attack. But the atlas report is an xml file, this informations are extracted of the file and saved as a string in the database. 
+Shadowserver is a csv report, the whole line will be pushed in the database. 
+
+
+It is so really easy to write modules for other datasets: the only things to extract at least is the ip addresses and a date as to be given. To automatize the process, you have to give a unique name to your module and a directory where you will put the files to parse. 
+If possible you should edit this file $ROOT/etc/init.d/start_fetch_raw_files.py and put an URL, your dataset will be automatically fetched and parsed. Else you will have to copy manually the dataset in the directory of your module. 
+
+For more informations take a look at the existing modules: http://gitorious.org/bgp-ranking/bgp-ranking/trees/master/lib/modules
+
+The rest will be done automatically. 
+
+And the question is "What is "the rest'?!" 
+
+
+* Fetching of whois informations
+
+RIS Whois and whois entries are fetched for every address. 
+
+** RIS Whois
+
+Quite easy: the ris informations are fetched from riswhois.ripe.net to know who is announcing the network of the ip. 
+
+** Whois
+
+It is a bit more complicated: I implement a whois client based on the assignations given by the whois package of debian/ubuntu to ask the whois entries to the right server.
+
+There are two problems: 
+- the time: it takes ~1sec to get a whois entry 
+- the number of queries: the RIR Afrinic blacklist the ip address which make too much queries 
+
+So I begin to program a whois server based on redis. More informations on it in an other article but you can already take a look at the code there: http://gitorious.org/whois-server

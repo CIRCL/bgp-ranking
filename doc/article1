@@ -57,6 +57,10 @@ The reports provide more informations on the attackers. They provide obviously t
 Atlas provide some more informations such as an url to get more informations, the coverage time and category of the attack. But the atlas report is an xml file, this informations are extracted of the file and saved as a string in the database. 
 Shadowserver is a csv report, the whole line will be pushed in the database. 
 
+
+I speak of two families because I have two abstract classes an you can see on this schema: 
+-> class diag Modules 
+
 ** Conclusion 
 
 It is so really easy to write modules for other datasets: the only things to extract at least is the ip addresses and a date as to be given. To automatize the process, you have to give a unique name to your module and a directory where you will put the files to parse. 

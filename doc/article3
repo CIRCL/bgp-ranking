@@ -1,0 +1,55 @@
+BGP AS / ISP Security Ranking - Internal and Redis 
+
+You really should read the two other articles I already wrote on this subject : art 1 & 2 
+
+As you read in the last article, the main part of the program is the fetching of the (RIS) whois entries. There are some requirements on this part: 
+- fast: we will fetch informations on more than 1.000.000 IPs each days 
+- multi-process: well, it is better if we fetch more than one entry at the same time...
+- caching: many IPs are present in more than one dataset 
+
+Each of this requirements are fulfilled by using redis. Short, "Redis is an advanced key-value store." More information on the website: http://code.google.com/p/redis/
+
+* RIS Whois
+
+<schema>
+
+There is two processes : 
+
+** DB Process (1,2,3)
+
+1. Ask to redis if there is an entry for a particular IP (key: ip)
+2. is there is no entry, the process pushes in the temporary database of redis a request (key: 'ris' / value: ip)
+3. ask periodically Redis for an answer (key: ip)
+
+** Fetching Process (A,B,C)
+
+A. Ask periodically to redis if there is a query of the DB Process (key: 'ris')
+B. Fetch it if there is one 
+C. Push in the cache database of Redis <b>for the RIS Whois entries</b> the fetched entry. (key: ip / value: entry)
+
+
+* Whois 
+
+<schema>
+
+It is the same concept as the RIS Whois but there is a supplementary layer: the DB Process do not know the assignations of the IPs, there is also a supplementary process. 
+
+** DB Process (1,2,3)
+
+Do exactly the same as the DB Process of RIS Whois except is that the key of 2. is 'whois'
+
+
+** Assignations Process (A,B,C)
+
+A. get the queries of the DB Process (key: 'whois' / value: ip)
+B. Dispatch the queries by servers to ask. 
+C. Push the dispatched queries (key: server_url / value: ip)
+
+
+** Fetching Process (I,II,III)
+
+I. Each of the process ask periodically for key of his own server. (key: server_url)
+II. Fetch it if there is one 
+III. Push in the cache database of Redis <b>for the Whois entries</b> the fetched entry. (key: ip / value: entry)
+
+The next article will be an overview of the architecture of the program. 

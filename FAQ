@@ -3,23 +3,22 @@ What is the directory structure?
 /
  +- bin/
  |  +- services/
- |  |  +- Services, it is possible to start them by hand
- |  |  +- but the initscripts do normally the job
+ |  |  +- Services, it is possible to start them by hand but the initscripts do normally the job
  |  +- Some scripts/wrappers to generate some particular queries 
  +- doc/
- |  +- UML Diagrams, dump of the wiki, documentation on third party softwares...
+ |  +- UML Diagrams, dump of the wiki, documentation on third party softwares, blog articles...
  +- etc/
  |  +- init.d/
  |  |  +- Initscripts 
- |  +- bgp-ranking.conf config file used mostly by the initscripts
+ |  +- bgp-ranking.conf config file used by the initscripts and define all the paths of the application and some constraints
+ |  +- redis.conf config file of redis 
  +- lib/
  |  +- db_init/
- |  |  +- Scripts to initialize the databases (whois client and server and ranking)
+ |  |  +- Scripts to initialize the databases (whois client and ranking)
  |  +- db_models/
  |  |  +- Databases models (whois client and ranking) 
  |  +- helpers/
- |  |  +- some helpers (fot the initscripts and the manipulation of the ips)
- |	|  +- used very often in the project
+ |  |  +- some helpers (for the initscripts and the manipulation of the ips) used very often in the project
  |  +- modules/
  |  |  +- all the modules to parse the differents raw files
  |  +- tests/
@@ -36,9 +35,7 @@ What is the directory structure?
  |  |  |  +- old/ : directory to put the old files (already parsed) 
  |  |  |  +- temp/ : directory where the lists are downloaded 
  |  |  |  +- file(s) to parse 
- |  |  +- whois_db/
- |  |  |  +- temp/ : directory where the dumps are downloaded
- |  |  |  +- unpack/ : directory the dumps are unpacked 
- |  |  |  +- dumps to push in the whois server
  |  +- run/
  |  |  +- pid files of the unning processes 
+ |  +- log/
+ |  |  +- log files

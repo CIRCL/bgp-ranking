@@ -141,7 +141,6 @@ class FetchASNs():
         while len(self.ips_descriptions) > 0:
             deferred = []
             for description in self.ips_descriptions:
-                #FIXME: use sets and redis tags => http://simonwillison.net/static/2010/redis-tutorial/
                 entry = self.cache_db_whois.get(description.ip.ip)
                 if not entry:
                     deferred.append(description)

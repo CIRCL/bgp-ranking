@@ -22,10 +22,13 @@ Launch the raw fetching processes
 
 service = os.path.join(services_dir, "fetch_raw_files")
 
-options = \
-        {'DshieldTopIPs'        :   os.path.join(raw_data, 'dshield/topips/')  + ' http://www.dshield.org/feeds/topips.txt', 
-        'DshieldDaily'          :   os.path.join(raw_data, 'dshield/daily/')   + ' http://www.dshield.org/feeds/daily_sources', 
-        'ZeustrackerIpBlockList':   os.path.join(raw_data, 'zeus/ipblocklist/')+ ' http://www.abuse.ch/zeustracker/blocklist.php?download=ipblocklist'}
+items = config.items('raw_fetching')
+
+options = {}
+for item in items:
+    elts = item[1].split()
+    options[elts[0]] = os.path.join(raw_data, elts[1]) + ' ' + elts[2]
+
 
 def usage():
     print "start_fetch_raw_files.py (start|stop)"
@@ -37,19 +40,23 @@ if len(sys.argv) < 2:
 if sys.argv[1] == "start":
     for name, option in options.iteritems():
         print('Start fetching of ' + name)
+        syslog.syslog(syslog.LOG_INFO, 'Start fetching of ' + name)
         proc = service_start_once(servicename = service, param = option,  processname = service + name)
 elif sys.argv[1] == "stop":
     for name in options.keys():
         print('Stop fetching of ' + name)
+        syslog.syslog(syslog.LOG_INFO, 'Stop fetching of ' + name)
         pid = pidof(processname=service + name)
         if pid:
             pid = pid[0]
             try:
                 os.kill(int(pid), signal.SIGKILL)
             except OSError, e:
-                print name +  " unsuccessfully stopped"
+                print(name +  " unsuccessfully stopped")
+                syslog.syslog(syslog.LOG_ERR, name +  " unsuccessfully stopped")
             rmpid(processname=service + name)
         else:
             print('No running fetching processes')
+            syslog.syslog(syslog.LOG_INFO, 'No running fetching processes')
 else:
     usage()

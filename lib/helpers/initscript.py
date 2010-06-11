@@ -8,6 +8,10 @@ pid_path = os.path.join(root_dir,config.get('global','pids'))
 
 import subprocess
 
+import syslog
+syslog.openlog('[BGP Ranking]', syslog.LOG_PID, syslog.LOG_USER)
+
+
 """
 Standard functions used by the init scripts
 """
@@ -19,7 +23,7 @@ def service_start_once(servicename = None, param = None, processname = None):
         proc = service_start(servicename, param)
         writepid(processname, proc)
     else:
-        print(param + ' already running on pid ' + str(pidof(processname)[0]))
+        syslog.syslog(syslog.LOG_ERR, param + ' already running on pid ' + str(pidof(processname)[0]))
 
 def service_start(servicename = None, param = None):
     """
@@ -82,7 +86,7 @@ def update_running_pids(old_procs):
     new_procs = []
     for proc in old_procs:
         if proc.poll():
-            print(str(proc.pid) + ' is alive')
+            syslog.syslog(syslog.LOG_DEBUG, str(proc.pid) + ' is alive')
             new_procs.append(proc)
         else:
             try:

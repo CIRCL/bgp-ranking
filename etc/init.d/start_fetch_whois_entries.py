@@ -20,7 +20,7 @@ from whois_client.whois_fetcher import get_all_servers_urls
 from helpers.initscript import *
 
 def usage():
-    print "start_whois_fetching.py (start|stop|forcestop)"
+    print "start_whois_fetching.py (start|stop)"
     exit (1)
 
 if len(sys.argv) < 2:
@@ -31,32 +31,29 @@ whois_service_options = get_all_servers_urls()
 
 if sys.argv[1] == "start":
 
-    print "Starting fetching..."
+    syslog.syslog(syslog.LOG_INFO, "Starting fetching...")
     for option in whois_service_options:
-        print option+" to start..."
+        print(option + " to start...")
+        syslog.syslog(syslog.LOG_INFO, option + " to start...")
         proc = service_start(servicename = service, param = option)
         writepid(processname = option, proc = proc)
-        print pidof(processname=option)
+        print(pidof(processname=option))
+        syslog.syslog(syslog.LOG_INFO, pidof(processname=option))
 
 elif sys.argv[1] == "stop":
-
-    print "Stopping sorting..."
+    print("Stopping sorting...")
+    syslog.syslog(syslog.LOG_INFO, "Stopping sorting...")
     for option in whois_service_options:
         pids = pidof(processname=option)
         if pids:
-            print option+" to be stopped..."
+            print(option + " to be stopped...")
+            syslog.syslog(syslog.LOG_INFO, option + " to be stopped...")
             for pid in pids:
                 try:
                     os.kill(int(pid), signal.SIGKILL)
                 except OSError, e:
-                    print option+  " unsuccessfully stopped"
-            print option
+                    print(option +  " unsuccessfully stopped")
+                    syslog.syslog(syslog.LOG_ERR, option +  " unsuccessfully stopped")
             rmpid(processname=option)
-
-elif sys.argv[1] == "forcestop":
-    
-    print "(forced) Stopping sorting..."
-    nppidof()
-
 else:
     usage()

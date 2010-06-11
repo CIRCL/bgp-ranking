@@ -26,32 +26,29 @@ if len(sys.argv) < 2:
     usage()
 service = os.path.join(services_dir, "parse_raw_files")
 
-options = \
-    ['DshieldTopIPs', 
-#    'DshieldDaily', 
-    'ZeustrackerIpBlockList', 
-    'ShadowserverSinkhole',  
-    'ShadowserverReport',  
-    'ShadowserverReport2',
-    'Atlas'
-    ]
+
+options = config.get('global','modules_to_parse').split()
 
 if sys.argv[1] == "start":
     for option in options:
         print('Start parsing of ' + option)
+        syslog.syslog(syslog.LOG_INFO, 'Start parsing of ' + option)
         proc = service_start_once(servicename = service, param = option, processname = service + option)
 elif sys.argv[1] == "stop":
     for option in options:
         print('Stop parsing of ' + option)
+        syslog.syslog(syslog.LOG_INFO, 'Stop parsing of ' + option)
         pid = pidof(processname=service + option)
         if pid:
             pid = pid[0]
             try:
                 os.kill(int(pid), signal.SIGKILL)
             except OSError, e:
-                print option +  " unsuccessfully stopped"
+                print(option + " unsuccessfully stopped")
+                syslog.syslog(syslog.LOG_ERR, option + " unsuccessfully stopped")
             rmpid(processname=service + option)
         else:
             print('No running parsing processes')
+            syslog.syslog(syslog.LOG_INFO, 'No running parsing processes')
 else:
     usage()

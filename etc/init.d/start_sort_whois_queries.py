@@ -27,24 +27,26 @@ if len(sys.argv) < 2:
 service = os.path.join(services_dir, "sort_whois_queries")
 
 if sys.argv[1] == "start":
-
-    print "Starting sorting..."
-    print service+" to start..."
+    print("Starting sorting...")
+    syslog.syslog(syslog.LOG_INFO, "Starting sorting...")
+    print(service+" to start...")
+    syslog.syslog(syslog.LOG_INFO, service+" to start...")
     proc = service_start(servicename = service)
     writepid(processname = service, proc = proc)
 
 elif sys.argv[1] == "stop":
-
-    print "Stopping sorting..."
+    print("Stopping sorting...")
+    syslog.syslog(syslog.LOG_INFO, "Stopping sorting...")
     pids = pidof(processname=service)
     if pids:
-        print service+" to be stopped..."
+        print(service+" to be stopped...")
+        syslog.syslog(syslog.LOG_INFO, service+" to be stopped...")
         for pid in pids:
             try:
                 os.kill(int(pid), signal.SIGKILL)
             except OSError, e:
-                print service+  " unsuccessfully stopped"
-        print service
+                print(service+  " unsuccessfully stopped")
+                syslog.syslog(syslog.LOG_ERR, service+  " unsuccessfully stopped")
         rmpid(processname=service)
 
 else:

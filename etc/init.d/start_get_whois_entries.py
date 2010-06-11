@@ -31,18 +31,22 @@ if len(sys.argv) < 2:
 
 if sys.argv[1] == "start":
     print('Start getting whois entries ')
+    syslog.syslog(syslog.LOG_INFO, 'Start getting whois entries ')
     service_start_once(servicename = service, param = '',  processname = service)
 elif sys.argv[1] == "stop":
     print('Stop getting whois entries ')
+    syslog.syslog(syslog.LOG_INFO, 'Stop getting whois entries ')
     pid = pidof(processname=service)
     if pid:
         pid = pid[0]
         try:
             os.kill(int(pid), signal.SIGKILL)
         except OSError, e:
-            print service +  " unsuccessfully stopped"
+            print(service +  " unsuccessfully stopped")
+            syslog.syslog(syslog.LOG_ERR, service +  " unsuccessfully stopped")
         rmpid(processname=service )
     else:
         print('Not getting whois entries')
+        syslog.syslog(syslog.LOG_INFO, 'Not getting whois entries')
 else:
     usage()

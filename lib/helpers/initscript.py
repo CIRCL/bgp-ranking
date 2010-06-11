@@ -9,7 +9,7 @@ pid_path = os.path.join(root_dir,config.get('global','pids'))
 import subprocess
 
 import syslog
-syslog.openlog('[BGP Ranking]', syslog.LOG_PID, syslog.LOG_USER)
+syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_USER)
 
 
 """
@@ -23,6 +23,7 @@ def service_start_once(servicename = None, param = None, processname = None):
         proc = service_start(servicename, param)
         writepid(processname, proc)
     else:
+        print(param + ' already running on pid ' + str(pidof(processname)[0]))
         syslog.syslog(syslog.LOG_ERR, param + ' already running on pid ' + str(pidof(processname)[0]))
 
 def service_start(servicename = None, param = None):

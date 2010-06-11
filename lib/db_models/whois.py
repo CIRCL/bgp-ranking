@@ -16,7 +16,7 @@ host = config.get('mysql','hostname')
 dbname = config.get('mysql','dbname_whois')
 os.chdir(precdir) 
 
-ranking_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname )
+whois_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname )
 WhoisSession = scoped_session(sessionmaker(bind=whois_engine))
 whois_metadata = ThreadLocalMetaData()
 whois_metadata.bind = whois_engine

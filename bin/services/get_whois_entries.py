@@ -16,7 +16,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)-8s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename=os.path.join(root_dir,config.get('global','log_get_whois_entries')))
+                    filename=os.path.join(root_dir,config.get('logging','log_get_whois_entries')))
 
 from helpers.initscript import *
 from db_models.ranking import *

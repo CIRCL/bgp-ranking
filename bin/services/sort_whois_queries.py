@@ -13,7 +13,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)-8s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename=os.path.join(root_dir,config.get('global','log_sort_whois')))
+                    filename=os.path.join(root_dir,config.get('logging','log_sort_whois')))
 
 import redis
 from whois_client.whois_fetcher import get_server_by_query
@@ -33,6 +33,7 @@ while 1:
         time.sleep(sleep_timer)
         continue
     server = get_server_by_query(bloc)
+    logging.debug(bloc + ' goto ' + server.whois )
     if not server:
         print("error, no server found for this block : " + bloc)
         logging.info("error, no server found for this block : " + bloc)

@@ -13,15 +13,9 @@ import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)-8s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename=os.path.join(root_dir,config.get('global','log_parse_raw_files')))
+                    filename=os.path.join(root_dir,config.get('logging','log_parse_raw_files')))
 
-from modules.zeustracker_ipblocklist import ZeustrackerIpBlockList
-from modules.dshield_daily import DshieldDaily
-from modules.dshield_topips import DshieldTopIPs
-from modules.shadowserver_sinkhole import ShadowserverSinkhole
-from modules.shadowserver_report import ShadowserverReport
-from modules.shadowserver_report2 import ShadowserverReport2
-from modules.atlas import Atlas
+from modules import *
 
 import time
 
@@ -36,17 +30,8 @@ def usage():
 if len(sys.argv) < 2:
     usage()
 
-modules = \
-    {'DshieldTopIPs' : DshieldTopIPs, 
-    'DshieldDaily' : DshieldDaily, 
-    'ZeustrackerIpBlockList' : ZeustrackerIpBlockList, 
-    'ShadowserverSinkhole' : ShadowserverSinkhole,  
-    'ShadowserverReport' : ShadowserverReport,  
-    'ShadowserverReport2' : ShadowserverReport2,
-    'Atlas' : Atlas}
-
 while 1:
-    module = modules[sys.argv[1]](raw_data)
+    module = eval(sys.argv[1])(raw_data)
     if module.update():
         print('Done with ' + sys.argv[1])
         logging.info('Done with ' + sys.argv[1])

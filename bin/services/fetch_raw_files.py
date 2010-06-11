@@ -4,7 +4,7 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
-
+root_dir = config.get('global','root')
 temporary_dir = config.get('fetch_files','tmp_dir')
 old_dir = config.get('fetch_files','old_dir')
 sleep_timer = int(config.get('global','sleep_timer'))
@@ -13,7 +13,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)-8s %(message)s',
                     datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename=os.path.join(root_dir,config.get('global','log_fetch_raw_files')))
+                    filename=os.path.join(root_dir,config.get('logging','log_fetch_raw_files')))
 
 import datetime 
 import urllib
@@ -49,10 +49,10 @@ while 1:
             break
     if drop_file:
         os.unlink(temp_filename)
-        print('No new file on ' + args[1])
+#        print('No new file on ' + args[1])
         logging.info('No new file on ' + args[1])
     else:
         os.rename(temp_filename, filename)
-        print('New file on ' + args[1])
+#        print('New file on ' + args[1])
         logging.info('New file on ' + args[1])
     time.sleep(sleep_timer)

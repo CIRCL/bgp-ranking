@@ -21,6 +21,8 @@ ris_cache_reris_db = int(config.get('redis','ris_cache_reris_db'))
 # Cache redis database, used to set whois responses
 whois_cache_reris_db = int(config.get('redis','whois_cache_reris_db'))
 
+import logging
+
 # Set the ttl of the cached entries to 1 day 
 cache_ttl = int(config.get('redis','cache_entries'))
 
@@ -48,6 +50,13 @@ class Connector(object):
             self.keepalive = True
         self.fetcher = WhoisFetcher(self.server)
         self.connected = False
+        splitted_file = config.get('logging','log_fetch_whois_entries').split('.')
+        filename = splitted_file[0] + '.' + server + '.' + splitted_file[1]
+        
+        logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)-8s %(message)s',
+                    datefmt='%a, %d %b %Y %H:%M:%S',
+                    filename=os.path.join(root_dir,filename))
     
     def __connect(self):
         """
@@ -69,7 +78,7 @@ class Connector(object):
         """
         while 1:
             try:
-#                print(self.server + ', llen: ' + str(self.redis_instance.llen(self.key)))
+                logging.info(str(self.redis_instance.llen(self.key)) + ' to go on ' + self.server)
                 entry = self.temp_db.lpop(self.key)
                 if not entry:
                     self.__disconnect()
@@ -87,7 +96,7 @@ class Connector(object):
                 if self.cache_db.get(entry) is None:
                     if not self.connected:
                         self.__connect()
-#                    print(self.server + ", query : " + str(entry))
+                    logging.info(self.server + ", query : " + str(entry))
                     whois = self.fetcher.fetch_whois(entry, self.keepalive)
                     if whois == '':
                         self.temp_db.rpush(self.key, entry)
@@ -99,19 +108,19 @@ class Connector(object):
             except IOError, e:
                 if e.errno == errno.ETIMEDOUT:
                     self.temp_db.push(self.server,entry)
-                    print("timeout on " + self.server)
+                    logging.info("timeout on " + self.server)
                     self.connected = False
                 elif e.errno == errno.EPIPE:
                     self.temp_db.push(self.server,entry)
-                    print("Broken pipe " + self.server)
+                    logging.info("Broken pipe " + self.server)
                     self.connected = False
                 elif e.errno == errno.ECONNRESET:
                     self.temp_db.push(self.server,entry)
-                    print("Reset by peer:  " + self.server)
+                    logging.info("Reset by peer:  " + self.server)
                     self.connected = False
                 elif e.errno == errno.ECONNREFUSED:
                     self.temp_db.push(self.server,entry)
-                    print("Connexion refused by peer:  " + self.server)
+                    logging.info("Connexion refused by peer:  " + self.server)
                     self.connected = False
                     time.sleep(process_sleep)
                 else:

@@ -25,5 +25,3 @@ args = sys.argv[1].split(' ')
 f = FetchASNs()
 f.get_asns(int(args[0]), int(args[1]))
 
-print(sys.argv[1] + ' done')
-sys.exit(0)

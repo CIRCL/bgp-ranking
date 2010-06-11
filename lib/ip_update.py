@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import os 
-import sys
-import ConfigParser
-config = ConfigParser.RawConfigParser()
-config.read("../etc/bgp-ranking.conf")
-root_dir = config.get('global','root')
+#import os 
+#import sys
+#import ConfigParser
+#config = ConfigParser.RawConfigParser()
+#config.read("../etc/bgp-ranking.conf")
+#root_dir = config.get('global','root')
 
 
 from sqlalchemy.orm import scoped_session, sessionmaker

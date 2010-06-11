@@ -1,0 +1,19 @@
+BGP AS / ISP Security Ranking - Starting the Application
+
+Starting the Application is really easy: you just have to launch all the services present in the etc/init.d/ directory.
+
+* start_fetch_raw_files.py
+
+Fetch the raw files definded in the file. It is necessary to set a destination directory to where the datasets will be downloaded. 
+
+Note: the files will firstly be downloaded in a temporary directory and compare with all the other files present. If the same file is found, the file we just download will be dropped. Else, it will be moved in the parent directory and fetched by an other process : start_parse_raw_files.py
+
+* start_parse_raw_files.py  
+
+Parse the raw files. The modules to use are definded in this file 
+
+
+start_fetch_whois_entries.py  
+start_get_ris_entries.py  
+start_get_whois_entries.py  
+start_sort_whois_queries.py

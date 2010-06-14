@@ -200,5 +200,10 @@ if __name__ == "__main__":
     print(f.fetch_whois('200.3.14.10', False))
     f.disconnect()
     
+    f = WhoisFetcher('riswhois.ripe.net')
+    f.connect()
+    print(f.fetch_whois('200.3.14.10', False))
+    f.disconnect()
+    
     
     

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import cherrypy
@@ -6,32 +6,37 @@ from Cheetah.Template import Template
 
 import ConfigParser
 import sys
+import IPy
 config = ConfigParser.RawConfigParser()
 config.read("../etc/bgp-ranking.conf")
-
-server_root_dir =  config.get('global','root')
-sys.path.append(os.path.join(server_root_dir,config.get('global','lib')))
-website_root_dir =  os.path.join(server_root_dir,config.get('web','root'))
-website_images_dir =  os.path.join(website_root_dir,config.get('web','images'))
-config_file = config.get('web','config_file')
-
+root_dir =  config.get('global','root')
+sys.path.append(os.path.join(root_dir,config.get('global','lib')))
 from db_models.ranking import *
 
-from graph.ip import *
-from graph.asn import *
+config_file = config.get('web','config_file')
+templates = config.get('web','templates')
+website_root = config.get('web','website_root')
+css_file = config.get('web','css_file')
+website_images_dir = config.get('web','images')
 
-import IPy
+from graph.ip import IPGraf
+from graph.asn import ASGraf
 
-class Queries(object):
 
-    def index(self, query = ""):
-        filename = os.path.join(APPDIR, "querying.tmpl")
+class Master(object):
+
+    def default(self, query = ""):
+        filename = os.path.join(website_root, templates, 'master.tmpl')
         self.template = Template(file = filename)
-        entry = None
-        if query != "":
-            self.query_db(query)
+        self.template.title = 'index'
+        self.template.css_file = css_file
+        if query == "":
+            self.template.query = 'IP or AS Number'
+        else:
+            self.template.entry = self.query_db(query)
+            self.template.query = query
         return str(self.template)
-    index.exposed = True
+    default.exposed = True
     
     def query_db(self, query):
         ip = None
@@ -39,13 +44,11 @@ class Queries(object):
             ip = IPy.IP(query)
         except:
             pass
+        self.template.whois_entry = ''
         if ip is not None:
             descriptions = IPsDescriptions.query.filter_by(ip=IPs.query.filter_by(ip=unicode(ip)).first()).all()
-            self.template.last_query = query
+            self.template.query = query
             if len(descriptions) > 0:
-                self.template.query = query
-                self.template.whois_entry = ''
-                print descriptions
                 for description in descriptions:
                     self.template.whois_entry += str(description.whois) + '\n'
                 if self.make_ip_graf(query, descriptions):
@@ -53,15 +56,14 @@ class Queries(object):
         else:
             query = query[2:]
             descriptions = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=unicode(query)).first()).all()
-            self.template.last_query = 'AS' + query
+            self.template.query = 'AS' + query
             if len(descriptions) > 0:
-                self.template.query = self.template.last_query
-                self.template.whois_entry = ''
                 for description in descriptions:
                     self.template.whois_entry = description.owner
                 if self.make_asn_graf(query, descriptions):
                     self.template.image = query
-            
+        if self.template.whois_entry == '':
+            self.template.whois_entry = 'Nothing found in the database'
 
     
     def make_ip_graf(self, query, descriptions):
@@ -80,6 +82,9 @@ class Queries(object):
         else:
             return False
 
+        
+
 
 if __name__ == "__main__":
-    cherrypy.quickstart(Queries(), config = config_file)
+    cherrypy.quickstart(Master(), config = config_file)
+

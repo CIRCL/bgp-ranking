@@ -9,7 +9,6 @@ body{
 }
 
 #top{
-    background: #FF8C00;
     height: 90px;
 }
 
@@ -21,7 +20,6 @@ body{
 
 #contentcolumn{
     margin-left: 150px;
-    background: #1FA610;   
     height: 500px;
 }
 
@@ -29,12 +27,10 @@ body{
     float: left;
     width: 150px;
     margin-left: -1024px;
-    background: #FFD700;
     height: 500px;
 }
 
 #footer{
     width: 100%;
     text-align: center;
-    background: #DAA520;
 }

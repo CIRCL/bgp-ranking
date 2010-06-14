@@ -15,6 +15,9 @@ from db_models.ranking import *
 import os
 import glob
 
+import syslog
+syslog.openlog('BGP_Ranking_IP_Update', syslog.LOG_PID, syslog.LOG_USER)
+
 import IPy
 
 class IPUpdate ():
@@ -78,7 +81,7 @@ class IPUpdate ():
             try:
                 checked = str(IPy.IP(ip))
             except :
-                print('error with IP:' + ip)
+                syslog.syslog(syslog.LOG_ERR, 'error with IP:' + ip)
                 continue
             if not self.ip_addresses.get(checked,  None):
                 self.ip_addresses[checked] = 1
@@ -107,7 +110,7 @@ class IPUpdate ():
             try:
                 checked = str(IPy.IP(ip[0]))
             except :
-                print('error with IP:' + ip[0])
+                syslog.syslog(syslog.LOG_ERR, 'error with IP:' + ip[0])
                 continue
             ip[0] = checked
     

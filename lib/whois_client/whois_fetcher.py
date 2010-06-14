@@ -17,6 +17,9 @@ import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
 
+import syslog
+syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_USER)
+
 unused_entries = [ 'UNALLOCATED',  '6to4', 'teredo', '6bone', 'v6nic' ]
 
 def get_all_servers_urls():
@@ -66,8 +69,6 @@ def get_server_by_query(query):
             else:
                 if ip_in_network(assignation.block, server.block ):
                     server = assignation
-    if not server:
-        print(assignations)
     return server
 
 class WhoisFetcher(object):
@@ -134,7 +135,7 @@ class WhoisFetcher(object):
             if self.text != '' and self.server in self.splitted:
                 self.text += self.s.recv(4096).rstrip()
         if loop == 5:
-            print("error (no response) with query: " + query + " on server " + self.server)
+            syslog.syslog(syslog.LOG_ERR, "error (no response) with query: " + query + " on server " + self.server)
         part = self.whois_part.get(self.server, None)
         if part:
             self.text = self.text.partition(part)[2]

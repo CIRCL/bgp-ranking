@@ -37,8 +37,8 @@ if sys.argv[1] == "start":
         syslog.syslog(syslog.LOG_INFO, option + " to start...")
         proc = service_start(servicename = service, param = option)
         writepid(processname = option, proc = proc)
-        print(pidof(processname=option))
-        syslog.syslog(syslog.LOG_INFO, pidof(processname=option))
+        print(option + ' running at ' + str(pidof(processname=option)))
+        syslog.syslog(syslog.LOG_INFO, option + ' running at ' + str(pidof(processname=option)))
 
 elif sys.argv[1] == "stop":
     print("Stopping sorting...")

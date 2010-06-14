@@ -9,11 +9,8 @@ temporary_dir = config.get('fetch_files','tmp_dir')
 old_dir = config.get('fetch_files','old_dir')
 sleep_timer = int(config.get('global','sleep_timer'))
 
-import logging
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(levelname)-8s %(message)s',
-                    datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename=os.path.join(root_dir,config.get('logging','log_fetch_raw_files')))
+import syslog
+syslog.openlog('BGP_Ranking_Fetch_Raw_Files', syslog.LOG_PID, syslog.LOG_USER)
 
 import datetime 
 import urllib
@@ -49,10 +46,8 @@ while 1:
             break
     if drop_file:
         os.unlink(temp_filename)
-#        print('No new file on ' + args[1])
-        logging.info('No new file on ' + args[1])
+        syslog.syslog(syslog.LOG_INFO, 'No new file on ' + args[1])
     else:
         os.rename(temp_filename, filename)
-#        print('New file on ' + args[1])
-        logging.info('New file on ' + args[1])
+        syslog.syslog(syslog.LOG_INFO, 'New file on ' + args[1])
     time.sleep(sleep_timer)

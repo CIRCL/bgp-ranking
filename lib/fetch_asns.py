@@ -13,6 +13,9 @@ config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
 sleep_timer = int(config.get('global','sleep_timer_short'))
 
+import syslog
+syslog.openlog('BGP_Ranking_Fetching', syslog.LOG_PID, syslog.LOG_USER)
+
 import redis
 import time
 
@@ -125,7 +128,7 @@ class FetchASNs():
                     self.__update_db_ris(description, entry)
             self.ips_descriptions = deferred
             time.sleep(sleep_timer)
-            print('IP Desc: ' + str(len(self.ips_descriptions)))
+            syslog.syslog(syslog.LOG_DEBUG, 'RIS Whois to fetch: ' + str(len(self.ips_descriptions)))
         self.__commit()
 
 
@@ -150,5 +153,5 @@ class FetchASNs():
                     description.whois = unicode(splitted[2])
             self.ips_descriptions = deferred
             time.sleep(sleep_timer)
-            print('Descriptions to fetch: ' + str(len(self.ips_descriptions)))
+            syslog.syslog(syslog.LOG_DEBUG, 'Whois to fetch: ' + str(len(self.ips_descriptions)))
         self.__commit()

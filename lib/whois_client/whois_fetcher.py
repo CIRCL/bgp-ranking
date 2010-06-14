@@ -3,19 +3,28 @@
 # Original Idea :
 # =>  http://code.google.com/p/pywhois/source/browse/trunk/pywhois/parser.py
 
-import re
+
+if __name__ == "__main__":
+    import ConfigParser
+    config = ConfigParser.RawConfigParser()
+    config.read("../../etc/bgp-ranking.conf")
+    import sys
+    import os
+    sys.path.append(os.path.join(config.get('global','root'),config.get('global','lib')))
+    
+    
 from db_models.whois import *
 from helpers.ip_manip import *
 from db_models.ranking import *
 from socket import *
+
+import re
 import time
 from elixir import *
 
 import errno
 
-import ConfigParser
-config = ConfigParser.RawConfigParser()
-config.read("../../etc/bgp-ranking.conf")
+
 
 import syslog
 syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_USER)
@@ -89,7 +98,7 @@ class WhoisFetcher(object):
     has_welcome_message = ['riswhois.ripe.net',  'whois.apnic.net',  'whois.ripe.net', 'whois.afrinic.net']
     # Message AFTER the query
     has_info_message = ['whois.ripe.net', 'whois.afrinic.net',  'whois.lacnic.net']
-    # Doesn't support CIDR queries
+    # Doesn't support CIDR queries -> we always do queries with ips 
     need_an_ip = ['whois.arin.net', 'whois.nic.or.kr']
     # The response is splitted....
     splitted = ['whois.nic.or.kr']
@@ -121,19 +130,28 @@ class WhoisFetcher(object):
         pre_options = self.pre_options
         if keepalive:
             pre_options += self.keepalive_options
-# The query is always an IP 
-#        if self.server in self.need_an_ip:
-#            query = first_ip(query)
         self.s.send(pre_options + query + self.post_options +' \n')
         if self.server in self.has_info_message:
             self.s.recv(2048)
         self.text = ''
         loop = 0
-        while self.text == '' and loop < 5  :
-            self.text = self.s.recv(4096).rstrip()
+        done = False
+        fs = self.s.makefile()
+        while self.text == '' :
+            self.text = fs.readline()
             loop += 1
-            if self.text != '' and self.server in self.splitted:
-                self.text += self.s.recv(4096).rstrip()
+            if loop >= 5:
+                done = True
+                break
+        prec = ''
+        while not done:
+            temp = fs.readline()
+            if len(temp) == 0 or prec == temp == '\n':
+                done = True
+            else:
+                self.text += temp 
+                prec = temp 
+            loop += 1
         if loop == 5:
             syslog.syslog(syslog.LOG_ERR, "error (no response) with query: " + query + " on server " + self.server)
         part = self.whois_part.get(self.server, None)
@@ -163,3 +181,24 @@ class WhoisFetcher(object):
     
     def __repr__(self):
         return self.text
+
+if __name__ == "__main__":
+    f = WhoisFetcher('whois.arin.net')
+    f.connect()
+    print(f.fetch_whois('127.0.0.1', True))
+    print(f.fetch_whois('127.0.0.1', True))
+    print(f.fetch_whois('127.0.0.1', False))
+    f.disconnect()
+    f = WhoisFetcher('whois.ripe.net')
+    f.connect()
+    print(f.fetch_whois('127.0.0.1', True))
+    print(f.fetch_whois('127.0.0.1', True))
+    print(f.fetch_whois('127.0.0.1', False))
+    f.disconnect()
+    f = WhoisFetcher('whois.lacnic.net')
+    f.connect()
+    print(f.fetch_whois('200.3.14.10', False))
+    f.disconnect()
+    
+    
+    

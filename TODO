@@ -8,3 +8,6 @@ General:
 - Improve configuration
 - Improve documentation 
 - Make changelog 
+
+Whois Client - assignations: 
+Quit mysql and put the database into redis! With the same index model as the whois server 

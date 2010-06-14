@@ -79,7 +79,11 @@ class IPUpdate ():
         for ip in self.ips:
             checked = ''
             try:
-                checked = str(IPy.IP(ip))
+                ip_temp = IPy.IP(ip)
+                if ip_temp.iptype() != 'PUBLIC':
+                    syslog.syslog(syslog.LOG_ERR, str(ip_temp) + ' is not a PUBLIC IP Address but is ' + ip_temp.iptype())
+                    continue
+                checked = str(ip_temp)
             except :
                 syslog.syslog(syslog.LOG_ERR, 'error with IP:' + ip)
                 continue
@@ -108,7 +112,11 @@ class IPUpdate ():
         for ip in self.ips:
             checked = ''
             try:
-                checked = str(IPy.IP(ip[0]))
+                ip_temp = IPy.IP(ip[0])
+                if ip_temp.iptype() != 'PUBLIC':
+                    syslog.syslog(syslog.LOG_ERR, str(ip_temp) + ' is not a PUBLIC IP Address but is ' + ip_temp.iptype())
+                    continue
+                checked = str(ip_temp)
             except :
                 syslog.syslog(syslog.LOG_ERR, 'error with IP:' + ip[0])
                 continue

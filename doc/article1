@@ -1,69 +1,102 @@
-BGP AS / ISP Security Ranking - Introduction and Datasets 
-
-I am currently working on a project which aims to provide a whole architecture to parse dataset (logs, reports...), get the whois informations to know the owners of the IPs/Networks/ASNs and generate reports based on this informations.
-It is open source and available there: http://gitorious.org/bgp-ranking
-
-* Context 
-
-For an Internet Service Provider, AS numbers are a logical representation of the other ISP peering or communicating with his autonomous system. ISP customers are using the capacity of the Internet Service Provider to reach Internet services over other AS. Some of those communications can be malicious (e.g. due to malware activities on an end-user equipments) and hosted at specific AS location. This project will provide an improved security view on those AS numbers, a trust ranking scheme will be implemented based on existing dataset of compromised systems, malware C&C IP and existing datasets of the ISPs.
-
-If you are interested to use this application for your own purpose with your own datasets, you should read the following: I will give you the basics information on the existing modules to write a new.
-
-* Existing modules 
-
-** Dshield
-
-http://www.dshield.org/xml.html
-
-Dshiels provide two lists: 
-- a list containing the 100 most reported IPs with sometime a reverse dns. We extract only the IPs because the reverse dns are too easy to falsify.
-- the daily sources witch contains ~1.000.000 IPs, probably many false positives but it is at least usefull to stress-test the application :) 
-
-** Zeustracker
-
-http://www.abuse.ch/zeustracker/blocklist.php
-
-Zeus provide a list to track the ZeuS Command&Control servers and malicious hosts which are hosting ZeuS files. It is just a list of ips. 
-
-** Atlas
-
-https://atlas.arbor.net/about/
-
-Active Threat Level Analysis System is a list provided by Arbor which contains many informations on the tipe of the alert. The format of the report is a rss feed.
-The reports are not freely available. 
-
-** Shadowserver
-
-http://www.shadowserver.org/wiki/
-
-Shadowserver provide three lists containing about the same informations as atlas but are csv files. Of course, the three reports are slightly differents and needs three differents parsers... :) 
-The reports are not freely available. 
-
-
-* Write a new module
-
-Each dataset needs a proper module to extract the needed informations. You can see the existings modules here: http://gitorious.org/bgp-ranking/bgp-ranking/trees/master/lib/modules
-There is actually two families of modules :
-
-** First family (Dshield and Zeustracker)
-
-The freely available datasets contains the ip addresses and sometimes a reverse dns but this information is so easily falsified that it is totally unnecessary to save it. 
-The dataset may contain the date of generation of the report, it will be extracted too. If there is no date in the file, the date will be set to 'today' (datetime.date.today()).
-
-** Second family (Atlas and Shadowserver)
-
-The reports provide more informations on the attackers. They provide obviously the ip but also the time of the attack, and the attack (the name of the malware, if known). 
-
-Atlas provide some more informations such as an url to get more informations, the coverage time and category of the attack. But the atlas report is an xml file, this informations are extracted of the file and saved as a string in the database. 
-Shadowserver is a csv report, the whole line will be pushed in the database. 
-
-
-I speak of two families because I have two abstract classes an you can see on this schema: 
--> class diag Modules 
-
-** Conclusion 
-
-It is so really easy to write modules for other datasets: the only things to extract at least is the ip addresses and a date as to be given. To automatize the process, you have to give a unique name to your module and a directory where you will put the files to parse. 
-If possible you should edit this file $ROOT/etc/init.d/start_fetch_raw_files.py and put an URL, your dataset will be automatically fetched and parsed. Else you will have to copy manually the dataset in the directory of your module. 
-
-The rest will be done automatically, and 'the rest' will be explained in the next article. 
+<p>
+        I am currently working on a project for my Masterthesis which aims to provide a whole architecture to parse dataset (logs, reports...), get the whois informations to know the owners of the IPs/Networks/ASNs and generate reports based on this informations.<br />
+        It is opensource and <a href="http://gitorious.org/bgp-ranking">available there</a></p>
+<h1>
+        Context</h1>
+<p>
+        For an Internet Service Provider, AS numbers are a logical representation of the other ISP peering or communicating with his autonomous system. ISP customers are using the capacity of the Internet Service Provider to reach Internet services over other AS. Some of those communications can be malicious (e.g. due to malware activities on an end-user equipments) and hosted at specific AS location. This project will provide an improved security view on those AS numbers, a trust ranking scheme will be implemented based on existing dataset of compromised systems, malware C&C IP and existing datasets of the ISPs.<br />
+        <br />
+        If you are interested to use this application for your own purpose with your own datasets, you should read the following: I will give you the basics information on the existing modules and how to write a new.</p>
+<h1>
+        Existing modules</h1>
+<h2>
+        Dshield</h2>
+<p>
+        <a href="http://www.dshield.org/xml.html">Dshiels</a> provide two lists:</p>
+<ul>
+        <li>
+                a list containing the 100 most reported IPs with sometime a reverse dns. We extract only the IPs because the reverse dns are too easy to falsify.
+                <ul>
+                        <li>
+                                <strong>Edit</strong>: the reverse DNS are now saved in the database because they may be useful to trace the evolution of a particular IP </li>
+                </ul>
+        </li>
+        <li>
+                the daily sources which contains ~1.000.000 IPs, probably many false positive entries but it is at least useful to stress-test the application :)</li>
+</ul>
+<h2>
+        Zeustracker</h2>
+<p>
+        <a href="http://www.abuse.ch/zeustracker/blocklist.php">Zeus</a> provide a list to track the ZeuS Command&Control servers and malicious hosts which are hosting ZeuS files. It is just a list of IPs.</p>
+<h2>
+        Atlas</h2>
+<p>
+        <a href="https://atlas.arbor.net/about/">Active Threat Level Analysis System</a> is a list provided by Arbor which contains many informations on the type of the alert. The format of the report is a RSS feed. <br />
+        The reports are not freely available.</p>
+<h2>
+        Shadowserver</h2>
+<p>
+        <a href="http://www.shadowserver.org/wiki/">Shadowserver</a> provide three lists containing about the same informations as atlas but are CSV files. Of course, the three reports are slightly different and need three different parsers... :) <br />
+        The reports are not freely available.</p>
+<h1>
+        Write a new module</h1>
+<p>
+        Each dataset needs a proper module to extract the needed informations. You can already take a look at the <a href="http://gitorious.org/bgp-ranking/bgp-ranking/trees/master/lib/modules">existings modules</a>.</p>
+<p>
+        Every module has his requirements:</p>
+<ul>
+        <li>
+                Unique name: a module is a class, it is obvious that two class with the same name will be a problem...</li>
+        <li>
+                The variable <em>name</em> has to be unique too: it is used in the database to trace the origin of the entry.</li>
+        <li>
+                The variable <em>directory</em>: it is the directory where the script checks periodically if there is a new file.</li>
+</ul>
+<p>
+        There are actually two types of modules :</p>
+<h2>
+        First type (Dshield and Zeustracker)</h2>
+<p>
+        The freely available datasets contains the IP addresses and sometimes a reverse dns but this information is so easily falsified that it is totally unnecessary to save it. <br />
+        The dataset may contain the date of generation of the report, it will be extracted too.</p>
+<p>
+        This type require:</p>
+<ul>
+        <li>
+                The function <em>parse</em>: extract the IPs</li>
+        <li>
+                A variable <em>datetime</em>: if possible extracted of the file. If there is no date in the file, the date will be set to 'today' (datetime.date.today()).</li>
+        <li>
+                The variable <em>module_type</em> setted to 1</li>
+</ul>
+<h2>
+        Second type (Atlas and Shadowserver)</h2>
+<p>
+        The reports provide more informations on the attackers. They provide obviously the ip but also the time of the attack, and the attack (the name of the malware, if known). <br />
+        Atlas provide some more informations such as an URL to get more informations, the coverage time and category of the attack. But the atlas report is an xml file, this informations are extracted of the file and saved as a string in the database. <br />
+        Shadowserver is a CSV report, the whole line will be pushed in the database.</p>
+<p>
+        This type require:</p>
+<ul>
+        <li>
+                The Function <em>parse</em> which return a table of table with each line like: [IP, date, infection, rest of the line]</li>
+        <li>
+                The variable <em>module_type</em> setted to 2</li>
+</ul>
+<h1>
+        Automation</h1>
+<ol>
+        <li>
+                Edit <em>lib/modules/__init__.py</em> and append the module to import</li>
+        <li>
+                Edit <em>etc/bgp-ranking.conf</em> and append the name of your new class to the item <em>modules_to_parse</em></li>
+</ol>
+<p>
+        All the files you put into <em>directory</em> will be automatically parsed. It is (of course) possible to automatize this process: you just need to edit <em>etc/bgp-ranking.conf</em> and add in the section <em>raw_fetching </em>an entry like:</p>
+<pre>uniq_name = module directory URL</pre>
+<p>
+        Now your dataset will be automatically fetched and parsed. <br />
+        <br />
+        The rest will be done automatically, and 'the rest' will be explained in the next article :) .</p>
+<p>
+        If you have any questions/remarks, you can contact me on twitter : @raf_iot or on identi.ca: @rafiot.</p>

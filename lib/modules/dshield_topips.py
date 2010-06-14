@@ -16,6 +16,7 @@ class DshieldTopIPs(IPUpdate):
     
     def __init__(self, raw_dir):
         IPUpdate.__init__(self)
+        self.module_type = 2
         self.directory = os.path.join(raw_dir, self.directory)
  
     def parse(self):
@@ -24,6 +25,7 @@ class DshieldTopIPs(IPUpdate):
         self.ips = []
         for file in self.files:
             if not os.path.isdir(file):
-                topips = open(file)
-                self.ips += re.findall('((?:\d{1,3}\.){3}\d{1,3}).*', topips.read())
+                entries = re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s]([^\r\n]*)', open(file).read())
+                for entry in entries:
+                    self.ips.append([entry[0], self.date, '', entry[1]])
                 self.move_file(file)

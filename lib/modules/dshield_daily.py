@@ -3,6 +3,7 @@ import re
 import time
 import datetime
 from datetime import datetime
+import dateutil.parser
 import os
 
 from ip_update import IPUpdate
@@ -25,6 +26,5 @@ class DshieldDaily(IPUpdate):
             if not os.path.isdir(file):
                 daily = open(file).read()
                 self.ips += re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',daily)
-                str_date = re.findall('updated (.*)\n', daily)[0]
-                self.date = datetime.fromtimestamp(time.mktime(time.strptime(str_date, '%Y-%m-%d %H:%M:%S %Z')))
+                self.date = dateutil.parser.parse(re.findall('updated (.*)\n', daily)[0])
                 self.move_file(file)

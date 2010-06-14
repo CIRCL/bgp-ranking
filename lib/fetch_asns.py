@@ -42,7 +42,7 @@ class FetchASNs():
         b. attempt to get the asn whois from redit
             - create the new asn description
             - append the asn description to self.asns_descriptions
-        c. append the ip_description to the deferred list 
+        c. append the ip_description to the deferred list
     4. For each asn_description
         a. attempt to get the asn whois from redit add it to the asn_description
         b. append the ip_description to the deferred list 
@@ -117,7 +117,8 @@ class FetchASNs():
         """
         self.ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.asn==None)[limit_first:limit_last]
         for ip_description in self.ips_descriptions:
-            self.temp_db.rpush(config.get('redis','key_temp_ris'),  ip_description.ip.ip)
+            if not self.cache_db_ris.exists(ip_description.ip.ip):
+                self.temp_db.rpush(config.get('redis','key_temp_ris'),  ip_description.ip.ip)
         while len(self.ips_descriptions) > 0:
             deferred = []
             for description in self.ips_descriptions:

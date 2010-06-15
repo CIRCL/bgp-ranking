@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XMI verified="false" xmi.version="1.2" timestamp="2010-06-10T15:24:53" xmlns:UML="http://schema.omg.org/spec/UML/1.3">
+<XMI verified="false" xmi.version="1.2" timestamp="2010-06-15T14:34:24" xmlns:UML="http://schema.omg.org/spec/UML/1.3">
  <XMI.header>
   <XMI.documentation>
    <XMI.exporter>umbrello uml modeller http://uml.sf.net</XMI.exporter>
@@ -181,363 +181,18 @@
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="fOdG5AlLBHQD" xmi.id="SJwCfX4xDMJe" parent="JhRyhRtBClJs" name=""/>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="qj3andgZPLER" xmi.id="cZhLGq4uun1j" parent="JhRyhRtBClJs" name=""/>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="ixwOWXeXIyTZ" xmi.id="XA0Sy19xJPBw" parent="qj3andgZPLER" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="MbXMEqwxc797" comment="from cli import *" name="Client"/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="UiQWKLwu40F5" name="Atlas">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="8TXLzZBM8Zja"/>
-        <UML:Generalization xmi.idref="QGSvdJlD9FmI"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="W3vfdeDaMpSh" name="__init__">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="7UGhP8GuCCZn" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="9ljrZ2vKGy3h" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="qkNDZnsiYbZ8" name="parse">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="tTH5fosWYDh5" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="cSSqRVYWxmDN" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="0ZnZ9Khll7bA" name="parse_entry">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="Y5WJA8TkD7G3" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="a7gXsrslI7oy" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="teSPr7UrgFQn" type="RDrGjzKjKl44" value="" name="entry"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="y6mGEaC5EcV3" name="extract_from_xml">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="MxuaZNcJKXfT" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="jxvOBJBjPg0X" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="mRIzYY1Wenmq" type="RDrGjzKjKl44" value="" name="rss"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="UiQWKLwu40F5" xmi.id="QGSvdJlD9FmI" parent="veOFqECnoHxu" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="GclnEPmHDh2b" name="DshieldDaily">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="elGHhWtSH5q4"/>
-        <UML:Generalization xmi.idref="AlGb1E9XFdB2"/>
-        <UML:Generalization xmi.idref="ciusbbsoWYWm"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="FxrU3fWPgFmG" name="parse">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="dXINIMjXKYzL" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="20jRcRgQKh3U" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="GclnEPmHDh2b" xmi.id="ciusbbsoWYWm" parent="veOFqECnoHxu" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="DWktlV7lToC6" name="DshieldTopIPs">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="GrUYWV2A3IVJ"/>
-        <UML:Generalization xmi.idref="xNPNXoia6HAY"/>
-        <UML:Generalization xmi.idref="wTkq87u8kBKA"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="1YU2qxLTC9Qx" name="parse">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="48Vue1DdXhfN" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="uivEjnHCj57V" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="DWktlV7lToC6" xmi.id="wTkq87u8kBKA" parent="veOFqECnoHxu" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="dypn5FkzwfBd" name="IPv6Test">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="RSn8Yvdc36Vf"/>
-        <UML:Generalization xmi.idref="ZpdJQfLiWHct"/>
-        <UML:Generalization xmi.idref="lMHN19hxrUtO"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="HHgJL9yQrF0D" name="parse">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="0D5aXjenyK6J" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="AxB2ixyiQueX" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="dypn5FkzwfBd" xmi.id="lMHN19hxrUtO" parent="veOFqECnoHxu" name=""/>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="wrVlkMY5XGzB" xmi.id="AEUxcdSxBXnK" parent="veOFqECnoHxu" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="2ARD5UBmZSH0" name="ShadowserverReport">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="MPlIxKfjN5Dn"/>
-        <UML:Generalization xmi.idref="KpVRYwcqwHV5"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="cX7zaKkYgkQe" name="parse_line">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="VHG91gmOwVqH" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="PIlRLx0Yv6CB" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Bhlezd3Z8AZi" type="RDrGjzKjKl44" value="" name="line"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="2ARD5UBmZSH0" xmi.id="KpVRYwcqwHV5" parent="wrVlkMY5XGzB" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="SopNv0Y4hHie" name="ShadowserverReport2">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="ulD2umiN4wW3"/>
-        <UML:Generalization xmi.idref="GHOEAb1xewRz"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="syiuvDwVTM2D" name="parse_line">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="wnGN9GYh2xJO" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="aoOcNxav3Z9Q" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="H2fh8v2ysjtn" type="RDrGjzKjKl44" value="" name="line"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="SopNv0Y4hHie" xmi.id="GHOEAb1xewRz" parent="wrVlkMY5XGzB" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="srJvRSJgUxNc" name="ShadowserverSinkhole">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="qObi7ST1DkOM"/>
-        <UML:Generalization xmi.idref="poMjuxl3A7VG"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Ct7PbTlZOmaG" name="parse_line">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="OkTmV11a1ype" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="5zzHfbsoW7RN" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="kc4jPRpbIu1t" type="RDrGjzKjKl44" value="" name="line"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="wrVlkMY5XGzB" name="Shadowserver">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="3X4ychoYpN1p"/>
-        <UML:Generalization xmi.idref="AEUxcdSxBXnK"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="7LowgpmhQmEJ" name="__init__">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="2pBhHgwP2iJg" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Ne3UoYwV6sRb" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="V5NvpaEDEIf2" name="parse">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="J5SLok1JpPDd" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="obYuUzVUoeB3" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="zRoBhTEV3kNV" name="move_file">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="Pm4QUQvBEuef" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="hqzTT8WmDx5z" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="h4HURU7OtvaZ" type="RDrGjzKjKl44" value="" name="file"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="srJvRSJgUxNc" xmi.id="poMjuxl3A7VG" parent="wrVlkMY5XGzB" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="U2hJHhUQdgQL" name="ZeustrackerIpBlockList">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="bM31FfZFqcnN"/>
-        <UML:Generalization xmi.idref="ZfS5mrQVUUEr"/>
-        <UML:Generalization xmi.idref="wtUnbJbhnBxK"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Xn9NNwifLrw4" name="parse">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="2xYhpmbMXiht" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="5UGKjjpcgj8K" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="U2hJHhUQdgQL" xmi.id="wtUnbJbhnBxK" parent="veOFqECnoHxu" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="cQYxHU1KwFde" name="FetchASNs">
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="f9Nx9KVoAGNU" name="__init__">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="arkEqASTKpQT" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="l5CehaBepde9" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="8tII9dkvjuXQ" name="start">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="KaleOB5W5LmC" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Ui3HMfPwW98K" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="zW5gPb4rJ59d" name="__update_db_ris">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="UIvibUI69Ob8" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="kYXFhfZzELbc" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Uf6X0sixMnbj" type="RDrGjzKjKl44" value="" name="current"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="OgbglkJUGrjv" type="RDrGjzKjKl44" value="" name="data"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="EJ5b7fITLt74" name="__in_current_asns_descriptions">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="8EfR5mWhB4WR" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="bRYrGHlkYeR7" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="8jBI8nQM6TvD" type="RDrGjzKjKl44" value="" name="ip_description"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="KHCstdz2KBKS" name="__get_asns">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="fFdrK9GePQUI" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="yin2BgGIstjy" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="1RKMacmWKZZU" name="__get_whois">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="pPfCp9UrYnD9" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Enm6gV2JlfA3" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="IwLRXJocj1Fq" name="__commit">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="CZNuT86k2R9Z" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="bOeiesxftpUh" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="reLLdM1BmbWq" name="get_asns">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="1Bt7nuLw3Zp4" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="vA1IRfE58e2E" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="99Dt3M6sySBb" type="RDrGjzKjKl44" value="" name="limit_first"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="mCmWlGMgPMyq" type="RDrGjzKjKl44" value="" name="limit_last"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="tuwrK7Q6IAb3" name="get_whois">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="8Sjww8YKr3l9" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="RxiqJeeIpWPc" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="QlWRIKVBEP2Y" type="RDrGjzKjKl44" value="" name="limit_first"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="WQcmaDo19UpQ" type="RDrGjzKjKl44" value="" name="limit_last"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="veOFqECnoHxu" name="IPUpdate">
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="PzfiXCCjzypf" name="__init__">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="1xBYiMh5LKnq" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="RqzCV7DIWsUK" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="XxZUvN8LD7Xg" name="parse">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="WqCr8xgdvD8o" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="CjzhbR1bOA96" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="aG9lLfSVORCx" name="update">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="TLFMYN87dIsy" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="sBYFLhLrVVhc" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="pXcWPvP5EPFK" name="__preinsert_type1">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="gQSFAs7zNkUn" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="sYs1kMHVAPHh" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="drspH697ez8M" name="__insert_type1">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="QqgoYAZ91PxG" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="JOsRn98Taaii" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="V6N74UUNsMpf" name="__preinsert_type2">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="WFIVfFm8J9GL" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Tv61WmkucOg8" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="dkjV4W8XREXx" name="__insert_type2">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="DQVUalqBTXhX" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="1HqbdWi9k0eN" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="iAnXOLz7eYZs" name="move_file">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="cenECN7wmPGU" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="kPKMkEWmwrIB" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="uMRiSBUBKHgg" type="RDrGjzKjKl44" value="" name="file"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="vKUHjeEcqnr9" name="IPs">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="BXcopVlinDzX"/>
-        <UML:Generalization xmi.idref="EXeXgWt7CLGg"/>
-        <UML:Generalization xmi.idref="Q7P8BOTLxDnD"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="wPEjcDEUPJ7M" name="__repr__">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="wGeehIAdiMKK" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="FuoIe9023mPm" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="vKUHjeEcqnr9" xmi.id="Q7P8BOTLxDnD" parent="SAzyeea5znRV" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="XXmxquH4m3MR" name="IPsDescriptions">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="DKTG6r015cdm"/>
-        <UML:Generalization xmi.idref="6f84VHHuDU47"/>
-        <UML:Generalization xmi.idref="5ksM3ewXiTb8"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="3Ml8yOsqADRH" name="__repr__">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="QaN6mjso3duz" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="tMu11U0ZM3rH" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="XXmxquH4m3MR" xmi.id="5ksM3ewXiTb8" parent="SAzyeea5znRV" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="znp7yGNpaHra" name="ASNs">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="mr76vyNJYkNI"/>
-        <UML:Generalization xmi.idref="GlkfelQMshmF"/>
-        <UML:Generalization xmi.idref="LWz4Qoecp1Y8"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="inREVoVw2ZOs" name="__repr__">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="wDoCyEKe1lrW" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="YpgI3c1WuZaU" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="znp7yGNpaHra" xmi.id="LWz4Qoecp1Y8" parent="SAzyeea5znRV" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="ZKQbtoSQb8if" name="ASNsDescriptions">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="khBdEj7AxwLt"/>
-        <UML:Generalization xmi.idref="TIvv61eO0xiG"/>
-        <UML:Generalization xmi.idref="9Cu7zJvU33wl"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="zWhuS0lZfGj3" name="__repr__">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="KnKc0jAxFprg" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="ZLyDOVjGShhW" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="ZKQbtoSQb8if" xmi.id="9Cu7zJvU33wl" parent="SAzyeea5znRV" name=""/>
       <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="j7bZLv87heOK" name="Root">
        <UML:GeneralizableElement.generalization>
@@ -582,57 +237,7 @@
        </UML:Classifier.feature>
       </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="7HlShLThoYR7" xmi.id="GIw6jy2vxevy" parent="JhRyhRtBClJs" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="9KaL4c1z0YNr" name="Connector">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="JN9qL4hen42X"/>
-        <UML:Generalization xmi.idref="Y76dCNI6t4wT"/>
-        <UML:Generalization xmi.idref="ZUsQX5YM4aG6"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="P8xAAzi6r0A8" name="__init__">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="hYbYYmgU4Cj7" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="yKXE5GXQ1plI" type="RDrGjzKjKl44" value="" name="self"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="SwsSJJniPkqX" type="RDrGjzKjKl44" value="" name="server"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="SGVR3HjTDcvU" name="__connect">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="BGaDSHLsVqIW" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="tgAGO1n5XPb6" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="51zHbujSasiw" name="__disconnect">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="KY7oPPKSPKhy" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="tW1QvbU4p3FF" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="CPRlH7hAbhYU" name="launch">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="pT8Cnp8xEXiV" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="I1Y74mMMKRAh" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="9KaL4c1z0YNr" xmi.id="ZUsQX5YM4aG6" parent="JhRyhRtBClJs" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="0WSPHxed7QPb" name="Assignations">
-       <UML:GeneralizableElement.generalization>
-        <UML:Generalization xmi.idref="OaP4C7QGkwV5"/>
-        <UML:Generalization xmi.idref="yij95HVbbM9W"/>
-        <UML:Generalization xmi.idref="Sle9hANPqZZV"/>
-       </UML:GeneralizableElement.generalization>
-       <UML:Classifier.feature>
-        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="H5q0zL3guHoj" name="__repr__">
-         <UML:BehavioralFeature.parameter>
-          <UML:Parameter kind="return" xmi.id="ycOLk3v27l06" type="RDrGjzKjKl44"/>
-          <UML:Parameter visibility="private" isSpecification="false" xmi.id="KUWtbkhgZ9ql" type="RDrGjzKjKl44" value="" name="self"/>
-         </UML:BehavioralFeature.parameter>
-        </UML:Operation>
-       </UML:Classifier.feature>
-      </UML:Class>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="SAzyeea5znRV" name="Entity"/>
       <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="0WSPHxed7QPb" xmi.id="Sle9hANPqZZV" parent="SAzyeea5znRV" name=""/>
       <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="2zLBVhgAtMUp" name="Pooler">
        <UML:Classifier.feature>
@@ -706,11 +311,516 @@
         </UML:Operation>
        </UML:Classifier.feature>
       </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="fOdG5AlLBHQD" xmi.id="5zyr8dfVBLg6" parent="JhRyhRtBClJs" name=""/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="qj3andgZPLER" xmi.id="e8968zmJZ0XK" parent="JhRyhRtBClJs" name=""/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="ixwOWXeXIyTZ" xmi.id="JI5rGd9SdEJh" parent="qj3andgZPLER" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="MbXMEqwxc797" comment="from cli import *" name="Client"/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="cQYxHU1KwFde" name="FetchASNs">
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="f9Nx9KVoAGNU" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="arkEqASTKpQT" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="l5CehaBepde9" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="8tII9dkvjuXQ" name="start">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="KaleOB5W5LmC" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Ui3HMfPwW98K" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="zW5gPb4rJ59d" name="__update_db_ris">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="UIvibUI69Ob8" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="kYXFhfZzELbc" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Uf6X0sixMnbj" type="RDrGjzKjKl44" value="" name="current"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="OgbglkJUGrjv" type="RDrGjzKjKl44" value="" name="data"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="EJ5b7fITLt74" name="__in_current_asns_descriptions">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="8EfR5mWhB4WR" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="bRYrGHlkYeR7" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="8jBI8nQM6TvD" type="RDrGjzKjKl44" value="" name="ip_description"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="KHCstdz2KBKS" name="__get_asns">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="fFdrK9GePQUI" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="yin2BgGIstjy" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="1RKMacmWKZZU" name="__get_whois">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="pPfCp9UrYnD9" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Enm6gV2JlfA3" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="IwLRXJocj1Fq" name="__commit">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="CZNuT86k2R9Z" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="bOeiesxftpUh" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="reLLdM1BmbWq" name="get_asns">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="1Bt7nuLw3Zp4" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="vA1IRfE58e2E" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="99Dt3M6sySBb" type="RDrGjzKjKl44" value="" name="limit_first"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="mCmWlGMgPMyq" type="RDrGjzKjKl44" value="" name="limit_last"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="tuwrK7Q6IAb3" name="get_whois">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="8Sjww8YKr3l9" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="RxiqJeeIpWPc" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="QlWRIKVBEP2Y" type="RDrGjzKjKl44" value="" name="limit_first"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="WQcmaDo19UpQ" type="RDrGjzKjKl44" value="" name="limit_last"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="vKUHjeEcqnr9" name="IPs">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="BXcopVlinDzX"/>
+        <UML:Generalization xmi.idref="EXeXgWt7CLGg"/>
+        <UML:Generalization xmi.idref="Q7P8BOTLxDnD"/>
+        <UML:Generalization xmi.idref="HkE4pvqKRz9e"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="wPEjcDEUPJ7M" name="__repr__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="wGeehIAdiMKK" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="FuoIe9023mPm" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="vKUHjeEcqnr9" xmi.id="HkE4pvqKRz9e" parent="SAzyeea5znRV" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="XXmxquH4m3MR" name="IPsDescriptions">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="DKTG6r015cdm"/>
+        <UML:Generalization xmi.idref="6f84VHHuDU47"/>
+        <UML:Generalization xmi.idref="5ksM3ewXiTb8"/>
+        <UML:Generalization xmi.idref="qBLlMaH0cQTC"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="3Ml8yOsqADRH" name="__repr__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="QaN6mjso3duz" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="tMu11U0ZM3rH" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="XXmxquH4m3MR" xmi.id="qBLlMaH0cQTC" parent="SAzyeea5znRV" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="znp7yGNpaHra" name="ASNs">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="mr76vyNJYkNI"/>
+        <UML:Generalization xmi.idref="GlkfelQMshmF"/>
+        <UML:Generalization xmi.idref="LWz4Qoecp1Y8"/>
+        <UML:Generalization xmi.idref="EhuVw5IaNk2L"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="inREVoVw2ZOs" name="__repr__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="wDoCyEKe1lrW" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="YpgI3c1WuZaU" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="znp7yGNpaHra" xmi.id="EhuVw5IaNk2L" parent="SAzyeea5znRV" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="ZKQbtoSQb8if" name="ASNsDescriptions">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="khBdEj7AxwLt"/>
+        <UML:Generalization xmi.idref="TIvv61eO0xiG"/>
+        <UML:Generalization xmi.idref="9Cu7zJvU33wl"/>
+        <UML:Generalization xmi.idref="DTBvhXIlaGR6"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="zWhuS0lZfGj3" name="__repr__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="KnKc0jAxFprg" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="ZLyDOVjGShhW" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="ZKQbtoSQb8if" xmi.id="DTBvhXIlaGR6" parent="SAzyeea5znRV" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="0WSPHxed7QPb" name="Assignations">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="OaP4C7QGkwV5"/>
+        <UML:Generalization xmi.idref="yij95HVbbM9W"/>
+        <UML:Generalization xmi.idref="Sle9hANPqZZV"/>
+        <UML:Generalization xmi.idref="paCETXCfoY1d"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="H5q0zL3guHoj" name="__repr__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="ycOLk3v27l06" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="KUWtbkhgZ9ql" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="SAzyeea5znRV" name="Entity"/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="0WSPHxed7QPb" xmi.id="paCETXCfoY1d" parent="SAzyeea5znRV" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="T1VD7UaDQCY8" name="Abusix">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="sBDY6Hr7GWoG"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Ty3hUrxLWpKq" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="JQHnGbdwSEXJ" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="ircbsacM8nEr" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="WDQQNZOqVRVx" type="RDrGjzKjKl44" value="" name="raw_dir"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="o8fvvskR3ArQ" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="yKKOWrhJzLCs" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="hDEAej5v9MhN" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="T1VD7UaDQCY8" xmi.id="sBDY6Hr7GWoG" parent="veOFqECnoHxu" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="UiQWKLwu40F5" name="Atlas">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="8TXLzZBM8Zja"/>
+        <UML:Generalization xmi.idref="QGSvdJlD9FmI"/>
+        <UML:Generalization xmi.idref="DwJE48ejJsty"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="W3vfdeDaMpSh" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="7UGhP8GuCCZn" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="9ljrZ2vKGy3h" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="qkNDZnsiYbZ8" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="tTH5fosWYDh5" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="cSSqRVYWxmDN" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="0ZnZ9Khll7bA" name="parse_entry">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="Y5WJA8TkD7G3" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="a7gXsrslI7oy" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="teSPr7UrgFQn" type="RDrGjzKjKl44" value="" name="entry"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="y6mGEaC5EcV3" name="extract_from_xml">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="MxuaZNcJKXfT" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="jxvOBJBjPg0X" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="mRIzYY1Wenmq" type="RDrGjzKjKl44" value="" name="rss"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="RhVlZOh8LYoc" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="9nbSLQ4OGvGT" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="5sruEUFQnubR" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="icGTvJHNyn8V" type="RDrGjzKjKl44" value="" name="raw_dir"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="UiQWKLwu40F5" xmi.id="DwJE48ejJsty" parent="veOFqECnoHxu" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="GclnEPmHDh2b" name="DshieldDaily">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="elGHhWtSH5q4"/>
+        <UML:Generalization xmi.idref="AlGb1E9XFdB2"/>
+        <UML:Generalization xmi.idref="ciusbbsoWYWm"/>
+        <UML:Generalization xmi.idref="pJ86hXDGLWrP"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="FxrU3fWPgFmG" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="dXINIMjXKYzL" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="20jRcRgQKh3U" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Ow7jQy83SokG" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="7G3Z2loGMEME" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="DbS8rw6nTATJ" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="1ExB5g2Tc9A2" type="RDrGjzKjKl44" value="" name="raw_dir"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="GclnEPmHDh2b" xmi.id="pJ86hXDGLWrP" parent="veOFqECnoHxu" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="DWktlV7lToC6" name="DshieldTopIPs">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="GrUYWV2A3IVJ"/>
+        <UML:Generalization xmi.idref="xNPNXoia6HAY"/>
+        <UML:Generalization xmi.idref="wTkq87u8kBKA"/>
+        <UML:Generalization xmi.idref="vHmY7VEgGOoA"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="1YU2qxLTC9Qx" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="48Vue1DdXhfN" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="uivEjnHCj57V" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="3zeJOST7OcNX" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="blazMxUhF6zH" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="LIcK30t0rAcD" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="lQQby9Zz9BIV" type="RDrGjzKjKl44" value="" name="raw_dir"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="DWktlV7lToC6" xmi.id="vHmY7VEgGOoA" parent="veOFqECnoHxu" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="dypn5FkzwfBd" name="IPv6Test">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="RSn8Yvdc36Vf"/>
+        <UML:Generalization xmi.idref="ZpdJQfLiWHct"/>
+        <UML:Generalization xmi.idref="lMHN19hxrUtO"/>
+        <UML:Generalization xmi.idref="QNyftNsbK2NR"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="HHgJL9yQrF0D" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="0D5aXjenyK6J" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="AxB2ixyiQueX" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="dypn5FkzwfBd" xmi.id="QNyftNsbK2NR" parent="veOFqECnoHxu" name=""/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="wrVlkMY5XGzB" xmi.id="zsSZ4qi3X90l" parent="veOFqECnoHxu" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="2ARD5UBmZSH0" name="ShadowserverReport">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="MPlIxKfjN5Dn"/>
+        <UML:Generalization xmi.idref="KpVRYwcqwHV5"/>
+        <UML:Generalization xmi.idref="7wX9WNPZIwRl"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="cX7zaKkYgkQe" name="parse_line">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="VHG91gmOwVqH" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="PIlRLx0Yv6CB" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Bhlezd3Z8AZi" type="RDrGjzKjKl44" value="" name="line"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="pHH5BioMfV8m" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="6CjjhrWhE4KB" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="2OYczQGNhtCM" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="D67RYz9LEQOP" type="RDrGjzKjKl44" value="" name="raw_dir"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="2ARD5UBmZSH0" xmi.id="7wX9WNPZIwRl" parent="wrVlkMY5XGzB" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="SopNv0Y4hHie" name="ShadowserverReport2">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="ulD2umiN4wW3"/>
+        <UML:Generalization xmi.idref="GHOEAb1xewRz"/>
+        <UML:Generalization xmi.idref="xwA9lZ1RUaLP"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="syiuvDwVTM2D" name="parse_line">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="wnGN9GYh2xJO" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="aoOcNxav3Z9Q" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="H2fh8v2ysjtn" type="RDrGjzKjKl44" value="" name="line"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="CWme651XRnRM" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="WgdxT5HZMov4" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="5HWOkhDpC5pc" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="kGzKtWf30Rf6" type="RDrGjzKjKl44" value="" name="raw_dir"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="SopNv0Y4hHie" xmi.id="xwA9lZ1RUaLP" parent="wrVlkMY5XGzB" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="srJvRSJgUxNc" name="ShadowserverSinkhole">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="qObi7ST1DkOM"/>
+        <UML:Generalization xmi.idref="poMjuxl3A7VG"/>
+        <UML:Generalization xmi.idref="VUSguEKNFXD2"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Ct7PbTlZOmaG" name="parse_line">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="OkTmV11a1ype" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="5zzHfbsoW7RN" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="kc4jPRpbIu1t" type="RDrGjzKjKl44" value="" name="line"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Y9vne6pFB64x" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="d63mA5kNGslt" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="EDAQchvVPNk3" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="WcE9z3eVAXJo" type="RDrGjzKjKl44" value="" name="raw_dir"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="wrVlkMY5XGzB" comment="root_dir = config.get('global','root')" name="Shadowserver">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="3X4ychoYpN1p"/>
+        <UML:Generalization xmi.idref="AEUxcdSxBXnK"/>
+        <UML:Generalization xmi.idref="zsSZ4qi3X90l"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="7LowgpmhQmEJ" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="2pBhHgwP2iJg" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Ne3UoYwV6sRb" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="V5NvpaEDEIf2" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="J5SLok1JpPDd" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="obYuUzVUoeB3" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="zRoBhTEV3kNV" name="move_file">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="Pm4QUQvBEuef" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="hqzTT8WmDx5z" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="h4HURU7OtvaZ" type="RDrGjzKjKl44" value="" name="file"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="rPAOYA9WGq11" name="parse_line">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="c76f7nkyAuMh" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="OE9okj1prPZz" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="srJvRSJgUxNc" xmi.id="VUSguEKNFXD2" parent="wrVlkMY5XGzB" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="U2hJHhUQdgQL" name="ZeustrackerIpBlockList">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="bM31FfZFqcnN"/>
+        <UML:Generalization xmi.idref="ZfS5mrQVUUEr"/>
+        <UML:Generalization xmi.idref="wtUnbJbhnBxK"/>
+        <UML:Generalization xmi.idref="tIAQVN8oIAL6"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Xn9NNwifLrw4" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="2xYhpmbMXiht" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="5UGKjjpcgj8K" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="e9svKD1GySfV" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="A7G7ZuakRVzo" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="DXvHNwnqC2Dw" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="NJX0Ya4Bkx62" type="RDrGjzKjKl44" value="" name="raw_dir"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="veOFqECnoHxu" name="IPUpdate">
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="PzfiXCCjzypf" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="1xBYiMh5LKnq" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="RqzCV7DIWsUK" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="XxZUvN8LD7Xg" name="parse">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="WqCr8xgdvD8o" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="CjzhbR1bOA96" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="aG9lLfSVORCx" name="update">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="TLFMYN87dIsy" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="sBYFLhLrVVhc" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="pXcWPvP5EPFK" name="__preinsert_type1">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="gQSFAs7zNkUn" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="sYs1kMHVAPHh" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="drspH697ez8M" name="__insert_type1">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="QqgoYAZ91PxG" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="JOsRn98Taaii" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="V6N74UUNsMpf" name="__preinsert_type2">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="WFIVfFm8J9GL" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Tv61WmkucOg8" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="dkjV4W8XREXx" name="__insert_type2">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="DQVUalqBTXhX" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="1HqbdWi9k0eN" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="iAnXOLz7eYZs" name="move_file">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="cenECN7wmPGU" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="kPKMkEWmwrIB" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="uMRiSBUBKHgg" type="RDrGjzKjKl44" value="" name="file"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="U2hJHhUQdgQL" xmi.id="tIAQVN8oIAL6" parent="veOFqECnoHxu" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="9KaL4c1z0YNr" name="Connector">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="JN9qL4hen42X"/>
+        <UML:Generalization xmi.idref="Y76dCNI6t4wT"/>
+        <UML:Generalization xmi.idref="ZUsQX5YM4aG6"/>
+        <UML:Generalization xmi.idref="90yG36tfJi0Q"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="P8xAAzi6r0A8" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="hYbYYmgU4Cj7" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="yKXE5GXQ1plI" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="SwsSJJniPkqX" type="RDrGjzKjKl44" value="" name="server"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="SGVR3HjTDcvU" name="__connect">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="BGaDSHLsVqIW" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="tgAGO1n5XPb6" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="51zHbujSasiw" name="__disconnect">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="KY7oPPKSPKhy" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="tW1QvbU4p3FF" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="CPRlH7hAbhYU" name="launch">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="pT8Cnp8xEXiV" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="I1Y74mMMKRAh" type="RDrGjzKjKl44" value="" name="self"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="9KaL4c1z0YNr" xmi.id="90yG36tfJi0Q" parent="JhRyhRtBClJs" name=""/>
       <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="fOdG5AlLBHQD" name="WhoisFetcher">
        <UML:GeneralizableElement.generalization>
         <UML:Generalization xmi.idref="3kZM9i3yBB8y"/>
         <UML:Generalization xmi.idref="SJwCfX4xDMJe"/>
         <UML:Generalization xmi.idref="5zyr8dfVBLg6"/>
+        <UML:Generalization xmi.idref="FWmi7m3WrAnd"/>
        </UML:GeneralizableElement.generalization>
        <UML:Classifier.feature>
         <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="65aFFiDEx4Nk" name="connect">
@@ -755,14 +865,14 @@
         </UML:Operation>
        </UML:Classifier.feature>
       </UML:Class>
-      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="fOdG5AlLBHQD" xmi.id="5zyr8dfVBLg6" parent="JhRyhRtBClJs" name=""/>
-      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="JhRyhRtBClJs" name="object"/>
-      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="qj3andgZPLER" xmi.id="e8968zmJZ0XK" parent="JhRyhRtBClJs" name=""/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="fOdG5AlLBHQD" xmi.id="FWmi7m3WrAnd" parent="JhRyhRtBClJs" name=""/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="qj3andgZPLER" xmi.id="KeeyF9oEvNpm" parent="JhRyhRtBClJs" name=""/>
       <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="ixwOWXeXIyTZ" name="Whois">
        <UML:GeneralizableElement.generalization>
         <UML:Generalization xmi.idref="kWZk9hoy6Lkj"/>
         <UML:Generalization xmi.idref="XA0Sy19xJPBw"/>
         <UML:Generalization xmi.idref="JI5rGd9SdEJh"/>
+        <UML:Generalization xmi.idref="ACP5ZCrnhupu"/>
        </UML:GeneralizableElement.generalization>
       </UML:Class>
       <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="qj3andgZPLER" name="AbstractWhoisParser">
@@ -770,9 +880,100 @@
         <UML:Generalization xmi.idref="phAg7jivRlVE"/>
         <UML:Generalization xmi.idref="cZhLGq4uun1j"/>
         <UML:Generalization xmi.idref="e8968zmJZ0XK"/>
+        <UML:Generalization xmi.idref="KeeyF9oEvNpm"/>
        </UML:GeneralizableElement.generalization>
       </UML:Class>
-      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="ixwOWXeXIyTZ" xmi.id="JI5rGd9SdEJh" parent="qj3andgZPLER" name=""/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="ixwOWXeXIyTZ" xmi.id="ACP5ZCrnhupu" parent="qj3andgZPLER" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="lJuSBhKRH3dK" name="Master">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="yulNgVtmftlr"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="KBTz4EoI925c" name="default">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="c52l77Nj6BGw" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="e1qYpScLO67N" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="FCHGzZyJkPIm" type="RDrGjzKjKl44" value="" name="query"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="bqFzwKKBVaSU" name="query_db">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="JT9o3ZHCx53i" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="9Ootn4dP9d8F" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="lTwpcCjD3zAz" type="RDrGjzKjKl44" value="" name="query"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="7e6FHCU0gQqG" name="make_ip_graf">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="6yvAgWGyNX8K" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="dZSeWcbo5kc6" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="HtICwJt2xzHF" type="RDrGjzKjKl44" value="" name="query"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="BlFp934kdWO7" type="RDrGjzKjKl44" value="" name="descriptions"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="q1Mo0d1AMExV" name="make_asn_graf">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="eTUBNGQlGbWq" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="I1EtVaycYumF" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="Q2BnZJ5OLPAJ" type="RDrGjzKjKl44" value="" name="query"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="2BRMNPqdO4Uu" type="RDrGjzKjKl44" value="" name="descriptions"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="JhRyhRtBClJs" name="object"/>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="lJuSBhKRH3dK" xmi.id="yulNgVtmftlr" parent="JhRyhRtBClJs" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="b6XtOzL1MJP6" name="ASGraf">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="NdJtVZS6V13k"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="pwRIvV3uHLeT" name="prepare_graf">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="QsthBVAz8QGK" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="ndFJBtChp3X7" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="KWiClCVY6xrz" type="RDrGjzKjKl44" value="" name="descriptions"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="b6XtOzL1MJP6" xmi.id="NdJtVZS6V13k" parent="scED1MV2XwOs" name=""/>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="HSz6UXBo1tzk" name="IPGraf">
+       <UML:GeneralizableElement.generalization>
+        <UML:Generalization xmi.idref="5UJ9P88py2X9"/>
+       </UML:GeneralizableElement.generalization>
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="ZpiVpDeLtjzu" name="prepare_graf">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="K2lDli6pdJcR" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="4vDpqc5HA7ic" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="8u8ZLnSuc9PQ" type="RDrGjzKjKl44" value="" name="descriptions"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Class visibility="public" isSpecification="false" namespace="Logical View" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="scED1MV2XwOs" name="AbstractGraf">
+       <UML:Classifier.feature>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="LCWiGyctR64m" name="__init__">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="k8KCCMwWoQ6p" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="KSVa12Otea5d" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="wafRW2KqEoYT" type="RDrGjzKjKl44" value="" name="ip"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+        <UML:Operation visibility="public" isSpecification="false" isQuery="false" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="SVg43lh0JLRq" name="make_graph">
+         <UML:BehavioralFeature.parameter>
+          <UML:Parameter kind="return" xmi.id="dwbxH0lckP7H" type="RDrGjzKjKl44"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="LleXXCyIIISU" type="RDrGjzKjKl44" value="" name="self"/>
+          <UML:Parameter visibility="private" isSpecification="false" xmi.id="eM0Qm4DCXuGb" type="RDrGjzKjKl44" value="" name="save_path"/>
+         </UML:BehavioralFeature.parameter>
+        </UML:Operation>
+       </UML:Classifier.feature>
+      </UML:Class>
+      <UML:Generalization discriminator="" visibility="public" isSpecification="false" namespace="Logical View" child="HSz6UXBo1tzk" xmi.id="5UJ9P88py2X9" parent="scED1MV2XwOs" name=""/>
+      <UML:Interface visibility="public" isSpecification="false" namespace="Logical View" isAbstract="true" isLeaf="false" isRoot="false" xmi.id="rUDGx6QkM6pl" name="new_interface"/>
+      <UML:Interface visibility="public" isSpecification="false" namespace="Logical View" isAbstract="true" isLeaf="false" isRoot="false" xmi.id="PhiS7x97xaJW" name="new_interface_1"/>
+      <UML:Interface visibility="public" isSpecification="false" namespace="Logical View" isAbstract="true" isLeaf="false" isRoot="false" xmi.id="P9jlGWUPfu7N" name="new_interface_2"/>
      </UML:Namespace.ownedElement>
      <XMI.extension xmi.extender="umbrello">
       <diagrams>
@@ -846,57 +1047,71 @@
        </diagram>
        <diagram showopsig="1" linecolor="#ff0000" snapx="10" showattribassocs="1" snapy="10" linewidth="0" showattsig="1" showpubliconly="1" showpackage="1" showstereotype="1" name="Modules" font="Sans Serif,9,-1,0,50,0,0,0,0,0" canvasheight="851" canvaswidth="1448" localid="" snapcsgrid="0" showgrid="0" showops="1" usefillcolor="1" fillcolor="#ffff00" zoom="100" xmi.id="qQY0SAVNduSD" documentation="" showscope="1" snapgrid="0" showatts="1" type="1">
         <widgets>
-         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="24" showattsigs="601" showstereotype="1" y="19" showattributes="1" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="278" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="veOFqECnoHxu" showscope="1" height="133" showopsigs="601"/>
-         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="27" showattsigs="601" showstereotype="1" y="208" showattributes="1" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="278" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="wrVlkMY5XGzB" showscope="1" height="63" showopsigs="601"/>
-         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="0" showattsigs="601" showstereotype="1" y="333" showattributes="1" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="284" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="2ARD5UBmZSH0" showscope="1" height="35" showopsigs="601"/>
-         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="37" showattsigs="601" showstereotype="1" y="429" showattributes="1" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="284" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="SopNv0Y4hHie" showscope="1" height="35" showopsigs="601"/>
-         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="330" showattsigs="601" showstereotype="1" y="231" showattributes="1" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="284" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="srJvRSJgUxNc" showscope="1" height="35" showopsigs="601"/>
-         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="372" showattsigs="601" showstereotype="1" y="23" showattributes="1" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="181" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="GclnEPmHDh2b" showscope="1" height="35" showopsigs="601"/>
-         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="372" showattsigs="601" showstereotype="1" y="84" showattributes="1" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="181" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="DWktlV7lToC6" showscope="1" height="35" showopsigs="601"/>
-         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="373" showattsigs="601" showstereotype="1" y="134" showattributes="1" font="Sans Serif,9,-1,0,50,0,0,0,0,0" width="181" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="U2hJHhUQdgQL" showscope="1" height="35" showopsigs="601"/>
+         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="710" showattsigs="601" showstereotype="1" y="139" showattributes="1" font="Sans Serif,9,-1,0,75,0,0,0,0,0" width="278" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="veOFqECnoHxu" showscope="1" height="133" showopsigs="601"/>
+         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="733" showattsigs="601" showstereotype="1" y="326" showattributes="1" font="Sans Serif,9,-1,0,75,0,0,0,0,0" width="278" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="wrVlkMY5XGzB" showscope="1" height="77" showopsigs="601"/>
+         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="630" showattsigs="601" showstereotype="1" y="449" showattributes="1" font="Sans Serif,9,-1,0,75,0,0,0,0,0" width="290" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="2ARD5UBmZSH0" showscope="1" height="49" showopsigs="601"/>
+         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="771" showattsigs="601" showstereotype="1" y="640" showattributes="1" font="Sans Serif,9,-1,0,75,0,0,0,0,0" width="290" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="SopNv0Y4hHie" showscope="1" height="49" showopsigs="601"/>
+         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="705" showattsigs="601" showstereotype="1" y="539" showattributes="1" font="Sans Serif,9,-1,0,75,0,0,0,0,0" width="290" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="srJvRSJgUxNc" showscope="1" height="49" showopsigs="601"/>
+         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="355" showattsigs="601" showstereotype="1" y="62" showattributes="1" font="Sans Serif,9,-1,0,75,0,0,0,0,0" width="290" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="GclnEPmHDh2b" showscope="1" height="49" showopsigs="601"/>
+         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="357" showattsigs="601" showstereotype="1" y="182" showattributes="1" font="Sans Serif,9,-1,0,75,0,0,0,0,0" width="290" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="DWktlV7lToC6" showscope="1" height="49" showopsigs="601"/>
+         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="358" showattsigs="601" showstereotype="1" y="322" showattributes="1" font="Sans Serif,9,-1,0,75,0,0,0,0,0" width="290" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="U2hJHhUQdgQL" showscope="1" height="49" showopsigs="601"/>
+         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="692" showattsigs="601" showstereotype="1" y="0" showattributes="1" font="Sans Serif,9,-1,0,75,0,0,0,0,0" width="325" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="UiQWKLwu40F5" showscope="1" height="91" showopsigs="601"/>
+         <classwidget linecolor="none" usesdiagramfillcolor="1" linewidth="none" showoperations="1" usesdiagramusefillcolor="1" showpubliconly="1" showpackage="1" x="1074" showattsigs="601" showstereotype="1" y="138" showattributes="1" font="Sans Serif,9,-1,0,75,0,0,0,0,0" width="290" isinstance="0" usefillcolor="1" fillcolor="none" xmi.id="T1VD7UaDQCY8" showscope="1" height="49" showopsigs="601"/>
         </widgets>
         <messages/>
         <associations>
          <assocwidget indexa="1" indexb="1" widgetaid="wrVlkMY5XGzB" linecolor="none" totalcounta="2" xmi.id="3X4ychoYpN1p" widgetbid="veOFqECnoHxu" totalcountb="2" type="500" linewidth="none">
           <linepath>
-           <startpoint startx="172" starty="208"/>
-           <endpoint endx="172" endy="152"/>
+           <startpoint startx="834" starty="326"/>
+           <endpoint endx="834" endy="272"/>
           </linepath>
          </assocwidget>
-         <assocwidget indexa="1" indexb="1" widgetaid="2ARD5UBmZSH0" linecolor="none" totalcounta="2" xmi.id="MPlIxKfjN5Dn" widgetbid="wrVlkMY5XGzB" totalcountb="3" type="500" linewidth="none">
+         <assocwidget indexa="1" indexb="1" widgetaid="2ARD5UBmZSH0" linecolor="none" totalcounta="2" xmi.id="MPlIxKfjN5Dn" widgetbid="wrVlkMY5XGzB" totalcountb="4" type="500" linewidth="none">
           <linepath>
-           <startpoint startx="72" starty="333"/>
-           <endpoint endx="72" endy="271"/>
+           <startpoint startx="733" starty="449"/>
+           <endpoint endx="733" endy="403"/>
           </linepath>
          </assocwidget>
-         <assocwidget indexa="1" indexb="2" widgetaid="SopNv0Y4hHie" linecolor="none" totalcounta="2" xmi.id="ulD2umiN4wW3" widgetbid="wrVlkMY5XGzB" totalcountb="3" type="500" linewidth="none">
+         <assocwidget indexa="1" indexb="3" widgetaid="SopNv0Y4hHie" linecolor="none" totalcounta="2" xmi.id="ulD2umiN4wW3" widgetbid="wrVlkMY5XGzB" totalcountb="4" type="500" linewidth="none">
           <linepath>
-           <startpoint startx="305" starty="429"/>
-           <endpoint endx="305" endy="271"/>
+           <startpoint startx="1011" starty="640"/>
+           <endpoint endx="1011" endy="403"/>
           </linepath>
          </assocwidget>
-         <assocwidget indexa="1" indexb="1" widgetaid="srJvRSJgUxNc" linecolor="none" totalcounta="2" xmi.id="qObi7ST1DkOM" widgetbid="wrVlkMY5XGzB" totalcountb="2" type="500" linewidth="none">
+         <assocwidget indexa="1" indexb="2" widgetaid="srJvRSJgUxNc" linecolor="none" totalcounta="2" xmi.id="qObi7ST1DkOM" widgetbid="wrVlkMY5XGzB" totalcountb="4" type="500" linewidth="none">
           <linepath>
-           <startpoint startx="330" starty="248"/>
-           <endpoint endx="305" endy="248"/>
+           <startpoint startx="941" starty="539"/>
+           <endpoint endx="941" endy="403"/>
           </linepath>
          </assocwidget>
          <assocwidget indexa="1" indexb="1" widgetaid="GclnEPmHDh2b" linecolor="none" totalcounta="2" xmi.id="elGHhWtSH5q4" widgetbid="veOFqECnoHxu" totalcountb="4" type="500" linewidth="none">
           <linepath>
-           <startpoint startx="372" starty="41"/>
-           <endpoint endx="302" endy="41"/>
+           <startpoint startx="645" starty="111"/>
+           <endpoint endx="710" endy="139"/>
           </linepath>
          </assocwidget>
          <assocwidget indexa="1" indexb="2" widgetaid="DWktlV7lToC6" linecolor="none" totalcounta="2" xmi.id="GrUYWV2A3IVJ" widgetbid="veOFqECnoHxu" totalcountb="4" type="500" linewidth="none">
           <linepath>
-           <startpoint startx="372" starty="100"/>
-           <endpoint endx="302" endy="100"/>
+           <startpoint startx="647" starty="208"/>
+           <endpoint endx="710" endy="208"/>
           </linepath>
          </assocwidget>
          <assocwidget indexa="1" indexb="3" widgetaid="U2hJHhUQdgQL" linecolor="none" totalcounta="2" xmi.id="bM31FfZFqcnN" widgetbid="veOFqECnoHxu" totalcountb="4" type="500" linewidth="none">
           <linepath>
-           <startpoint startx="373" starty="152"/>
-           <endpoint endx="302" endy="152"/>
+           <startpoint startx="648" starty="322"/>
+           <endpoint endx="710" endy="272"/>
+          </linepath>
+         </assocwidget>
+         <assocwidget indexa="1" indexb="1" widgetaid="UiQWKLwu40F5" linecolor="none" totalcounta="2" xmi.id="8TXLzZBM8Zja" widgetbid="veOFqECnoHxu" totalcountb="2" type="500" linewidth="none">
+          <linepath>
+           <startpoint startx="839" starty="91"/>
+           <endpoint endx="839" endy="139"/>
+          </linepath>
+         </assocwidget>
+         <assocwidget indexa="1" indexb="1" widgetaid="T1VD7UaDQCY8" linecolor="none" totalcounta="2" xmi.id="sBDY6Hr7GWoG" widgetbid="veOFqECnoHxu" totalcountb="2" type="500" linewidth="none">
+          <linepath>
+           <startpoint startx="1074" starty="169"/>
+           <endpoint endx="988" endy="169"/>
           </linepath>
          </assocwidget>
         </associations>
@@ -908,7 +1123,53 @@
      <UML:Namespace.ownedElement/>
     </UML:Model>
     <UML:Model stereotype="folder" visibility="public" isSpecification="false" namespace="m1" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Component View" name="Component View">
-     <UML:Namespace.ownedElement/>
+     <UML:Namespace.ownedElement>
+      <UML:Artifact visibility="public" isSpecification="false" namespace="Component View" drawas="0" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="JTIG3bkJ5RsD" name="new_artifact"/>
+      <UML:Artifact visibility="public" isSpecification="false" namespace="Component View" drawas="0" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="uVirurag55AV" name="new_artifact_1"/>
+     </UML:Namespace.ownedElement>
+     <XMI.extension xmi.extender="umbrello">
+      <diagrams>
+       <diagram showopsig="1" linecolor="#ff0000" snapx="10" showattribassocs="1" snapy="10" linewidth="0" showattsig="1" showpubliconly="1" showpackage="1" showstereotype="1" name="relations-initscripts" font="Inconsolata,9,-1,5,50,0,0,0,0,0" canvasheight="830" canvaswidth="1637" localid="" snapcsgrid="0" showgrid="1" showops="1" usefillcolor="1" fillcolor="#ffff00" zoom="100" xmi.id="khH0v8KkU3ul" documentation="" showscope="1" snapgrid="1" showatts="1" type="7">
+        <widgets>
+         <notewidget width="151" showstereotype="1" x="190" noteType="0" y="290" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="J3fBoP7mQFr6" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="lib/helpers/initscript"/>
+         <notewidget width="163" showstereotype="1" x="390" noteType="0" y="70" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="start_fetch_raw_files.py"/>
+         <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="440" showstereotype="1" y="50" text="etc/init.d" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="700" width="68" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="9y7Q1mapChbc" height="17"/>
+         <notewidget width="179" showstereotype="1" x="390" noteType="0" y="160" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="start_fetch_whois_entries.py"/>
+         <notewidget width="167" showstereotype="1" x="390" noteType="0" y="250" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="start_get_whois_entries.py"/>
+         <notewidget width="152" showstereotype="1" x="390" noteType="0" y="430" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="start_parse_raw_files.py"/>
+         <notewidget width="171" showstereotype="1" x="390" noteType="0" y="520" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="start_sort_whois_queries.py"/>
+         <notewidget width="164" showstereotype="1" x="390" noteType="0" y="340" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="start_get_ris_entries.py"/>
+         <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="630" showstereotype="1" y="50" text="bin/services" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="700" width="80" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="9y7Q1mapChbc" height="17"/>
+         <notewidget width="120" showstereotype="1" x="620" noteType="0" y="70" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="fetch_raw_files.py"/>
+         <notewidget width="145" showstereotype="1" x="620" noteType="0" y="160" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="fetch_whois_entries.py"/>
+         <notewidget width="137" showstereotype="1" x="620" noteType="0" y="250" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="get_whois_entries.py"/>
+         <notewidget width="130" showstereotype="1" x="620" noteType="0" y="430" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="parse_raw_files.py"/>
+         <notewidget width="136" showstereotype="1" x="620" noteType="0" y="520" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="sort_whois_queries.py"/>
+         <notewidget width="123" showstereotype="1" x="620" noteType="0" y="340" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="get_ris_entries.py"/>
+         <notewidget width="84" showstereotype="1" x="820" noteType="0" y="160" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="j3LJxkx1WPvU" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="connector.py"/>
+         <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="810" showstereotype="1" y="140" text="lib/whois_client" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="700" width="104" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="354bHMYujThW" height="17"/>
+         <notewidget width="106" showstereotype="1" x="1050" noteType="0" y="160" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="j3LJxkx1WPvU" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="whois_fetcher.py"/>
+         <notewidget width="166" showstereotype="1" x="820" noteType="0" y="250" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="BngZjAxoTytX" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="get_range_whois_queries.py"/>
+         <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="860" showstereotype="1" y="230" text="bin/services" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="700" width="80" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="9y7Q1mapChbc" height="17"/>
+         <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="1080" showstereotype="1" y="230" text="lib" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="700" width="26" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="2aai5vvv2pmS" height="17"/>
+         <notewidget width="88" showstereotype="1" x="1050" noteType="0" y="250" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="cBOGk5Oftsdm" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="fetch_asns.py"/>
+         <notewidget width="167" showstereotype="1" x="820" noteType="0" y="340" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="BngZjAxoTytX" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="get_range_ris_queries.py"/>
+         <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="860" showstereotype="1" y="320" text="bin/services" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="700" width="80" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="9y7Q1mapChbc" height="17"/>
+         <notewidget width="86" showstereotype="1" x="820" noteType="0" y="430" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="EWFtjqtuCZPV" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="ip_update.py"/>
+         <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="840" showstereotype="1" y="410" text="lib" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="700" width="26" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="2aai5vvv2pmS" height="17"/>
+         <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="1050" showstereotype="1" y="410" text="lib/modules" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="700" width="74" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="lmPVEO4pZQ5J" height="17"/>
+         <notewidget width="106" showstereotype="1" x="1190" noteType="0" y="340" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="CILblZ0pMXFQ" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="whois_parsers.py"/>
+         <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="1190" showstereotype="1" y="320" text="lib/whois_parser" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="700" width="104" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="gngD162lwos4" height="17"/>
+         <floatingtext linecolor="none" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="1050" showstereotype="1" y="140" text="lib/whois_client" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="700" width="104" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="354bHMYujThW" height="17"/>
+         <notewidget width="71" showstereotype="1" x="1050" noteType="0" y="430" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="none" xmi.id="j3LJxkx1WPvU" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="all_files"/>
+         <notewidget width="84" showstereotype="1" x="1050" noteType="0" y="340" usesdiagramusefillcolor="1" usesdiagramfillcolor="1" isinstance="0" fillcolor="none" height="50" linecolor="#ff0000" xmi.id="cBOGk5Oftsdm" usefillcolor="1" linewidth="none" font="Inconsolata,9,-1,5,50,0,0,0,0,0" text="fetch_asns.py"/>
+         <floatingtext linecolor="#ff0000" usesdiagramfillcolor="1" linewidth="none" usesdiagramusefillcolor="1" x="0" showstereotype="1" y="0" text="lib/whois_parser" font="Inconsolata,9,-1,5,50,0,0,0,0,0" pretext="" role="700" width="104" isinstance="0" posttext="" usefillcolor="1" fillcolor="none" xmi.id="gngD162lwos4" height="17"/>
+        </widgets>
+        <messages/>
+        <associations/>
+       </diagram>
+      </diagrams>
+     </XMI.extension>
     </UML:Model>
     <UML:Model stereotype="folder" visibility="public" isSpecification="false" namespace="m1" isAbstract="false" isLeaf="false" isRoot="false" xmi.id="Deployment View" name="Deployment View">
      <UML:Namespace.ownedElement/>
@@ -920,20 +1181,31 @@
   </UML:Model>
  </XMI.content>
  <XMI.extensions xmi.extender="umbrello">
-  <docsettings viewid="OQKjdxgNOnxy" uniqueid="qQY0SAVNduSD" documentation=""/>
+  <docsettings viewid="khH0v8KkU3ul" uniqueid="uVirurag55AV" documentation=""/>
   <listview>
    <listitem open="1" type="800" id="Views">
     <listitem open="1" type="801" id="Logical View">
      <listitem open="0" type="807" id="qQY0SAVNduSD" label="Modules"/>
      <listitem open="0" type="810" id="OQKjdxgNOnxy" label="RIS Fetching"/>
      <listitem open="0" type="810" id="dlHLpC675Zmu" label="Whois Fetching"/>
+     <listitem open="0" type="813" id="b6XtOzL1MJP6">
+      <listitem open="0" type="815" id="pwRIvV3uHLeT"/>
+     </listitem>
      <listitem open="0" type="813" id="znp7yGNpaHra">
       <listitem open="0" type="815" id="inREVoVw2ZOs"/>
      </listitem>
      <listitem open="0" type="813" id="ZKQbtoSQb8if">
       <listitem open="0" type="815" id="zWhuS0lZfGj3"/>
      </listitem>
+     <listitem open="0" type="813" id="scED1MV2XwOs">
+      <listitem open="0" type="815" id="LCWiGyctR64m"/>
+      <listitem open="0" type="815" id="SVg43lh0JLRq"/>
+     </listitem>
      <listitem open="1" type="813" id="qj3andgZPLER"/>
+     <listitem open="0" type="813" id="T1VD7UaDQCY8">
+      <listitem open="0" type="815" id="Ty3hUrxLWpKq"/>
+      <listitem open="0" type="815" id="o8fvvskR3ArQ"/>
+     </listitem>
      <listitem open="0" type="813" id="0WSPHxed7QPb">
       <listitem open="0" type="815" id="H5q0zL3guHoj"/>
      </listitem>
@@ -942,6 +1214,7 @@
       <listitem open="0" type="815" id="qkNDZnsiYbZ8"/>
       <listitem open="0" type="815" id="0ZnZ9Khll7bA"/>
       <listitem open="0" type="815" id="y6mGEaC5EcV3"/>
+      <listitem open="0" type="815" id="RhVlZOh8LYoc"/>
      </listitem>
      <listitem open="1" type="813" id="MbXMEqwxc797"/>
      <listitem open="0" type="813" id="9KaL4c1z0YNr">
@@ -952,9 +1225,11 @@
      </listitem>
      <listitem open="0" type="813" id="GclnEPmHDh2b">
       <listitem open="0" type="815" id="FxrU3fWPgFmG"/>
+      <listitem open="0" type="815" id="Ow7jQy83SokG"/>
      </listitem>
      <listitem open="0" type="813" id="DWktlV7lToC6">
       <listitem open="0" type="815" id="1YU2qxLTC9Qx"/>
+      <listitem open="0" type="815" id="3zeJOST7OcNX"/>
      </listitem>
      <listitem open="1" type="813" id="SAzyeea5znRV"/>
      <listitem open="0" type="813" id="cQYxHU1KwFde">
@@ -975,6 +1250,9 @@
       <listitem open="0" type="815" id="8iH2RvozxcHj"/>
       <listitem open="0" type="815" id="0KVvwneXCj2i"/>
      </listitem>
+     <listitem open="0" type="813" id="HSz6UXBo1tzk">
+      <listitem open="0" type="815" id="ZpiVpDeLtjzu"/>
+     </listitem>
      <listitem open="0" type="813" id="veOFqECnoHxu">
       <listitem open="0" type="815" id="PzfiXCCjzypf"/>
       <listitem open="0" type="815" id="XxZUvN8LD7Xg"/>
@@ -993,6 +1271,12 @@
      </listitem>
      <listitem open="0" type="813" id="dypn5FkzwfBd">
       <listitem open="0" type="815" id="HHgJL9yQrF0D"/>
+     </listitem>
+     <listitem open="0" type="813" id="lJuSBhKRH3dK">
+      <listitem open="0" type="815" id="KBTz4EoI925c"/>
+      <listitem open="0" type="815" id="bqFzwKKBVaSU"/>
+      <listitem open="0" type="815" id="7e6FHCU0gQqG"/>
+      <listitem open="0" type="815" id="q1Mo0d1AMExV"/>
      </listitem>
      <listitem open="0" type="813" id="7HlShLThoYR7">
       <listitem open="0" type="815" id="u8snmjnIvTqU"/>
@@ -1020,15 +1304,19 @@
       <listitem open="0" type="815" id="7LowgpmhQmEJ"/>
       <listitem open="0" type="815" id="V5NvpaEDEIf2"/>
       <listitem open="0" type="815" id="zRoBhTEV3kNV"/>
+      <listitem open="0" type="815" id="rPAOYA9WGq11"/>
      </listitem>
      <listitem open="0" type="813" id="2ARD5UBmZSH0">
       <listitem open="0" type="815" id="cX7zaKkYgkQe"/>
+      <listitem open="0" type="815" id="pHH5BioMfV8m"/>
      </listitem>
      <listitem open="0" type="813" id="SopNv0Y4hHie">
       <listitem open="0" type="815" id="syiuvDwVTM2D"/>
+      <listitem open="0" type="815" id="CWme651XRnRM"/>
      </listitem>
      <listitem open="0" type="813" id="srJvRSJgUxNc">
       <listitem open="0" type="815" id="Ct7PbTlZOmaG"/>
+      <listitem open="0" type="815" id="Y9vne6pFB64x"/>
      </listitem>
      <listitem open="1" type="813" id="xLuO0ZsKKCwK"/>
      <listitem open="0" type="813" id="pcFSrwVQHSbg">
@@ -1057,8 +1345,12 @@
      </listitem>
      <listitem open="0" type="813" id="U2hJHhUQdgQL">
       <listitem open="0" type="815" id="Xn9NNwifLrw4"/>
+      <listitem open="0" type="815" id="e9svKD1GySfV"/>
      </listitem>
      <listitem open="1" type="813" id="JhRyhRtBClJs"/>
+     <listitem open="1" type="817" id="rUDGx6QkM6pl"/>
+     <listitem open="1" type="817" id="PhiS7x97xaJW"/>
+     <listitem open="1" type="817" id="P9jlGWUPfu7N"/>
      <listitem open="0" type="830" id="Datatypes">
       <listitem open="1" type="829" id="AuZs8XLvgLfs"/>
       <listitem open="1" type="829" id="oranp5GZm7TO"/>
@@ -1078,7 +1370,11 @@
      </listitem>
     </listitem>
     <listitem open="1" type="802" id="Use Case View"/>
-    <listitem open="1" type="821" id="Component View"/>
+    <listitem open="1" type="821" id="Component View">
+     <listitem open="0" type="819" id="khH0v8KkU3ul" label="relations-initscripts"/>
+     <listitem open="1" type="824" id="JTIG3bkJ5RsD"/>
+     <listitem open="1" type="824" id="uVirurag55AV"/>
+    </listitem>
     <listitem open="1" type="827" id="Deployment View"/>
     <listitem open="1" type="836" id="Entity Relationship Model"/>
    </listitem>
@@ -1098,50 +1394,10 @@
     <sourcecode value=":&#xa;self.fetcher.connect()&#xa;self.connected=True&#xa;" id="FG27xZH6ulgn"/>
     <sourcecode value=":&#xa;self.fetcher.disconnect()&#xa;self.connected=False&#xa;" id="8iH2RvozxcHj"/>
     <sourcecode value=":&#xa;self.__connect()&#xa;while 1:&#xa;  if self.redis_instance.llen(self.key)==0:&#xa;    self.__disconnect()&#xa;    time.sleep(5)&#xa;    continue&#xa;&#xa;  if not self.connected:&#xa;    self.__connect()&#xa;&#xa;  ip=self.redis_instance.pop(self.key)&#xa;  whois=self.fetcher.fetch_whois(ip,True)&#xa;  self.redis_instance.set(ip,whois)&#xa;&#xa;" id="0KVvwneXCj2i"/>
-    <sourcecode value=":&#xa;IPUpdate.__init__(self)&#xa;self.module_type=2&#xa;" id="W3vfdeDaMpSh"/>
-    <sourcecode value=":&#xa;&quot; Parse the list;self.ips=[]&#xa;for file in glob.glob(os.path.join(self.directory,'*')):&#xa;  if not os.path.isdir(file):&#xa;    rss=feedparser.parse(file)&#xa;    self.date=rss['feed']['updated']&#xa;    values=self.extract_from_xml(rss)&#xa;    for value in values:&#xa;      self.ips.append(value)&#xa;&#xa;    self.move_file(file)&#xa;&#xa;&#xa;" id="qkNDZnsiYbZ8"/>
-    <sourcecode value=":&#xa;entry:&#xa;0.ip&#xa;1.date of the report&#xa;2.attack&#xa;3.url for more informations,coverage,category of the attack&#xa;toReturn=[]&#xa;title=entry['title'].split(' | ')&#xa;toReturn.append(title[1])&#xa;toReturn.append(dateutil.parser.parse(entry['updated']))&#xa;toReturn.append(title[0])&#xa;url=entry['id']&#xa;coverage=entry['dc_coverage']&#xa;category_xml_values=entry['tags'][0]['term']&#xa;category=entry['tags'][0]['term']+' - '+entry['tags'][0]['label']&#xa;toReturn.append(url+', '+coverage+', '+category)&#xa;return toReturn&#xa;" id="0ZnZ9Khll7bA"/>
-    <sourcecode value=":&#xa;entries=rss['entries']&#xa;extracted_values=[]&#xa;for entry in entries:&#xa;  extracted_values.append(self.parse_entry(entry))&#xa;&#xa;return extracted_values" id="y6mGEaC5EcV3"/>
-    <sourcecode value=":&#xa;&quot; Parse the list;self.ips=[]&#xa;for file in glob.glob(os.path.join(self.directory,'*')):&#xa;  if not os.path.isdir(file):&#xa;    daily=open(file).read()&#xa;    self.ips+=re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',daily)&#xa;    str_date=re.findall('updated (.*)\n',daily)[0]&#xa;    self.date=datetime.fromtimestamp(time.mktime(time.strptime(str_date,'%Y-%m-%d %H:%M:%S %Z')))&#xa;    self.move_file(file)" id="FxrU3fWPgFmG"/>
-    <sourcecode value=":&#xa;&quot; Parse the list;self.ips=[]&#xa;for file in glob.glob(os.path.join(self.directory,'*')):&#xa;  if not os.path.isdir(file):&#xa;    topips=open(file)&#xa;    self.ips+=re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',topips.read())&#xa;    self.move_file(file)" id="1YU2qxLTC9Qx"/>
-    <sourcecode value=":&#xa;&quot; Parse the list;ipv6=open(self.url).read()&#xa;self.ips=re.findall('([0-9a-f:]*[0-9a-f]).*\n',ipv6)" id="HHgJL9yQrF0D"/>
-    <sourcecode value=":&#xa;ip=line[1]&#xa;date=dateutil.parser.parse(line[0])&#xa;infection=line[11]&#xa;full_line=', '.join(line)&#xa;return[ip,date,infection,full_line]" id="cX7zaKkYgkQe"/>
-    <sourcecode value=":&#xa;ip=line[1]&#xa;date=dateutil.parser.parse(line[0])&#xa;infection=line[9]&#xa;full_line=', '.join(line)&#xa;return[ip,date,infection,full_line]" id="syiuvDwVTM2D"/>
-    <sourcecode value=":&#xa;ip=line[1]&#xa;date=dateutil.parser.parse(line[0])&#xa;infection=line[5]&#xa;full_line=', '.join(line)&#xa;return[ip,date,infection,full_line]" id="Ct7PbTlZOmaG"/>
-    <sourcecode value=":&#xa;IPUpdate.__init__(self)&#xa;self.module_type=2&#xa;" id="7LowgpmhQmEJ"/>
-    <sourcecode value=":&#xa;&quot; Parse the list;self.ips=[]&#xa;for file in glob.glob(os.path.join(self.directory,'*')):&#xa;  if not os.path.isdir(file):&#xa;    reader=csv.reader(open(file),delimiter=',')&#xa;    reader.next()&#xa;    for row in reader:&#xa;      self.ips.append(self.parse_line(row))&#xa;&#xa;    self.move_file(file)&#xa;&#xa;&#xa;" id="V5NvpaEDEIf2"/>
-    <sourcecode value=":&#xa;new_filename=self.directory+'old/'+os.path.basename(file)&#xa;os.rename(file,new_filename)" id="zRoBhTEV3kNV"/>
-    <sourcecode value=":&#xa;&quot; Parse the list;self.ips=[]&#xa;for file in glob.glob(os.path.join(self.directory,'*')):&#xa;  if not os.path.isdir(file):&#xa;    blocklist=open(file)&#xa;    self.ips+=re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',blocklist.read())&#xa;    self.move_file(file)" id="Xn9NNwifLrw4"/>
-    <sourcecode value=":&#xa;1.Initialize self.ips_descriptions with all descriptions without ASNsDescriptions&#xa;2.Push all ips into redit&#xa;self.cache_db=redis.Redis(db=cache_reris_db)&#xa;self.temp_db=redis.Redis(db=temp_reris_db)&#xa;" id="f9Nx9KVoAGNU"/>
-    <sourcecode value=":&#xa;self.__get_asns()&#xa;self.__get_whois()&#xa;r_session=RankingSession()&#xa;r_session.commit()&#xa;r_session.close()&#xa;" id="8tII9dkvjuXQ"/>
-    <sourcecode value=":&#xa;Update the database with the RIS whois informations&#xa;splitted=data.partition('\n')&#xa;ris_origin=splitted[0]&#xa;riswhois=splitted[2]&#xa;ris_whois=Whois(riswhois,ris_origin)&#xa;if not ris_whois.origin:&#xa;  if not self.default_asn_desc:&#xa;    self.default_asn_desc=\&#xa;    ASNsDescriptions(owner=unicode(&quot;IP without AS, see doc to know why&quot;),\ips_block=unicode('0.0.0.0'),asn=ASNs.query.get(unicode(-1)),\whois=unicode('None'),whois_address=unicode('None'),\riswhois_origin=unicode('None'))&#xa;  current.asn=self.default_asn_desc&#xa;&#xa;else:&#xa;current_asn=ASNs.query.get(unicode(ris_whois.origin))if not current_asn:&#xa;  current_asn=ASNs(asn=unicode(ris_whois.origin))&#xa;&#xa;if not ris_whois.description:&#xa;  ris_whois.description=&quot;This ASN has no description&quot;&#xa;&#xa;asn_desc=ASNsDescriptions(owner=ris_whois.description.decode(&quot;iso-8859-1&quot;),\&#xa;ips_block=unicode(ris_whois.route),asn=current_asn,\riswhois_origin=unicode(ris_origin))self.temp_db.push(redis_keys[1],ris_whois.route)current.asn=asn_desc" id="zW5gPb4rJ59d"/>
-    <sourcecode value=":&#xa;for description in self.asns_descriptions:&#xa;  if ip_in_network(ip_description.ip.ip,description.ips_block):&#xa;    ip_description.asn=description&#xa;    return True&#xa;&#xa;&#xa;return False&#xa;" id="EJ5b7fITLt74"/>
-    <sourcecode value=":&#xa;Main function,initialise the WhoisFetcher and connect to riswhois.ripe.net&#xa;Make a new connexion for each list of ris_dict.&#xa;descriptions=self.ips_descriptions&#xa;loop=0&#xa;while loop&lt;10 and len(descriptions)>0:&#xa;  deferred=[]&#xa;  for description in descriptions:&#xa;    if not self.__in_current_asns_descriptions(description):&#xa;      entry=self.redis.get(description.ip.ip)&#xa;      if not entry:&#xa;        deferred.append(description)&#xa;&#xa;      else:&#xa;        self.__update_db_ris(description,entry)&#xa;&#xa;&#xa;&#xa;  time.sleep(1)&#xa;  descriptions=deferred&#xa;  loop+=1&#xa;&#xa;print(descriptions)&#xa;" id="KHCstdz2KBKS"/>
-    <sourcecode value=":&#xa;Make a new connexion for each list of whois_dict.&#xa;descriptions=self.asns_descriptions&#xa;loop=0&#xa;while len(descriptions)>0:&#xa;  deferred=[]&#xa;  for description in descriptions:&#xa;    entry=self.redis.get(description.ips_block)&#xa;    if not entry:&#xa;      deferred.append(description)&#xa;&#xa;    else:&#xa;      description.whois_address=entry[0]&#xa;      description.whois=entry[1]&#xa;&#xa;&#xa;  descriptions=deferred&#xa;  loop+=1&#xa;  time.sleep(1)&#xa;  print(len(descriptions))" id="1RKMacmWKZZU"/>
-    <sourcecode value=":&#xa;r_session=RankingSession()&#xa;r_session.commit()&#xa;r_session.close()&#xa;" id="IwLRXJocj1Fq"/>
-    <sourcecode value=":&#xa;Main function,initialise the WhoisFetcher and connect to riswhois.ripe.net&#xa;Make a new connexion for each list of ris_dict.&#xa;self.ips_descriptions=IPsDescriptions.query.filter(IPsDescriptions.asn==None)[limit_first:limit_last]&#xa;for ip_description in self.ips_descriptions:&#xa;  self.temp_db.push(redis_keys[0],ip_description.ip.ip)&#xa;&#xa;while len(self.ips_descriptions)>0:&#xa;  deferred=[]&#xa;  for description in self.ips_descriptions:&#xa;    entry=self.cache_db.get(description.ip.ip)&#xa;    if not entry:&#xa;      deferred.append(description)&#xa;&#xa;    else:&#xa;      self.__update_db_ris(description,entry)&#xa;&#xa;&#xa;  self.ips_descriptions=deferred&#xa;  time.sleep(1)&#xa;  print('IP Desc: '+str(len(self.ips_descriptions)))&#xa;&#xa;self.__commit()&#xa;" id="reLLdM1BmbWq"/>
-    <sourcecode value=":&#xa;Make a new connexion for each list of whois_dict.&#xa;asns_descriptions=ASNsDescriptions.query.filter(ASNsDescriptions.whois==None)[limit_first:limit_last]&#xa;while len(asns_descriptions)>0:&#xa;  deferred=[]&#xa;  for description in asns_descriptions:&#xa;    entry=self.cache_db.get(description.ips_block)&#xa;    if not entry:&#xa;      deferred.append(description)&#xa;&#xa;    else:&#xa;      splitted=entry.partition('\n')&#xa;      description.whois_address=splitted[0]&#xa;      description.whois=splitted[2]&#xa;&#xa;&#xa;  asns_descriptions=deferred&#xa;  time.sleep(1)&#xa;  print('Descriptions to fetch: '+str(len(asns_descriptions)))&#xa;&#xa;self.__commit()" id="tuwrK7Q6IAb3"/>
-    <sourcecode value=":&#xa;self.r_session=RankingSession()&#xa;" id="PzfiXCCjzypf"/>
-    <sourcecode value=":&#xa;Abstract method which has to be implemented in each module:&#xa;the method must at least extract the IPs of the raw data and initialize a list named ips.The class must also define a variable called date.It is the date of creation of the list.If this date is unknown,it should be set to'today'like this:date=datetime.date.today()pass&#xa;" id="XxZUvN8LD7Xg"/>
-    <sourcecode value=":&#xa;Update the databases'IPs'and'IPsDescriptions'.&#xa;self.parse()&#xa;self.before_insertion[self.module_type]()&#xa;self.insertion[self.module_type]()&#xa;self.r_session=RankingSession()&#xa;self.r_session.commit()&#xa;self.r_session.close()&#xa;" id="aG9lLfSVORCx"/>
-    <sourcecode value=":&#xa;self.ip_addresses=:&#xa;&#xa;&#xa;for ip in self.ips:&#xa;  checked=''&#xa;  try:&#xa;    checked=str(IPy.IP(ip))&#xa;&#xa;  except:&#xa;    print('error with IP:'+ip)&#xa;    continue&#xa;&#xa;  current_ip=checked&#xa;  if not self.ip_addresses.get(current_ip,None):&#xa;    self.ip_addresses[current_ip]=1&#xa;&#xa;  else:&#xa;    self.ip_addresses[current_ip]+=1&#xa;&#xa;&#xa;" id="pXcWPvP5EPFK"/>
-    <sourcecode value=":&#xa;for current_ip,current_times in self.ip_addresses.items():&#xa;  IP=IPs.query.get(unicode(current_ip))&#xa;  if not IP:&#xa;    IP=IPs(ip=unicode(current_ip))&#xa;&#xa;  desc=IPsDescriptions.query.filter_by(ip=IP,list_name=unicode(self.name),list_date=self.date).first()&#xa;  if not desc:&#xa;    desc=IPsDescriptions(ip=IP,list_name=unicode(self.name),list_date=self.date,times=current_times)&#xa;&#xa;&#xa;" id="drspH697ez8M"/>
-    <sourcecode value=":&#xa;for ip in self.ips:&#xa;  checked=''&#xa;  try:&#xa;    checked=str(IPy.IP(ip[0]))&#xa;&#xa;  except:&#xa;    print('error with IP:'+ip[0])&#xa;    continue&#xa;&#xa;  ip[0]=checked&#xa;&#xa;" id="V6N74UUNsMpf"/>
-    <sourcecode value=":&#xa;for current_ip,current_timestamp,current_infection,current_text in self.ips:&#xa;  IP=IPs.query.get(unicode(current_ip))&#xa;  if not IP:&#xa;    IP=IPs(ip=unicode(current_ip))&#xa;&#xa;  desc=IPsDescriptions.query.filter_by(ip=IP,list_name=unicode(self.name),list_date=current_timestamp).first()&#xa;  if not desc:&#xa;    IPsDescriptions(ip=IP,list_name=unicode(self.name),list_date=current_timestamp,\&#xa;    infection=unicode(current_infection),raw_informations=unicode(current_text),times=1)&#xa;&#xa;" id="dkjV4W8XREXx"/>
-    <sourcecode value=":&#xa;new_filename=self.directory+'old/'+str(self.date).replace(' ','-')&#xa;os.rename(file,new_filename)" id="iAnXOLz7eYZs"/>
-    <sourcecode value=":&#xa;return'IP: &quot;%s&quot;'%(self.ip)&#xa;" id="wPEjcDEUPJ7M"/>
-    <sourcecode value=":&#xa;to_return='[%s] List: &quot;%s&quot; \t %s present %s time(s)'%(self.list_date,self.list_name,\&#xa;self.ip,self.times)if self.asn:&#xa;  to_return+='\t %s'%(self.asn.asn)&#xa;&#xa;return to_return&#xa;" id="3Ml8yOsqADRH"/>
-    <sourcecode value=":&#xa;return'ASN: &quot;%s&quot;'%(self.asn)&#xa;" id="inREVoVw2ZOs"/>
-    <sourcecode value=":&#xa;return'[%s] %s \t Owner: &quot;%s&quot; \t Block: &quot;%s&quot;'%(self.timestamp,\&#xa;self.asn,self.owner,self.ips_block)" id="zWhuS0lZfGj3"/>
     <sourcecode value=":&#xa;if vorname:&#xa;  template=Template(&quot;Dein Vorname ist $vorname.&quot;)&#xa;  template.vorname=vorname&#xa;  return str(template)&#xa;&#xa;else:&#xa;  return\&#xa;  Es wurde kein Vorname uebergeben.&lt;form method=&quot;POST&quot;action=&quot;.&quot;>&lt;input type=&quot;text&quot;name=&quot;vorname&quot;value=&quot;Thomas&quot;>&lt;input type=&quot;submit&quot;value=&quot;Submit&quot;>&lt;/form>&#xa;" id="V9vI0QJ2BMbl"/>
     <sourcecode value=":&#xa;return&quot;Es wurde die neue Funktion aufgerufen&quot;&#xa;" id="CcC0b5vVNPZ0"/>
     <sourcecode value=":&#xa;return'Indexseite des &quot;virtuellen&quot; Ordners &quot;mysubdir&quot;.'&#xa;" id="u8snmjnIvTqU"/>
     <sourcecode value=":&#xa;return&quot;Es wurde die Methode 'afunction' der MySubdir-Klasse aufgerufen.&quot;&#xa;" id="OEmJhbm857Jf"/>
-    <sourcecode value=":&#xa;self.cache_db=redis.Redis(db=cache_reris_db)&#xa;self.temp_db=redis.Redis(db=temp_reris_db)&#xa;self.server=server&#xa;if self.server=='riswhois.ripe.net':&#xa;  self.key=redis_keys[0]&#xa;&#xa;else:&#xa;  self.key=self.server&#xa;&#xa;if self.server in self.support_keepalive:&#xa;  self.keepalive=True&#xa;&#xa;self.fetcher=WhoisFetcher(get_server_by_name\&#xa;(unicode(self.server)))self.connected=False&#xa;" id="P8xAAzi6r0A8"/>
-    <sourcecode value=":&#xa;self.fetcher.connect()&#xa;self.connected=True&#xa;" id="SGVR3HjTDcvU"/>
-    <sourcecode value=":&#xa;self.fetcher.disconnect()&#xa;self.connected=False&#xa;" id="51zHbujSasiw"/>
-    <sourcecode value=":&#xa;while 1:&#xa;  try:&#xa;    entry=self.temp_db.pop(self.key)&#xa;    if not entry:&#xa;      self.__disconnect()&#xa;      time.sleep(process_sleep)&#xa;      continue&#xa;&#xa;    if not self.cache_db.get(entry):&#xa;      if not self.connected:&#xa;        self.__connect()&#xa;&#xa;      whois=self.fetcher.fetch_whois(entry,self.keepalive)&#xa;      if whois=='':&#xa;        self.temp_db.push(self.key,entry)&#xa;&#xa;      else:&#xa;        self.cache_db.set(entry,self.server+'\n'+unicode(whois,errors=&quot;replace&quot;))&#xa;        self.cache_db.expire(entry,cache_ttl)&#xa;&#xa;      if not self.keepalive:&#xa;        self.__disconnect()&#xa;&#xa;&#xa;&#xa;  except IOError,e:&#xa;    if e.errno==errno.ETIMEDOUT:&#xa;      self.temp_db.push(self.server,entry)&#xa;      print(&quot;timeout on &quot;+self.server)&#xa;      self.connected=False&#xa;&#xa;    elif e.errno==errno.EPIPE:&#xa;      self.temp_db.push(self.server,entry)&#xa;      print(&quot;Broken pipe &quot;+self.server)&#xa;      self.connected=False&#xa;&#xa;    elif e.errno==errno.ECONNRESET:&#xa;      self.temp_db.push(self.server,entry)&#xa;      print(&quot;Reset by peer:  &quot;+self.server)&#xa;      self.connected=False&#xa;&#xa;    elif e.errno==errno.ECONNREFUSED:&#xa;      self.temp_db.push(self.server,entry)&#xa;      print(&quot;Reset by peer:  &quot;+self.server)&#xa;      self.connected=False&#xa;      time.sleep(process_sleep)&#xa;&#xa;    else:&#xa;      raise IOError(e)" id="CPRlH7hAbhYU"/>
-    <sourcecode value=":&#xa;return'Block: &quot;%s&quot;\t Whois Server: &quot;%s&quot;'%(self.block,self.whois)&#xa;" id="H5q0zL3guHoj"/>
     <sourcecode value=":&#xa;self.kill_sorters()&#xa;self.kill_connectors()&#xa;" id="oMxf3NV8TJJu"/>
     <sourcecode value=":&#xa;for sorter in self.whois_sorters:&#xa;  sorter.terminate()&#xa;&#xa;" id="9rqbA8TMlR3V"/>
     <sourcecode value=":&#xa;for server,processes in self.whois_connectors.iteritems():&#xa;  for process in processes:&#xa;    process.terminate()&#xa;&#xa;&#xa;" id="uM4en59QDNDk"/>
@@ -1153,12 +1409,70 @@
     <sourcecode value=":&#xa;temp_db=redis.Redis(db=temp_reris_db)&#xa;key=redis_keys[1]&#xa;while 1:&#xa;  print('blocs to whois: '+str(temp_db.llen(key)))&#xa;  bloc=temp_db.pop(key)&#xa;  if not bloc:&#xa;    time.sleep(process_sleep)&#xa;    continue&#xa;&#xa;  server=get_server_by_query(bloc)&#xa;  if not server:&#xa;    print(&quot;error, no server found for this block : &quot;+bloc)&#xa;    temp_db.push(key,block)&#xa;    continue&#xa;&#xa;  temp_db.push(server.whois,bloc)&#xa;  if not self.whois_connectors.get(server.whois,None):&#xa;    self.__launch_whois_connectors(server.whois)&#xa;&#xa;&#xa;" id="RDj5TVuPpGK3"/>
     <sourcecode value=":&#xa;it=0&#xa;while it&lt;self.whois_sorting_processes:&#xa;  it+=1&#xa;  p=Process(target=self.__whois_sort)&#xa;  self.whois_sorters.append(p)&#xa;  p.start()&#xa;&#xa;print('Sorters started')&#xa;" id="H9i6N28UmEgq"/>
     <sourcecode value=":&#xa;if not self.whois_connectors.get(server,None):&#xa;  self.whois_connectors[server]=[]&#xa;  print('Connectors starting: '+server)&#xa;  it=0&#xa;  while it&lt;self.whois_connectors_by_server:&#xa;    it+=1&#xa;    p=Process(target=self.__start_connector,args=(server,))&#xa;    self.whois_connectors[server].append(p)&#xa;    p.start()&#xa;&#xa;  print('Connectors started: '+server)" id="ndvXpZNN23GW"/>
+    <sourcecode value=":&#xa;Initialize the two connectors to the redis server&#xa;&quot;        ;self.cache_db_ris=redis.Redis(db=ris_cache_reris_db)&#xa;self.cache_db_whois=redis.Redis(db=whois_cache_reris_db)&#xa;self.temp_db=redis.Redis(db=temp_reris_db)&#xa;" id="f9Nx9KVoAGNU"/>
+    <sourcecode value=":&#xa;self.__get_asns()&#xa;self.__get_whois()&#xa;r_session=RankingSession()&#xa;r_session.commit()&#xa;r_session.close()&#xa;" id="8tII9dkvjuXQ"/>
+    <sourcecode value=":&#xa;Update the database with the RIS whois informations&#xa;Push the routes into redis(the whois queries will be done with it)&#xa;splitted=data.partition('\n')&#xa;ris_origin=splitted[0]&#xa;riswhois=splitted[2]&#xa;ris_whois=Whois(riswhois,ris_origin)&#xa;if not ris_whois.origin:&#xa;  if not self.default_asn_desc:&#xa;    self.default_asn_desc=\&#xa;    ASNsDescriptions(owner=unicode(&quot;IP without AS, see doc to know why&quot;),\ips_block=unicode('0.0.0.0'),asn=ASNs.query.get(unicode(-1)),\whois=unicode('None'),whois_address=unicode('None'),\riswhois_origin=unicode('None'))&#xa;  current.asn=self.default_asn_desc&#xa;&#xa;else:&#xa;current_asn=ASNs.query.get(unicode(ris_whois.origin))if not current_asn:&#xa;  current_asn=ASNs(asn=unicode(ris_whois.origin))&#xa;&#xa;if not ris_whois.description:&#xa;  ris_whois.description=&quot;This ASN has no description&quot;&#xa;&#xa;asn_desc=ASNsDescriptions.query.filter_by(asn=current_asn,ips_block=unicode(ris_whois.route),\&#xa;owner=ris_whois.description.decode(&quot;iso-8859-1&quot;),\riswhois_origin=unicode(ris_origin)).first()if not asn_desc:&#xa;  asn_desc=ASNsDescriptions(asn=current_asn,ips_block=unicode(ris_whois.route),\&#xa;  owner=ris_whois.description.decode(&quot;iso-8859-1&quot;),\riswhois_origin=unicode(ris_origin))&#xa;current.asn=asn_desc&#xa;" id="zW5gPb4rJ59d"/>
+    <sourcecode value=":&#xa;for description in self.asns_descriptions:&#xa;  if ip_in_network(ip_description.ip.ip,description.ips_block):&#xa;    ip_description.asn=description&#xa;    return True&#xa;&#xa;&#xa;return False&#xa;" id="EJ5b7fITLt74"/>
+    <sourcecode value=":&#xa;Main function,initialise the WhoisFetcher and connect to riswhois.ripe.net&#xa;Make a new connexion for each list of ris_dict.&#xa;descriptions=self.ips_descriptions&#xa;loop=0&#xa;while loop&lt;10 and len(descriptions)>0:&#xa;  deferred=[]&#xa;  for description in descriptions:&#xa;    if not self.__in_current_asns_descriptions(description):&#xa;      entry=self.redis.get(description.ip.ip)&#xa;      if not entry:&#xa;        deferred.append(description)&#xa;&#xa;      else:&#xa;        self.__update_db_ris(description,entry)&#xa;&#xa;&#xa;&#xa;  time.sleep(1)&#xa;  descriptions=deferred&#xa;  loop+=1&#xa;&#xa;print(descriptions)&#xa;" id="KHCstdz2KBKS"/>
+    <sourcecode value=":&#xa;Make a new connexion for each list of whois_dict.&#xa;descriptions=self.asns_descriptions&#xa;loop=0&#xa;while len(descriptions)>0:&#xa;  deferred=[]&#xa;  for description in descriptions:&#xa;    entry=self.redis.get(description.ips_block)&#xa;    if not entry:&#xa;      deferred.append(description)&#xa;&#xa;    else:&#xa;      description.whois_address=entry[0]&#xa;      description.whois=entry[1]&#xa;&#xa;&#xa;  descriptions=deferred&#xa;  loop+=1&#xa;  time.sleep(1)&#xa;  print(len(descriptions))" id="1RKMacmWKZZU"/>
+    <sourcecode value=":&#xa;Commit the pending modifications in the database&#xa;r_session=RankingSession()&#xa;r_session.commit()&#xa;r_session.close()&#xa;" id="IwLRXJocj1Fq"/>
+    <sourcecode value=":&#xa;Push the IP addresses of the IPsDescriptions without asn into redis and loop until all&#xa;the RIS Whois descriptions are found in the cache database of redis&#xa;self.ips_descriptions=IPsDescriptions.query.filter(IPsDescriptions.asn==None)[limit_first:limit_last]&#xa;for ip_description in self.ips_descriptions:&#xa;  if not self.cache_db_ris.exists(ip_description.ip.ip):&#xa;    self.temp_db.rpush(config.get('redis','key_temp_ris'),ip_description.ip.ip)&#xa;&#xa;&#xa;while len(self.ips_descriptions)>0:&#xa;  deferred=[]&#xa;  for description in self.ips_descriptions:&#xa;    entry=self.cache_db_ris.get(description.ip.ip)&#xa;    if not entry:&#xa;      deferred.append(description)&#xa;&#xa;    else:&#xa;      self.__update_db_ris(description,entry)&#xa;&#xa;&#xa;  self.ips_descriptions=deferred&#xa;  time.sleep(sleep_timer)&#xa;  syslog.syslog(syslog.LOG_DEBUG,'RIS Whois to fetch: '+str(len(self.ips_descriptions)))&#xa;&#xa;self.__commit()&#xa;" id="reLLdM1BmbWq"/>
+    <sourcecode value=":&#xa;Loop until all the Whois entry of the ASNsDescriptions(without whois entry...)&#xa;are found in the cache database of redis&#xa;self.ips_descriptions=IPsDescriptions.query.filter(IPsDescriptions.whois==None)[limit_first:limit_last]&#xa;for ip_description in self.ips_descriptions:&#xa;  if not self.cache_db_whois.exists(ip_description.ip.ip):&#xa;    self.temp_db.rpush(config.get('redis','key_temp_whois'),ip_description.ip.ip)&#xa;&#xa;&#xa;while len(self.ips_descriptions)>0:&#xa;  deferred=[]&#xa;  for description in self.ips_descriptions:&#xa;    entry=self.cache_db_whois.get(description.ip.ip)&#xa;    if not entry:&#xa;      deferred.append(description)&#xa;&#xa;    else:&#xa;      splitted=entry.partition('\n')&#xa;      description.whois_address=unicode(splitted[0])&#xa;      description.whois=unicode(splitted[2])&#xa;&#xa;&#xa;  self.ips_descriptions=deferred&#xa;  time.sleep(sleep_timer)&#xa;  syslog.syslog(syslog.LOG_DEBUG,'Whois to fetch: '+str(len(self.ips_descriptions)))&#xa;&#xa;self.__commit()" id="tuwrK7Q6IAb3"/>
+    <sourcecode value=":&#xa;return'IP: &quot;%s&quot;'%(self.ip)&#xa;" id="wPEjcDEUPJ7M"/>
+    <sourcecode value=":&#xa;to_return='[%s] List: &quot;%s&quot; \t %s present %s time(s)'%(self.list_date,self.list_name,\&#xa;self.ip,self.times)if self.asn:&#xa;  to_return+='\t %s'%(self.asn.asn)&#xa;&#xa;return to_return&#xa;" id="3Ml8yOsqADRH"/>
+    <sourcecode value=":&#xa;return'ASN: &quot;%s&quot;'%(self.asn)&#xa;" id="inREVoVw2ZOs"/>
+    <sourcecode value=":&#xa;return'[%s] %s \t Owner: &quot;%s&quot; \t Block: &quot;%s&quot;'%(self.timestamp,\&#xa;self.asn,self.owner,self.ips_block)" id="zWhuS0lZfGj3"/>
+    <sourcecode value=":&#xa;return'Block: &quot;%s&quot;\t Whois Server: &quot;%s&quot;'%(self.block,self.whois)&#xa;" id="H5q0zL3guHoj"/>
+    <sourcecode value=":&#xa;IPUpdate.__init__(self)&#xa;self.module_type=2&#xa;self.directory=os.path.join(raw_dir,self.directory)&#xa;" id="Ty3hUrxLWpKq"/>
+    <sourcecode value=":&#xa;&quot; Parse the list;self.ips=[]&#xa;for file in self.files:&#xa;  if not os.path.isdir(file):&#xa;    text=open(file).read()&#xa;    type=re.findall('Feedback-Type:[\s]*([^\r\n]*)',text)[0]&#xa;    user_agent=re.findall('User-Agent:[\s]*([^\n]*)',text)[0]&#xa;    ip=re.findall('Source-IP:[\s]*([^\n]*)',text)[0]&#xa;    self.date=dateutil.parser.parse(re.findall('Received-Date:[\s]*([^\n]*)',text)[0])&#xa;    version=re.findall('Version:[\s]*([^\n]*)',text)[0]&#xa;    self.ips.append([ip,self.date,type,str(user_agent)+', '+str(version)])&#xa;    self.move_file(file)" id="o8fvvskR3ArQ"/>
+    <sourcecode value=":&#xa;IPUpdate.__init__(self)&#xa;self.module_type=2&#xa;" id="W3vfdeDaMpSh"/>
+    <sourcecode value=":&#xa;&quot; Parse the list;self.ips=[]&#xa;for file in self.files:&#xa;  if not os.path.isdir(file):&#xa;    rss=feedparser.parse(file)&#xa;    self.date=rss['feed']['updated']&#xa;    values=self.extract_from_xml(rss)&#xa;    for value in values:&#xa;      self.ips.append(value)&#xa;&#xa;    self.move_file(file)&#xa;&#xa;&#xa;" id="qkNDZnsiYbZ8"/>
+    <sourcecode value=":&#xa;entry:&#xa;0.ip&#xa;1.date of the report&#xa;2.attack&#xa;3.url for more informations,coverage,category of the attack&#xa;toReturn=[]&#xa;title=entry['title'].split(' | ')&#xa;toReturn.append(title[1])&#xa;toReturn.append(dateutil.parser.parse(entry['updated']))&#xa;toReturn.append(title[0])&#xa;url=entry['id']&#xa;coverage=entry['dc_coverage']&#xa;category_xml_values=entry['tags'][0]['term']&#xa;category=entry['tags'][0]['term']+' - '+entry['tags'][0]['label']&#xa;toReturn.append(url+', '+coverage+', '+category)&#xa;return toReturn&#xa;" id="0ZnZ9Khll7bA"/>
+    <sourcecode value=":&#xa;Extract each entry&amp;loop&#xa;entries=rss['entries']&#xa;extracted_values=[]&#xa;for entry in entries:&#xa;  extracted_values.append(self.parse_entry(entry))&#xa;&#xa;return extracted_values" id="y6mGEaC5EcV3"/>
+    <sourcecode value=":&#xa;IPUpdate.__init__(self)&#xa;self.module_type=2&#xa;self.directory=os.path.join(raw_dir,self.directory)&#xa;" id="RhVlZOh8LYoc"/>
+    <sourcecode value=":&#xa;&quot; Parse the list;self.ips=[]&#xa;for file in self.files:&#xa;  if not os.path.isdir(file):&#xa;    daily=open(file).read()&#xa;    self.ips+=re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',daily)&#xa;    self.date=dateutil.parser.parse(re.findall('updated (.*)\n',daily)[0])&#xa;    self.move_file(file)" id="FxrU3fWPgFmG"/>
+    <sourcecode value=":&#xa;IPUpdate.__init__(self)&#xa;self.directory=os.path.join(raw_dir,self.directory)&#xa;" id="Ow7jQy83SokG"/>
+    <sourcecode value=":&#xa;&quot; Parse the list;self.ips=[]&#xa;for file in self.files:&#xa;  if not os.path.isdir(file):&#xa;    entries=re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s]([^\r\n]*)',open(file).read())&#xa;    for entry in entries:&#xa;      self.ips.append([entry[0],self.date,'',entry[1]])&#xa;&#xa;    self.move_file(file)" id="1YU2qxLTC9Qx"/>
+    <sourcecode value=":&#xa;IPUpdate.__init__(self)&#xa;self.module_type=2&#xa;self.directory=os.path.join(raw_dir,self.directory)&#xa;" id="3zeJOST7OcNX"/>
+    <sourcecode value=":&#xa;&quot; Parse the list;ipv6=open(self.directory).read()&#xa;self.ips=re.findall('([0-9a-f:]*[0-9a-f]).*\n',ipv6)" id="HHgJL9yQrF0D"/>
+    <sourcecode value=":&#xa;Parse a line&#xa;ip=line[1]&#xa;date=dateutil.parser.parse(line[0])&#xa;infection=line[11]&#xa;full_line=', '.join(line)&#xa;return[ip,date,infection,full_line]" id="cX7zaKkYgkQe"/>
+    <sourcecode value=":&#xa;IPUpdate.__init__(self)&#xa;self.directory=os.path.join(raw_dir,self.directory)&#xa;" id="pHH5BioMfV8m"/>
+    <sourcecode value=":&#xa;Parse a line&#xa;ip=line[1]&#xa;date=dateutil.parser.parse(line[0])&#xa;infection=line[9]&#xa;full_line=', '.join(line)&#xa;return[ip,date,infection,full_line]" id="syiuvDwVTM2D"/>
+    <sourcecode value=":&#xa;IPUpdate.__init__(self)&#xa;self.directory=os.path.join(raw_dir,self.directory)&#xa;" id="CWme651XRnRM"/>
+    <sourcecode value=":&#xa;Parse a line&#xa;ip=line[1]&#xa;date=dateutil.parser.parse(line[0])&#xa;infection=line[5]&#xa;full_line=', '.join(line)&#xa;return[ip,date,infection,full_line]" id="Ct7PbTlZOmaG"/>
+    <sourcecode value=":&#xa;IPUpdate.__init__(self)&#xa;self.directory=os.path.join(raw_dir,self.directory)&#xa;" id="Y9vne6pFB64x"/>
+    <sourcecode value=":&#xa;Set the type to 2&#xa;IPUpdate.__init__(self)&#xa;self.module_type=2&#xa;" id="7LowgpmhQmEJ"/>
+    <sourcecode value=":&#xa;&quot; Parse the list;self.ips=[]&#xa;for file in self.files:&#xa;  if not os.path.isdir(file):&#xa;    reader=csv.reader(open(file),delimiter=',')&#xa;    reader.next()&#xa;    for row in reader:&#xa;      self.ips.append(self.parse_line(row))&#xa;&#xa;    self.move_file(file)&#xa;&#xa;&#xa;" id="V5NvpaEDEIf2"/>
+    <sourcecode value=":&#xa;Move the file without changing the name&#xa;new_filename=os.path.join(self.directory,config.get('fetch_files','old_dir'),os.path.basename(file))&#xa;os.rename(file,new_filename)" id="zRoBhTEV3kNV"/>
+    <sourcecode value=":&#xa;Abstract method,parse a line of the csv file.&#xa;The only difference between all the sub-classes is the place of the infections type&#xa;pass&#xa;" id="rPAOYA9WGq11"/>
+    <sourcecode value=":&#xa;&quot; Parse the list;self.ips=[]&#xa;for file in self.files:&#xa;  if not os.path.isdir(file):&#xa;    blocklist=open(file)&#xa;    self.ips+=re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',blocklist.read())&#xa;    self.move_file(file)" id="Xn9NNwifLrw4"/>
+    <sourcecode value=":&#xa;IPUpdate.__init__(self)&#xa;self.directory=os.path.join(raw_dir,self.directory)&#xa;" id="e9svKD1GySfV"/>
+    <sourcecode value=":&#xa;self.r_session=RankingSession()&#xa;" id="PzfiXCCjzypf"/>
+    <sourcecode value=":&#xa;Abstract method which has to be implemented in each module:&#xa;the method must at least extract the IPs of the raw data and initialize a list named ips.The class must also define a variable called date.It is the date of creation of the list.If this date is unknown,it should be set to'today'like this:date=datetime.date.today()pass&#xa;" id="XxZUvN8LD7Xg"/>
+    <sourcecode value=":&#xa;Update the databases'IPs'and'IPsDescriptions'.&#xa;self.parse()&#xa;self.before_insertion[self.module_type]()&#xa;self.insertion[self.module_type]()&#xa;self.r_session=RankingSession()&#xa;self.r_session.commit()&#xa;self.r_session.close()&#xa;" id="aG9lLfSVORCx"/>
+    <sourcecode value=":&#xa;self.ip_addresses=:&#xa;&#xa;&#xa;for ip in self.ips:&#xa;  checked=''&#xa;  try:&#xa;    checked=str(IPy.IP(ip))&#xa;&#xa;  except:&#xa;    print('error with IP:'+ip)&#xa;    continue&#xa;&#xa;  current_ip=checked&#xa;  if not self.ip_addresses.get(current_ip,None):&#xa;    self.ip_addresses[current_ip]=1&#xa;&#xa;  else:&#xa;    self.ip_addresses[current_ip]+=1&#xa;&#xa;&#xa;" id="pXcWPvP5EPFK"/>
+    <sourcecode value=":&#xa;for current_ip,current_times in self.ip_addresses.items():&#xa;  IP=IPs.query.get(unicode(current_ip))&#xa;  if not IP:&#xa;    IP=IPs(ip=unicode(current_ip))&#xa;&#xa;  desc=IPsDescriptions.query.filter_by(ip=IP,list_name=unicode(self.name),list_date=self.date).first()&#xa;  if not desc:&#xa;    desc=IPsDescriptions(ip=IP,list_name=unicode(self.name),list_date=self.date,times=current_times)&#xa;&#xa;&#xa;" id="drspH697ez8M"/>
+    <sourcecode value=":&#xa;for ip in self.ips:&#xa;  checked=''&#xa;  try:&#xa;    checked=str(IPy.IP(ip[0]))&#xa;&#xa;  except:&#xa;    print('error with IP:'+ip[0])&#xa;    continue&#xa;&#xa;  ip[0]=checked&#xa;&#xa;" id="V6N74UUNsMpf"/>
+    <sourcecode value=":&#xa;for current_ip,current_timestamp,current_infection,current_text in self.ips:&#xa;  IP=IPs.query.get(unicode(current_ip))&#xa;  if not IP:&#xa;    IP=IPs(ip=unicode(current_ip))&#xa;&#xa;  desc=IPsDescriptions.query.filter_by(ip=IP,list_name=unicode(self.name),list_date=current_timestamp).first()&#xa;  if not desc:&#xa;    IPsDescriptions(ip=IP,list_name=unicode(self.name),list_date=current_timestamp,\&#xa;    infection=unicode(current_infection),raw_informations=unicode(current_text),times=1)&#xa;&#xa;" id="dkjV4W8XREXx"/>
+    <sourcecode value=":&#xa;new_filename=self.directory+'old/'+str(self.date).replace(' ','-')&#xa;os.rename(file,new_filename)" id="iAnXOLz7eYZs"/>
+    <sourcecode value=":&#xa;Initialize the two connectors to the redis server,set variables depending on the server&#xa;Initialize a whois fetcher on this server&#xa;self.temp_db=redis.Redis(db=temp_reris_db)&#xa;self.server=server&#xa;if self.server=='riswhois.ripe.net':&#xa;  self.cache_db=redis.Redis(db=ris_cache_reris_db)&#xa;  self.key=config.get('redis','key_temp_ris')&#xa;&#xa;else:&#xa;  self.key=self.server&#xa;  self.cache_db=redis.Redis(db=whois_cache_reris_db)&#xa;&#xa;if self.server in self.support_keepalive:&#xa;  self.keepalive=True&#xa;&#xa;self.fetcher=WhoisFetcher(self.server)&#xa;self.connected=False&#xa;" id="P8xAAzi6r0A8"/>
+    <sourcecode value=":&#xa;Connect the fetcher&#xa;self.fetcher.connect()&#xa;self.connected=True&#xa;" id="SGVR3HjTDcvU"/>
+    <sourcecode value=":&#xa;Disconnect the fetcher&#xa;self.fetcher.disconnect()&#xa;self.connected=False&#xa;" id="51zHbujSasiw"/>
+    <sourcecode value=":&#xa;Fetch all the whois entry to the server of this connector&#xa;while 1:&#xa;  try:&#xa;    syslog.syslog(syslog.LOG_INFO,str(self.temp_db.llen(self.key))+' to process on '+self.server)&#xa;    entry=self.temp_db.lpop(self.key)&#xa;    if not entry:&#xa;      self.__disconnect()&#xa;      time.sleep(process_sleep)&#xa;      continue&#xa;&#xa;    if self.server=='whois.afrinic.net':&#xa;      whois='we are blacklisted by afrinic...'&#xa;      self.cache_db.set(entry,self.server+'\n'+unicode(whois,errors=&quot;replace&quot;))&#xa;      continue&#xa;&#xa;    if self.cache_db.get(entry)is None:&#xa;      if not self.connected:&#xa;        self.__connect()&#xa;&#xa;      syslog.syslog(syslog.LOG_DEBUG,self.server+&quot;, query : &quot;+str(entry))&#xa;      whois=self.fetcher.fetch_whois(entry,self.keepalive)&#xa;      if whois=='':&#xa;        self.temp_db.rpush(self.key,entry)&#xa;&#xa;      else:&#xa;        self.cache_db.set(entry,self.server+'\n'+unicode(whois,errors=&quot;replace&quot;))&#xa;        self.cache_db.expire(entry,cache_ttl)&#xa;&#xa;      if not self.keepalive:&#xa;        self.__disconnect()&#xa;&#xa;&#xa;&#xa;  except IOError,e:&#xa;    if e.errno==errno.ETIMEDOUT:&#xa;      self.temp_db.push(self.server,entry)&#xa;      syslog.syslog(syslog.LOG_ERR,&quot;timeout on &quot;+self.server)&#xa;      self.connected=False&#xa;&#xa;    elif e.errno==errno.EPIPE:&#xa;      self.temp_db.push(self.server,entry)&#xa;      syslog.syslog(syslog.LOG_ERR,&quot;Broken pipe &quot;+self.server)&#xa;      self.connected=False&#xa;&#xa;    elif e.errno==errno.ECONNRESET:&#xa;      self.temp_db.push(self.server,entry)&#xa;      syslog.syslog(syslog.LOG_ERR,&quot;Reset by peer:  &quot;+self.server)&#xa;      self.connected=False&#xa;&#xa;    elif e.errno==errno.ECONNREFUSED:&#xa;      self.temp_db.push(self.server,entry)&#xa;      syslog.syslog(syslog.LOG_ERR,&quot;Connexion refused by peer:  &quot;+self.server)&#xa;      self.connected=False&#xa;      time.sleep(process_sleep)&#xa;&#xa;    else:&#xa;      raise IOError(e)" id="CPRlH7hAbhYU"/>
     <sourcecode value=":&#xa;TCP connection to one on the whois servers&#xa;self.s=socket(AF_INET,SOCK_STREAM)&#xa;self.s.connect((self.server,self.port))&#xa;if self.server in self.has_welcome_message:&#xa;  self.s.recv(1024)&#xa;&#xa;" id="65aFFiDEx4Nk"/>
     <sourcecode value=":&#xa;Close the TCP connection&#xa;self.s.close()&#xa;" id="7zB54Zpib0Ju"/>
-    <sourcecode value=":&#xa;Fetch the whois informations.Keep the connection alive if needed.&#xa;pre_options=self.pre_options&#xa;if keepalive:&#xa;  pre_options+=self.keepalive_options&#xa;&#xa;if self.server in self.need_an_ip:&#xa;  query=first_ip(query)&#xa;&#xa;self.s.send(pre_options+query+self.post_options+' \n')&#xa;if self.server in self.has_info_message:&#xa;  self.s.recv(2048)&#xa;&#xa;self.text=''&#xa;loop=0&#xa;while self.text==''and loop&lt;5:&#xa;  self.text=self.s.recv(4096).rstrip()&#xa;  loop+=1&#xa;  if self.text!=''and self.server in self.splitted:&#xa;    self.text+=self.s.recv(4096).rstrip()&#xa;&#xa;&#xa;if loop==5:&#xa;  print(&quot;error (no response) with query: &quot;+query+&quot; on server &quot;+self.server)&#xa;&#xa;part=self.whois_part.get(self.server,None)&#xa;if part:&#xa;  self.text=self.text.partition(part)[2]&#xa;&#xa;if not keepalive:&#xa;  self.s.close()&#xa;&#xa;return self.text&#xa;" id="m6aN5tGvnuzh"/>
+    <sourcecode value=":&#xa;Fetch the whois informations.Keep the connection alive if needed.&#xa;pre_options=self.pre_options&#xa;if keepalive:&#xa;  pre_options+=self.keepalive_options&#xa;&#xa;self.s.send(pre_options+query+self.post_options+' \n')&#xa;if self.server in self.has_info_message:&#xa;  self.s.recv(2048)&#xa;&#xa;self.text=''&#xa;loop=0&#xa;done=False&#xa;fs=self.s.makefile()&#xa;while self.text=='':&#xa;  self.text=fs.readline()&#xa;  loop+=1&#xa;  if loop>=5:&#xa;    done=True&#xa;    break&#xa;&#xa;&#xa;prec=''&#xa;while not done:&#xa;  temp=fs.readline()&#xa;  if len(temp)==0 or prec==temp=='\n':&#xa;    done=True&#xa;&#xa;  else:&#xa;    self.text+=temp&#xa;    prec=temp&#xa;&#xa;  loop+=1&#xa;&#xa;if loop==5:&#xa;  syslog.syslog(syslog.LOG_ERR,&quot;error (no response) with query: &quot;+query+&quot; on server &quot;+self.server)&#xa;&#xa;part=self.whois_part.get(self.server,None)&#xa;if part:&#xa;  self.text=self.text.partition(part)[2]&#xa;&#xa;if not keepalive:&#xa;  self.s.close()&#xa;&#xa;return self.text&#xa;" id="m6aN5tGvnuzh"/>
     <sourcecode value=":&#xa;Set the needed informations concerning the server we want to use&#xa;self.server=assignation.whois&#xa;self.pre_options=assignation.pre_options&#xa;self.post_options=assignation.post_options&#xa;self.keepalive_options=assignation.keepalive_options&#xa;self.port=assignation.port&#xa;" id="0PfYB68olcDK"/>
-    <sourcecode value=":&#xa;self.__set_values(server)&#xa;" id="VRPQIDiMPwjB"/>
-    <sourcecode value=":&#xa;return self.text" id="SlC7dZnUgZcH"/>
+    <sourcecode value=":&#xa;assign=None&#xa;if server in self.local_query:&#xa;  assign=Assignations.query.filter(Assignations.whois==unicode(config.get('global','local_whois_server'))).first()&#xa;&#xa;else:&#xa;  assign=get_server_by_name(unicode(server))&#xa;&#xa;self.__set_values(assign)&#xa;" id="VRPQIDiMPwjB"/>
+    <sourcecode value=":&#xa;return self.text&#xa;" id="SlC7dZnUgZcH"/>
+    <sourcecode value=":&#xa;filename=os.path.join(website_root,templates,'master.tmpl')&#xa;self.template=Template(file=filename)&#xa;self.template.title='index'&#xa;self.template.css_file=css_file&#xa;if query==&quot;&quot;:&#xa;  self.template.query='IP or AS Number'&#xa;&#xa;else:&#xa;  self.template.entry=self.query_db(query)&#xa;  self.template.query=query&#xa;&#xa;return str(self.template)&#xa;" id="KBTz4EoI925c"/>
+    <sourcecode value=":&#xa;ip=None&#xa;try:&#xa;  ip=IPy.IP(query)&#xa;&#xa;except:&#xa;  pass&#xa;&#xa;self.template.whois_entry=''&#xa;if ip is not None:&#xa;  descriptions=IPsDescriptions.query.filter_by(ip=IPs.query.filter_by(ip=unicode(ip)).first()).all()&#xa;  self.template.query=query&#xa;  if len(descriptions)>0:&#xa;    for description in descriptions:&#xa;      self.template.whois_entry+=str(description.whois)+'\n'&#xa;&#xa;    if self.make_ip_graf(query,descriptions):&#xa;      self.template.image=query&#xa;&#xa;&#xa;&#xa;else:&#xa;  query=query[2:]&#xa;  descriptions=ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=unicode(query)).first()).all()&#xa;  self.template.query='AS'+query&#xa;  if len(descriptions)>0:&#xa;    for description in descriptions:&#xa;      self.template.whois_entry=description.owner&#xa;&#xa;    if self.make_asn_graf(query,descriptions):&#xa;      self.template.image=query&#xa;&#xa;&#xa;&#xa;if self.template.whois_entry=='':&#xa;  self.template.whois_entry='Nothing found in the database'&#xa;&#xa;" id="bqFzwKKBVaSU"/>
+    <sourcecode value=":&#xa;graf=IPGraf(query)&#xa;if graf.prepare_graf(descriptions):&#xa;  graf.make_graph(os.path.join(website_images_dir,query)+'.png')&#xa;  return True&#xa;&#xa;else:&#xa;  return False&#xa;&#xa;" id="7e6FHCU0gQqG"/>
+    <sourcecode value=":&#xa;graf=ASGraf(query)&#xa;if graf.prepare_graf(descriptions):&#xa;  graf.make_graph(os.path.join(website_images_dir,query)+'.png')&#xa;  return True&#xa;&#xa;else:&#xa;  return False&#xa;&#xa;" id="q1Mo0d1AMExV"/>
+    <sourcecode value=":&#xa;if len(descriptions)==0:&#xa;  return False&#xa;&#xa;datas=:&#xa;&#xa;&#xa;for desc in descriptions:&#xa;  data=datas.get(desc.timestamp.date(),None)&#xa;  if data is None:&#xa;    datas[desc.timestamp.date()]=len(desc.ips)&#xa;&#xa;  else:&#xa;    datas[desc.timestamp.date()]+=len(desc.ips)&#xa;&#xa;&#xa;self.dates=[d for d in datas.keys()]&#xa;self.times=[t for t in datas.values()]&#xa;return True&#xa;" id="pwRIvV3uHLeT"/>
+    <sourcecode value=":&#xa;if len(descriptions)==0:&#xa;  return False&#xa;&#xa;datas=:&#xa;&#xa;&#xa;for desc in descriptions:&#xa;  data=datas.get(desc.timestamp.date(),None)&#xa;  if data is None:&#xa;    datas[desc.timestamp.date()]=desc.times&#xa;&#xa;  else:&#xa;    datas[desc.timestamp.date()]+=desc.times&#xa;&#xa;&#xa;self.dates=[d for d in datas.keys()]&#xa;self.times=[t for t in datas.values()]&#xa;return True&#xa;" id="ZpiVpDeLtjzu"/>
+    <sourcecode value=":&#xa;self.ip=ip&#xa;" id="LCWiGyctR64m"/>
+    <sourcecode value=":&#xa;fig=figure()&#xa;ax=fig.add_subplot(111)&#xa;ax.plot_date(self.dates,self.times)&#xa;ax.xaxis.set_major_locator(DayLocator())&#xa;ax.xaxis.set_minor_locator(HourLocator(arange(0,25,6)))&#xa;ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))&#xa;ax.fmt_xdata=DateFormatter('%Y-%m-%d %H:%M:%S')&#xa;datemin=self.dates[0]-datetime.timedelta(days=1)&#xa;datemax=self.dates[-1]+datetime.timedelta(days=1)&#xa;ax.set_xlim(datemin,datemax)&#xa;maxtimes=max(self.times)+1&#xa;ax.set_ylim(0,maxtimes)&#xa;fig.autofmt_xdate()&#xa;savefig(save_path)" id="SVg43lh0JLRq"/>
    </codegenerator>
   </codegeneration>
  </XMI.extensions>

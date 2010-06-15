@@ -15,6 +15,78 @@
   </section>
   <section id="interfaces">
     <title>Interfaces</title>
+    <section>
+      <title>new_interface</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Interface</entry>
+              <entry role="class-name" namest="c2" nameend="c3">new_interface</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry namest="c1" nameend="c3">
+                <para/>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>new_interface_1</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Interface</entry>
+              <entry role="class-name" namest="c2" nameend="c3">new_interface_1</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry namest="c1" nameend="c3">
+                <para/>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>new_interface_2</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Interface</entry>
+              <entry role="class-name" namest="c2" nameend="c3">new_interface_2</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry namest="c1" nameend="c3">
+                <para/>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
   </section>
   <section id="classes">
     <title>Classes</title>
@@ -361,6 +433,246 @@
       </table>
     </section>
     <section>
+      <title>Root</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">Root</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">index</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment">return str(template)</entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">myfunction</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>MySubdir</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">MySubdir</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">index</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">afunction</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>Pooler</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">Pooler</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">kill_all</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">kill_sorters</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">kill_connectors</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">status_all</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">status_sorters</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">status_connectors</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">start_all</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__start_connector</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__whois_sort</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__launch_whois_sorters</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__launch_whois_connectors</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
       <title>Client</title>
       <table frame="all">
         <title/>
@@ -384,447 +696,6 @@
               <entry namest="c1" nameend="c3">
                 <para/>
               </entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>Atlas</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">Atlas</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__init__</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">parse</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">parse_entry</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">extract_from_xml</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>DshieldDaily</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">DshieldDaily</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">parse</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>DshieldTopIPs</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">DshieldTopIPs</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">parse</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>IPv6Test</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">IPv6Test</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">parse</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>ShadowserverReport</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">ShadowserverReport</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">parse_line</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>ShadowserverReport2</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">ShadowserverReport2</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">parse_line</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>ShadowserverSinkhole</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">ShadowserverSinkhole</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">parse_line</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>Shadowserver</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">Shadowserver</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__init__</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">parse</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">move_file</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>ZeustrackerIpBlockList</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">ZeustrackerIpBlockList</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">parse</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
             </row>
           </tbody>
         </tgroup>
@@ -937,113 +808,6 @@
               <entry role="feature-detail">public</entry>
               <entry role="feature-detail"/>
               <entry role="feature-detail">get_whois</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>IPUpdate</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">IPUpdate</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__init__</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">parse</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">update</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__preinsert_type1</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__insert_type1</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__preinsert_type2</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__insert_type2</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">move_file</entry>
             </row>
             <row>
               <entry role="comment"/>
@@ -1230,7 +994,7 @@
       </table>
     </section>
     <section>
-      <title>Root</title>
+      <title>Assignations</title>
       <table frame="all">
         <title/>
         <tgroup cols="3" align="left" colsep="1" rowsep="1">
@@ -1240,7 +1004,7 @@
           <thead>
             <row>
               <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">Root</entry>
+              <entry role="class-name" namest="c2" nameend="c3">Assignations</entry>
             </row>
           </thead>
           <tbody>
@@ -1263,16 +1027,7 @@
             <row>
               <entry role="feature-detail">public</entry>
               <entry role="feature-detail"/>
-              <entry role="feature-detail">index</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment">return str(template)</entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">myfunction</entry>
+              <entry role="feature-detail">__repr__</entry>
             </row>
             <row>
               <entry role="comment"/>
@@ -1283,7 +1038,7 @@
       </table>
     </section>
     <section>
-      <title>MySubdir</title>
+      <title>Entity</title>
       <table frame="all">
         <title/>
         <tgroup cols="3" align="left" colsep="1" rowsep="1">
@@ -1293,7 +1048,31 @@
           <thead>
             <row>
               <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">MySubdir</entry>
+              <entry role="class-name" namest="c2" nameend="c3">Entity</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry namest="c1" nameend="c3">
+                <para/>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>Abusix</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">Abusix</entry>
             </row>
           </thead>
           <tbody>
@@ -1316,7 +1095,7 @@
             <row>
               <entry role="feature-detail">public</entry>
               <entry role="feature-detail"/>
-              <entry role="feature-detail">index</entry>
+              <entry role="feature-detail">__init__</entry>
             </row>
             <row>
               <entry role="comment"/>
@@ -1325,7 +1104,632 @@
             <row>
               <entry role="feature-detail">public</entry>
               <entry role="feature-detail"/>
-              <entry role="feature-detail">afunction</entry>
+              <entry role="feature-detail">parse</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>Atlas</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">Atlas</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__init__</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse_entry</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">extract_from_xml</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__init__</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>DshieldDaily</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">DshieldDaily</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__init__</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>DshieldTopIPs</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">DshieldTopIPs</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__init__</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>IPv6Test</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">IPv6Test</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>ShadowserverReport</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">ShadowserverReport</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse_line</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__init__</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>ShadowserverReport2</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">ShadowserverReport2</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse_line</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__init__</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>ShadowserverSinkhole</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">ShadowserverSinkhole</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse_line</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__init__</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>Shadowserver</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">Shadowserver</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="comment" namest="c1" nameend="c3">
+                <para>root_dir = config.get('global','root')</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__init__</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">move_file</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse_line</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>ZeustrackerIpBlockList</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">ZeustrackerIpBlockList</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__init__</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>IPUpdate</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">IPUpdate</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__init__</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">parse</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">update</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__preinsert_type1</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__insert_type1</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__preinsert_type2</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__insert_type2</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">move_file</entry>
             </row>
             <row>
               <entry role="comment"/>
@@ -1397,208 +1801,6 @@
               <entry role="feature-detail">public</entry>
               <entry role="feature-detail"/>
               <entry role="feature-detail">launch</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>Assignations</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">Assignations</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__repr__</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>Entity</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">Entity</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry namest="c1" nameend="c3">
-                <para/>
-              </entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
-      <title>Pooler</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">Pooler</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry role="info-title" namest="c1" nameend="c3">
-                <para>Operations:</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-heading">
-                <para>visibility</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>return</para>
-              </entry>
-              <entry role="feature-heading">
-                <para>name</para>
-              </entry>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">kill_all</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">kill_sorters</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">kill_connectors</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">status_all</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">status_sorters</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">status_connectors</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">start_all</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__start_connector</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__whois_sort</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__launch_whois_sorters</entry>
-            </row>
-            <row>
-              <entry role="comment"/>
-              <entry namest="c2" nameend="c3" role="comment"/>
-            </row>
-            <row>
-              <entry role="feature-detail">public</entry>
-              <entry role="feature-detail"/>
-              <entry role="feature-detail">__launch_whois_connectors</entry>
             </row>
             <row>
               <entry role="comment"/>
@@ -1698,30 +1900,6 @@
       </table>
     </section>
     <section>
-      <title>object</title>
-      <table frame="all">
-        <title/>
-        <tgroup cols="3" align="left" colsep="1" rowsep="1">
-          <colspec colname="c1"/>
-          <colspec colname="c2"/>
-          <colspec colname="c3"/>
-          <thead>
-            <row>
-              <entry role="class-title">Class</entry>
-              <entry role="class-name" namest="c2" nameend="c3">object</entry>
-            </row>
-          </thead>
-          <tbody>
-            <row>
-              <entry namest="c1" nameend="c3">
-                <para/>
-              </entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
-    </section>
-    <section>
       <title>Whois</title>
       <table frame="all">
         <title/>
@@ -1764,6 +1942,242 @@
               <entry namest="c1" nameend="c3">
                 <para/>
               </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>Master</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">Master</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">default</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">query_db</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">make_ip_graf</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">make_asn_graf</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>object</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">object</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry namest="c1" nameend="c3">
+                <para/>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>ASGraf</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">ASGraf</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">prepare_graf</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>IPGraf</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">IPGraf</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">prepare_graf</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>AbstractGraf</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">AbstractGraf</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry role="info-title" namest="c1" nameend="c3">
+                <para>Operations:</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-heading">
+                <para>visibility</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>return</para>
+              </entry>
+              <entry role="feature-heading">
+                <para>name</para>
+              </entry>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">__init__</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
+            </row>
+            <row>
+              <entry role="feature-detail">public</entry>
+              <entry role="feature-detail"/>
+              <entry role="feature-detail">make_graph</entry>
+            </row>
+            <row>
+              <entry role="comment"/>
+              <entry namest="c2" nameend="c3" role="comment"/>
             </row>
           </tbody>
         </tgroup>
@@ -1812,5 +2226,17 @@
       <para/>
     </section>
     <!--diagramend3-->
+    <!--diagrambegin4namebeginrelations-initscriptsnameend-->
+    <!--diagram4documentationbegindocumentationend-->
+    <section>
+      <title>relations-initscripts</title>
+      <para/>
+      <mediaobject>
+        <imageobject>
+          <imagedata format="PNG" fileref="relations-initscripts.png"/>
+        </imageobject>
+      </mediaobject>
+    </section>
+    <!--diagramend4-->
   </section>
 </article>

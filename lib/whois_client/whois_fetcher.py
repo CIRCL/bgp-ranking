@@ -11,8 +11,7 @@ if __name__ == "__main__":
     import sys
     import os
     sys.path.append(os.path.join(config.get('global','root'),config.get('global','lib')))
-    
-    
+
 from db_models.whois import *
 from helpers.ip_manip import *
 from db_models.ranking import *
@@ -198,6 +197,11 @@ if __name__ == "__main__":
     f = WhoisFetcher('whois.lacnic.net')
     f.connect()
     print(f.fetch_whois('200.3.14.10', False))
+    f.disconnect()
+    
+    f = WhoisFetcher('whois.apnic.net')
+    f.connect()
+    print(f.fetch_whois('116.66.203.208', False))
     f.disconnect()
     
     f = WhoisFetcher('riswhois.ripe.net')

@@ -8,7 +8,7 @@ from db_models.whois import *
 from helpers.ip_manip import ip_in_network
 from socket import *
 
-class AbstractWhoisParser(object):
+class AbstractParser(object):
     """Abstract Class for parsing a Whois entry.
     """
     def __init__(self, text, server):

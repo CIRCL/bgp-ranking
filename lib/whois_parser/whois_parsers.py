@@ -3,7 +3,7 @@
 # Original Idea :
 # =>  http://code.google.com/p/pywhois/source/browse/trunk/pywhois/parser.py
 
-from abstract_whois import AbstractWhoisParser
+from abstract_parser import AbstractParser
 
 
 """Regex of the RIS-Whois entry.
@@ -23,10 +23,9 @@ RIPE = {
 
 Afrinic = {
     'netname':  'netname:[ ]*([^\n]*)'
-}
-    
+}    
 
-class Whois(AbstractWhoisParser):
+class Whois(AbstractParser):
     """
     This class return a dump of the Whois. 
     Til we have a real implementation of whois in python, 
@@ -37,3 +36,4 @@ class Whois(AbstractWhoisParser):
         'whois.ripe.net'    : RIPE, 
         'whois.afrinic.net' : Afrinic
         }
+

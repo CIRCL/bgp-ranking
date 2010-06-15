@@ -1,33 +1,45 @@
-BGP AS / ISP Security Ranking - Getting informations
+<p>
+	Please read <a href="http://blog.chavant.info/2010/06/13/bgp-as-isp-security-ranking-introduction-and-datasets">this article</a> first. I will now explain you what is <em>the rest</em>, what the application do when all the informations we want/need are extracted of the datasets.</p>
+<h1>
+	In short</h1>
+<p>
+	We will fetch the RIS Whois and the Whois entries for each IP... </p>
+<p>
+	... but it is not that easy! :) </p>
+<h1>
+	RIS Whois </h1>
+<p>
+	The ris informations are fetched from <em>riswhois.ripe.net</em> to know who is announcing the network of the IP. </p>
+<p>
+	From the response, we extract </p>
+<ul>
+	<li>
+		the origin, which is the AS announcing the IP, </li>
+	<li>
+		the route</li>
+	<li>
+		the description of the ASN</li>
+</ul>
+<p>
+	The query server is also saved: it is the URL of the server where we do the query. It is actually always <em>riswhois.ripe.net</em> but in the future, we may directly use a BGP session on a router. We will have to be able to know where the informations are coming from. </p>
+<p>
+	If there is no response, we assume that the ip is not announced anymore. If the IP is <em>RESERVED</em> or <em>PRIVATE</em>, it will be discarded before the inclusion in the database. </p>
+<h1>
+	Whois </h1>
+<p>
+	It is a bit more complicated: I implement a whois client based on the assignations given by the <a href="https://launchpad.net/whois/head">whois package of debian/ubuntu</a> to ask the whois entries to the right server. </p>
+<p>
+	A database is created with the following entries: </p>
+<p>
+	As for the RIS Whois, the URL of the server is saved in the database. The rest of the Whois entry is directly pushed in the database. </p>
+<p>
+	There are two problems: </p>
+<ul>
+	<li>
+		the time: it takes ~1sec to get a whois entry </li>
+	<li>
+		the number of queries: the RIR Afrinic blacklists the ip address which make too much queries </li>
+</ul>
+<p>
+	So I begin to program a whois server based on redis. More informations on it in an other article but you can already <a href="http://gitorious.org/whois-server">take a look</a> at the code. In the next article, we will see how is used redis as a shared memory and caching server.</p>
 
-Please read this article first: <address>
-
-I will now explain you what is 'the rest', what the application do when all the informations we want/need are extracted of the datasets. 
-
-* In short
-
-RIS Whois and Whois entries are fetched for each IP...
-
-... but it is not that easy! :) 
-
-
-* RIS Whois
-
-The ris informations are fetched from riswhois.ripe.net to know who is announcing the network of the ip. 
-
-From the response, we extract the origin, which is the AS announcing the IP, the route and the description of the ASN. The query server is also saved too: it is the DNS of the server where we do the query. It is actually always riswhois.ripe.net but in a neat future, we will directly use a bgp session on a router. 
-
-If there is no response, we assume that the ip is not announced anymore. It is also possible that the ip is false in the dataset or it is a false positive such as a private address. 
-
-* Whois
-
-It is a bit more complicated: I implement a whois client based on the assignations given by the whois package of debian/ubuntu to ask the whois entries to the right server.
-As for the RIS Whois, the query server is saved.
-
-There are two problems: 
-- the time: it takes ~1sec to get a whois entry 
-- the number of queries: the RIR Afrinic blacklist the ip address which make too much queries 
-
-So I begin to program a whois server based on redis. More informations on it in an other article but you can already take a look at the code there: http://gitorious.org/whois-server
-
-In the next article, we will see how is used redis as a shared memory and caching server.

@@ -14,7 +14,7 @@
 	From the response, we extract </p>
 <ul>
 	<li>
-		the origin, which is the AS announcing the IP, </li>
+		the origin, which is the AS announcing the IP</li>
 	<li>
 		the route</li>
 	<li>
@@ -29,7 +29,30 @@
 <p>
 	It is a bit more complicated: I implement a whois client based on the assignations given by the <a href="https://launchpad.net/whois/head">whois package of debian/ubuntu</a> to ask the whois entries to the right server. </p>
 <p>
-	A database is created with the following entries: </p>
+	The following informations are saved in a MySQL database: </p>
+<ul>
+	<li>
+		block: the ips assignated to the server\</li>
+	<li>
+		whois: the URL of the server </li>
+	<li>
+		options:
+		<li>
+			pre: string prepended to the query
+		</li>
+		<li>
+			post: string appended to the query
+		</li>
+		<li>
+			keepalive: prepended, make the query keepalive (the server doesn't close the connexion after each query)
+		</li>
+	</li>
+	<li>
+		port: port on the server
+	</li>
+</ul>
+<p>
+	<b>Note</b>: this database will be switched to Redis as soon as possible. </p>
 <p>
 	As for the RIS Whois, the URL of the server is saved in the database. The rest of the Whois entry is directly pushed in the database. </p>
 <p>

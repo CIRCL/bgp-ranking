@@ -1,0 +1,7 @@
+Ubuntu: 
+	redis -> git clone git://github.com/antirez/redis.git
+	python-ipy -> depots
+	redis-py -> git clone http://github.com/andymccurdy/redis-py.git
+	python-dateutil
+	python-elixir
+	python-mysqldb

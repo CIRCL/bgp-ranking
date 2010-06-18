@@ -19,10 +19,18 @@ AbuseA | 2
 Vote  is the value if someone voted against the AS. 1 : default/no vote:.
     AS
 
+ASsize is just the total number of IP addresses announced by the AS.
+
 R   = 1 +( ( SUM(Occ  * source_impact) * Vote  ))
  AS                AS                       AS 
          (--------------------------------------)
                         ASsize 
+
+== Notes on the algorithm ==
+
+* Each Occ per source is unique even if we see multiple the same IP address for the same source
+* We can see the same IP address among the different source, the formula is not limiting that as
+  this usually a good sign of malicious activities. The information is valided by multiple sources.
 
 === Example ===
 

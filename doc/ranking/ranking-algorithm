@@ -1,0 +1,41 @@
+== BGP Ranking Algorithm ==
+
+R   -> Ranking of an AS
+ AS
+
+Occ   -> #(ip,source)
+   AS
+
+source -> source of the unique occurrences (e.g. dshield, Arbor Atlas, Shadowserver,...)
+source_impact -> (0 -> 1000, from useless to significant) the impact of a source (the trust on a source)
+
+source | source_impact
+----------------------
+dshield| 1
+ArborA | 20
+ShadowS| 10
+AbuseA | 2
+
+Vote  is the value if someone voted against the AS. 1 : default/no vote:.
+    AS
+
+R   = 1 +( ( SUM(Occ  * source_impact) * Vote  ))
+ AS                AS                       AS 
+         (--------------------------------------)
+                        ASsize 
+
+=== Example ===
+
+Unique IP occurrences for each source for AS 1234 with ASsize of 2048 IP addresses :
+
+(10, dshield)
+(5, ArborA)
+(3, ShadowS)
+(4, AbuseA)
+
+The AS vote is 1 (no one voted against this AS).
+
+R        =  1+((10*1+5*20+3*10+4*2)*1)/2048 
+ AS1234 
+
+R        = 1.07226562500000000000

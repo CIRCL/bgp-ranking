@@ -23,7 +23,7 @@ A sorting processes which sort the queries by dest whois server
 temp_db = redis.Redis(db=int(config.get('redis','temp_reris_db')))
 key = config.get('redis','key_temp_whois')
 while 1:
-    syslog.syslog(syslog.LOG_INFO, 'blocs to whois: ' + str(temp_db.llen(key)))
+#    syslog.syslog(syslog.LOG_DEBUG, 'blocs to whois: ' + str(temp_db.llen(key)))
     bloc = temp_db.lpop(key)
     if not bloc:
         time.sleep(sleep_timer)

@@ -8,7 +8,7 @@ from ip_update import IPUpdate
 
 
 class ZeustrackerIpBlockList(IPUpdate):
-    name = 'Zeustracker\'s ipblocklist'
+    name = self.__class__.__name__
     date = datetime.date.today()
     directory = 'zeus/ipblocklist/'
     

@@ -4,7 +4,7 @@ from shadowserver import *
 import dateutil.parser
 
 class ShadowserverSinkhole(Shadowserver):
-    name = 'Shadowserver sinkhole'
+    name = self.__class__.__name__
     directory = 'shadowserver/sinkhole/'
     
     def __init__(self, raw_dir):

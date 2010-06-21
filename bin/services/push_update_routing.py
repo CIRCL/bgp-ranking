@@ -31,6 +31,5 @@ for line in sys.stdin:
     if line == '\n':
         temp_db.rpush(key, entry)
         entry = ''
-#        print(temp_db.llen(key))
     else :
         entry += line

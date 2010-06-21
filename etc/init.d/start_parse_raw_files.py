@@ -26,8 +26,10 @@ if len(sys.argv) < 2:
     usage()
 service = os.path.join(services_dir, "parse_raw_files")
 
-
-options = config.get('global','modules_to_parse').split()
+items = config.items('modules_to_parse')
+options = []
+for item in items:
+    options.append(item[0])
 
 if sys.argv[1] == "start":
     for option in options:

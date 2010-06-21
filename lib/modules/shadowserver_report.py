@@ -4,7 +4,7 @@ from shadowserver import *
 import dateutil.parser
 
 class ShadowserverReport(Shadowserver):
-    name = 'Shadowserver report'
+    name = self.__class__.__name__
     directory = 'shadowserver/report/'
     
     def __init__(self, raw_dir):

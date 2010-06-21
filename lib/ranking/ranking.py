@@ -21,6 +21,12 @@ import IPy
 
 routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
 
+items = config.items('modules_to_parse')
+impacts = {}
+for item in items:
+    impacts[item[0]] = item[1]
+
+
 class Ranking():
     
     def __init__(self, asn):
@@ -37,26 +43,25 @@ class Ranking():
             else :
                 self.ipv4 += ip.len()
 
-    def make_index(self, day):
+    def make_index(self):
         descs = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=self.asn).first()).all()
         print descs
         ips = []
-        for dest in descs:
-            ips += IPsDescriptions.query.filter_by(list_date.like(day), asn=desc)
+        weight = 0
+        for desc in descs:
+#            ips += IPsDescriptions.query.filter(IPsDescriptions.list_date.like(day)).filter_by(asn = desc)
+            ips += IPsDescriptions.query.filter_by(asn = desc)
         ipv4 = 0
         ipv6 = 0
         for ip in ips:
-            ip = IPy.IP(ip)
+            ip = IPy.IP(IPs.filter_by(ip).first())
             if ip.version() == 6:
                 ipv6 += 1
             else :
                 ipv4 += 1
-        self.ipv4_percent = 0
-        self.ipv6_percent = 0
-        if ipv4 != 0:
-            self.ipv4_percent = ipv4 * 100 / self.ipv4
-        if ipv6 != 0:
-            self.ipv6_percent = ipv6 * 100 / self.ipv6
+            weight += impacts[ip.list_name]
+        return weight
+            
         
     
 
@@ -65,6 +70,6 @@ if __name__ == "__main__":
     r = Ranking(12684)
     r.ip_count()
     print(r.ipv4, r.ipv6)
-    r.make_index(datetime.datetime.today())
-    print(r.ipv4_percent, r.ipv6_percent)
+    weight = r.make_index()
+    print(weight)
     

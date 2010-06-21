@@ -88,9 +88,10 @@ def update_running_pids(old_procs):
     for proc in old_procs:
         if proc.poll():
             syslog.syslog(syslog.LOG_DEBUG, str(proc.pid) + ' is alive')
-            new_procs.append(proc)
+            new_procs += proc
         else:
             try:
+                syslog.syslog(syslog.LOG_DEBUG, str(proc.pid) + ' is gone')
                 os.kill (proc.pid, signal.SIGKILL)
             except:
                 # the process is just already gone
@@ -104,6 +105,7 @@ def init_counter(total_ips):
     max_ips_by_process = int(config.get('whois_push','max_ips_by_process'))
     if total_ips > max_processes * max_ips_by_process:
         total_ips = max_processes * max_ips_by_process
+    ip_counter['total_ips'] = total_ips
     ip_counter['interval'] = total_ips / max_processes + 1
     ip_counter['processes'] = 0
     while max_processes > 0 and total_ips > 0:

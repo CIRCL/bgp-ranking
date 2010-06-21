@@ -9,6 +9,7 @@ sys.path.append(os.path.join(root_dir,config.get('global','lib')))
 
 from fetch_asns import FetchASNs
 
+
 """
 Get the whois queries from the redis server and put them into the database.
 """
@@ -24,3 +25,5 @@ args = sys.argv[1].split(' ')
 
 f = FetchASNs()
 f.get_whois(int(args[0]), int(args[1]))
+
+sys.exit(1)

@@ -97,12 +97,11 @@ def update_running_pids(old_procs):
                 pass
     return new_procs
 
-#FIXME : put it in the config
-max_ips_by_process = 500
-max_processes = 1
     
 def init_counter(total_ips):
     ip_counter = {}
+    max_processes = int(config.get('whois_push','max_processes'))
+    max_ips_by_process = int(config.get('whois_push','max_ips_by_process'))
     if total_ips > max_processes * max_ips_by_process:
         total_ips = max_processes * max_ips_by_process
     ip_counter['interval'] = total_ips / max_processes + 1

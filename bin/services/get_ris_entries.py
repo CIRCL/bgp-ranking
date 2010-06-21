@@ -37,7 +37,7 @@ while 1:
             option = str(str(limit_first) + ' ' + str(limit_last))
             syslog.syslog(syslog.LOG_INFO, 'Starting interval: '+ option + '. Total ips: ' + str(ip_counter['total_ips']))
             pids.append(service_start(servicename = service, param = option))
-            syslog.syslog(syslog.LOG_INFO, 'Actually: ' + str(len(pids)) + ' subprocesses are running and getting the ris whois entries')
+            syslog.syslog(syslog.LOG_INFO, 'Actually: ' + str(len(pids)) + ' subprocesses are running and getting the ris whois entries: ' + str(pids))
             limit_first = limit_last +1
             limit_last += ip_counter['interval']
         if len(pids) == ip_counter['processes']:

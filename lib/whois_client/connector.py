@@ -72,7 +72,7 @@ class Connector(object):
         """
         while 1:
             try:
-                syslog.syslog(syslog.LOG_INFO, str(self.temp_db.llen(self.key)) + ' to process on ' + self.server)
+#                syslog.syslog(syslog.LOG_INFO, str(self.temp_db.llen(self.key)) + ' to process on ' + self.server)
                 entry = self.temp_db.lpop(self.key)
                 if not entry:
                     self.__disconnect()
@@ -90,7 +90,7 @@ class Connector(object):
                 if self.cache_db.get(entry) is None:
                     if not self.connected:
                         self.__connect()
-                    syslog.syslog(syslog.LOG_DEBUG, self.server + ", query : " + str(entry))
+#                    syslog.syslog(syslog.LOG_DEBUG, self.server + ", query : " + str(entry))
                     whois = self.fetcher.fetch_whois(entry, self.keepalive)
                     if whois == '':
                         self.temp_db.rpush(self.key, entry)

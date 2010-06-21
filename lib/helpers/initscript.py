@@ -88,7 +88,7 @@ def update_running_pids(old_procs):
     for proc in old_procs:
         if proc.poll():
             syslog.syslog(syslog.LOG_DEBUG, str(proc.pid) + ' is alive')
-            new_procs += proc
+            new_procs.append(proc)
         else:
             try:
                 syslog.syslog(syslog.LOG_DEBUG, str(proc.pid) + ' is gone')

@@ -29,7 +29,7 @@ while 1:
         time.sleep(sleep_timer)
         continue
     server = get_server_by_query(bloc)
-    syslog.syslog(syslog.LOG_DEBUG, bloc + ' goto ' + server.whois )
+#    syslog.syslog(syslog.LOG_DEBUG, bloc + ' goto ' + server.whois )
     if not server:
         syslog.syslog(syslog.LOG_ERR, "error, no server found for this block : " + bloc)
         temp_db.rpush(key, block)

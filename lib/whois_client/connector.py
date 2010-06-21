@@ -101,19 +101,19 @@ class Connector(object):
                         self.__disconnect()
             except IOError, e:
                 if e.errno == errno.ETIMEDOUT:
-                    self.temp_db.push(self.server,entry)
+                    self.temp_db.rpush(self.server,entry)
                     syslog.syslog(syslog.LOG_ERR, "timeout on " + self.server)
                     self.connected = False
                 elif e.errno == errno.EPIPE:
-                    self.temp_db.push(self.server,entry)
+                    self.temp_db.rpush(self.server,entry)
                     syslog.syslog(syslog.LOG_ERR, "Broken pipe " + self.server)
                     self.connected = False
                 elif e.errno == errno.ECONNRESET:
-                    self.temp_db.push(self.server,entry)
+                    self.temp_db.rpush(self.server,entry)
                     syslog.syslog(syslog.LOG_ERR, "Reset by peer:  " + self.server)
                     self.connected = False
                 elif e.errno == errno.ECONNREFUSED:
-                    self.temp_db.push(self.server,entry)
+                    self.temp_db.rpush(self.server,entry)
                     syslog.syslog(syslog.LOG_ERR, "Connexion refused by peer:  " + self.server)
                     self.connected = False
                     time.sleep(process_sleep)

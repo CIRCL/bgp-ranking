@@ -88,7 +88,7 @@ class FetchASNs():
                 self.default_asn_desc = \
                     ASNsDescriptions(owner=unicode("IP without AS, see doc to know why"), \
                     ips_block=unicode('0.0.0.0'), asn=ASNs.query.get(unicode(-1)),  \
-                    whois=unicode('None'), whois_address=unicode('None'), \
+#                    whois=unicode('None'), whois_address=unicode('None'), \
                     riswhois_origin=unicode('None') )
             current.asn = self.default_asn_desc
         else: 
@@ -104,9 +104,6 @@ class FetchASNs():
                 asn_desc = ASNsDescriptions(asn=current_asn, ips_block=unicode(ris_whois.route), \
                                             owner=ris_whois.description.decode("iso-8859-1"), \
                                             riswhois_origin=unicode(ris_origin))
-            # TODO: aims to push the query as soon as possible, but it has to be push in get_whois too:
-            #  get_whois should be independant of get_asns
-            #self.temp_db.push(redis_keys[1], current.ip.ip)
             current.asn = asn_desc
 
 

@@ -30,14 +30,16 @@ pids = []
 ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.whois==None).count())
 while 1:
     syslog.syslog(syslog.LOG_INFO, "Start getting whois entries...")
+    limit_first = 0
+    limit_last = ip_counter['interval']
     while ip_counter['total_ips'] > 0:
         while len(pids) < ip_counter['processes'] :
-            option = str(ip_counter['min']) + ' ' + str(ip_counter['max'])
+            option = str(limit_first + ' ' + limit_last)
             syslog.syslog(syslog.LOG_INFO, 'Starting interval: '+ option + '. Total ips: ' + str(ip_counter['total_ips']))
             pids.append(service_start(servicename = service, param = option))
-            ip_counter['min'] = ip_counter['max'] +1
-            ip_counter['max'] += ip_counter['interval']
-        while len(pids) == ip_counter['processes']:
+            limit_first = limit_last +1
+            limit_last += ip_counter['interval']
+        if len(pids) == ip_counter['processes']:
             time.sleep(sleep_timer)
             pids = update_running_pids(pids)
         ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.whois==None).count())

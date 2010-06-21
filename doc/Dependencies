@@ -5,3 +5,4 @@ Ubuntu:
 	python-dateutil
 	python-elixir
 	python-mysqldb
+	python-feedparser

@@ -98,25 +98,19 @@ def update_running_pids(old_procs):
     return new_procs
 
 #FIXME : put it in the config
-min_ips_by_process = 100
 max_ips_by_process = 500
 max_processes = 1
-
+    
 def init_counter(total_ips):
     ip_counter = {}
-    ip_counter['total_ips'] = total_ips
-    ip_counter['processes'] = max_processes
-    ip_counter['min'] = 0
-    ips_by_process = total_ips/max_processes
-    if ips_by_process > max_ips_by_process:
-        ips_by_process = max_ips_by_process
-    elif ips_by_process < min_ips_by_process:
-        ip_counter['processes'] = 0
-        ips_by_process = min_ips_by_process
-        while total_ips > 0:
-            total_ips -= ips_by_process
-            ip_counter['processes'] += 1
-    ip_counter['max'] = ips_by_process
-    ip_counter['interval'] = ips_by_process
+    if total_ips > max_processes * max_ips_by_process:
+        total_ips = max_processes * max_ips_by_process
+    ip_counter['interval'] = total_ips / max_processes + 1
+    ip_counter['processes'] = 0
+    while max_processes > 0 and total_ips > 0:
+        total_ips -= ip_counter['interval']
+        max_processes -= 1
+        ip_counter['processes'] += 1
     return ip_counter
+    
 

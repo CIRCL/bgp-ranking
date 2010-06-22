@@ -6,3 +6,6 @@ Ubuntu:
 	python-elixir
 	python-mysqldb
 	python-feedparser
+	libbgpdump -> http://www.ris.ripe.net/source/libbgpdump-1.4.99.11.tar.gz
+		zlib1g-dev 
+		libbz2-dev

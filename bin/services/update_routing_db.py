@@ -39,9 +39,8 @@ while 1:
     entry = temp_db.lpop(key)
     if entry == None :
         time.sleep(sleep_timer)
-        print('No entries')
+        syslog.syslog(syslog.LOG_INFO, 'Waiting')
         continue
-#    print entry
     parsed = BGP(entry,  source)
     asn = parsed.asn.split()[-1]
     block = parsed.prefix

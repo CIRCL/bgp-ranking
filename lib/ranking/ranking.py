@@ -49,17 +49,16 @@ class Ranking():
         ips = []
         weight = 0
         for desc in descs:
-#            ips += IPsDescriptions.query.filter(IPsDescriptions.list_date.like(day)).filter_by(asn = desc)
-            ips += IPsDescriptions.query.filter_by(asn = desc)
+            ips += IPsDescriptions.query.filter_by(asn = desc).all()
         ipv4 = 0
         ipv6 = 0
-        for ip in ips:
-            ip = IPy.IP(IPs.filter_by(ip).first())
+        for i in ips:
+            ip = IPy.IP(i.ip_ip)
             if ip.version() == 6:
                 ipv6 += 1
             else :
                 ipv4 += 1
-            weight += impacts[ip.list_name]
+            weight += impacts[i.list_name]
         return weight
             
         

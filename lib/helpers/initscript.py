@@ -2,6 +2,7 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
+config.optionxform = str
 config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('global','root')
 pid_path = os.path.join(root_dir,config.get('global','pids'))

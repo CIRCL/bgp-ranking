@@ -4,6 +4,7 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
+config.optionxform = str
 config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('global','root')
 sleep_timer = int(config.get('global','sleep_timer'))
@@ -24,7 +25,7 @@ routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
 items = config.items('modules_to_parse')
 impacts = {}
 for item in items:
-    impacts[item[0]] = item[1]
+    impacts[item[0]] = int(item[1])
 
 
 class Ranking():
@@ -47,7 +48,8 @@ class Ranking():
         descs = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=self.asn).first()).all()
         print descs
         ips = []
-        weight = 0
+        self.weightv4 = 0
+            
         for desc in descs:
             ips += IPsDescriptions.query.filter_by(asn = desc).all()
         ipv4 = 0
@@ -56,19 +58,23 @@ class Ranking():
             ip = IPy.IP(i.ip_ip)
             if ip.version() == 6:
                 ipv6 += 1
+                self.weightv6 += impacts[str(i.list_name)]
             else :
                 ipv4 += 1
-            weight += impacts[i.list_name]
-        return weight
-            
-        
-    
+                self.weightv4 += impacts[str(i.list_name)]
+
+    def rank(self):
+        self.rankv4 = 1 + (self.weightv4/self.ipv4)
+        self.rankv6 = 1 + (self.weightv6/self.ipv6)
 
 if __name__ == "__main__":
     import datetime
     r = Ranking(12684)
     r.ip_count()
     print(r.ipv4, r.ipv6)
-    weight = r.make_index()
-    print(weight)
+    r.make_index()
+    print(r.weightv4, r.weightv6)
+    r.rank()
+    print('Rank v4:' + srt(r.rankv4))
+    print('Rank v6:' + srt(r.rankv6))
     

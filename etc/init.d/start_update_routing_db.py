@@ -20,7 +20,7 @@ Launch the raw fetching processes
 """
 
 service = os.path.join(services_dir, "update_routing_db")
-
+option = 'RIPE'
 
 def usage():
     print "start_update_routing_db.py (start|stop)"
@@ -34,8 +34,7 @@ if sys.argv[1] == "start":
     syslog.syslog(syslog.LOG_INFO, "Starting update routing...")
     print(service+" to start...")
     syslog.syslog(syslog.LOG_INFO, service+" to start...")
-    proc = service_start(servicename = service)
-    writepid(processname = service, proc = proc)
+    proc = service_start_once(servicename = service, param = option,  processname = service)
 
 elif sys.argv[1] == "stop":
     print("Stopping update routing...")

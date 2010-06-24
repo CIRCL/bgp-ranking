@@ -9,6 +9,7 @@ precdir = os.path.realpath(os.curdir)
 os.chdir(os.path.dirname(__file__))
 import ConfigParser
 config = ConfigParser.RawConfigParser()
+config.optionxform = str
 config.read("../../etc/bgp-ranking.conf")
 login = config.get('mysql','login')
 password = config.get('mysql','password')

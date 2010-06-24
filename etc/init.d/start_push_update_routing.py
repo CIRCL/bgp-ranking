@@ -21,6 +21,7 @@ Launch the raw fetching processes
 """
 
 service = os.path.join(services_dir, "push_update_routing")
+option = os.path.join(raw_data, config.get('ranking','bviewfile'))
 
 
 def usage():
@@ -35,8 +36,7 @@ if sys.argv[1] == "start":
     syslog.syslog(syslog.LOG_INFO, "Start pushing routes...")
     print(service+" to start...")
     syslog.syslog(syslog.LOG_INFO, service+" to start...")
-    proc = service_start(servicename = service)
-    writepid(processname = service, proc = proc)
+    proc = service_start_once(servicename = service, param = option,  processname = service)
 
 elif sys.argv[1] == "stop":
     print("Stop pushing routes...")

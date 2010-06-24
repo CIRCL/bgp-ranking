@@ -49,7 +49,7 @@ class Ranking():
         print descs
         ips = []
         self.weightv4 = 0
-            
+        self.weightv6 = 0
         for desc in descs:
             ips += IPsDescriptions.query.filter_by(asn = desc).all()
         ipv4 = 0
@@ -64,8 +64,13 @@ class Ranking():
                 self.weightv4 += impacts[str(i.list_name)]
 
     def rank(self):
-        self.rankv4 = 1 + (self.weightv4/self.ipv4)
-        self.rankv6 = 1 + (self.weightv6/self.ipv6)
+        self.rankv4 = 1
+        self.rankv6 = 1
+        if self.ipv4 > 0 :
+            self.rankv4 += (self.weightv4/self.ipv4)
+        if self.ipv6 > 0 :
+            self.rankv6 += (self.weightv6/self.ipv6)
+
 
 if __name__ == "__main__":
     import datetime
@@ -75,6 +80,6 @@ if __name__ == "__main__":
     r.make_index()
     print(r.weightv4, r.weightv6)
     r.rank()
-    print('Rank v4:' + srt(r.rankv4))
-    print('Rank v6:' + srt(r.rankv6))
+    print('Rank v4:' + str(r.rankv4))
+    print('Rank v6:' + str(r.rankv6))
     

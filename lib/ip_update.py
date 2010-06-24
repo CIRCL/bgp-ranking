@@ -47,6 +47,8 @@ class IPUpdate ():
                 1 : self.__insert_type1, 
                 2 : self.__insert_type2
             }
+        
+        self.name = self.__class__.__name__
             
     def __glob_only_files(self):
         allfiles = glob.glob( self.directory + '/*')

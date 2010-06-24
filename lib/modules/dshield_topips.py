@@ -8,7 +8,6 @@ from ip_update import IPUpdate
 
 
 class DshieldTopIPs(IPUpdate):
-    name = self.__class__.__name__
     # Dshield doesn't give a date for his TopIPs list. So we assume that 
     # the list is updated every days
     date = datetime.date.today()

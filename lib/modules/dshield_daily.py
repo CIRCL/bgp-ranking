@@ -10,7 +10,6 @@ from ip_update import IPUpdate
 
 
 class DshieldDaily(IPUpdate):
-    name = self.__class__.__name__
     directory = 'dshield/daily/'
 
     def __init__(self, raw_dir):

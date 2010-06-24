@@ -13,7 +13,6 @@ from ip_update import IPUpdate
 import feedparser
 
 class Atlas(IPUpdate):
-    name = self.__class__.__name__
     directory = 'atlas/'
     
     def __init__(self, raw_dir):

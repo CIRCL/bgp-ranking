@@ -10,7 +10,6 @@ import dateutil.parser
 
 
 class Abusix(IPUpdate):
-    name = self.__class__.__name__
     directory = 'abusix/'
 
     def __init__(self, raw_dir):

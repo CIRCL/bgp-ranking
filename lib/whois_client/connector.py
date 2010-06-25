@@ -28,6 +28,8 @@ syslog.openlog('BGP_Ranking_Connectors', syslog.LOG_PID, syslog.LOG_USER)
 cache_ttl = int(config.get('redis','cache_entries'))
 
 desactivated_servers = config.get('whois_servers','desactivate').split()
+local_whois = config.get('whois_servers','local').split()
+
 
 class Connector(object):
     """
@@ -35,7 +37,7 @@ class Connector(object):
     """
     keepalive = False
     support_keepalive = config.get('whois_servers', 'support_keepalive').split()
-    support_keepalive += config.get('whois_servers','local').split()
+    support_keepalive += local_whois
     
     def __init__(self, server):
         """
@@ -52,7 +54,10 @@ class Connector(object):
             self.cache_db = redis.Redis(db=whois_cache_reris_db)
         if self.server in self.support_keepalive:
             self.keepalive = True
-        self.fetcher = WhoisFetcher(self.server)
+        if self.server in local_whois:
+            self.fetcher = WhoisFetcher(config.get('global', 'local_whois_server'))
+        else:
+            self.fetcher = WhoisFetcher(self.server)
         self.connected = False
     
     def __connect(self):

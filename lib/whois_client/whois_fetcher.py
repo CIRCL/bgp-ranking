@@ -22,9 +22,6 @@ import time
 from elixir import *
 
 import errno
-
-
-
 import syslog
 syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_USER)
 
@@ -100,9 +97,6 @@ class WhoisFetcher(object):
     # Doesn't support CIDR queries -> we always do queries with ips 
 #    need_an_ip = ['whois.arin.net', 'whois.nic.or.kr']
     
-    # Databases implemented in my whois server -> http://gitorious.org/whois-server
-    local_query = config.get('whois_servers','local').split()
-    
     s = socket(AF_INET, SOCK_STREAM)
     
     def connect(self):
@@ -168,11 +162,7 @@ class WhoisFetcher(object):
         self.port = assignation.port
 
     def __init__(self, server):
-        assign = None
-        if server in self.local_query:
-            assign = Assignations.query.filter(Assignations.whois==unicode(config.get('global', 'local_whois_server'))).first()
-        else:
-            assign = get_server_by_name(unicode(server))
+        assign = get_server_by_name(unicode(server))
         self.__set_values(assign)
     
     def __repr__(self):

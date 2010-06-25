@@ -1,0 +1,15 @@
+Terminology
+
+ISP (Internet Service Provider) has at least one autonomous system number (ASN) with or without prefixes announced. 
+ASN (Autonomous System Number) is a unique number used in BGP routing to 'uniquely identifies each network on the Internet'. (Wikipedia)
+Prefix it is a network announced by an ISP 
+
+Problem Statement
+
+The satelite operators are often ISP and provide Internet servides for their customers but also other ISPs. Because of this other ISPs, the satellite operators announce their prefixes but not only! They announce also prefixes from other ISPs. 
+
+The Security monirtoring is challenging including mitigation of malicious activities.
+
+Datasource and their datasets 
+
+There is a large variety of datasets including IP and/or prefixes for malicious activities. The level of trust of each dataset is variable (for example Dshield versus Arbor ATLAS/Active thread feed)

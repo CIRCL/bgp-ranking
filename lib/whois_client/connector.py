@@ -27,6 +27,8 @@ syslog.openlog('BGP_Ranking_Connectors', syslog.LOG_PID, syslog.LOG_USER)
 # Set the ttl of the cached entries to 1 day 
 cache_ttl = int(config.get('redis','cache_entries'))
 
+desactivated_servers = config.get('whois_servers','desactivate').split()
+
 class Connector(object):
     """
     Make queries to a specific Whois server
@@ -78,15 +80,10 @@ class Connector(object):
                     self.__disconnect()
                     time.sleep(process_sleep)
                     continue
-                # we are blacklisted by afrinic...
-                if self.server == 'whois.afrinic.net':
-                    whois = 'we are blacklisted by afrinic...'
+                if self.server in desactivated_servers:
+                    whois = config.get('whois_servers','desactivate_message')
                     self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
                     continue
-#                if self.server == 'whois.apnic.net':
-#                    whois = 'we are probably blacklisted by apnic...'
-#                    self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
-#                    continue
                 if self.cache_db.get(entry) is None:
                     if not self.connected:
                         self.__connect()

@@ -29,6 +29,11 @@ if len(sys.argv) < 2:
 service = os.path.join(services_dir, "fetch_whois_entries")
 whois_service_options = get_all_servers_urls()
 
+desactivated_whois_servers = config.get('whois_servers','desactivate').split()
+for server in desactivated_whois_servers:
+    whois_service_options.remove(server)
+
+
 if sys.argv[1] == "start":
 
     syslog.syslog(syslog.LOG_INFO, "Starting fetching...")

@@ -87,7 +87,7 @@ def update_running_pids(old_procs):
     """
     new_procs = []
     for proc in old_procs:
-        if proc.poll():
+        if check_pid(proc.pid):
             syslog.syslog(syslog.LOG_DEBUG, str(proc.pid) + ' is alive')
             new_procs.append(proc)
         else:
@@ -98,6 +98,15 @@ def update_running_pids(old_procs):
                 # the process is just already gone
                 pass
     return new_procs
+
+def check_pid(pid):        
+    """ Check For the existence of a unix pid. """
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return False
+    else:
+        return True
 
     
 def init_counter(total_ips):

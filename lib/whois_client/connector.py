@@ -34,7 +34,8 @@ class Connector(object):
     Make queries to a specific Whois server
     """
     keepalive = False
-    support_keepalive = ['riswhois.ripe.net', 'whois.ripe.net']
+    support_keepalive = config.get('whois_servers', 'support_keepalive').split()
+    support_keepalive += config.get('whois_servers','local').split()
     
     def __init__(self, server):
         """

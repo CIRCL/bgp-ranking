@@ -21,5 +21,6 @@ def usage():
 if len(sys.argv) < 2:
     usage()
 
-c = Connector(sys.argv[1])
-c.launch()
+if sys.argv[1] not in config.get('whois_servers','local').split():
+    c = Connector(sys.argv[1])
+    c.launch()

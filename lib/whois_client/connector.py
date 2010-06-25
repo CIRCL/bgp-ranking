@@ -78,6 +78,7 @@ class Connector(object):
                 entry = self.temp_db.lpop(self.key)
                 if not entry:
                     self.__disconnect()
+                    syslog.syslog(syslog.LOG_INFO, "Disconnected of " + self.server)
                     time.sleep(process_sleep)
                     continue
                 if self.server in desactivated_servers:

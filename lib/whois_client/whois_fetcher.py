@@ -98,12 +98,10 @@ class WhoisFetcher(object):
     # Message AFTER the query
     has_info_message = ['whois.ripe.net', 'whois.afrinic.net',  'whois.lacnic.net']
     # Doesn't support CIDR queries -> we always do queries with ips 
-    need_an_ip = ['whois.arin.net', 'whois.nic.or.kr']
-    # The response is splitted....
-    splitted = ['whois.nic.or.kr']
+#    need_an_ip = ['whois.arin.net', 'whois.nic.or.kr']
     
     # Databases implemented in my whois server -> http://gitorious.org/whois-server
-    local_query = ['whois.arin.net']
+    local_query = config.get('whois_servers','local').split()
     
     s = socket(AF_INET, SOCK_STREAM)
     
@@ -145,12 +143,11 @@ class WhoisFetcher(object):
         prec = ''
         while not done:
             temp = fs.readline()
-            if len(temp) == 0 or prec == temp == '\n':
+            if not temp or len(temp) == 0 or prec == temp == '\n':
                 done = True
             else:
                 self.text += temp 
                 prec = temp 
-            loop += 1
         if loop == 5:
             syslog.syslog(syslog.LOG_ERR, "error (no response) with query: " + query + " on server " + self.server)
         part = self.whois_part.get(self.server, None)

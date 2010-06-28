@@ -31,8 +31,7 @@ if sys.argv[1] == "start":
     syslog.syslog(syslog.LOG_INFO, "Starting sorting...")
     print(service+" to start...")
     syslog.syslog(syslog.LOG_INFO, service+" to start...")
-    proc = service_start(servicename = service)
-    writepid(processname = service, proc = proc)
+    service_start_multiple(servicename = service, param = option,  number = int(config.get('whois_servers','processes_by_servers')))
 
 elif sys.argv[1] == "stop":
     print("Stopping sorting...")

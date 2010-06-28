@@ -17,6 +17,17 @@ syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_USER)
 Standard functions used by the init scripts
 """
 
+def service_start_multiple(servicename, param, number):
+    i = 0 
+    print('Starting ' + str(number) + ' times ' + servicename)
+    syslog.syslog(syslog.LOG_INFO, 'Starting ' + str(number) + ' times ' + servicename)
+    while i < number:
+        proc = service_start(servicename, param)
+        writepid(servicename, proc)
+        i += 1 
+        
+    
+
 def service_start_once(servicename = None, param = None, processname = None):
     processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")

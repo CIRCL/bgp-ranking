@@ -5,13 +5,13 @@ from db_models.whois import *
 from whois_client.whois_fetcher import get_server_by_query
 from helpers.ip_manip import ip_in_network
 from whois_parser.whois_parsers import *
-
-import os 
-import sys
-import ConfigParser
-config = ConfigParser.RawConfigParser()
-config.read("../../etc/bgp-ranking.conf")
-sleep_timer = int(config.get('global','sleep_timer_short'))
+#
+#import os 
+#import sys
+#import ConfigParser
+#config = ConfigParser.RawConfigParser()
+#config.read("../../etc/bgp-ranking.conf")
+#sleep_timer = int(config.get('global','sleep_timer_short'))
 
 import syslog
 syslog.openlog('BGP_Ranking_Fetching', syslog.LOG_PID, syslog.LOG_USER)

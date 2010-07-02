@@ -15,6 +15,7 @@ raw_data = os.path.join(root_dir,config.get('global','raw_data'))
 import signal
 
 from helpers.initscript import *
+from helpers.files_splitter import *
 
 """
 Launch the raw fetching processes 

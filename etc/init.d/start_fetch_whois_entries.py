@@ -33,17 +33,13 @@ desactivated_whois_servers = config.get('whois_servers','desactivate').split()
 for server in desactivated_whois_servers:
     whois_service_options.remove(server)
 
-
 if sys.argv[1] == "start":
 
     syslog.syslog(syslog.LOG_INFO, "Starting fetching...")
     for option in whois_service_options:
         print(option + " to start...")
         syslog.syslog(syslog.LOG_INFO, option + " to start...")
-        proc = service_start(servicename = service, param = option)
-        writepid(processname = option, proc = proc)
-        print(option + ' running at ' + str(pidof(processname=option)))
-        syslog.syslog(syslog.LOG_INFO, option + ' running at ' + str(pidof(processname=option)))
+        service_start_multiple(servicename = service, param = option, number = int(config.get('whois_servers','fetching_processes')))
 
 elif sys.argv[1] == "stop":
     print("Stopping sorting...")

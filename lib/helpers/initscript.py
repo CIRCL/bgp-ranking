@@ -25,8 +25,6 @@ def service_start_multiple(servicename, number, param = None):
         proc = service_start(servicename, param)
         writepid(servicename, proc)
         i += 1 
-        
-    
 
 def service_start_once(servicename = None, param = None, processname = None):
     processname = os.path.basename(processname)

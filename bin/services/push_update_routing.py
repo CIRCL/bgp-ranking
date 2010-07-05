@@ -62,7 +62,7 @@ while 1:
     for line in p.stdout:
         output.write(line)
     output.close()
-    fs = FilesSplitter(output.name)
+    fs = FilesSplitter(output.name, int(config.get('routing','processes_push')))
     fs.fplit()
     processes = []
     for file in fs.splitted_files:
@@ -72,5 +72,6 @@ while 1:
     for p in processes:
         p.join()
     syslog.syslog(syslog.LOG_INFO, 'Done')
-#    os.unlink(output.name)
+    os.unlink(output.name)
+    os.unlink(filename)
     

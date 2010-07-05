@@ -1,16 +1,11 @@
 import os 
-import sys
-import ConfigParser
-config = ConfigParser.RawConfigParser()
-config.read("../../etc/bgp-ranking.conf")
 
-processes = 3
 separator = '\n'
 
 class FilesSplitter():
     split = '/split_'
     
-    def __init__(self, file):
+    def __init__(self, file, processes):
         self.file = file
         self.filename = os.path.basename(file)
         self.dir = os.path.dirname(self.file)
@@ -41,6 +36,10 @@ class FilesSplitter():
 
 
 if __name__ == "__main__":
+    import sys
+    import ConfigParser
+    config = ConfigParser.SafeConfigParser()
+    config.read("../../etc/bgp-ranking.conf")
     file = '/home/raphael/bgp-ranking/var/raw_data/bgp/bview'
-    fs = FilesSplitter(file)
+    fs = FilesSplitter(file, int(config.get('routing','processes_push')))
     fs.fplit()

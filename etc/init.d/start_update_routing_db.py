@@ -34,7 +34,7 @@ if sys.argv[1] == "start":
     syslog.syslog(syslog.LOG_INFO, "Starting update routing...")
     print(service+" to start...")
     syslog.syslog(syslog.LOG_INFO, service+" to start...")
-    service_start_multiple(servicename = service, param = option,  number = int(config.get('routing','processes')))
+    service_start_multiple(servicename = service, param = option,  number = int(config.get('routing','processes_parse')))
 
 elif sys.argv[1] == "stop":
     print("Stopping update routing...")

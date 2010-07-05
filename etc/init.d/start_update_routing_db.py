@@ -7,9 +7,9 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../bgp-ranking.conf")
-root_dir = config.get('global','root')
-sys.path.append(os.path.join(root_dir,config.get('global','lib')))
-services_dir = os.path.join(root_dir,config.get('global','services'))
+root_dir = config.get('directories','root')
+sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+services_dir = os.path.join(root_dir,config.get('directories','services'))
 
 import signal
 
@@ -34,7 +34,7 @@ if sys.argv[1] == "start":
     syslog.syslog(syslog.LOG_INFO, "Starting update routing...")
     print(service+" to start...")
     syslog.syslog(syslog.LOG_INFO, service+" to start...")
-    service_start_multiple(servicename = service, param = option,  number = int(config.get('ranking','routing_db_processes')))
+    service_start_multiple(servicename = service, param = option,  number = int(config.get('routing','processes')))
 
 elif sys.argv[1] == "stop":
     print("Stopping update routing...")

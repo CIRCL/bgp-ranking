@@ -4,11 +4,11 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
-root_dir = config.get('global','root')
-sleep_timer = int(config.get('global','sleep_timer'))
-sleep_timer_short = int(config.get('global','sleep_timer_short'))
-sys.path.append(os.path.join(root_dir,config.get('global','lib')))
-bgpdump = config.get('ranking','bgpdump')
+root_dir = config.get('directories','root')
+sleep_timer = int(config.get('sleep_timers','long'))
+sleep_timer_short = int(config.get('sleep_timers','short'))
+sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+bgpdump = config.get('routing','bgpdump')
 
 import syslog
 syslog.openlog('Push_BGP_Routing', syslog.LOG_PID, syslog.LOG_USER)

@@ -4,9 +4,9 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
-root_dir = config.get('global','root')
-sleep_timer = int(config.get('global','sleep_timer'))
-sys.path.append(os.path.join(root_dir,config.get('global','lib')))
+root_dir = config.get('directories','root')
+sleep_timer = int(config.get('sleep_timers','long'))
+sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 import syslog
 syslog.openlog('BGP_Routing_Update', syslog.LOG_PID, syslog.LOG_USER)

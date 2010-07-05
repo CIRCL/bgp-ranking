@@ -5,8 +5,8 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
-root_dir = config.get('global','root')
-sys.path.append(os.path.join(root_dir,config.get('global','lib')))
+root_dir = config.get('directories','root')
+sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 from whois_client.connector import Connector
 

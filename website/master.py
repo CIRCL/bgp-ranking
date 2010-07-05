@@ -9,8 +9,8 @@ import sys
 import IPy
 config = ConfigParser.RawConfigParser()
 config.read("../etc/bgp-ranking.conf")
-root_dir =  config.get('global','root')
-sys.path.append(os.path.join(root_dir,config.get('global','lib')))
+root_dir =  config.get('directories','root')
+sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 from db_models.ranking import *
 
 config_file = config.get('web','config_file')

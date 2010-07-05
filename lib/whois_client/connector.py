@@ -10,9 +10,9 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
-root_dir = config.get('global','root')
+root_dir = config.get('directories','root')
 # In case there is nothing to fetch, the process will sleep 5 seconds 
-process_sleep = int(config.get('global','sleep_timer_short'))
+process_sleep = int(config.get('sleep_timers','short'))
 
 # Temporary redis database, used to push ris and whois requests
 temp_reris_db = int(config.get('redis','temp_reris_db'))
@@ -55,7 +55,7 @@ class Connector(object):
         if self.server in self.support_keepalive:
             self.keepalive = True
         if self.server in local_whois:
-            self.fetcher = WhoisFetcher(config.get('global', 'local_whois_server'))
+            self.fetcher = WhoisFetcher(config.get('whois_server', 'hostname'))
         else:
             self.fetcher = WhoisFetcher(self.server)
         self.connected = False

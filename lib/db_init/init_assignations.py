@@ -6,8 +6,8 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
-root_dir = config.get('global','root')
-sys.path.append(os.path.join(root_dir,config.get('global','lib')))
+root_dir = config.get('directories','root')
+sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 from db_models.whois import *
 
@@ -76,8 +76,8 @@ insert(assignations)
 # to do the RIS Requests
 Assignations(whois=unicode('riswhois.ripe.net'))
 # local queries -> http://gitorious.org/whois-server
-Assignations(whois=unicode(config.get('global', 'local_whois_server')), \
-              port=unicode(config.get('global', 'local_whois_server_port')))
+Assignations(whois=unicode(config.get('whois_server', 'hostname')), \
+              port=unicode(config.get('whois_server', 'port')))
 
 set_options()
 

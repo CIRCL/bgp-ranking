@@ -9,7 +9,7 @@ if __name__ == "__main__":
     config.read("../../etc/bgp-ranking.conf")
     import sys
     import os
-    sys.path.append(os.path.join(config.get('global','root'),config.get('global','lib')))
+    sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
 
 from abstract_parser import AbstractParser
 

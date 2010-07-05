@@ -4,10 +4,10 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
-root_dir = config.get('global','root')
+root_dir = config.get('directories','root')
 temporary_dir = config.get('fetch_files','tmp_dir')
 old_dir = config.get('fetch_files','old_dir')
-sleep_timer = int(config.get('global','sleep_timer'))
+sleep_timer = int(config.get('sleep_timers','long'))
 
 import syslog
 syslog.openlog('BGP_Ranking_Fetch_Raw_Files', syslog.LOG_PID, syslog.LOG_USER)

@@ -5,9 +5,9 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
-root_dir = config.get('global','root')
-sys.path.append(os.path.join(root_dir,config.get('global','lib')))
-sleep_timer = int(config.get('global','sleep_timer_short'))
+root_dir = config.get('directories','root')
+sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+sleep_timer = int(config.get('sleep_timers','short'))
 
 import syslog
 syslog.openlog('BGP_Ranking_Sort_Whois_Entries', syslog.LOG_PID, syslog.LOG_USER)

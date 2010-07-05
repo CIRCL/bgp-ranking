@@ -15,7 +15,8 @@ syslog.openlog('Push_BGP_Routing', syslog.LOG_PID, syslog.LOG_USER)
 
 import time
 import redis
-    
+import subprocess
+
 """
 Push the BGP Updates
 """
@@ -30,35 +31,14 @@ temp_db = redis.Redis(db=config.get('redis','temp_reris_db'))
 filename = sys.argv[1]
 dir = os.path.dirname(filename)
 
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen, PIPE
 from multiprocessing import Process
 
 
 from helpers.initscript import *
+from helpers.files_splitter import *
 
-while 1:
-    if not os.path.exists(filename):
-        time.sleep(sleep_timer)
-        continue
-    output = open(dir + '/bview', 'wr')
-    p = os.system(bgpdump + ' ' + filename + '>' + dir + '/bview')
-    while check_pid(p):
-        time.sleep(sleep_timer_short)
-        continue
-    fs = FilesSplitter(output)
-    output.close()
-    fs.fplit()
-    processes = []
-    print fs.splitted_files
-    for file in fs.splitted_files:
-        processes.append(Process(target=splittet_file_parser, args=(file,)))
-    while len(update_running_pids(processes)) > 0:
-        time.sleep(sleep_timer_short)
-        continue
-    syslog.syslog(syslog.LOG_INFO, 'Done')
-#    os.unlink(filename)
-    
-def splittet_file_parser(fname):
+def splitted_file_parser(fname):
     file = open(fname)
     entry = ''
     for line in file:
@@ -72,3 +52,25 @@ def splittet_file_parser(fname):
     syslog.syslog(syslog.LOG_INFO, 'Done')
     os.unlink(fname)
 #    break
+
+while 1:
+    if not os.path.exists(filename):
+        time.sleep(sleep_timer)
+        continue
+    output = open(dir + '/bview', 'wr')
+    p = Popen([bgpdump , filename], stdout=PIPE)
+    for line in p.stdout:
+        output.write(line)
+    output.close()
+    fs = FilesSplitter(output.name)
+    fs.fplit()
+    processes = []
+    for file in fs.splitted_files:
+        p = Process(target=splitted_file_parser, args=(file,))
+        p.start()
+        processes.append(p)
+    for p in processes:
+        p.join()
+    syslog.syslog(syslog.LOG_INFO, 'Done')
+#    os.unlink(output.name)
+    

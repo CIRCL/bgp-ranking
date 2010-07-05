@@ -4,12 +4,11 @@ import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
 
-processes = 10
+processes = 3
 separator = '\n'
 
-split = '/split_'
-
 class FilesSplitter():
+    split = '/split_'
     
     def __init__(self, file):
         self.file = file
@@ -33,7 +32,7 @@ class FilesSplitter():
             temp.seek(prec)
             copy = temp.read(actual - prec)
             temp.close()
-            new_file = self.dir + split + self.filename + str(number)
+            new_file = self.dir + self.split + self.filename + str(number)
             self.splitted_files.append(new_file)
             open(new_file, 'w').write(copy)
             number +=1 

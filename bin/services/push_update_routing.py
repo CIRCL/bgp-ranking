@@ -63,9 +63,9 @@ while 1:
         output.write(line)
     output.close()
     fs = FilesSplitter(output.name, int(config.get('routing','processes_push')))
-    fs.fplit()
+    splitted_files = fs.fplit()
     processes = []
-    for file in fs.splitted_files:
+    for file in splitted_files:
         p = Process(target=splitted_file_parser, args=(file,))
         p.start()
         processes.append(p)

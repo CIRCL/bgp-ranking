@@ -33,6 +33,7 @@ class FilesSplitter():
             number +=1 
             if not s:
                 break
+        return self.splitted_files
 
 
 if __name__ == "__main__":
@@ -42,4 +43,4 @@ if __name__ == "__main__":
     config.read("../../etc/bgp-ranking.conf")
     file = '/home/raphael/bgp-ranking/var/raw_data/bgp/bview'
     fs = FilesSplitter(file, int(config.get('routing','processes_push')))
-    fs.fplit()
+    print fs.fplit()

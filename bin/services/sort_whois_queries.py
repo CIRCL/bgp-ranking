@@ -13,7 +13,7 @@ import syslog
 syslog.openlog('BGP_Ranking_Sort_Whois_Entries', syslog.LOG_PID, syslog.LOG_USER)
 
 import redis
-from whois_client.whois_fetcher import get_server_by_query
+from whois_client.whois_fetcher_redis import get_server_by_query
 import time
 
 """

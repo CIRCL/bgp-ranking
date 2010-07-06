@@ -16,7 +16,7 @@ sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 services_dir = os.path.join(root_dir,config.get('directories','services'))
 
 import signal
-from whois_client.whois_fetcher import get_all_servers_urls
+from whois_client.whois_fetcher_redis import get_all_servers_urls
 from helpers.initscript import *
 
 def usage():

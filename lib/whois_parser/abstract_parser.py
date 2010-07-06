@@ -4,7 +4,6 @@
 # =>  http://code.google.com/p/pywhois/source/browse/trunk/pywhois/parser.py
 
 import re
-from db_models.whois import *
 from helpers.ip_manip import ip_in_network
 from socket import *
 

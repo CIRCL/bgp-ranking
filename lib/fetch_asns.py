@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from db_models.ranking import *
-from db_models.whois import *
-from whois_client.whois_fetcher import get_server_by_query
+from whois_client.whois_fetcher_redis import get_server_by_query
 from helpers.ip_manip import ip_in_network
 from whois_parser.whois_parsers import *
 

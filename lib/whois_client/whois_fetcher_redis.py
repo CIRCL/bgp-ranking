@@ -12,68 +12,54 @@ if __name__ == "__main__":
     import os
     sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
 
-from helpers.ip_manip import *
-from db_models.ranking import *
 from socket import *
 
+import IPy
 import re
 import time
 from elixir import *
+import redis
 
 import errno
 import syslog
 syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_USER)
 
-unused_entries = [ 'UNALLOCATED',  '6to4', 'teredo', '6bone', 'v6nic' ]
-
 def get_all_servers_urls():
     """
     Get the URLs of all the whois servers 
     """
-    to_return = set()
-    servers = Assignations.query.all()
-    for server in servers:
-        if server.whois not in unused_entries:
-            to_return.add(server.whois)
-    return to_return
-    
-def get_all_servers():
-    """
-    Get all the whois servers 
-    """
-    to_return = set()
-    servers = Assignations.query.all()
-    for server in servers:
-        if server.whois not in unused_entries:
-            to_return.add(server)
-    return to_return
+    return  redis.Redis(db=config.get('redis','whois_assignations')).smembers(config.get('assignations','servers_key'))
 
-def get_server_by_name(server):
-    """
-    Return the entry of 'server' from the Assignation's database
-    """
-    to_return = Assignations.query.filter(Assignations.whois==server).first()
-    return to_return
 
 def get_server_by_query(query):
-    """
-    Return the server entry corresponing to 'query' from the Assignation's database
-    Query is an IP address and is included in one of the block of the database. We have to find the 
-    smallest to fetch the more accurate informations. 
-    """
-    assignations = Assignations.query.filter(Assignations.block!=unicode('')).all()
-    # FIXME: wtf?! 
-    while len(assignations) == 1:
-        assignations = Assignations.query.filter(Assignations.block!=unicode('')).all()
-    server = None
-    for assignation in assignations:
-        if ip_in_network(query, assignation.block):
-            if not server:
-                server = assignation
+    r = redis.Redis(db=config.get('redis','whois_assignations'))
+    to_return = None
+    ranges = None
+    key = str(query)
+    ip = IPy.IP(query)
+    if ip.version() == 4:
+        regex = '.*[.]'
+    else:
+        regex = '.*[:]'
+    while not ranges:
+        key = re.findall(regex, key)
+        if len(key) != 0:
+           key = key[0][:-1]
+        else:
+            break
+        ranges = r.smembers(key)
+    best_range = None
+    for range in ranges:
+        network = IPy.IP(range)
+        if ip in network:
+            if best_range is not None:
+                if network in range:
+                    best_range = range
             else:
-                if ip_in_network(assignation.block, server.block ):
-                    server = assignation
-    return server
+                best_range = range
+    if best_range is not None:
+        to_return = r.get(best_range)
+    return to_return
 
 class WhoisFetcher(object):
     """Class to the Whois entry of a particular IP.
@@ -150,50 +136,67 @@ class WhoisFetcher(object):
             self.s.close()
         return self.text
 
-    def __set_values(self,  assignation):
+    def __set_values(self,  server):
         """
         Set the needed informations concerning the server we want to use
         """
-        self.server = assignation.whois
-        self.pre_options = assignation.pre_options
-        self.post_options = assignation.post_options
-        self.keepalive_options = assignation.keepalive_options
-        self.port = assignation.port
+        r = redis.Redis(db=config.get('redis','whois_assignations'))
+        pre_option_suffix = config.get('assignations','pre_option_suffix')
+        post_option_suffix = config.get('assignations','post_option_suffix')
+        keepalive_option_suffix = config.get('assignations','keepalive_option_suffix')
+        port_option_suffix = config.get('assignations','port_option_suffix')
+        self.server = server
+        self.pre_options = r.get(server + pre_option_suffix)
+        if self.pre_options == None:
+            self.pre_options = ''
+        self.post_options = r.get(server + post_option_suffix)
+        if self.post_options == None:
+            self.post_options = ''
+        self.keepalive_options = r.get(server + keepalive_option_suffix)
+        if self.keepalive_options == None:
+            self.keepalive_options = ''
+        self.port = r.get(server + port_option_suffix)
+        if self.port == None:
+            self.port = config.get('assignations','default_whois_port')
+        self.port = int(self.port)
 
     def __init__(self, server):
-        assign = get_server_by_name(unicode(server))
-        self.__set_values(assign)
+        self.__set_values(server)
     
     def __repr__(self):
         return self.text
 
 if __name__ == "__main__":
-    f = WhoisFetcher('whois.arin.net')
-    f.connect()
-    print(f.fetch_whois('127.0.0.1', True))
-    print(f.fetch_whois('127.0.0.1', True))
-    print(f.fetch_whois('127.0.0.1', False))
-    f.disconnect()
-    f = WhoisFetcher('whois.ripe.net')
-    f.connect()
-    print(f.fetch_whois('127.0.0.1', True))
-    print(f.fetch_whois('127.0.0.1', True))
-    print(f.fetch_whois('127.0.0.1', False))
-    f.disconnect()
-    f = WhoisFetcher('whois.lacnic.net')
-    f.connect()
-    print(f.fetch_whois('200.3.14.10', False))
-    f.disconnect()
+#    f = WhoisFetcher('whois.arin.net')
+#    f.connect()
+#    print(f.fetch_whois('127.0.0.1', True))
+#    print(f.fetch_whois('127.0.0.1', True))
+#    print(f.fetch_whois('127.0.0.1', False))
+#    f.disconnect()
+#    f = WhoisFetcher('whois.ripe.net')
+#    f.connect()
+#    print(f.fetch_whois('127.0.0.1', True))
+#    print(f.fetch_whois('127.0.0.1', True))
+#    print(f.fetch_whois('127.0.0.1', False))
+#    f.disconnect()
+#    f = WhoisFetcher('whois.lacnic.net')
+#    f.connect()
+#    print(f.fetch_whois('200.3.14.10', False))
+#    f.disconnect()
+#    
+#    f = WhoisFetcher('whois.apnic.net')
+#    f.connect()
+#    print(f.fetch_whois('116.66.203.208', False))
+#    f.disconnect()
+#    
+#    f = WhoisFetcher('riswhois.ripe.net')
+#    f.connect()
+#    print(f.fetch_whois('200.3.14.10', False))
+#    f.disconnect()
     
-    f = WhoisFetcher('whois.apnic.net')
-    f.connect()
-    print(f.fetch_whois('116.66.203.208', False))
-    f.disconnect()
-    
-    f = WhoisFetcher('riswhois.ripe.net')
-    f.connect()
-    print(f.fetch_whois('200.3.14.10', False))
-    f.disconnect()
-    
+    print get_all_servers_urls()
+    print get_server_by_query('200.3.14.10')
+    print get_server_by_query('127.0.0.1')
+  
     
     

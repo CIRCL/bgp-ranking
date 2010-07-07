@@ -29,9 +29,9 @@ if len(sys.argv) < 2:
 service = os.path.join(services_dir, "fetch_whois_entries")
 whois_service_options = get_all_servers_urls()
 
-desactivated_whois_servers = config.get('whois_servers','desactivate').split()
-for server in desactivated_whois_servers:
-    whois_service_options.remove(server)
+#desactivated_whois_servers = config.get('whois_servers','desactivate').split()
+#for server in desactivated_whois_servers:
+#    whois_service_options.remove(server)
 
 if sys.argv[1] == "start":
 
@@ -44,17 +44,16 @@ if sys.argv[1] == "start":
 elif sys.argv[1] == "stop":
     print("Stopping sorting...")
     syslog.syslog(syslog.LOG_INFO, "Stopping sorting...")
-    for option in whois_service_options:
-        pids = pidof(processname=option)
-        if pids:
-            print(option + " to be stopped...")
-            syslog.syslog(syslog.LOG_INFO, option + " to be stopped...")
-            for pid in pids:
-                try:
-                    os.kill(int(pid), signal.SIGKILL)
-                except OSError, e:
-                    print(option +  " unsuccessfully stopped")
-                    syslog.syslog(syslog.LOG_ERR, option +  " unsuccessfully stopped")
-            rmpid(processname=option)
+    pids = pidof(processname=service)
+    if pids:
+        print(service + " to be stopped...")
+        syslog.syslog(syslog.LOG_INFO, service + " to be stopped...")
+        for pid in pids:
+            try:
+                os.kill(int(pid), signal.SIGKILL)
+            except OSError, e:
+                print(service +  " unsuccessfully stopped")
+                syslog.syslog(syslog.LOG_ERR, service +  " unsuccessfully stopped")
+        rmpid(processname=service)
 else:
     usage()

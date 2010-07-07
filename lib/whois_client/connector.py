@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import redis
-from whois_fetcher import *
+from whois_fetcher_redis import *
 import errno
 
 

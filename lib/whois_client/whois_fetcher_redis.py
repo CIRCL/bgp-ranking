@@ -4,13 +4,13 @@
 # =>  http://code.google.com/p/pywhois/source/browse/trunk/pywhois/parser.py
 
 
-if __name__ == "__main__":
-    import ConfigParser
-    config = ConfigParser.RawConfigParser()
-    config.read("../../etc/bgp-ranking.conf")
-    import sys
-    import os
-    sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
+#if __name__ == "__main__":
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../../etc/bgp-ranking.conf")
+import sys
+import os
+sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
 
 from socket import *
 
@@ -53,12 +53,12 @@ def get_server_by_query(query):
         network = IPy.IP(range)
         if ip in network:
             if best_range is not None:
-                if network in range:
-                    best_range = range
+                if network in best_range:
+                    best_range = network
             else:
-                best_range = range
+                best_range = network
     if best_range is not None:
-        to_return = r.get(best_range)
+        to_return = r.get(str(best_range))
     return to_return
 
 class WhoisFetcher(object):

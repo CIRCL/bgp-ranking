@@ -34,4 +34,4 @@ while 1:
         syslog.syslog(syslog.LOG_ERR, "error, no server found for this block : " + bloc)
         temp_db.rpush(key, block)
         continue
-    temp_db.rpush(server.whois,  bloc)
+    temp_db.rpush(whois,  bloc)

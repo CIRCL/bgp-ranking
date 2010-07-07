@@ -118,7 +118,7 @@ class FetchASNs():
                 else:
                     self.__update_db_ris(description, entry)
             self.ips_descriptions = deferred
-            time.sleep(sleep_timer)
+            time.sleep(int(config.get('sleep_timers','short')))
             syslog.syslog(syslog.LOG_DEBUG, 'RIS Whois to fetch: ' + str(len(self.ips_descriptions)))
             self.max_loop -=1
             if self.max_loop == 0:
@@ -146,7 +146,7 @@ class FetchASNs():
                     description.whois_address = unicode(splitted[0])
                     description.whois = unicode(splitted[2])
             self.ips_descriptions = deferred
-            time.sleep(sleep_timer)
+            time.sleep(int(config.get('sleep_timers','short')))
             syslog.syslog(syslog.LOG_DEBUG, 'Whois to fetch: ' + str(len(self.ips_descriptions)))
             self.max_loop -=1
             if self.max_loop == 0:

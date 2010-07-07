@@ -9,13 +9,15 @@ sleep_timer = int(config.get('sleep_timers','long'))
 sleep_timer_short = int(config.get('sleep_timers','short'))
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 bgpdump = config.get('routing','bgpdump')
-
 import syslog
 syslog.openlog('Push_BGP_Routing', syslog.LOG_PID, syslog.LOG_USER)
 
 import time
 import redis
 import subprocess
+
+
+from whois_parser.bgp_parsers import *
 
 """
 Push the BGP Updates
@@ -27,6 +29,7 @@ def usage():
 
 key = config.get('redis','key_temp_routing')
 temp_db = redis.Redis(db=config.get('redis','temp_reris_db'))
+routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
 
 filename = sys.argv[1]
 dir = os.path.dirname(filename)
@@ -45,13 +48,16 @@ def splitted_file_parser(fname):
         if not line:
             break
         if line == '\n':
-            temp_db.rpush(key, entry)
+            parsed = BGP(entry,  'RIPE')
+            asn = parsed.asn.split()[-1]
+            block = parsed.prefix
+            routing_db.sadd(asn, block)
+            routing_db.sadd(block, asn)
             entry = ''
         else :
             entry += line
     syslog.syslog(syslog.LOG_INFO, 'Done')
     os.unlink(fname)
-#    break
 
 while 1:
     if not os.path.exists(filename):
@@ -73,5 +79,5 @@ while 1:
         p.join()
     syslog.syslog(syslog.LOG_INFO, 'Done')
     os.unlink(output.name)
-    os.unlink(filename)
+#    os.unlink(filename)
     

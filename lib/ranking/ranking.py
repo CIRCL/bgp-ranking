@@ -7,7 +7,6 @@ config = ConfigParser.RawConfigParser()
 config.optionxform = str
 config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('directories','root')
-sleep_timer = int(config.get('directories','sleep_timer'))
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 import syslog
@@ -67,9 +66,9 @@ class Ranking():
         self.rankv4 = 1
         self.rankv6 = 1
         if self.ipv4 > 0 :
-            self.rankv4 += (self.weightv4/self.ipv4)
+            self.rankv4 += (float(self.weightv4)/self.ipv4)
         if self.ipv6 > 0 :
-            self.rankv6 += (self.weightv6/self.ipv6)
+            self.rankv6 += (float(self.weightv6)/self.ipv6)
 
 
 if __name__ == "__main__":

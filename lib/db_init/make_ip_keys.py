@@ -66,6 +66,8 @@ class MakeIPKeys:
             if i == len(first_index) or i == len(last_index):
                 break
         if key == '':
+            if len(first_index[0]) == 0:
+                first_index[0] = 0
             hex_first = int('0x' + first_index[0], 16)
             hex_last = int('0x' + last_index[0], 16)
             while hex_first <= hex_last:

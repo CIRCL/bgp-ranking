@@ -15,6 +15,7 @@ from whois_parser.bgp_parsers import *
 
 from db_models.ranking import *
 from db_models.voting import *
+from sqlalchemy import and_
 
 import time
 import redis
@@ -80,7 +81,7 @@ class Ranking():
         string_votes = ''
         for vote in votes: 
             string_votes = vote.user + ':' + vote.vote + ';'
-        history.votes = string_votes
+        history.votes = unicode(string_votes)
         v_session = VotingSession()
         v_session.commit()
         v_session.close()
@@ -88,7 +89,7 @@ class Ranking():
 
 if __name__ == "__main__":
     import datetime
-    import dateutil
+    import dateutil.parser
     r = Ranking(42473)
     r.ip_count()
     print(r.ipv4, r.ipv6)

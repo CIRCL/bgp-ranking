@@ -10,14 +10,14 @@ config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
-from db_models.ranking import *
+from db_models.voting import *
 
-ranking_metadata.drop_all()
-ranking_metadata.create_all()
+voting_metadata.drop_all()
+voting_metadata.create_all()
 
-# Creation of the "default AS", see fetch_asn.py for more informations 
-ASNs(asn=unicode('-1'))
+# Creation of the admin user, with default password
+Users(login=unicode('admin'), password=unicode('admin'))
 
-r_session = RankingSession()
-r_session.commit()
-r_session.close()
+v_session = VotingSession()
+v_session.commit()
+v_session.close()

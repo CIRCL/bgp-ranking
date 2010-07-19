@@ -14,6 +14,7 @@ syslog.openlog('Ranking', syslog.LOG_PID, syslog.LOG_USER)
 from whois_parser.bgp_parsers import *
 
 from db_models.ranking import *
+from db_models.voting import *
 
 import time
 import redis
@@ -43,14 +44,17 @@ class Ranking():
             else :
                 self.ipv4 += ip.len()
 
-    def make_index(self):
+    def make_index(self, date = datetime.date.today()):
         descs = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=self.asn).first()).all()
         print descs
         ips = []
         self.weightv4 = 0
         self.weightv6 = 0
         for desc in descs:
-            ips += IPsDescriptions.query.filter_by(asn = desc).all()
+            ips += IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1)))).all()
+            """
+            SELECT * FROM `IPsDescriptions` WHERE `IPsDescriptions`.asn_id = desc AND `IPsDescriptions`.timestamp <= date AND `IPsDescriptions`.timestamp >= date - datetime.timedelta(days=1)
+            """
         ipv4 = 0
         ipv6 = 0
         for i in ips:
@@ -69,16 +73,29 @@ class Ranking():
             self.rankv4 += (float(self.weightv4)/self.ipv4)
         if self.ipv6 > 0 :
             self.rankv6 += (float(self.weightv6)/self.ipv6)
+    
+    def make_history(self):
+        votes = Votes.query.filter_by(asn=int(self.asn)).all()
+        history = History(asn=int(self.asn), rankv4=self.rankv4, rankv6=self.rankv6)
+        string_votes = ''
+        for vote in votes: 
+            string_votes = vote.user + ':' + vote.vote + ';'
+        history.votes = string_votes
+        v_session = VotingSession()
+        v_session.commit()
+        v_session.close()
 
 
 if __name__ == "__main__":
     import datetime
-    r = Ranking(12684)
+    import dateutil
+    r = Ranking(42473)
     r.ip_count()
     print(r.ipv4, r.ipv6)
-    r.make_index()
+    r.make_index(dateutil.parser.parse('2010-06-25'))
     print(r.weightv4, r.weightv6)
     r.rank()
     print('Rank v4:' + str(r.rankv4))
     print('Rank v6:' + str(r.rankv6))
+    r.make_history()
     

@@ -1,15 +1,106 @@
-Terminology
+<h1>
+	Context</h1>
+<h2>
+	Problem statement</h2>
+<h3>
+	Peering</h3>
+<p>
+	Internet is not a centralized network but a bunch of operators, each operator has his proper network and they exchange traffic together. This exchange is called peering. Without this exchanges, Internet cannot work.</p>
+<p>
+	There is three different types of peering:</p>
+<ul>
+	<li>
+		Transit: you pay a provider to provide you a transit across his network</li>
+	<li>
+		Peer: you exchange traffic with an other provider freely for <em>mutual benefit</em></li>
+	<li>
+		Customer: you sell an access across your network to your customers</li>
+</ul>
+<p>
+	The first of all <em>mutual benefits</em> between two peers will be the reduction of the costs of the exchanges. But it will also provide redundancy, improve the capacity of each network by increasing the number of possible routes and globally improve the performances.</p>
+<p>
+	Two ISPs of the same size exchange traffic freely but when they need to exchange traffic with bigger providers (upstream providers), they will obviously have to pay. When a smaller provider (downstream provider) want to do peering with an ISP, he will pay too.</p>
+<p>
+	Well, it is how it should work... but there is also some bad guys on the Internet!</p>
+<h3>
+	Threads</h3>
+<p>
+	Internet has always been an interesting place for the bad guys: Virus and attack on Information Systems exists since the computers but now that almost everybody can have an Internet access (with a computer or a mobile device). It is also a way more easy for the bad guys to gain access to more computer: for a vast majority of the population IT security is absolutely not in their scope and they have no clue on it.</p>
+<p>
+	For this project, we will concentrate us mostly on the botnets. A botnet is a network of computer infected by a malware which are controlled by a Command & Control Server and administrated by a Bot master. The botmaster is often an organization which sell a certain amount of infected computers to performs suspicious activities. A botnet may be used to perform DDOS attack on servers, exchange data, provide phishing sites, and many other...</p>
+<p>
+	We can easily see that peering without any control is a bad idea.</p>
+<h2>
+	Monitoring of the network</h2>
+<p>
+	Peering is fine but if an ISP is routing a lot of suspicious traffic he may be blacklisted by other ISPs... even if this traffic comes from an other ISP! It is so a necessity to have an idea of what for traffic we are routing. This task is critical for every ISP and of course for the satellite operators too: they provide an Internet access to their customers (which may be ISP too).</p>
+<p>
+	The satellite operators announce their proper prefixes but also prefixes from other ISPs. As every classical ISP, they have to be able to monitor the security of their network.</p>
+<p>
+	A ranking system is very useful for every ISP which want to know the reputation of the traffic he is routing and mitigate the malicious activities originating from their customers.</p>
+<p>
+	There are at least three goals which can be achieved by the ranking:</p>
+<ul>
+	<li>
+		Disrupting the Malware C&C communication: drop all the traffic from an AS (black holing) or modify the performance / bandwidth of the traffic coming from the C&C (traffic shaping)...</li>
+	<li>
+		Limiting the effectiveness of the Botnet: reduce the propagation of the malware, inform the ISPs, the customers...</li>
+	<li>
+		Assessment between ISPs (the ranking can be influenced by other ISPs) and also improving/limiting IP peering.</li>
+</ul>
+<p>
+	To be able to monitor a network, we need raw datasets.</p>
+<h2>
+	Data Sources and their datasets</h2>
+<p>
+	It is possible to find some datasets freely available on the Internet but a lot are not for different reasons: protection of the sources... or basically because they sell this information to the ISP which have interest in the monitoring of their network.</p>
+<p>
+	It exists a large variety of datasets including IP and/or prefixes for malicious activities but their level of trust is variable (e.g. dshield datasets versus Arbor ATLAS/Active Threat Feed) mostly because the scope and detection techniques can vary a lot between the datasets (e.g. Black-hole honeypot vs DNS sinkhole). Concerning the scope, many data sources gives only information on a particular ASN.</p>
+<p>
+	Even ”whois” can be considered as datasets even if malicious ISP controls some objects. (e.g. route-object updated by a bot master)</p>
+<p>
+	This raw-datasets need to be aggregated and analyzed to see their evolution in the time.</p>
+<h2>
+	Challenges in analysis</h2>
+<p>
+	Some of the datasets are very large: the daily sources of Dshield has about 1 million lines. The formats are unstable and incompatible from one data sources to another. They are evolving over the time but a 24 hours step is usual.</p>
+<p>
+	For classification, the least common denominator is most of the time used (e.g. CIDR block or ASN). Analysis and ranking calculation depends on the dataset quality: the more the quality is good, the more the dataset has an impact on the ranking.</p>
+<h1>
+	Implementation</h1>
+<h2>
+	Highlights</h2>
+<p>
+	The details of the implementation will follow in the next part but those points are mandatory:</p>
+<ul>
+	<li>
+		Many of the datasets are not public but we wanted to release the software backend as free software/open source</li>
+	<li>
+		Ranking of AS or Subnet must be fast enough to allow network divert/black hole filtering. (e.g. using Flowspec to do ingress filtering on the border ISP infrastructure)</li>
+	<li>
+		Key/value store to allow mapreduce-like processing: it must be possible to run as often as possible more than one process on the same task</li>
+</ul>
+<h2>
+	High level view</h2>
+<p>
+	The software follows the following states:</p>
+<ol>
+	<li>
+		The ranking system aggregates:<br />
+		<ul>
+			<li>
+				the different datasets</li>
+			<li>
+				fetch the whois entries related to the data extracted of the datasets</li>
+		</ul>
+	</li>
+	<li>
+		The ISPs allowed to access to the system are able to vote against or for an other ISP, the information is merged into the system</li>
+	<li>
+		All this information allow the ranking system to compute an index</li>
+	<li>
+		This index will be used by the ISP to know if his customers are suspicious or not and investigate if necessary</li>
+</ol>
+<p>
+	Because a picture is better than a thousand words, I made <a href="http://blog.chavant.info/files/highlevel.png">a diagram</a> representing this high level view.</p>
 
-ISP (Internet Service Provider) has at least one autonomous system number (ASN) with or without prefixes announced. 
-ASN (Autonomous System Number) is a unique number used in BGP routing to 'uniquely identifies each network on the Internet'. (Wikipedia)
-Prefix it is a network announced by an ISP 
-
-Problem Statement
-
-The satelite operators are often ISP and provide Internet servides for their customers but also other ISPs. Because of this other ISPs, the satellite operators announce their prefixes but not only! They announce also prefixes from other ISPs. 
-
-The Security monirtoring is challenging including mitigation of malicious activities.
-
-Datasource and their datasets 
-
-There is a large variety of datasets including IP and/or prefixes for malicious activities. The level of trust of each dataset is variable (for example Dshield versus Arbor ATLAS/Active thread feed)

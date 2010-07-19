@@ -2183,6 +2183,102 @@
         </tgroup>
       </table>
     </section>
+    <section>
+      <title>riswhois.ripe.net</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">riswhois.ripe.net</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry namest="c1" nameend="c3">
+                <para/>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>Sorting</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">Sorting</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry namest="c1" nameend="c3">
+                <para/>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>GetServer</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">GetServer</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry namest="c1" nameend="c3">
+                <para/>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>whois.server.net</title>
+      <table frame="all">
+        <title/>
+        <tgroup cols="3" align="left" colsep="1" rowsep="1">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <colspec colname="c3"/>
+          <thead>
+            <row>
+              <entry role="class-title">Class</entry>
+              <entry role="class-name" namest="c2" nameend="c3">whois.server.net</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry namest="c1" nameend="c3">
+                <para/>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
   </section>
   <section id="diagrams">
     <title>Diagrams</title>
@@ -2198,14 +2294,14 @@
       </mediaobject>
     </section>
     <!--diagramend1-->
-    <!--diagrambegin2namebeginWhois Fetchingnameend-->
+    <!--diagrambegin2namebeginWhois Fetching - oldnameend-->
     <!--diagram2documentationbegindocumentationend-->
     <section>
-      <title>Whois Fetching</title>
+      <title>Whois Fetching - old</title>
       <para/>
       <mediaobject>
         <imageobject>
-          <imagedata format="PNG" fileref="Whois Fetching.png"/>
+          <imagedata format="PNG" fileref="Whois Fetching - old.png"/>
         </imageobject>
       </mediaobject>
     </section>
@@ -2226,8 +2322,20 @@
       <para/>
     </section>
     <!--diagramend3-->
-    <!--diagrambegin4namebeginrelations-initscriptsnameend-->
+    <!--diagrambegin4namebeginWhois Fetchingnameend-->
     <!--diagram4documentationbegindocumentationend-->
+    <section>
+      <title>Whois Fetching</title>
+      <para/>
+      <mediaobject>
+        <imageobject>
+          <imagedata format="PNG" fileref="Whois Fetching.png"/>
+        </imageobject>
+      </mediaobject>
+    </section>
+    <!--diagramend4-->
+    <!--diagrambegin5namebeginrelations-initscriptsnameend-->
+    <!--diagram5documentationbegindocumentationend-->
     <section>
       <title>relations-initscripts</title>
       <para/>
@@ -2237,6 +2345,6 @@
         </imageobject>
       </mediaobject>
     </section>
-    <!--diagramend4-->
+    <!--diagramend5-->
   </section>
 </article>

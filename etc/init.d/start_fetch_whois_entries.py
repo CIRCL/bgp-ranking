@@ -28,10 +28,13 @@ if len(sys.argv) < 2:
 
 service = os.path.join(services_dir, "fetch_whois_entries")
 whois_service_options = get_all_servers_urls()
+syslog.syslog(syslog.LOG_DEBUG, "Servers in the database: " + whois_service_options)
 
-#desactivated_whois_servers = config.get('whois_servers','desactivate').split()
-#for server in desactivated_whois_servers:
-#    whois_service_options.remove(server)
+desactivated_whois_servers = config.get('whois_servers','desactivate').split()
+syslog.syslog(syslog.LOG_DEBUG, "Servers desactivated: " + desactivated_whois_servers)
+for server in desactivated_whois_servers:
+    whois_service_options.remove(server)
+syslog.syslog(syslog.LOG_DEBUG, "Servers used: " + whois_service_options)
 
 if sys.argv[1] == "start":
 

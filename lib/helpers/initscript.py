@@ -96,7 +96,7 @@ def update_running_pids(old_procs):
     """
     new_procs = []
     for proc in old_procs:
-        if check_pid(proc.pid):
+        if proc.poll() == None and check_pid(proc.pid):
             syslog.syslog(syslog.LOG_DEBUG, str(proc.pid) + ' is alive')
             new_procs.append(proc)
         else:

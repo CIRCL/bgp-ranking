@@ -79,5 +79,5 @@ while 1:
         p.join()
     syslog.syslog(syslog.LOG_INFO, 'Done')
     os.unlink(output.name)
-#    os.unlink(filename)
+    os.unlink(filename)
     

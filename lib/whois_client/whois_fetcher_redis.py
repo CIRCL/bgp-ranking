@@ -31,8 +31,7 @@ def get_all_servers_urls():
     return  redis.Redis(db=config.get('redis','whois_assignations')).smembers(config.get('assignations','servers_key'))
 
 
-def get_server_by_query(query):
-    r = redis.Redis(db=config.get('redis','whois_assignations'))
+def get_server_by_query(query, r):
     to_return = None
     ranges = None
     key = str(query)

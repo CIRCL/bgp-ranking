@@ -103,3 +103,4 @@ class Connector(object):
                         self.__disconnect()
             except IOError as text:
                 syslog.syslog(syslog.LOG_ERR, "IOError on " + self.server + ': ' + str(text))
+                self.__disconnect()

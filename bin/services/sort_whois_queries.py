@@ -22,13 +22,14 @@ A sorting processes which sort the queries by dest whois server
 
 temp_db = redis.Redis(db=int(config.get('redis','temp_reris_db')))
 key = config.get('redis','key_temp_whois')
+r = redis.Redis(db=config.get('redis','whois_assignations'))
 while 1:
 #    syslog.syslog(syslog.LOG_DEBUG, 'blocs to whois: ' + str(temp_db.llen(key)))
     block = temp_db.spop(key)
     if not block:
         time.sleep(sleep_timer)
         continue
-    server = get_server_by_query(block)
+    server = get_server_by_query(block, r)
 #    syslog.syslog(syslog.LOG_DEBUG, block + ' goto ' + server.whois )
     if not server:
         syslog.syslog(syslog.LOG_ERR, "error, no server found for this block : " + block)

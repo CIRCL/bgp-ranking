@@ -112,12 +112,12 @@ class WhoisFetcher(object):
         loop = 0
         done = False
         fs = self.s.makefile()
-        while self.text == '' :
-            self.text = fs.readline()
-            loop += 1
-            if loop >= 5:
-                done = True
-                break
+#        while self.text == '' :
+#            self.text = fs.readline()
+#            loop += 1
+#            if loop >= 5:
+#                done = True
+#                break
         prec = ''
         while not done:
             temp = fs.readline()
@@ -126,7 +126,7 @@ class WhoisFetcher(object):
             else:
                 self.text += temp 
                 prec = temp 
-        if loop == 5:
+        if len(self.text) == 0:
             syslog.syslog(syslog.LOG_ERR, "error (no response) with query: " + query + " on server " + self.server)
         part = self.whois_part.get(self.server, None)
         if part:

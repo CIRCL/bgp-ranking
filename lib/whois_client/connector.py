@@ -80,7 +80,7 @@ class Connector(object):
         """
         while 1:
             try:
-#                syslog.syslog(syslog.LOG_INFO, str(self.temp_db.llen(self.key)) + ' to process on ' + self.server)
+#                syslog.syslog(syslog.LOG_INFO, str(self.temp_db.scard(self.key)) + ' to process on ' + self.server)
                 entry = self.temp_db.spop(self.key)
                 if not entry:
                     self.__disconnect()

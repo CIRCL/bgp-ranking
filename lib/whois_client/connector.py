@@ -81,7 +81,7 @@ class Connector(object):
         while 1:
             try:
 #                syslog.syslog(syslog.LOG_INFO, str(self.temp_db.llen(self.key)) + ' to process on ' + self.server)
-                entry = self.temp_db.lpop(self.key)
+                entry = self.temp_db.spop(self.key)
                 if not entry:
                     self.__disconnect()
                     syslog.syslog(syslog.LOG_INFO, "Disconnected of " + self.server)
@@ -96,30 +96,10 @@ class Connector(object):
                         self.__connect()
 #                    syslog.syslog(syslog.LOG_DEBUG, self.server + ", query : " + str(entry))
                     whois = self.fetcher.fetch_whois(entry, self.keepalive)
-                    if whois == '':
-                        self.temp_db.rpush(self.key, entry)
-                    else:
+                    if whois != '':
                         self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
                         self.cache_db.expire(entry, cache_ttl)
                     if not self.keepalive:
                         self.__disconnect()
-            except IOError, e:
-                if e.errno == errno.ETIMEDOUT:
-                    self.temp_db.rpush(self.server,entry)
-                    syslog.syslog(syslog.LOG_ERR, "timeout on " + self.server)
-                    self.connected = False
-                elif e.errno == errno.EPIPE:
-                    self.temp_db.rpush(self.server,entry)
-                    syslog.syslog(syslog.LOG_ERR, "Broken pipe " + self.server)
-                    self.connected = False
-                elif e.errno == errno.ECONNRESET:
-                    self.temp_db.rpush(self.server,entry)
-                    syslog.syslog(syslog.LOG_ERR, "Reset by peer:  " + self.server)
-                    self.connected = False
-                elif e.errno == errno.ECONNREFUSED:
-                    self.temp_db.rpush(self.server,entry)
-                    syslog.syslog(syslog.LOG_ERR, "Connexion refused by peer:  " + self.server)
-                    self.connected = False
-                    time.sleep(process_sleep)
-                else:
-                    raise IOError(e)
+            except IOError as text:
+                syslog.syslog(syslog.LOG_ERR, "IOError on " + self.server + ': ' + str(text))

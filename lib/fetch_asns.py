@@ -48,7 +48,7 @@ class FetchASNs():
             ASNsDescriptions is created.
     """
     default_asn_desc = None
-    max_loop = 10
+    max_loop = 3
     
 
     def __init__(self):
@@ -108,7 +108,7 @@ class FetchASNs():
         self.ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.asn==None)[limit_first:limit_last]
         for ip_description in self.ips_descriptions:
             if not self.cache_db_ris.exists(ip_description.ip.ip):
-                self.temp_db.rpush(config.get('redis','key_temp_ris'),  ip_description.ip.ip)
+                self.temp_db.sadd(config.get('redis','key_temp_ris'),  ip_description.ip.ip)
         while len(self.ips_descriptions) > 0:
             deferred = []
             for description in self.ips_descriptions:
@@ -134,7 +134,7 @@ class FetchASNs():
         self.ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.whois==None)[limit_first:limit_last]
         for ip_description in self.ips_descriptions:
             if not self.cache_db_whois.exists(ip_description.ip.ip):
-                self.temp_db.rpush(config.get('redis','key_temp_whois'), ip_description.ip.ip)
+                self.temp_db.sadd(config.get('redis','key_temp_whois'), ip_description.ip.ip)
         while len(self.ips_descriptions) > 0:
             deferred = []
             for description in self.ips_descriptions:

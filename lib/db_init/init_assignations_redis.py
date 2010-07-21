@@ -45,7 +45,9 @@ def insert(assignations):
         if url not in to_drop :
             if not re.findall('\.',url):
                 url = 'whois.' + url + '.net'
-            urls.add(url)
+        # All the urls has to be pushed in the list: 
+        # elsewhere there is no running process to put them out of redis...
+        urls.add(url)
         # Buggy networks
         if ip == '210.71.128.0/16':
             ip = '210.71.128.0/17'

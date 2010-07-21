@@ -24,7 +24,7 @@ temp_db = redis.Redis(db=int(config.get('redis','temp_reris_db')))
 key = config.get('redis','key_temp_whois')
 while 1:
 #    syslog.syslog(syslog.LOG_DEBUG, 'blocs to whois: ' + str(temp_db.llen(key)))
-    block = temp_db.lpop(key)
+    block = temp_db.spop(key)
     if not block:
         time.sleep(sleep_timer)
         continue
@@ -32,6 +32,6 @@ while 1:
 #    syslog.syslog(syslog.LOG_DEBUG, block + ' goto ' + server.whois )
     if not server:
         syslog.syslog(syslog.LOG_ERR, "error, no server found for this block : " + block)
-        temp_db.rpush(key, block)
+        temp_db.sadd(key, block)
         continue
-    temp_db.rpush(server,  block)
+    temp_db.sadd(server,  block)

@@ -89,6 +89,7 @@ class WhoisFetcher(object):
         """
         self.s = socket(AF_INET, SOCK_STREAM)
         self.s.connect((self.server,self.port))
+        self.s.setblocking(False)
         if self.server in self.has_welcome_message:
             self.s.recv(1024)
         
@@ -110,27 +111,21 @@ class WhoisFetcher(object):
             self.s.recv(2048)
         self.text = ''
         loop = 0
-        done = False
         fs = self.s.makefile()
-#        while self.text == '' :
-#            self.text = fs.readline()
-#            loop += 1
-#            if loop >= 5:
-#                done = True
-#                break
         prec = ''
-        while not done:
+        while 1:
             temp = fs.readline()
+#            syslog.syslog(syslog.LOG_DEBUG, self.server + ": " + temp)
             if not temp or len(temp) == 0 or prec == temp == '\n':
-                done = True
-            else:
-                self.text += temp 
-                prec = temp 
+                break
+            self.text += temp 
+            prec = temp 
         if len(self.text) == 0:
             syslog.syslog(syslog.LOG_ERR, "error (no response) with query: " + query + " on server " + self.server)
-        part = self.whois_part.get(self.server, None)
-        if part:
-            self.text = self.text.partition(part)[2]
+        else:
+            part = self.whois_part.get(self.server, None)
+            if part:
+                self.text = self.text.partition(part)[2]
         if not keepalive:
             self.s.close()
         return self.text

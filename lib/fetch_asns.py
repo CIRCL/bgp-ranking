@@ -141,7 +141,7 @@ class FetchASNs():
                 else:
                     splitted = entry.partition('\n')
                     description.whois_address = unicode(splitted[0])
-                    description.whois = unicode(splitted[2])
+                    description.whois = unicode(splitted[2], errors="ignore")
             self.ips_descriptions = deferred
             time.sleep(int(config.get('sleep_timers','short')))
             syslog.syslog(syslog.LOG_DEBUG, 'Whois to fetch: ' + str(len(self.ips_descriptions)))

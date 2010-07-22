@@ -1,17 +1,31 @@
 #!/bin/python
 # -*- coding: utf-8 -*-
 
-from db_models.ranking import *
 
-from abstract_graf import *
+import os 
+import sys
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.optionxform = str
+config.read("../../etc/bgp-ranking.conf")
+root_dir = config.get('directories','root')
+sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
-class ASGraf(AbstractGraf):
+from db_models.voting import *
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib.pyplot import figure, savefig
+import matplotlib.pyplot as plt
+from matplotlib.dates import DayLocator, HourLocator, DateFormatter
+from numpy import arange
+
+class ASGraf():
     
     def __init__(self, asn):
         self.asn = asn
     
     def prepare_graf(self):
-        histories = History(asn=int(self.asn)).all()
+        histories = History.query.filter_by(asn=int(self.asn)).all()
         if len(histories) == 0:
             return False
         rankingv4 = {}
@@ -53,4 +67,4 @@ class ASGraf(AbstractGraf):
 if __name__ == "__main__":
     g = ASGraf(4134)
     g.prepare_graf()
-    g.make_graph('/home/raphael/')
+    g.make_graph('/home/raphael/plop.png')

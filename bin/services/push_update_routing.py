@@ -51,8 +51,9 @@ def splitted_file_parser(fname):
             parsed = BGP(entry,  'RIPE')
             asn = parsed.asn.split()[-1]
             block = parsed.prefix
-            routing_db.sadd(asn, block)
-            routing_db.sadd(block, asn)
+            if block is not None:
+                routing_db.sadd(asn, block)
+                routing_db.sadd(block, asn)
             entry = ''
         else :
             entry += line

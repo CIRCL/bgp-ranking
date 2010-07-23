@@ -24,6 +24,10 @@ class ASGraf():
     def __init__(self, asn):
         self.asn = asn
     
+    def save_graph(self, path):
+        prepare_graf()
+        make_graph(path)
+    
     def prepare_graf(self):
         histories = History.query.filter_by(asn=int(self.asn)).all()
         if len(histories) == 0:
@@ -56,15 +60,22 @@ class ASGraf():
         datemax = max(self.datesv4[-1], self.datesv6[-1]) + datetime.timedelta(days=1)
         ax.set_xlim(datemin, datemax)
 
-        maxrank = max(max(self.rankv4), max(self.rankv6)) +1
+        maxrank = max(max(self.rankv4), max(self.rankv6)) + 0.5
         ax.set_ylim(0, maxrank)
         fig.autofmt_xdate()
 
         savefig(save_path)
 
+class MetaGraph():
+    graphs_dir = os.path.join(root_dir,config.get('directories','ranking_graphs'))
+    
+    def make_all_graphs(self):
+        asns = ASNs.query.all()
+        for asn in asns:
+            a = ASGraf(asn)
+            a.save_graph(graphs_dir + str(asn) + '.png')
 
 
 if __name__ == "__main__":
-    g = ASGraf(4134)
-    g.prepare_graf()
-    g.make_graph('/home/raphael/plop.png')
+    mg = MetaGraph()
+    mg.make_all_graphs()

@@ -35,10 +35,10 @@ class Ranking():
         self.asn = asn 
     
     def rank_and_save(self, date = datetime.date.today()):
-        ip_count()
-        make_index(date)
-        rank()
-        make_history()
+        self.ip_count()
+        self.make_index(date)
+        self.rank()
+        self.make_history()
 
     def ip_count(self):
         blocks = routing_db.smembers(self.asn)

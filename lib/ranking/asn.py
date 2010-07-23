@@ -11,11 +11,11 @@ config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
+from db_models.ranking import *
 from db_models.voting import *
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib.pyplot import figure, savefig
-import matplotlib.pyplot as plt
 from matplotlib.dates import DayLocator, HourLocator, DateFormatter
 from numpy import arange
 
@@ -25,8 +25,8 @@ class ASGraf():
         self.asn = asn
     
     def save_graph(self, path):
-        prepare_graf()
-        make_graph(path)
+        self.prepare_graf()
+        self.make_graph(path)
     
     def prepare_graf(self):
         histories = History.query.filter_by(asn=int(self.asn)).all()
@@ -48,7 +48,7 @@ class ASGraf():
         fig = figure()
         ax = fig.add_subplot(111)
         ax.plot_date(self.datesv4, self.rankv4)
-        ax.plot_date(self.datesv4, self.rankv4)
+        ax.plot_date(self.datesv6, self.rankv6)
 
         ax.xaxis.set_major_locator( DayLocator() )
         ax.xaxis.set_minor_locator( HourLocator(arange(0,25,6)) )
@@ -72,8 +72,8 @@ class MetaGraph():
     def make_all_graphs(self):
         asns = ASNs.query.all()
         for asn in asns:
-            a = ASGraf(asn)
-            a.save_graph(graphs_dir + str(asn) + '.png')
+            a = ASGraf(asn.asn)
+            a.save_graph(graphs_dir + str(asn.asn) + '.png')
 
 
 if __name__ == "__main__":

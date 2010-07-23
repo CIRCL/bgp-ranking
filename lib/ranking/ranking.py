@@ -42,7 +42,7 @@ class Ranking():
         r.make_history()
 
     def ip_count(self):
-        blocks = routing_db.smembers(self.asn)
+        blocks = filter(None, routing_db.smembers(self.asn))
         self.ipv4 = 0
         self.ipv6 = 0
         for block in blocks:
@@ -54,7 +54,6 @@ class Ranking():
 
     def make_index(self, date = datetime.date.today()):
         descs = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=self.asn).first()).all()
-        print descs
         ips = []
         self.weightv4 = 0
         self.weightv6 = 0

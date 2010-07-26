@@ -72,6 +72,7 @@ while 1:
     fs = FilesSplitter(output.name, int(config.get('routing','processes_push')))
     splitted_files = fs.fplit()
     processes = []
+    routing_db.flushdb()
     for file in splitted_files:
         p = Process(target=splitted_file_parser, args=(file,))
         p.start()

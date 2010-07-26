@@ -22,9 +22,9 @@ class ASGraf():
     def __init__(self, asn):
         self.asn = asn
     
-    def save_graph(self, path):
+    def save_graph(self):
         self.prepare_graf()
-        self.make_graph(path)
+        self.make_graph()
     
     def prepare_graf(self):
         histories = History.query.filter_by(asn=int(self.asn)).all()
@@ -33,30 +33,29 @@ class ASGraf():
         v4 = open(datav4, 'w')
         v6 = open(datav6, 'w')
         for history in histories:
-            v4 = write(history.timestamp.date() + '\t' + history.rankv4)
-            v6 = write(history.timestamp.date() + '\t' + history.rankv6)
+            v4.write(str(history.timestamp.date()) + '\t' + str(history.rankv4) + '\n')
+            v6.write(str(history.timestamp.date()) + '\t' + str(history.rankv6) + '\n')
         v4.close()
         v6.close()
         self.filename_gnuplot = os.path.join(graphs_dir, str(self.asn) + '.gnu' )
-        gnuplot = open(filename_gnuplot, 'w')
+        gnuplot = open(self.filename_gnuplot, 'w')
         gnuplot.write('set title "' + str(self.asn) + '"\n')
         gnuplot.write(gnuplot_static)
-        gnuplot.write('set output "' + os.path.join(graphs_dir, str(self.asn) + 'png' ) + '"\n')
-        gnuplot.write('plot "' + datav4 + '" using 1:2 with linespoints')
+        gnuplot.write('set output "' + os.path.join(graphs_dir, str(self.asn) + '.png' ) + '"\n')
+        gnuplot.write('plot "' + datav4 + '" using 1:2 with linespoints\n')
         gnuplot.write('replot "' + datav6 + '" using 1:2 with linespoints')
         gnuplot.close()
 
-    def make_graph(self, save_path):
+    def make_graph(self):
         p = Popen(['gnuplot', self.filename_gnuplot])
 
 class MetaGraph():
-    graphs_dir = os.path.join(root_dir,config.get('directories','ranking_graphs'))
     
     def make_all_graphs(self):
         asns = ASNs.query.all()
         for asn in asns:
             a = ASGraf(asn.asn)
-            a.save_graph(self.graphs_dir + str(asn.asn) + '.png')
+            a.save_graph()
 
 
 if __name__ == "__main__":

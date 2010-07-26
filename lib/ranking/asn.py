@@ -10,11 +10,12 @@ config.optionxform = str
 config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+graphs_dir = os.path.join(root_dir,config.get('directories','ranking_graphs'))
 
 from db_models.ranking import *
 from db_models.voting import *
-import Gnuplot, Gnuplot.funcutils
-
+from subprocess import Popen
+gnuplot_static =  "set xdata time \nset timefmt '%y-%m-%d' \nset format x '%y %m %d' \nset terminal png \n"
 
 class ASGraf():
     
@@ -27,23 +28,26 @@ class ASGraf():
     
     def prepare_graf(self):
         histories = History.query.filter_by(asn=int(self.asn)).all()
-        if len(histories) == 0:
-            return False
-        rankingv4 = []
-        rankingv6 = []
+        datav4 = os.path.join(graphs_dir, str(self.asn) + '_v4.dat' )
+        datav6 = os.path.join(graphs_dir, str(self.asn) + '_v6.dat' )
+        v4 = open(datav4, 'w')
+        v6 = open(datav6, 'w')
         for history in histories:
-            rankingv4.append([history.timestamp.date(), history.rankv4])
-            rankingv6.append([history.timestamp.date(), history.rankv6])
-        return True
-        
-        
+            v4 = write(history.timestamp.date() + '\t' + history.rankv4)
+            v6 = write(history.timestamp.date() + '\t' + history.rankv6)
+        v4.close()
+        v6.close()
+        self.filename_gnuplot = os.path.join(graphs_dir, str(self.asn) + '.gnu' )
+        gnuplot = open(filename_gnuplot, 'w')
+        gnuplot.write('set title "' + str(self.asn) + '"\n')
+        gnuplot.write(gnuplot_static)
+        gnuplot.write('set output "' + os.path.join(graphs_dir, str(self.asn) + 'png' ) + '"\n')
+        gnuplot.write('plot "' + datav4 + '" using 1:2 with linespoints')
+        gnuplot.write('replot "' + datav6 + '" using 1:2 with linespoints')
+        gnuplot.close()
+
     def make_graph(self, save_path):
-		g = Gnuplot.Gnuplot(persist=1)
-		g.title('Ranking ASN: ' + self.asn)
-#		g('set data style line')
-		g.replot(self.rankingv4)
-		g.plot(self.rankingv6)
-		g.save(save_path)
+        p = Popen(['gnuplot', self.filename_gnuplot])
 
 class MetaGraph():
     graphs_dir = os.path.join(root_dir,config.get('directories','ranking_graphs'))

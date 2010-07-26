@@ -65,8 +65,8 @@ while 1:
         time.sleep(sleep_timer)
         continue
     output = open(dir + '/bview', 'wr')
-    p = Popen([bgpdump , filename], stdout=PIPE)
-    for line in p.stdout:
+    p_bgp = Popen([bgpdump , filename], stdout=PIPE)
+    for line in p_bgp.stdout:
         output.write(line)
     output.close()
     fs = FilesSplitter(output.name, int(config.get('routing','processes_push')))

@@ -46,7 +46,7 @@ while 1:
             break
     if drop_file:
         os.unlink(temp_filename)
-        syslog.syslog(syslog.LOG_INFO, 'No new file on ' + args[1])
+#        syslog.syslog(syslog.LOG_DEBUG, 'No new file on ' + args[1])
     else:
         os.rename(temp_filename, filename)
         syslog.syslog(syslog.LOG_INFO, 'New file on ' + args[1])

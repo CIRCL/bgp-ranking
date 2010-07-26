@@ -32,5 +32,6 @@ while 1:
     if module.update():
         syslog.syslog(syslog.LOG_INFO, 'Done with ' + sys.argv[1])
     else:
-        syslog.syslog(syslog.LOG_INFO, 'No files to parse for ' + sys.argv[1])
+#        syslog.syslog(syslog.LOG_DEBUG, 'No files to parse for ' + sys.argv[1])
+        pass
     time.sleep(sleep_timer)

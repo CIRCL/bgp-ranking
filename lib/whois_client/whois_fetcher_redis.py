@@ -89,7 +89,6 @@ class WhoisFetcher(object):
         """
         self.s = socket(AF_INET, SOCK_STREAM)
         self.s.connect((self.server,self.port))
-        self.s.setblocking(False)
         if self.server in self.has_welcome_message:
             self.s.recv(1024)
         

@@ -15,7 +15,7 @@ graphs_dir = os.path.join(root_dir,config.get('directories','ranking_graphs'))
 from db_models.ranking import *
 from db_models.voting import *
 from subprocess import Popen
-gnuplot_static =  "set xdata time \nset timefmt '%Y-%m-%d' \nset format x '%Y %m %d' \nset terminal png \n"
+gnuplot_static =  'set xdata time \nset timefmt "%Y-%m-%d" \nset format x "%m %d\n%Y" \nset terminal png \n'
 
 class ASGraf():
     
@@ -42,12 +42,12 @@ class ASGraf():
         gnuplot.write('set title "' + str(self.asn) + '"\n')
         gnuplot.write(gnuplot_static)
         gnuplot.write('set output "' + os.path.join(graphs_dir, str(self.asn) + '.png' ) + '"\n')
-        gnuplot.write('plot "' + datav4 + '" using 1:2 with linespoints\n')
-        gnuplot.write('replot "' + datav6 + '" using 1:2 with linespoints')
+        gnuplot.write('plot "' + datav4 + '" title "IPv4" using 1:2 with points\n')
+        gnuplot.write('replot "' + datav6 + '" title "IPv6" using 1:2 with points')
         gnuplot.close()
 
     def make_graph(self):
-        p = Popen(['gnuplot', self.filename_gnuplot])
+        p = Popen(['gnuplot', self.filename_gnuplot, '2>&1 > /dev/null'])
 
 class MetaGraph():
     

@@ -91,6 +91,7 @@ def set_options():
             redis.set(url + port_option_suffix, port)
 
 redis = redis.Redis(db=config.get('redis','whois_assignations'))
+redis.flushdb()
 urls = set()
 
 regex_ipv4 = '([^#][\d./]*)'

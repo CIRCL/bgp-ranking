@@ -28,14 +28,16 @@ service = os.path.join(services_dir, "get_range_whois_entries")
 pids = []
 
 while 1:
-    ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.whois==None).count())
-    syslog.syslog(syslog.LOG_INFO, "Start getting whois entries...")
+    ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.whois==None).count())    
+#    syslog.syslog(syslog.LOG_DEBUG, "Start getting whois entries...")
     limit_first = 0
     limit_last = ip_counter['interval']
     while ip_counter['total_ips'] > 0:
-        syslog.syslog(syslog.LOG_INFO, 'Actually: ' + str(len(pids)) + ' subprocess(es) are running and getting the ris whois entries.')
+        if ip_counter['total_ips'] <= ip_counter['interval']:
+            ip_counter['processes'] = 1
+        syslog.syslog(syslog.LOG_INFO, 'Actually: ' + str(len(pids)) + ' subprocess(es) are running and getting the whois entries.')
         while len(pids) < ip_counter['processes'] :
-            if limit_first > ip_counter['total_ips']:
+            if limit_first > ip_counter['total_ips'] or ip_counter['processes'] == 1:
                 limit_first = 0
                 limit_last = ip_counter['interval']
             option = str(str(limit_first) + ' ' + str(limit_last))

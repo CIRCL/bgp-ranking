@@ -80,11 +80,11 @@ class Connector(object):
         """
         while 1:
             try:
-#                syslog.syslog(syslog.LOG_INFO, str(self.temp_db.scard(self.key)) + ' to process on ' + self.server)
+#                syslog.syslog(syslog.LOG_DEBUG, str(self.temp_db.scard(self.key)) + ' to process on ' + self.server)
                 entry = self.temp_db.spop(self.key)
                 if not entry:
                     self.__disconnect()
-                    syslog.syslog(syslog.LOG_INFO, "Disconnected of " + self.server)
+#                    syslog.syslog(syslog.LOG_DEBUG, "Disconnected of " + self.server)
                     time.sleep(process_sleep)
                 elif self.server in desactivated_servers:
                     whois = config.get('whois_servers','desactivate_message')

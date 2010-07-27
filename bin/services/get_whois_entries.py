@@ -27,8 +27,8 @@ use *a way* less memory and is multithreaded
 service = os.path.join(services_dir, "get_range_whois_entries")
 pids = []
 
-ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.whois==None).count())
 while 1:
+    ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.whois==None).count())
     syslog.syslog(syslog.LOG_INFO, "Start getting whois entries...")
     limit_first = 0
     limit_last = ip_counter['interval']

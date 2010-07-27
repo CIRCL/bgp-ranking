@@ -27,8 +27,8 @@ use *a way* less memory and is multithreaded
 service = os.path.join(services_dir, "get_range_ris_entries")
 pids = []
 
-ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.asn==None).count())
 while 1: 
+    ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.asn==None).count())
     syslog.syslog(syslog.LOG_INFO, "Start getting RIS entries...")
     limit_first = 0
     limit_last = ip_counter['interval']

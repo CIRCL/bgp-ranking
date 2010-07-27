@@ -33,11 +33,8 @@ whois_post_options = {
 whois_port_options = {
     config.get('whois_server', 'hostname') : config.get('whois_server', 'port')
     }
-    
-not_a_dns = [ 'UNALLOCATED',  '6to4',  'teredo' ]
-derouted = ['6bone', 'v6nic']
 
-to_drop = not_a_dns + derouted
+to_drop = config.get('whois_servers', 'non_routed').split()
 
 def insert(assignations):
     maker = MakeIPKeys(IPy.IP(assignations[0][0]).version() == 4)

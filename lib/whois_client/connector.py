@@ -29,7 +29,7 @@ cache_ttl = int(config.get('redis','cache_entries'))
 
 desactivated_servers = config.get('whois_servers','desactivate').split()
 local_whois = config.get('whois_servers','local').split()
-
+non_routed = config.get('whois_servers', 'non_routed').split()
 
 class Connector(object):
     """
@@ -86,12 +86,13 @@ class Connector(object):
                     self.__disconnect()
                     syslog.syslog(syslog.LOG_INFO, "Disconnected of " + self.server)
                     time.sleep(process_sleep)
-                    continue
-                if self.server in desactivated_servers:
+                elif self.server in desactivated_servers:
                     whois = config.get('whois_servers','desactivate_message')
                     self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
-                    continue
-                if self.cache_db.get(entry) is None:
+                elif self.server in non_routed:
+                    whois = config.get('whois_servers','non_routed_message')
+                    self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
+                elif self.cache_db.get(entry) is None:
                     if not self.connected:
                         self.__connect()
 #                    syslog.syslog(syslog.LOG_DEBUG, self.server + ", query : " + str(entry))

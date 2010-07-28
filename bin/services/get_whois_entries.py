@@ -48,6 +48,5 @@ while 1:
         pids = update_running_pids(pids)
         if len(pids) >= ip_counter['processes']:
             time.sleep(sleep_timer)
-            pids = update_running_pids(pids)
         ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.whois==None).count())
     time.sleep(sleep_timer)

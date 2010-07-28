@@ -41,11 +41,12 @@ while 1:
                 limit_first = 0
                 limit_last = ip_counter['interval']
             option = str(str(limit_first) + ' ' + str(limit_last))
-            syslog.syslog(syslog.LOG_INFO, 'Starting interval: '+ option + '. Total ips: ' + str(ip_counter['total_ips']))
+            syslog.syslog(syslog.LOG_INFO, 'Starting interval: '+ option + '. Total Whois: ' + str(ip_counter['total_ips']))
             pids.append(service_start(servicename = service, param = option))
             limit_first = limit_last +1
             limit_last += ip_counter['interval']
-        if len(pids) == ip_counter['processes']:
+        pids = update_running_pids(pids)
+        if len(pids) >= ip_counter['processes']:
             time.sleep(sleep_timer)
             pids = update_running_pids(pids)
         ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.whois==None).count())

@@ -42,8 +42,8 @@ class ASGraf():
         gnuplot.write('set title "' + str(self.asn) + '"\n')
         gnuplot.write(gnuplot_static)
         gnuplot.write('set output "' + os.path.join(graphs_dir, str(self.asn) + '.png' ) + '"\n')
-        gnuplot.write('plot "' + datav4 + '" using 1:2 title "IPv4" with points\n')
-        gnuplot.write('replot "' + datav6 + '" using 1:2 title "IPv6" with points')
+        gnuplot.write('plot "' + datav4 + '" using 1:2 title "IPv4" with linespoints \n')
+        gnuplot.write('replot "' + datav6 + '" using 1:2 title "IPv6" with linespoints ')
         gnuplot.close()
 
     def make_graph(self):

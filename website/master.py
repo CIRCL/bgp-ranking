@@ -39,7 +39,7 @@ class Master(object):
         if query == "":
             self.template.histories = self.report.histories
         else:
-            self.template.graph = os.path.join(graphes_dir, query + '.png')
+            self.template.graph = 'images/' + query + '.png'
         return str(self.template)
     default.exposed = True
 

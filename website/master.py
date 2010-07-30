@@ -11,7 +11,11 @@ config = ConfigParser.RawConfigParser()
 config.read("../etc/bgp-ranking.conf")
 root_dir =  config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+print sys.path
+from ranking.reports import *
 from db_models.ranking import *
+from db_models.voting import *
+
 
 config_file = config.get('web','config_file')
 templates = config.get('web','templates')
@@ -24,6 +28,10 @@ from graph.asn import ASGraf
 
 
 class Master(object):
+    
+    def __init__(self):
+        self.report = Reports()
+        self.report.best_of_day()
 
     def default(self, query = ""):
         filename = os.path.join(website_root, templates, 'master.tmpl')
@@ -31,13 +39,14 @@ class Master(object):
         self.template.title = 'index'
         self.template.css_file = css_file
         if query == "":
-            self.template.query = 'IP or AS Number'
+            self.template.query = 'AS Number'
+            self.template.histories = self.report.histories
         else:
             self.template.entry = self.query_db(query)
             self.template.query = query
         return str(self.template)
     default.exposed = True
-    
+
     def query_db(self, query):
         ip = None
         try:
@@ -55,6 +64,8 @@ class Master(object):
                     self.template.image = query
         else:
             query = query[2:]
+            report = Reports()
+            report.best_of_day()
             descriptions = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=unicode(query)).first()).all()
             self.template.query = 'AS' + query
             if len(descriptions) > 0:
@@ -65,7 +76,6 @@ class Master(object):
         if self.template.whois_entry == '':
             self.template.whois_entry = 'Nothing found in the database'
 
-    
     def make_ip_graf(self, query, descriptions):
         graf = IPGraf(query)
         if graf.prepare_graf(descriptions):
@@ -73,7 +83,7 @@ class Master(object):
             return True
         else:
             return False
-            
+
     def make_asn_graf(self, query, descriptions):
         graf = ASGraf(query)
         if graf.prepare_graf(descriptions):
@@ -81,9 +91,6 @@ class Master(object):
             return True
         else:
             return False
-
-        
-
 
 if __name__ == "__main__":
     cherrypy.quickstart(Master(), config = config_file)

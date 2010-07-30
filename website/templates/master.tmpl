@@ -18,14 +18,15 @@
 
         <div id="content">
             <div id="contentcolumn">
-                <pre>
-                    $whois_entry
-                </pre>
-                <br/>
-                #if len($image) > 0
-                    <img src="images/${image}.png"/>
-                #else
-                    Unable to generate the graf...
+                #if $query == ""
+                    <table>
+                        #for $history in $histories
+                        <tr>
+                            <td>$history.asn</td>
+                            <td>$history.rankv4</td>
+                        </tr>
+                        #end for
+                    </table>
                 #end if
             </div>
         </div>

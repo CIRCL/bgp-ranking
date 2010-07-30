@@ -11,6 +11,7 @@ root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 from db_models.ranking import *
+from sqlalchemy import Index
 
 ranking_metadata.drop_all()
 ranking_metadata.create_all()
@@ -19,5 +20,6 @@ ranking_metadata.create_all()
 ASNs(asn=unicode('-1'))
 
 r_session = RankingSession()
+r_session.execute("create index i_whois on IPsDescriptions (whois(50));")
 r_session.commit()
 r_session.close()

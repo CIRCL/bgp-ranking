@@ -49,12 +49,13 @@ def splitted_file_parser(fname):
             break
         if line == '\n':
             parsed = BGP(entry,  'RIPE')
-            asn = parsed.asn.split()[-1]
-            block = parsed.prefix
-            if block is not None:
-                routing_db.sadd(asn, block)
-                routing_db.sadd(block, asn)
-            entry = ''
+            if parsed.asn is not None:
+                asn = parsed.asn.split()[-1]
+                block = parsed.prefix
+                if block is not None:
+                    routing_db.sadd(asn, block)
+                    routing_db.sadd(block, asn)
+                entry = ''
         else :
             entry += line
     syslog.syslog(syslog.LOG_INFO, 'Done')

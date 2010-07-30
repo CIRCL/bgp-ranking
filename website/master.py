@@ -22,9 +22,7 @@ website_root = config.get('web','website_root')
 css_file = config.get('web','css_file')
 website_images_dir = config.get('web','images')
 
-from graph.ip import IPGraf
-from graph.asn import ASGraf
-
+graphes_dir = os.path.join(root_dir,config.get('web','graphes'))
 
 class Master(object):
     
@@ -37,12 +35,11 @@ class Master(object):
         self.template = Template(file = filename)
         self.template.title = 'index'
         self.template.css_file = css_file
+        self.template.query = query
         if query == "":
-            self.template.query = 'AS Number'
             self.template.histories = self.report.histories
         else:
-            self.template.entry = self.query_db(query)
-            self.template.query = query
+            self.template.graph = os.path.join(graphes_dir, query + '.png')
         return str(self.template)
     default.exposed = True
 

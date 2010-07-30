@@ -1,6 +1,5 @@
 #attr query = 'IP or AS Number'
-#attr whois_entry = 'Please enter a query'
-#attr image = ''
+#attr graph = 'path to graph'
 
 <?xml version="1.0"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -22,11 +21,13 @@
                     <table>
                         #for $history in $histories
                         <tr>
-                            <td>$history.asn</td>
+                            <td><a href="/?query=$history.asn">$history.asn</a></td>
                             <td>$history.rankv4</td>
                         </tr>
                         #end for
                     </table>
+                #else
+                    <img src="$graph" border="0" alt="Graph of $query" />
                 #end if
             </div>
         </div>

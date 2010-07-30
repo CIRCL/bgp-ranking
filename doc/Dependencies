@@ -13,4 +13,6 @@ Ubuntu:
 
     Website: 
     Make graphs: Gnuplot
-	Server : cherrypy & cheetah
+	Server : 
+		cherrypy -> 3.1.2
+		cheetah -> 2.4.2

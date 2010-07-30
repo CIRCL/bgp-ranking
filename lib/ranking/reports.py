@@ -25,7 +25,7 @@ class Reports():
         self.date = date
 
     def best_of_day(self, limit = 50):
-        self.histories = History.query.filter(and_(History.rankv4 > 1.0, History.timestamp.like('%' + str(self.date) + '%'))).order_by(desc(History.rankv4))[0:limit]
+        self.histories = History.query.filter(and_(History.rankv4 > 1.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4))[0:limit]
     
     def get_votes(self, history):
         if history.votes is not None:
@@ -37,9 +37,9 @@ class Reports():
                 self.votes.append([user, vote_splitted[1]])
 
     def get_asn_descs(self, asn):
-        asn_db = ASNs.query.filter_by(asn=int(self.asn)).first()
-        self.asn_descs = ASNsDescriptions.query.filter(and_(ASNsDescriptions.asn==asn_db, ASNsDescriptions.timestamp.like('%' + str(self.date) + '%'))).all()
+        asn_db = ASNs.query.filter_by(asn=int(asn)).first()
+        self.asn_descs = ASNsDescriptions.query.filter(ASNsDescriptions.asn==asn_db).all()
 
     def get_ips_descs(self, asn_desc_id):
         asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()
-        self.ip_descs = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_desc, IPsDescriptions.timestamp.like('%' + str(self.date) + '%'))).all()
+        self.ip_descs = IPsDescriptions.query.filter(IPsDescriptions.asn == asn_desc).all()

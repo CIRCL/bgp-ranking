@@ -15,7 +15,7 @@ graphs_dir = os.path.join(root_dir,config.get('directories','ranking_graphs'))
 from db_models.ranking import *
 from db_models.voting import *
 from subprocess import Popen
-gnuplot_static =  'set xdata time \nset timefmt "%Y-%m-%d" \nset format x "%m/%d" \nset terminal png \n'
+gnuplot_static =  'set xlabel "Date"\n set ylabel "Rank"\n set xdata time \nset timefmt "%Y-%m-%d" \nset format x "%m/%d" \nset terminal png \n'
 
 class ASGraf():
     

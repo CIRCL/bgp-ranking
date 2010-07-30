@@ -37,8 +37,9 @@ class Reports():
                 self.votes.append([user, vote_splitted[1]])
 
     def get_asn_descs(self, asn):
-        asn_db = ASNs.query.filter_by(asn=self.asn).first()
+        asn_db = ASNs.query.filter_by(asn=int(self.asn)).first()
         self.asn_descs = ASNsDescriptions.query.filter(and_(ASNsDescriptions.asn==asn_db, ASNsDescriptions.timestamp.like('%' + str(self.date) + '%'))).all()
 
-    def get_ips_descs(self, asn_desc):
+    def get_ips_descs(self, asn_desc_id):
+        asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()
         self.ip_descs = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_desc, IPsDescriptions.timestamp.like('%' + str(self.date) + '%'))).all()

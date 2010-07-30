@@ -11,7 +11,6 @@ config = ConfigParser.RawConfigParser()
 config.read("../etc/bgp-ranking.conf")
 root_dir =  config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
-print sys.path
 from ranking.reports import *
 from db_models.ranking import *
 from db_models.voting import *

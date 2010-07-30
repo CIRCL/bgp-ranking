@@ -12,4 +12,5 @@ Ubuntu:
     
 
     Website: 
-    Make graphs: matplotlib
+    Make graphs: Gnuplot
+	Server : cherrypy & cheetah

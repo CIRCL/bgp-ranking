@@ -36,7 +36,8 @@ class Ranking():
     
     def rank_and_save(self, date = datetime.datetime.now()):
         self.date = date
-        if self.date > datetime.datetime.now():
+        self.old_entry = False
+        if self.date > datetime.date.today():
             self.old_entry = True
         self.ip_count()
         self.make_index()

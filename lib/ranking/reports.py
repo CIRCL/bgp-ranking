@@ -21,7 +21,7 @@ class Reports():
     asn_descs = None
     ip_descs = None
     
-    def __init__(self, date = datetime.date.today()):
+    def __init__(self, date = datetime.datetime.now()):
         self.date = date
 
     def best_of_day(self, limit = 50):
@@ -38,8 +38,8 @@ class Reports():
 
     def get_asn_descs(self, asn):
         asn_db = ASNs.query.filter_by(asn=int(asn)).first()
-        self.asn_descs = ASNsDescriptions.query.filter(ASNsDescriptions.asn==asn_db).all()
+        self.asn_descs = ASNsDescriptions.query.filter(and_(ASNsDescriptions.asn==asn_db, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).all()
 
     def get_ips_descs(self, asn_desc_id):
         asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()
-        self.ip_descs = IPsDescriptions.query.filter(IPsDescriptions.asn == asn_desc).all()
+        self.ip_descs = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_desc, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).all()

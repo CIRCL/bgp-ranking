@@ -34,7 +34,7 @@ class Ranking():
     def __init__(self, asn):
         self.asn = asn 
     
-    def rank_and_save(self, date = datetime.date.today()):
+    def rank_and_save(self, date = datetime.datetime.now()):
         self.ip_count()
         self.make_index(date)
         self.rank()
@@ -51,7 +51,7 @@ class Ranking():
             else :
                 self.ipv4 += ip.len()
 
-    def make_index(self, date = datetime.date.today()):
+    def make_index(self, date = datetime.datetime.now()):
         descs = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=self.asn).first()).all()
         ips = []
         self.weightv4 = 0

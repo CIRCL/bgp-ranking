@@ -35,8 +35,11 @@ class Ranking():
         self.asn = asn 
     
     def rank_and_save(self, date = datetime.datetime.now()):
+        self.date = date
+        if self.date > datetime.datetime.now():
+            self.old_entry = True
         self.ip_count()
-        self.make_index(date)
+        self.make_index()
         self.rank()
         self.make_history()
 
@@ -51,13 +54,13 @@ class Ranking():
             else :
                 self.ipv4 += ip.len()
 
-    def make_index(self, date = datetime.datetime.now()):
+    def make_index(self):
         descs = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=self.asn).first()).all()
         ips = []
         self.weightv4 = 0
         self.weightv6 = 0
         for desc in descs:
-            ips += IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1)))).all()
+            ips += IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))).all()
             """
             SELECT * FROM `IPsDescriptions` WHERE `IPsDescriptions`.asn_id = desc AND `IPsDescriptions`.timestamp <= date AND `IPsDescriptions`.timestamp >= date - datetime.timedelta(days=1)
             """
@@ -87,6 +90,8 @@ class Ranking():
         for vote in votes: 
             string_votes = vote.user + ':' + vote.vote + ';'
         history.votes = unicode(string_votes)
+        if self.old_entry:
+            history.timestamp = self.date
         v_session = VotingSession()
         v_session.commit()
         v_session.close()

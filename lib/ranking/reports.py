@@ -30,11 +30,11 @@ class Reports():
         self.histories = []
         first = 0 
         last = limit
-        while limit >= 0:
+        while limit > 0:
             select = History.query.filter(and_(History.rankv4 > 1.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp)[first:last]
             for s in select:
-                if select.asn not in asns:
-                    asns.append(select.asn)
+                if s.asn not in asns:
+                    asns.append(s.asn)
                     self.histories.append(s)
                     limit -= 1
             first = last
@@ -53,8 +53,8 @@ class Reports():
 
     def get_asn_descs(self, asn):
         asn_db = ASNs.query.filter_by(asn=int(asn)).first()
-        self.asn_descs = ASNsDescriptions.query.filter(and_(ASNsDescriptions.asn==asn_db, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).all()
+        self.asn_descs = ASNsDescriptions.query.filter(and_(ASNsDescriptions.asn==asn_db, and_(ASNsDescriptions.timestamp <= self.date, ASNsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))).all()
 
     def get_ips_descs(self, asn_desc_id):
         asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()
-        self.ip_descs = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_desc, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).all()
+        self.ip_descs = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))).all()

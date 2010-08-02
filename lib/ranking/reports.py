@@ -25,7 +25,22 @@ class Reports():
         self.date = date
 
     def best_of_day(self, limit = 50):
-        self.histories = History.query.filter(and_(History.rankv4 > 1.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4))[0:limit]
+        max = History.query.filter(and_(History.rankv4 > 1.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp).count()
+        asns = []
+        self.histories = []
+        first = 0 
+        last = limit
+        while limit >= 0:
+            select = History.query.filter(and_(History.rankv4 > 1.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp)[first:last]
+            for s in select:
+                if select.asn not in asns:
+                    asns.append(select.asn)
+                    self.histories.append(s)
+                    limit -= 1
+            first = last
+            last = last + limit
+            if first > max:
+                break
     
     def get_votes(self, history):
         if history.votes is not None:

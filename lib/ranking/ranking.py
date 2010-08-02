@@ -127,4 +127,7 @@ if __name__ == "__main__":
 #    r.make_history()
     mr = MetaRanking()
     mr.make_ranking_all_asns()
+    v_session = VotingSession()
+    v_session.commit()
+    v_session.close()
     

@@ -53,7 +53,7 @@ class Reports():
 
     def get_asn_descs(self, asn):
         asn_db = ASNs.query.filter_by(asn=int(asn)).first()
-        self.asn_descs = ASNsDescriptions.query.filter(and_(ASNsDescriptions.asn==asn_db, and_(ASNsDescriptions.timestamp <= self.date, ASNsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))).all()
+        self.asn_descs = ASNsDescriptions.query.filter(ASNsDescriptions.asn==asn_db).all()
 
     def get_ips_descs(self, asn_desc_id):
         asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()

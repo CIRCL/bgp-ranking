@@ -31,6 +31,7 @@
                     <table>
                         #for $asn_desc in $asn_descs
                         <tr>
+                            <td>$asn_desc.timestamp</td>
                             <td>$asn_desc.owner</td>
                             <td><a href="/?query=$query&ip_details=$asn_desc.id">$asn_desc.ips_block</a></td>
                         </tr>
@@ -40,6 +41,7 @@
                         <table>
                             #for $ip_desc in $ip_descs
                             <tr>
+                                <td>$ip_desc.timestamp</td>
                                 <td>$ip_desc.list_name</td>
                                 <td>$ip_desc.infection</td>
                                 <td>$ip_desc.raw_informations</td>

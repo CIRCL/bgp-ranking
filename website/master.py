@@ -39,13 +39,17 @@ class Master(object):
         if query == "":
             self.template.histories = self.report.histories
         else:
-            self.template.graph = 'images/' + query + '.png'
-            self.report.get_asn_descs(self.template.query)
-            self.template.asn_descs = self.report.asn_descs
-            self.template.ip_details = ip_details
-            if ip_details != "":
-                self.report.get_ips_descs(ip_details)
-                self.template.ip_descs = self.report.ip_descs
+            query = query.lstrip('AS')
+            if query.isdigit():
+                self.template.graph = 'images/' + query + '.png'
+                self.report.get_asn_descs(self.template.query)
+                self.template.asn_descs = self.report.asn_descs
+                self.template.ip_details = ip_details
+                if ip_details != "":
+                    self.report.get_ips_descs(ip_details)
+                    self.template.ip_descs = self.report.ip_descs
+            else: 
+               self.template.infomessage = 'The query can be AS<number> or <number>.' 
         return str(self.template)
     default.exposed = True
 

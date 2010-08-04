@@ -1,12 +1,11 @@
 import os 
 
-separator = '\n'
-
 class FilesSplitter():
     split = '/split_'
     
-    def __init__(self, file, processes):
+    def __init__(self, file, processes, separator = '\n'):
         self.file = file
+        self.separator = separator
         self.filename = os.path.basename(file)
         self.dir = os.path.dirname(self.file)
         self.size = os.path.getsize(self.file) / processes + 1
@@ -20,7 +19,7 @@ class FilesSplitter():
             prec = actual
             f.seek(self.size, os.SEEK_CUR)
             s = f.readline()
-            while s and s != separator:
+            while s and s != self.separator:
                 s = f.readline()
             actual = f.tell()
             temp = open(self.file, "r")

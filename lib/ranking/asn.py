@@ -17,6 +17,8 @@ from db_models.voting import *
 from subprocess import Popen
 gnuplot_static =  'set xlabel "Date"\n set ylabel "Rank"\n set xdata time \nset timefmt "%Y-%m-%d" \nset format x "%m/%d" \nset terminal png \n'
 
+from sqlalchemy import desc
+
 class ASGraf():
     
     def __init__(self, asn):
@@ -27,14 +29,21 @@ class ASGraf():
         self.make_graph()
     
     def prepare_graf(self):
-        histories = History.query.filter_by(asn=int(self.asn)).all()
+        histories = History.query.filter_by(asn=int(self.asn)).order_by(desc(History.timestamp)).all()
         datav4 = os.path.join(graphs_dir, str(self.asn) + '_v4.dat' )
         datav6 = os.path.join(graphs_dir, str(self.asn) + '_v6.dat' )
+        date = None
+        tmptable = []
+        for history in histories:
+            prec_date = date
+            date = history.timestamp.date()
+            if date != prec_date:
+                tmptable.append([str(history.timestamp.date()), str(history.rankv4), str(history.rankv6)] )
         v4 = open(datav4, 'w')
         v6 = open(datav6, 'w')
-        for history in histories:
-            v4.write(str(history.timestamp.date()) + '\t' + str(history.rankv4) + '\n')
-            v6.write(str(history.timestamp.date()) + '\t' + str(history.rankv6) + '\n')
+        for date, data_v4, data_v6 in tmptable.reverse():
+            v4.write(date + '\t' + data_v4 + '\n')
+            v6.write(date + '\t' + data_v6 + '\n')
         v4.close()
         v6.close()
         self.filename_gnuplot = os.path.join(graphs_dir, str(self.asn) + '.gnu' )

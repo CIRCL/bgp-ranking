@@ -32,7 +32,9 @@ class Master(object):
     
     def reload(self):
         self.report.best_of_day()
-        return str(self.template)
+        self.template.asn_descs = None 
+        self.template.ip_descs = None
+        return self.default()
     reload.exposed = True
 
     def default(self, query = "", ip_details = ""):

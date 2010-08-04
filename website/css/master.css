@@ -45,7 +45,7 @@ div#container {
 
 div#header {
 	padding:1em;
-	background:#ddd url("../csslayout.gif") 98% 10px no-repeat;
+	background:#ddd;
 	border-bottom:6px double gray;
 }
 	div#header p {
@@ -53,11 +53,6 @@ div#header {
 		font-size:1.1em;
 		margin:0;
 	}
-
-div#menu {
-	padding:1em 1em 5em; /* bottom padding for footer */
-   width: 12em;
-}
 
 div#content {
 	padding:1em 1em 5em; /* bottom padding for footer */

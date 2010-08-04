@@ -1,6 +1,8 @@
 #attr query = 'IP or AS Number'
 #attr graph = 'path to graph'
 #attr infomessage = ''
+#attr asn_descs = None
+#attr ip_descs = None
 
 <?xml version="1.0"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -13,13 +15,11 @@
   <body>
     <div id="container">
         <div id="header">
-            <center><h1>BGP Ranking</h1></center>
+            <center><h1><a href="/">BGP Ranking</a></h1></center>
         </div>
         <div id="menu">
-            Your query:
             <form method="POST" action=".">
-                <input type="text" name="query" value="$query">
-                <input type="submit" value="Submit">
+                <input type="text" name="query" value="$query"><input type="submit" value="Submit">
             </form> <br/>
             <a href="/reload">Reload the report</a>
         </div>

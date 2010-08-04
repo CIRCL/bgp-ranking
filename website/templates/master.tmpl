@@ -11,53 +11,47 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   </head>
   <body>
-    <div id="main">
-        <div id="top">
+    <div id="container">
+        <div id="header">
             <center><h1>BGP Ranking</h1></center>
         </div>
-
         <div id="content">
-            <div id="info">
-                $infomessage 
-            </div>
-            <div id="contentcolumn">
-                #if $query == ""
+            #if $query == ""
+                <table>
+                    #for $history in $histories
+                    <tr>
+                        <td><a href="/?query=$history.asn">$history.asn</a></td>
+                        <td>$history.rankv4</td>
+                        <td>$history.timestamp</td>
+                    </tr>
+                    #end for
+                </table>
+            #else
+                <img src="$graph" border="0" alt="Graph of $query" />
+                <table>
+                    #for $asn_desc in $asn_descs
+                    <tr>
+                        <td>$asn_desc.timestamp</td>
+                        <td>$asn_desc.owner</td>
+                        <td><a href="/?query=$query&ip_details=$asn_desc.id">$asn_desc.ips_block</a></td>
+                    </tr>
+                    #end for
+                </table>
+                #if $ip_details != ""
                     <table>
-                        #for $history in $histories
+                        #for $ip_desc in $ip_descs
                         <tr>
-                            <td><a href="/?query=$history.asn">$history.asn</a></td>
-                            <td>$history.rankv4</td>
+                            <td>$ip_desc.timestamp</td>
+                            <td>$ip_desc.list_name</td>
+                            <td>$ip_desc.infection</td>
+                            <td>$ip_desc.raw_informations</td>
+                            <td><pre>$ip_desc.whois</pre></td>
                         </tr>
                         #end for
                     </table>
-                #else
-                    <img src="$graph" border="0" alt="Graph of $query" />
-                    <table>
-                        #for $asn_desc in $asn_descs
-                        <tr>
-                            <td>$asn_desc.timestamp</td>
-                            <td>$asn_desc.owner</td>
-                            <td><a href="/?query=$query&ip_details=$asn_desc.id">$asn_desc.ips_block</a></td>
-                        </tr>
-                        #end for
-                    </table>
-                    #if $ip_details != ""
-                        <table>
-                            #for $ip_desc in $ip_descs
-                            <tr>
-                                <td>$ip_desc.timestamp</td>
-                                <td>$ip_desc.list_name</td>
-                                <td>$ip_desc.infection</td>
-                                <td>$ip_desc.raw_informations</td>
-                                <td><pre>$ip_desc.whois</pre></td>
-                            </tr>
-                            #end for
-                        </table>
-                    #end if
                 #end if
-            </div>
+            #end if
         </div>
-
         <div id="menu">
             Your query:
             <form method="POST" action=".">
@@ -66,7 +60,6 @@
             </form> <br/>
             <a href="/reload">Reload the report</a>
         </div>
-
         <div id="footer"></div>
 
     </div>

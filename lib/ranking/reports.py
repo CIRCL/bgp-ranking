@@ -55,8 +55,14 @@ class Reports():
         asn_db = ASNs.query.filter_by(asn=int(asn)).first()
         if asn_db is not None:
             self.asn_descs = ASNsDescriptions.query.filter(ASNsDescriptions.asn==asn_db).all()
+            return True
+        self.asn_descs = None
+        return False
 
     def get_ips_descs(self, asn_desc_id):
         asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()
         if asn_desc is not None:
             self.ip_descs = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))).all()
+            return True
+        self.ip_descs = None
+        return False

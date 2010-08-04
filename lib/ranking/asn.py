@@ -41,9 +41,9 @@ class ASGraf():
                 tmptable.append([str(history.timestamp.date()), str(history.rankv4), str(history.rankv6)] )
         v4 = open(datav4, 'w')
         v6 = open(datav6, 'w')
-        for date, data_v4, data_v6 in tmptable.reverse():
-            v4.write(date + '\t' + data_v4 + '\n')
-            v6.write(date + '\t' + data_v6 + '\n')
+        for t in reversed(tmptable):
+            v4.write(t[0] + '\t' + t[1] + '\n')
+            v6.write(t[0] + '\t' + t[2] + '\n')
         v4.close()
         v6.close()
         self.filename_gnuplot = os.path.join(graphs_dir, str(self.asn) + '.gnu' )

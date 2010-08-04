@@ -39,9 +39,9 @@ class Master(object):
         if query == "":
             self.template.histories = self.report.histories
         else:
-            query = query.lstrip('AS')
-            if query.isdigit():
-                self.template.graph = 'images/' + query + '.png'
+            self.template.query = query.lstrip('AS')
+            if self.template.query.isdigit():
+                self.template.graph = 'images/' + self.template.query + '.png'
                 self.report.get_asn_descs(self.template.query)
                 self.template.asn_descs = self.report.asn_descs
                 self.template.ip_details = ip_details

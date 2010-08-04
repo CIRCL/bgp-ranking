@@ -29,6 +29,11 @@ class Master(object):
     def __init__(self):
         self.report = Reports()
         self.report.best_of_day()
+    
+    def reload(self):
+        self.report.best_of_day()
+        return str(self.template)
+    reload.exposed = True
 
     def default(self, query = "", ip_details = ""):
         filename = os.path.join(website_root, templates, 'master.tmpl')

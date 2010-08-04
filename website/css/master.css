@@ -15,7 +15,10 @@ body{
 #content{
     float: left;
     width: 100%;
-    
+}
+
+#info{
+    margin-left: 150px;
 }
 
 #contentcolumn{

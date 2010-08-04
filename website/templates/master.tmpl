@@ -1,5 +1,6 @@
 #attr query = 'IP or AS Number'
 #attr graph = 'path to graph'
+#attr infomessage = ''
 
 <?xml version="1.0"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -16,6 +17,9 @@
         </div>
 
         <div id="content">
+            <div id="info">
+                $infomessage 
+            </div>
             <div id="contentcolumn">
                 #if $query == ""
                     <table>
@@ -60,6 +64,7 @@
                 <input type="text" name="query" value="$query">
                 <input type="submit" value="Submit">
             </form> <br/>
+            <a href="/reload">Reload the report</a>
         </div>
 
         <div id="footer"></div>

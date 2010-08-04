@@ -15,6 +15,14 @@
         <div id="header">
             <center><h1>BGP Ranking</h1></center>
         </div>
+        <div id="menu">
+            Your query:
+            <form method="POST" action=".">
+                <input type="text" name="query" value="$query">
+                <input type="submit" value="Submit">
+            </form> <br/>
+            <a href="/reload">Reload the report</a>
+        </div>
         <div id="content">
             #if $query == ""
                 <table>
@@ -28,39 +36,35 @@
                 </table>
             #else
                 <img src="$graph" border="0" alt="Graph of $query" />
-                <table>
-                    #for $asn_desc in $asn_descs
-                    <tr>
-                        <td>$asn_desc.timestamp</td>
-                        <td>$asn_desc.owner</td>
-                        <td><a href="/?query=$query&ip_details=$asn_desc.id">$asn_desc.ips_block</a></td>
-                    </tr>
-                    #end for
-                </table>
-                #if $ip_details != ""
+                #if $asn_descs is not None
                     <table>
-                        #for $ip_desc in $ip_descs
+                        #for $asn_desc in $asn_descs
                         <tr>
-                            <td>$ip_desc.timestamp</td>
-                            <td>$ip_desc.list_name</td>
-                            <td>$ip_desc.infection</td>
-                            <td>$ip_desc.raw_informations</td>
-                            <td><pre>$ip_desc.whois</pre></td>
+                            <td>$asn_desc.timestamp</td>
+                            <td>$asn_desc.owner</td>
+                            <td><a href="/?query=$query&ip_details=$asn_desc.id">$asn_desc.ips_block</a></td>
                         </tr>
                         #end for
                     </table>
+                    #if $ip_details != ""
+                        #if $ip_descs is not None
+                            <table>
+                                #for $ip_desc in $ip_descs
+                                <tr>
+                                    <td>$ip_desc.timestamp</td>
+                                    <td>$ip_desc.list_name</td>
+                                    <td>$ip_desc.infection</td>
+                                    <td>$ip_desc.raw_informations</td>
+                                    <td><pre>$ip_desc.whois</pre></td>
+                                </tr>
+                                #end for
+                            </table>
+                        #end if
+                    #end if
                 #end if
             #end if
         </div>
-        <div id="menu">
-            Your query:
-            <form method="POST" action=".">
-                <input type="text" name="query" value="$query">
-                <input type="submit" value="Submit">
-            </form> <br/>
-            <a href="/reload">Reload the report</a>
-        </div>
-        <div id="footer"></div>
+        <div id="footer"> Footer </div>
 
     </div>
   </body>

@@ -1,3 +1,7 @@
+/*
+Origin: http://www.xs4all.nl/~peterned/examples/csslayout1.html
+*/
+
 html,body {
 	margin:0;
 	padding:0;
@@ -49,6 +53,11 @@ div#header {
 		font-size:1.1em;
 		margin:0;
 	}
+
+div#menu {
+	padding:1em 1em 5em; /* bottom padding for footer */
+   width: 12em;
+}
 
 div#content {
 	padding:1em 1em 5em; /* bottom padding for footer */

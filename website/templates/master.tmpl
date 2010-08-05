@@ -3,6 +3,8 @@
 #attr infomessage = ''
 #attr asn_descs = None
 #attr ip_descs = None
+#attr include_scripts = ""
+#attr js_graph_script = None
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -10,6 +12,7 @@
     <title>$title</title>
     <link rel="stylesheet" type="text/css" href="${css_file}"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    $include_scripts
   </head>
   <body>
     <div id="container">
@@ -42,6 +45,7 @@
                 </table>
             #else
                 <img src="$graph" alt="Graph of $query" />
+                <script>$js_graph_script</script>
                 #if $asn_descs is not None
                     <table id="hor-minimalist-a">
                         <thead>

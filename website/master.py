@@ -12,15 +12,21 @@ config.read("../etc/bgp-ranking.conf")
 root_dir =  config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 from ranking.reports import *
-from db_models.ranking import *
-from db_models.voting import *
-
 
 config_file = config.get('web','config_file')
 templates = config.get('web','templates')
 website_root = config.get('web','website_root')
 css_file = config.get('web','css_file')
 website_images_dir = config.get('web','images')
+
+rgraph_dir = os.path.join(root_dir,config.get('directories','rgraph'))
+rgraph_to_import = ['RGraph.common.js', 'RGraph.line.js']
+html_scripts = ""
+for js in rgraph_to_import:
+    html_scripts += '<script src="'+ js +'">\n'
+#canvas = '<canvas id="ASN_graph" width="300" height="100">[No canvas support]</canvas>'
+
+
 
 graphes_dir = os.path.join(root_dir,config.get('web','graphes'))
 
@@ -29,6 +35,7 @@ class Master(object):
     def __init__(self):
         self.report = Reports()
         self.report.best_of_day()
+        self.template.include_scripts = html_scripts
     
     def reload(self):
         self.report.best_of_day()
@@ -49,6 +56,10 @@ class Master(object):
             self.template.query = query.lstrip('AS')
             if self.template.query.isdigit():
                 self.template.graph = 'images/' + self.template.query + '.png'
+                
+                self.report.prepare_graphes_js(self.template.query)
+                self.template.js_graph_script = self.report.script
+                
                 self.report.get_asn_descs(self.template.query)
                 self.template.asn_descs = self.report.asn_descs
                 self.template.ip_details = ip_details

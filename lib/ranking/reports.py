@@ -51,6 +51,60 @@ class Reports():
                 user = Users.query.get_by(id=vote_splitted[0])
                 self.votes.append([user, vote_splitted[1]])
 
+    def prepare_graphes_js(self,  asn):
+        histories = History.query.filter_by(asn=int(self.asn)).order_by(desc(History.timestamp)).all()
+        date = None
+        tmptable = []
+        for history in histories:
+            prec_date = date
+            date = history.timestamp.date()
+            if date != prec_date:
+                tmptable.append([str(history.timestamp.date()), str(history.rankv4), str(history.rankv6)] )
+        dates = []
+        ipv4 = []
+        ipv6 = []
+        for t in reversed(tmptable):
+            dates.append(t[0])
+            ipv4.append(t[1])
+            ipv6.append(t[2])
+        
+        self.script = """window.onload = function
+            {
+                line2 = new RGraph.Line('myCanvas2', """ + str(ipv4) + """);
+                line2.Set('chart.hmargin', 10);
+                line2.Set('chart.labels', """  + str(dates) +  """);
+                line2.Set('chart.linewidth', 3);
+                line2.Set('chart.shadow', true);
+                line2.Set('chart.shadow.offsetx', 2);
+                line2.Set('chart.shadow.offsety', 2);
+                line2.Set('chart.ymax', 65);
+                line2.Set('chart.units.post', 'l');
+                line2.Set('chart.gutter', 35);
+                line2.Set('chart.noxaxis', true);
+                line2.Set('chart.noendxtick', true);
+                line2.Set('chart.title', 'An example of axes both sides');
+                line2.Draw();
+
+                line3 = new RGraph.Line('myCanvas2', """ + str(ipv6) + """);
+                line3.Set('chart.hmargin', 10);
+                line3.Set('chart.linewidth', 3);
+                line3.Set('chart.shadow', true);
+                line3.Set('chart.shadow.offsetx', 2);
+                line3.Set('chart.shadow.offsety', 2);
+                line3.Set('chart.yaxispos', 'right');
+                line3.Set('chart.noendxtick', true);
+                line3.Set('chart.background.grid', false);
+                line3.Set('chart.ymax', 65);
+                line3.Set('chart.colors', ['blue', 'red']);
+                line3.Set('chart.units.pre', '$');
+                line3.Set('chart.gutter', 35);
+                line3.Set('chart.key', ['Cost', 'Volume']);
+                line3.Set('chart.key.background', 'rgba(255,255,255,0.5)');
+                line3.Draw();
+            }"""
+
+    
+
     def get_asn_descs(self, asn):
         asn_db = ASNs.query.filter_by(asn=int(asn)).first()
         if asn_db is not None:

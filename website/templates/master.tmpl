@@ -4,6 +4,7 @@
 #attr asn_descs = None
 #attr ip_descs = None
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>$title</title>
@@ -13,7 +14,7 @@
   <body>
     <div id="container">
         <div id="header">
-            <center><h1><a href="/">BGP Ranking</a></h1></center>
+            <h1><a href="/">BGP Ranking</a></h1>
         </div>
         <div id="menu">
             <form method="post" action=".">
@@ -23,7 +24,7 @@
         </div>
         <div id="content">
             #if $query == ""
-                <table id="hor-minimalist-a" summary="Today's top 50">
+                <table id="hor-minimalist-a">
                     <thead>
                         <tr>
                             <th scope="col" >Timestamp</th>
@@ -42,7 +43,7 @@
             #else
                 <img src="$graph" border="0" alt="Graph of $query" />
                 #if $asn_descs is not None
-                    <table id="hor-minimalist-a" summary="ASN descriptions">
+                    <table id="hor-minimalist-a">
                         <thead>
                             <tr>
                                 <th scope="col" >Timestamp</th>
@@ -60,7 +61,7 @@
                     </table>
                     #if $ip_details != ""
                         #if $ip_descs is not None
-                            <table id="hor-minimalist-b" summary="IP descriptions">
+                            <table id="hor-minimalist-b">
                                 <thead>
                                     <tr>
                                         <th scope="col" >Timestamp</th>

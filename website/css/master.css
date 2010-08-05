@@ -25,9 +25,6 @@ h2 {
     font:1.25em georgia,serif; 
     margin:0 0 0.5em;
 }
-    h1, h2, a {
-        color:orange;
-    }
 
 p { 
     line-height:1.5; 
@@ -82,7 +79,7 @@ div#footer {
 {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size: 12px;
-    background: #666;
+    background: #f0f0f0;
     margin: 45px;
     width: 480px;
     border-collapse: collapse;
@@ -112,7 +109,7 @@ div#footer {
 {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size: 12px;
-    background: #fff;
+    background: #f0f0f0;
     margin: 45px;
     width: 480px;
     border-collapse: collapse;

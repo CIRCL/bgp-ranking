@@ -47,6 +47,7 @@ div#header {
     padding:1em;
     background:#ddd;
     border-bottom:6px double gray;
+    text-align:center;
 }
     div#header p {
         font-style:italic;

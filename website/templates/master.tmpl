@@ -28,9 +28,9 @@
                 <table id="hor-minimalist-a" summary="Today's top 50">
                     <thead>
                         <tr>
-                        <th scope="col" >Timestamp</th>
-                        <th scope="col" >ASN</th>
-                        <th scope="col" >Rank</th>
+                            <th scope="col" >Timestamp</th>
+                            <th scope="col" >ASN</th>
+                            <th scope="col" >Rank</th>
                         <tr>
                     </thead>
                     #for $history in $histories
@@ -47,9 +47,9 @@
                     <table id="hor-minimalist-a" summary="ASN descriptions">
                         <thead>
                             <tr>
-                            <th scope="col" >Timestamp</th>
-                            <th scope="col" >Owner</th>
-                            <th scope="col" >Block</th>
+                                <th scope="col" >Timestamp</th>
+                                <th scope="col" >Owner</th>
+                                <th scope="col" >Block</th>
                             <tr>
                         </thead>
                         #for $asn_desc in $asn_descs
@@ -61,15 +61,15 @@
                         #end for
                     #if $ip_details != ""
                         #if $ip_descs is not None
-                            </table id="hor-minimalist-b" summary="IP descriptions">
+                            <table id="hor-minimalist-b" summary="IP descriptions">
                                 <thead>
                                     <tr>
-                                    <th scope="col" >Timestamp</th>
-                                    <th scope="col" >IP Address</th>
-                                    <th scope="col" >List Name</th>
-                                    <th scope="col" >Infection type</th>
-                                    <th scope="col" >Raw Informations</th>
-                                    <th scope="col" >Whois entry</th>
+                                        <th scope="col" >Timestamp</th>
+                                        <th scope="col" >IP Address</th>
+                                        <th scope="col" >List Name</th>
+                                        <th scope="col" >Infection type</th>
+                                        <th scope="col" >Raw Informations</th>
+                                        <th scope="col" >Whois entry</th>
                                     <tr>
                                 </thead>
                                 #for $ip_desc in $ip_descs

@@ -41,7 +41,7 @@
                     #end for
                 </table>
             #else
-                <img src="$graph" border="0" alt="Graph of $query" />
+                <img src="$graph" alt="Graph of $query" />
                 #if $asn_descs is not None
                     <table id="hor-minimalist-a">
                         <thead>
@@ -55,7 +55,7 @@
                         <tr>
                             <td>$asn_desc.timestamp</td>
                             <td>$asn_desc.owner</td>
-                            <td><a href="/?query=$query&ip_details=$asn_desc.id">$asn_desc.ips_block</a></td>
+                            <td><a href="/?query=$query;ip_details=$asn_desc.id">$asn_desc.ips_block</a></td>
                         </tr>
                         #end for
                     </table>

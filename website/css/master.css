@@ -31,6 +31,10 @@ p {
     margin:0 0 1em;
 }
 
+img {
+    border=0
+}
+
 div#container {
     position:relative; /* needed for footer positioning*/
     margin:0 auto; /* center, not in IE5 */

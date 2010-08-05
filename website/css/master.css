@@ -32,7 +32,7 @@ p {
 }
 
 img {
-    border=0
+    border: 0px
 }
 
 div#container {
@@ -42,7 +42,6 @@ div#container {
     background:#f0f0f0;
 
     height:auto !important; /* real browsers */
-    height:100%; /* IE6: treaded as min-height*/
 
     min-height:100%; /* real browsers */
 }

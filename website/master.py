@@ -20,10 +20,10 @@ css_file = config.get('web','css_file')
 website_images_dir = config.get('web','images')
 
 rgraph_dir = os.path.join(root_dir,config.get('directories','rgraph'))
-rgraph_to_import = ['RGraph.common.js', 'RGraph.line.js']
+rgraph_to_import = ['RGraph.common.core.js', 'RGraph.line.js']
 html_scripts = ""
 for js in rgraph_to_import:
-    html_scripts += '<script src="'+ js +'">\n'
+    html_scripts += '<script  type="text/javascript" src="./RGraph/'+ js +'"></script>'
 #canvas = '<canvas id="ASN_graph" width="300" height="100">[No canvas support]</canvas>'
 
 
@@ -35,7 +35,6 @@ class Master(object):
     def __init__(self):
         self.report = Reports()
         self.report.best_of_day()
-        self.template.include_scripts = html_scripts
     
     def reload(self):
         self.report.best_of_day()
@@ -47,6 +46,7 @@ class Master(object):
     def default(self, query = "", ip_details = ""):
         filename = os.path.join(website_root, templates, 'master.tmpl')
         self.template = Template(file = filename)
+        self.template.include_scripts = html_scripts
         self.template.title = 'index'
         self.template.css_file = css_file
         self.template.query = query
@@ -54,6 +54,7 @@ class Master(object):
             self.template.histories = self.report.histories
         else:
             self.template.query = query.lstrip('AS')
+            
             if self.template.query.isdigit():
                 self.template.graph = 'images/' + self.template.query + '.png'
                 
@@ -67,7 +68,8 @@ class Master(object):
                     self.report.get_ips_descs(ip_details)
                     self.template.ip_descs = self.report.ip_descs
             else: 
-               self.template.infomessage = 'The query can be AS<number> or <number>.' 
+               self.template.query = ""
+               self.template.histories = self.report.histories 
         return str(self.template)
     default.exposed = True
 

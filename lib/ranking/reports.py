@@ -52,7 +52,7 @@ class Reports():
                 self.votes.append([user, vote_splitted[1]])
 
     def prepare_graphes_js(self,  asn):
-        histories = History.query.filter_by(asn=int(self.asn)).order_by(desc(History.timestamp)).all()
+        histories = History.query.filter_by(asn=int(asn)).order_by(desc(History.timestamp)).all()
         date = None
         tmptable = []
         for history in histories:

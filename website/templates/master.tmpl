@@ -25,19 +25,33 @@
         </div>
         <div id="content">
             #if $query == ""
-                <table>
+                <table id="hor-minimalist-a" summary="Today's top 50">
+                    <thead>
+                        <tr>
+                        <th scope="col" >Timestamp</th>
+                        <th scope="col" >ASN</th>
+                        <th scope="col" >Rank</th>
+                        <tr>
+                    </thead>
                     #for $history in $histories
                     <tr>
+                        <td>$history.timestamp</td>
                         <td><a href="/?query=$history.asn">$history.asn</a></td>
                         <td>$history.rankv4</td>
-                        <td>$history.timestamp</td>
                     </tr>
                     #end for
                 </table>
             #else
                 <img src="$graph" border="0" alt="Graph of $query" />
                 #if $asn_descs is not None
-                    <table>
+                    <table id="hor-minimalist-a" summary="ASN descriptions">
+                        <thead>
+                            <tr>
+                            <th scope="col" >Timestamp</th>
+                            <th scope="col" >Owner</th>
+                            <th scope="col" >Block</th>
+                            <tr>
+                        </thead>
                         #for $asn_desc in $asn_descs
                         <tr>
                             <td>$asn_desc.timestamp</td>
@@ -45,13 +59,23 @@
                             <td><a href="/?query=$query&ip_details=$asn_desc.id">$asn_desc.ips_block</a></td>
                         </tr>
                         #end for
-                    </table>
                     #if $ip_details != ""
                         #if $ip_descs is not None
-                            <table>
+                            </table id="hor-minimalist-b" summary="IP descriptions">
+                                <thead>
+                                    <tr>
+                                    <th scope="col" >Timestamp</th>
+                                    <th scope="col" >IP Address</th>
+                                    <th scope="col" >List Name</th>
+                                    <th scope="col" >Infection type</th>
+                                    <th scope="col" >Raw Informations</th>
+                                    <th scope="col" >Whois entry</th>
+                                    <tr>
+                                </thead>
                                 #for $ip_desc in $ip_descs
                                 <tr>
                                     <td>$ip_desc.timestamp</td>
+                                    <td>$ip_desc.ip_ip</td>
                                     <td>$ip_desc.list_name</td>
                                     <td>$ip_desc.infection</td>
                                     <td>$ip_desc.raw_informations</td>

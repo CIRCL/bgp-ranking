@@ -19,12 +19,8 @@ website_root = config.get('web','website_root')
 css_file = config.get('web','css_file')
 website_images_dir = config.get('web','images')
 
-rgraph_dir = os.path.join(root_dir,config.get('directories','rgraph'))
-rgraph_to_import = ['RGraph.common.core.js', 'RGraph.line.js']
-html_scripts = ""
-for js in rgraph_to_import:
-    html_scripts += '<script  type="text/javascript" src="./RGraph/'+ js +'"></script>'
-#canvas = '<canvas id="ASN_graph" width="300" height="100">[No canvas support]</canvas>'
+rgraph_dir = 'RGraph/'
+rgraph_scripts = ['RGraph.common.core.js', 'RGraph.line.js']
 
 
 
@@ -43,33 +39,31 @@ class Master(object):
         return self.default()
     reload.exposed = True
 
-    def default(self, query = "", ip_details = ""):
+    def default(self, query = None, ip_details = None):
         filename = os.path.join(website_root, templates, 'master.tmpl')
         self.template = Template(file = filename)
-        self.template.include_scripts = html_scripts
+        self.template.rgraph_dir = rgraph_dir
+        self.template.rgraph_scripts = rgraph_scripts
         self.template.title = 'index'
         self.template.css_file = css_file
-        self.template.query = query
-        if query == "":
+        if query is None or len(query) == 0:
             self.template.histories = self.report.histories
         else:
-            self.template.query = query.lstrip('AS')
-            
-            if self.template.query.isdigit():
-                self.template.graph = 'images/' + self.template.query + '.png'
-                
-                self.report.prepare_graphes_js(self.template.query)
-                self.template.js_graph_script = self.report.script
-                
-                self.report.get_asn_descs(self.template.query)
-                self.template.asn_descs = self.report.asn_descs
-                self.template.ip_details = ip_details
-                if ip_details != "":
-                    self.report.get_ips_descs(ip_details)
-                    self.template.ip_descs = self.report.ip_descs
+            query = query.lstrip('AS')
+            if query.isdigit():
+                self.template.query = query
+                if self.report.get_asn_descs(self.template.query):
+                    self.template.graph = 'images/' + self.template.query + '.png'
+                    self.report.prepare_graphes_js(self.template.query)
+                    self.template.js_graph_script = self.report.script
+                    self.template.asn_descs = self.report.asn_descs
+                    if ip_details is not None:
+                        self.template.ip_details = ip_details
+                        if self.report.get_ips_descs(ip_details):
+                            self.template.ip_descs = self.report.ip_descs
             else: 
-               self.template.query = ""
-               self.template.histories = self.report.histories 
+                self.template.error = "Invalid query: " +  query
+                self.template.histories = self.report.histories
         return str(self.template)
     default.exposed = True
 

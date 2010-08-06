@@ -1,18 +1,25 @@
-#attr query = ''
-#attr graph = ''
-#attr infomessage = ''
+#attr query = None
+#attr graph = None
+#attr infomessage = None
 #attr asn_descs = None
 #attr ip_descs = None
-#attr include_scripts = ""
+#attr rgraph_dir = None
+#attr rgraph_scripts = None
+#attr error = None
 #attr js_graph_script = None
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>$title</title>
     <link rel="stylesheet" type="text/css" href="${css_file}"/>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    $include_scripts
+    #if $rgraph_scripts is not None
+        #for js in $rgraph_scripts
+            <script  type="text/javascript" src="${rgraph_dir}${js}" ></script>
+        #end for
+    #end if
   </head>
   <body>
     <div id="container">
@@ -26,7 +33,10 @@
             <a href="/reload">Reload the report</a>
         </div>
         <div id="content">
-            #if $query == ""
+            #if $error is not None
+                <div class="error">$error</div>
+            #end if
+            #if $query is None
                 <table id="hor-minimalist-a">
                     <thead>
                         <tr>
@@ -45,7 +55,7 @@
                 </table>
             #else
                 <img src="$graph" alt="Graph of $query" />
-                <script>$js_graph_script</script>
+                <script>${js_graph_script}</script>
                 #if $asn_descs is not None
                     <table id="hor-minimalist-a">
                         <thead>

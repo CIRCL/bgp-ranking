@@ -68,39 +68,25 @@ class Reports():
             ipv4.append(t[1])
             ipv6.append(t[2])
         
-        self.script = """window.onload = function
+        self.script = """
+window.onload = function ()
 {
-    line2 = new RGraph.Line('myCanvas2', """ + str(ipv4) + """);
-    line2.Set('chart.hmargin', 10);
+    line2 = new RGraph.Line('rank', """ + str(ipv4) + """, """ + str(ipv6) + """);
+    line2.Set('chart.gutter', 70);
+    line2.Set('chart.tickmarks', 'circle');
+    line2.Set('chart.shadow', 'true');
+    line2.Set('chart.background.grid.autofit', true);
     line2.Set('chart.labels', """  + str(dates) +  """);
-    line2.Set('chart.linewidth', 3);
-    line2.Set('chart.shadow', true);
-    line2.Set('chart.shadow.offsetx', 2);
-    line2.Set('chart.shadow.offsety', 2);
-    line2.Set('chart.ymax', 65);
-    line2.Set('chart.units.post', 'l');
-    line2.Set('chart.gutter', 35);
-    line2.Set('chart.noxaxis', true);
-    line2.Set('chart.noendxtick', true);
-    line2.Set('chart.title', 'An example of axes both sides');
+    line2.Set('chart.text.angle', 45);
+    line2.Set('chart.linewidth', 1);
+    line2.Set('chart.title', '""" + asn  + """');
+    line2.Set('chart.title.xaxis', 'Date');
+    line2.Set('chart.title.yaxis', 'Rank');
+    line2.Set('chart.ymin', 1);
+    line2.Set('chart.ymax', """ + max(max(ipv4),max(ipv6)) + """);
+    line2.Set('chart.scale.decimals', 5);
+    line2.Set('chart.key', ['IPv4', 'IPv6']);
     line2.Draw();
-
-    line3 = new RGraph.Line('myCanvas2', """ + str(ipv6) + """);
-    line3.Set('chart.hmargin', 10);
-    line3.Set('chart.linewidth', 3);
-    line3.Set('chart.shadow', true);
-    line3.Set('chart.shadow.offsetx', 2);
-    line3.Set('chart.shadow.offsety', 2);
-    line3.Set('chart.yaxispos', 'right');
-    line3.Set('chart.noendxtick', true);
-    line3.Set('chart.background.grid', false);
-    line3.Set('chart.ymax', 65);
-    line3.Set('chart.colors', ['blue', 'red']);
-    line3.Set('chart.units.pre', '$');
-    line3.Set('chart.gutter', 35);
-    line3.Set('chart.key', ['Cost', 'Volume']);
-    line3.Set('chart.key.background', 'rgba(255,255,255,0.5)');
-    line3.Draw();
 }"""
 
     

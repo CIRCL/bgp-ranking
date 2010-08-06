@@ -3,6 +3,7 @@
 #attr infomessage = None
 #attr asn_descs = None
 #attr ip_descs = None
+#attr ip_details = None
 #attr rgraph_dir = None
 #attr rgraph_scripts = None
 #attr error = None
@@ -55,7 +56,10 @@
                 </table>
             #else
                 <img src="$graph" alt="Graph of $query" />
-                <script>${js_graph_script}</script>
+                <script type="text/javascript">${js_graph_script}</script>
+                <div>
+                    <canvas id="rank" width="900" height="500">[Please wait...]</canvas>
+                </div>
                 #if $asn_descs is not None
                     <table id="hor-minimalist-a">
                         <thead>
@@ -73,7 +77,7 @@
                         </tr>
                         #end for
                     </table>
-                    #if $ip_details != ""
+                    #if $ip_details is not None
                         #if $ip_descs is not None
                             <table id="hor-minimalist-b">
                                 <thead>

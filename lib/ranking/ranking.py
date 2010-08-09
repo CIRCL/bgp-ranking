@@ -76,16 +76,21 @@ class Ranking():
 
     def rank(self):
         self.rank_by_source = {}
-        for key, weight in self.weight:
+        print self.weight
+        for key in self.weight:
+            self.rank_by_source[key] = [0.0, 0.0]
             if self.ipv4 > 0 :
-                self.rank_by_source[key][0] = (float(weight[0])/self.ipv4)
+                self.rank_by_source[key][0] = (float(self.weight[key][0])/self.ipv4)
             elif self.ipv6 > 0 :
-                self.rank_by_source[key][1] = (float(weight[1])/self.ipv6)
+                self.rank_by_source[key][1] = (float(self.weight[key][1])/self.ipv6)
     
     def make_history(self):
         votes = Votes.query.filter_by(asn=int(self.asn)).all()
         for key, rank in self.rank_by_source:
-            history = History(asn=int(self.asn), rankv4=rank[0], rankv6=rank[1], vote = votes, source = unicode(key))
+            s = Sources.query.get(unicode(key))
+            if s is None:
+                s = Sources(key)
+            history = History(asn=int(self.asn), rankv4=rank[0], rankv6=rank[1], vote = votes, source = s)
         if self.old_entry:
             history.timestamp = self.date
         v_session = VotingSession()

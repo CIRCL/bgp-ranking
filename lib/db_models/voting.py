@@ -55,8 +55,8 @@ class History(Entity):
     """ 
     History of the rankings
     """
-    asn = Field(Integer, primary_key=True)
-    timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow, primary_key=True)
+    asn = Field(Integer)
+    timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow)
     rankv4 = Field(Float, required=True)
     rankv6 = Field(Float, required=True)
     votes = ManyToMany('Votes')

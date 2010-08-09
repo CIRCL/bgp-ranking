@@ -86,11 +86,11 @@ class Ranking():
     
     def make_history(self):
         votes = Votes.query.filter_by(asn=int(self.asn)).all()
-        for key, rank in self.rank_by_source:
+        for key in self.rank_by_source:
             s = Sources.query.get(unicode(key))
             if s is None:
-                s = Sources(key)
-            history = History(asn=int(self.asn), rankv4=rank[0], rankv6=rank[1], vote = votes, source = s)
+                s = Sources(source = unicode(key))
+            history = History(asn=int(self.asn), rankv4=self.rank_by_source[key][0], rankv6=self.rank_by_source[key][1], vote = votes, source = s)
         if self.old_entry:
             history.timestamp = self.date
         v_session = VotingSession()

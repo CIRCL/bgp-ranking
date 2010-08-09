@@ -45,7 +45,14 @@ class Votes(Entity):
     commentary = Field(UnicodeText, required=True)
     asn = Field(Integer, required=True)
     user = ManyToOne('Users')
+    histories = OneToMany('History')
     using_options(metadata=voting_metadata, session=VotingSession, tablename='Votes')
+
+class Sources(Entity):
+    source = Field(UnicodeText, primary_key=True)
+    histories = OneToMany('History')
+    using_options(metadata=voting_metadata, session=VotingSession, tablename='Sources')
+    
 
 class History(Entity):
     """ 
@@ -55,7 +62,8 @@ class History(Entity):
     timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow, primary_key=True)
     rankv4 = Field(Float, required=True)
     rankv6 = Field(Float, required=True)
-    votes = Field(UnicodeText) # user_id:vote;user_id:vote;user_id:vote;user_id:vote;user_id:vote;...
+    vote = ManyToOne('Votes')
+    source = ManyToOne('Sources')
     using_options(metadata=voting_metadata, session=VotingSession, tablename='History')
 
 setup_all()

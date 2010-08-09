@@ -76,7 +76,6 @@ class Ranking():
 
     def rank(self):
         self.rank_by_source = {}
-        print self.weight
         for key in self.weight:
             self.rank_by_source[key] = [0.0, 0.0]
             if self.ipv4 > 0 :

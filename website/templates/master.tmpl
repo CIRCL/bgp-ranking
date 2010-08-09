@@ -8,6 +8,7 @@
 #attr rgraph_scripts = None
 #attr error = None
 #attr js_graph_script = None
+#attr sources = None
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -32,6 +33,13 @@
                 <div><input type="text" name="query" value="$query"/><input type="submit" value="Submit"/></div>
             </form> <br/>
             <a href="/reload">Reload the report</a>
+            <form method="post" action="/reload/?source=${s}">
+                <select name="source">
+                    #for s in $sources
+                        <option value="${s}">${s}</option>
+                    #end for
+                </select>
+            </form>
         </div>
         <div id="content">
             #if $error is not None

@@ -23,15 +23,23 @@ class Reports():
     
     def __init__(self, date = datetime.datetime.now()):
         self.date = date
+        self.sources = []
+        for s in Sources.query.all():
+            self.sources.append(s.sources)
 
-    def best_of_day(self, limit = 50):
-        max = History.query.filter(and_(History.rankv4 > 1.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp).count()
+    def best_of_day(self, limit = 50, source = None):
+        if source is not None:
+            s = Sources.query.get(unicode(source))
+            query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 1.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), History.timestamp)
+        else:
+            query = History.query.filter(and_(History.rankv4 > 1.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp)
+        max = query.count()
         asns = []
         self.histories = []
         first = 0 
         last = limit
         while limit > 0:
-            select = History.query.filter(and_(History.rankv4 > 1.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp)[first:last]
+            select = query[first:last]
             for s in select:
                 if s.asn not in asns:
                     asns.append(s.asn)
@@ -41,15 +49,6 @@ class Reports():
             last = last + limit
             if first > max:
                 break
-    
-    def get_votes(self, history):
-        if history.votes is not None:
-            temp_votes = history.votes.split(';')
-            self.votes = []
-            for vote in temp_votes:
-                vote_splitted = vote.split(':')
-                user = Users.query.get_by(id=vote_splitted[0])
-                self.votes.append([user, vote_splitted[1]])
 
     def prepare_graphes_js(self,  asn):
         histories = History.query.filter_by(asn=int(asn)).order_by(desc(History.timestamp)).all()

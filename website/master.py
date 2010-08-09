@@ -32,8 +32,8 @@ class Master(object):
         self.report = Reports()
         self.report.best_of_day()
     
-    def reload(self):
-        self.report.best_of_day()
+    def reload(self, source = None):
+        self.report.best_of_day(source = source)
         self.template.asn_descs = None 
         self.template.ip_descs = None
         return self.default()
@@ -46,6 +46,7 @@ class Master(object):
         self.template.rgraph_scripts = rgraph_scripts
         self.template.title = 'index'
         self.template.css_file = css_file
+        self.template.sources = self.report.sources
         if query is None or len(query) == 0:
             self.template.histories = self.report.histories
         else:

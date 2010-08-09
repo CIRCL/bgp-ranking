@@ -58,39 +58,34 @@ class Ranking():
     def make_index(self):
         descs = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=self.asn).first()).all()
         ips = []
-        self.weightv4 = 0
-        self.weightv6 = 0
+        # weight['source'] = [ipv4, ipv6]
+        self.weight = {}
         for desc in descs:
             ips += IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))).all()
             """
             SELECT * FROM `IPsDescriptions` WHERE `IPsDescriptions`.asn_id = desc AND `IPsDescriptions`.timestamp <= date AND `IPsDescriptions`.timestamp >= date - datetime.timedelta(days=1)
             """
-        ipv4 = 0
-        ipv6 = 0
         for i in ips:
             ip = IPy.IP(i.ip_ip)
+            if self.weight.get(str(i.list_name), None) is None:
+                self.weight[str(i.list_name)] = [0, 0]
             if ip.version() == 6:
-                ipv6 += 1
-                self.weightv6 += impacts[str(i.list_name)]
+                self.weight[str(i.list_name)][1] += impacts[str(i.list_name)]
             else :
-                ipv4 += 1
-                self.weightv4 += impacts[str(i.list_name)]
+                self.weight[str(i.list_name)][0] += impacts[str(i.list_name)]
 
     def rank(self):
-        self.rankv4 = 1
-        self.rankv6 = 1
-        if self.ipv4 > 0 :
-            self.rankv4 += (float(self.weightv4)/self.ipv4)
-        if self.ipv6 > 0 :
-            self.rankv6 += (float(self.weightv6)/self.ipv6)
+        self.rank_by_source = {}
+        for key, weight in self.weight:
+            if self.ipv4 > 0 :
+                self.rank_by_source[key][0] = (float(weight[0])/self.ipv4)
+            elif self.ipv6 > 0 :
+                self.rank_by_source[key][1] = (float(weight[1])/self.ipv6)
     
     def make_history(self):
         votes = Votes.query.filter_by(asn=int(self.asn)).all()
-        history = History(asn=int(self.asn), rankv4=self.rankv4, rankv6=self.rankv6)
-        string_votes = ''
-        for vote in votes: 
-            string_votes = vote.user + ':' + vote.vote + ';'
-        history.votes = unicode(string_votes)
+        for key, rank in self.rank_by_source:
+            history = History(asn=int(self.asn), rankv4=rank[0], rankv6=rank[1], vote = votes, source = unicode(key))
         if self.old_entry:
             history.timestamp = self.date
         v_session = VotingSession()

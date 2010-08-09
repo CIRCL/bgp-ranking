@@ -5,8 +5,6 @@ from sqlalchemy.schema import ThreadLocalMetaData
 from elixir import *
 
 import os
-precdir = os.path.realpath(os.curdir)
-os.chdir(os.path.dirname(__file__))
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.optionxform = str
@@ -15,7 +13,6 @@ login = config.get('mysql','login')
 password = config.get('mysql','password')
 host = config.get('mysql','hostname')
 dbname = config.get('mysql','dbname_ranking')
-os.chdir(precdir)
 
 ranking_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname, pool_size = 50, pool_recycle=7200, max_overflow=30 )
 RankingSession = scoped_session(sessionmaker(bind=ranking_engine))

@@ -5,8 +5,6 @@ from sqlalchemy.schema import ThreadLocalMetaData
 from elixir import *
 
 import os
-precdir = os.path.realpath(os.curdir)
-os.chdir(os.path.dirname(__file__))
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.optionxform = str
@@ -15,7 +13,6 @@ login = config.get('mysql','login')
 password = config.get('mysql','password')
 host = config.get('mysql','hostname')
 dbname = config.get('mysql','dbname_voting')
-os.chdir(precdir) 
 
 voting_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname, pool_size = 50, pool_recycle=7200, max_overflow=30 )
 VotingSession = scoped_session(sessionmaker(bind=voting_engine))
@@ -45,11 +42,11 @@ class Votes(Entity):
     commentary = Field(UnicodeText, required=True)
     asn = Field(Integer, required=True)
     user = ManyToOne('Users')
-    histories = OneToMany('History')
+    histories = ManyToMany('History')
     using_options(metadata=voting_metadata, session=VotingSession, tablename='Votes')
 
 class Sources(Entity):
-    source = Field(UnicodeText, primary_key=True)
+    source = Field(Unicode(50), primary_key=True)
     histories = OneToMany('History')
     using_options(metadata=voting_metadata, session=VotingSession, tablename='Sources')
     
@@ -62,7 +59,7 @@ class History(Entity):
     timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow, primary_key=True)
     rankv4 = Field(Float, required=True)
     rankv6 = Field(Float, required=True)
-    vote = ManyToOne('Votes')
+    votes = ManyToMany('Votes')
     source = ManyToOne('Sources')
     using_options(metadata=voting_metadata, session=VotingSession, tablename='History')
 

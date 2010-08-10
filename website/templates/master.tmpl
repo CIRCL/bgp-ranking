@@ -66,14 +66,34 @@
                     </thead>
                     #for $history in $histories
                     <tr>
-                        <td>$history.timestamp</td>
-                        <td><a href="/?query=$history.asn">$history.asn</a></td>
-                        <td>$history.rankv4</td>
+                        <td>$history[0]</td>
+                        <td><a href="/?query=$history[1]">$history[1]</a></td>
+                        <td>$history[2]</td>
                     </tr>
                     #end for
                 </table>
             #else
-                <script type="text/javascript">${js_graph_script}</script>
+                <script type="text/javascript">
+                    window.onload = function ()
+                        {
+                            graph = new RGraph.Line('rank', $ipv4_js, $ipv6_js);
+                            graph.Set('chart.gutter', 70);
+                            graph.Set('chart.tickmarks', 'circle');
+                            graph.Set('chart.shadow', 'true');
+                            graph.Set('chart.background.grid.autofit', true);
+                            graph.Set('chart.labels', $dates_js);
+                            graph.Set('chart.text.angle', 45);
+                            graph.Set('chart.linewidth', 1);
+                            graph.Set('chart.title', '$query');
+                            graph.Set('chart.title.xaxis', 'Date');
+                            graph.Set('chart.title.yaxis', 'Rank');
+                            graph.Set('chart.ymin', 0);
+                            graph.Set('chart.ymax', $max_js);
+                            graph.Set('chart.scale.decimals', 5);
+                            graph.Set('chart.key', ['IPv4', 'IPv6']);
+                            graph.Draw();
+                        }
+                </script>
                 <canvas id="rank" width="900" height="500">[Please wait...]</canvas>
                 #if $asn_descs is not None
                     <table id="hor-minimalist-a">
@@ -86,9 +106,9 @@
                         </thead>
                         #for $asn_desc in $asn_descs
                         <tr>
-                            <td>$asn_desc.timestamp</td>
-                            <td>$asn_desc.owner</td>
-                            <td><a href="/?query=$query;ip_details=$asn_desc.id">$asn_desc.ips_block</a></td>
+                            <td>$asn_desc[1]</td>
+                            <td>$asn_desc[2]</td>
+                            <td><a href="/?query=$query;ip_details=$asn_desc[0]">$asn_desc[3]</a></td>
                         </tr>
                         #end for
                     </table>
@@ -107,12 +127,12 @@
                                 </thead>
                                 #for $ip_desc in $ip_descs
                                 <tr>
-                                    <td>$ip_desc.timestamp</td>
-                                    <td>$ip_desc.ip_ip</td>
-                                    <td>$ip_desc.list_name</td>
-                                    <td>$ip_desc.infection</td>
-                                    <td>$ip_desc.raw_informations</td>
-                                    <td><pre>$ip_desc.whois</pre></td>
+                                    <td>$ip_desc[0]</td>
+                                    <td>$ip_desc[1]</td>
+                                    <td>$ip_desc[2]</td>
+                                    <td>$ip_desc[3]</td>
+                                    <td>$ip_desc[4]</td>
+                                    <td><pre>$ip_desc[5]</pre></td>
                                 </tr>
                                 #end for
                             </table>
@@ -122,7 +142,6 @@
             #end if
         </div>
         <div id="footer"> Footer </div>
-
     </div>
   </body>
 </html>

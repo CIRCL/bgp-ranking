@@ -35,12 +35,14 @@
             </form> <br/>
             <a href="/reload">Reload the report</a>
             <form method="post" action=".">
-                <select name="source">
-                    #for $s in $sources
-                        <option value="${s}">${s}</option>
-                    #end for
-                </select>
-                <input type="submit" value="Submit"/>
+                <div>
+                    <select name="source">
+                        #for $s in $sources
+                            <option value="${s}">${s}</option>
+                        #end for
+                    </select>
+                    <input type="submit" value="Submit"/>
+                </div>
             </form>
         </div>
         <div id="content">
@@ -65,11 +67,8 @@
                     #end for
                 </table>
             #else
-                <img src="$graph" alt="Graph of $query" />
                 <script type="text/javascript">${js_graph_script}</script>
-                <div>
-                    <canvas id="rank" width="900" height="500">[Please wait...]</canvas>
-                </div>
+                <canvas id="rank" width="900" height="500">[Please wait...]</canvas>
                 #if $asn_descs is not None
                     <table id="hor-minimalist-a">
                         <thead>

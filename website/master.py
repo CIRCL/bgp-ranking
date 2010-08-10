@@ -39,7 +39,7 @@ class Master(object):
         return self.default()
     reload.exposed = True
 
-    def default(self, query = None, ip_details = None):
+    def default(self, query = None, ip_details = None, source = None):
         filename = os.path.join(website_root, templates, 'master.tmpl')
         self.template = Template(file = filename)
         self.template.rgraph_dir = rgraph_dir
@@ -48,6 +48,8 @@ class Master(object):
         self.template.css_file = css_file
         self.template.sources = self.report.sources
         if query is None or len(query) == 0:
+            if source is not None:
+                self.report.best_of_day(source = source)
             self.template.histories = self.report.histories
         else:
             query = query.lstrip('AS')

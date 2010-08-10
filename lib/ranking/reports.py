@@ -25,15 +25,15 @@ class Reports():
         self.date = date
         self.sources = []
         for s in Sources.query.all():
-            self.sources.append(s.sources)
+            self.sources.append(s.source)
 
     def best_of_day(self, limit = 50, source = None):
         if source is not None:
             s = Sources.query.get(unicode(source))
-            query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 1.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), History.timestamp)
+            query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), History.timestamp)
         else:
-            query = History.query.filter(and_(History.rankv4 > 1.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp)
-        max = query.count()
+            query = History.query.filter(and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp)
+        entries = query.count()
         asns = []
         self.histories = []
         first = 0 
@@ -47,7 +47,7 @@ class Reports():
                     limit -= 1
             first = last
             last = last + limit
-            if first > max:
+            if first > entries:
                 break
 
     def prepare_graphes_js(self,  asn):
@@ -81,7 +81,7 @@ window.onload = function ()
     line2.Set('chart.title', '""" + asn  + """');
     line2.Set('chart.title.xaxis', 'Date');
     line2.Set('chart.title.yaxis', 'Rank');
-    line2.Set('chart.ymin', 1);
+    line2.Set('chart.ymin', 0);
     line2.Set('chart.ymax', """ + max(max(ipv4),max(ipv6)) + """);
     line2.Set('chart.scale.decimals', 5);
     line2.Set('chart.key', ['IPv4', 'IPv6']);

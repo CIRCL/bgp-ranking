@@ -28,9 +28,13 @@ class Reports():
             self.sources.append(s.source)
 
     def best_of_day(self, limit = 50, source = None):
-        if source is not None:
+        if source is not None and len(source) >0 :
             s = Sources.query.get(unicode(source))
-            query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), History.timestamp)
+            if s is not None:
+                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), History.timestamp)
+            else:
+                #FIXME: error message ? 
+                query = History.query.filter(and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp)
         else:
             query = History.query.filter(and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp)
         entries = query.count()

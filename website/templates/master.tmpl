@@ -9,6 +9,7 @@
 #attr error = None
 #attr js_graph_script = None
 #attr sources = None
+#attr source = None
 #attr s = None
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -37,8 +38,13 @@
             <form method="post" action=".">
                 <div>
                     <select name="source">
+                        <option value="">Select a particular source</option>
                         #for $s in $sources
-                            <option value="${s}">${s}</option>
+                            #if $source == $s
+                                <option value="${s}" selected>${s}</option>
+                            #else
+                                <option value="${s}">${s}</option>
+                            #end if
                         #end for
                     </select>
                     <input type="submit" value="Submit"/>

@@ -48,8 +48,8 @@ class Master(object):
         self.template.css_file = css_file
         self.template.sources = self.report.sources
         if query is None or len(query) == 0:
-            if source is not None:
-                self.report.best_of_day(source = source)
+            self.report.best_of_day(source = source)
+            self.template.source  = source
             self.template.histories = self.report.histories
         else:
             query = query.lstrip('AS')

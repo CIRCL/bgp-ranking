@@ -77,7 +77,7 @@ class Reports():
             dates.append(t[0])
             ipv4.append(t[1])
             ipv6.append(t[2])
-        self.graph_infos = [str(ipv4), str(ipv6), str(dates), max(max(ipv4),max(ipv6))]
+        self.graph_infos = [ipv4, ipv6, dates, max(max(ipv4),max(ipv6))]
 
     def get_asn_descs(self, asn):
         self.prepare_graphe_js(asn)

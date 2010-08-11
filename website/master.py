@@ -52,11 +52,11 @@ class Master(object):
     
     def set_graph_infos(self):
         infos = self.controler.as_graph_infos
-        self.template.ipv4_js = infos[0]
-        self.template.ipv6_js = infos[1]
-        self.template.tooltips = infos[0] + infos[1]
-        self.template.dates_js = infos[2]
-        self.template.max_js = infos[3]
+        self.template.ipv4_js = str(infos[0])
+        self.template.ipv6_js = str(infos[1])
+        self.template.tooltips = str(infos[0] + infos[1])
+        self.template.dates_js = str(infos[2])
+        self.template.max_js = str(infos[3])
     
     def reload(self, source = None):
         self.init_index()

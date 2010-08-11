@@ -1,10 +1,6 @@
 from string import Template
 
 class GraphGenerator():
-    lines = []
-    keys = []
-    labels = None
-    title = None
     template = Template("""
 window.onload = function ()
     {
@@ -30,6 +26,10 @@ window.onload = function ()
 """)
     
     def __init__(self, name):
+        lines = []
+        keys = []
+        labels = None
+        title = None
         self.name = name
 
     def add_line(self, line, key):
@@ -61,4 +61,6 @@ if __name__ == "__main__":
     g.set_labels(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'])
     g.set_title('Test perso')
     g.make_js()
+    g = GraphGenerator('plop')
+    g.add_line([10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 'test 3')
     print g.js

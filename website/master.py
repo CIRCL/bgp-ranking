@@ -64,7 +64,7 @@ class Master(object):
                 self.template.query = query
                 self.controler.get_as_infos(query)
                 self.template.asn_descs = self.controler.as_infos
-                self.template.js = self.controler.js
+                self.template.javascript = self.controler.js
                 self.template.js_name = self.controler.js_name
                 if ip_details is not None:
                     self.template.ip_details = ip_details

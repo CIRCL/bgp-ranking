@@ -1,6 +1,7 @@
 #attr query = None
 #attr error = None
 #attr ip_details = None
+#attr asns = None
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -62,6 +63,9 @@
                     </tr>
                     #end for
                 </table>
+            #elif $asns is not None
+                <script type="text/javascript">$js_comparator</script>
+                <canvas id="$js_comparator_name" width="900" height="500">[Please wait...]</canvas>
             #else
                 <script type="text/javascript">$javascript</script>
                 <canvas id="$js_name" width="900" height="500">[Please wait...]</canvas>

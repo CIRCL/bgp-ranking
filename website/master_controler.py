@@ -35,6 +35,21 @@ class MasterControler():
         self.report.get_ips_descs(asn_desc)
         self.ip_infos = self.report.ip_descs_to_print
     
+    #FIXME: what is len(labels) != len(line)
+    def comparator(self, asns, js_name = 'comparator'):
+        splitted_asns = asns.split()
+        g = GraphGenerator(js_name)
+        g.set_title(asns)
+        for asn in splitted_asns:
+            self.report.prepare_graphe_js(asn)
+            as_graph_infos = self.report.graph_infos
+            g.add_line(as_graph_infos[0], asn + ' IPv4')
+            g.add_line(as_graph_infos[1], asn + ' IPv6')
+            g.set_labels(as_graph_infos[2])
+        g.make_js()
+        self.js = g.js
+        self.js_name = js_name
+    
     def make_graph(self, infos, js_name = 'rank'):
         g = GraphGenerator(js_name)
         g.add_line(infos[0], 'IPv4')

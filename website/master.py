@@ -50,6 +50,14 @@ class Master(object):
         self.template.query = None
         self.template.source = source
     
+    def comparator(self, asns = None):
+        self.controler.comparator(asns)
+        self.template.js_comparator = self.controler.js
+        self.template.js_comparator_name = self.controler.js_name
+        return str(self.template)
+    comparator.exposed = True
+        
+    
     def reload(self, source = None):
         self.init_index()
         return str(self.template)

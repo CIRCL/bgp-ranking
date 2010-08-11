@@ -67,6 +67,7 @@
                     window.onload = function ()
                         {
                             graph = new RGraph.Line('rank', $ipv4_js, $ipv6_js);
+                            graph.Set('chart.tooltips', $tooltips);
                             graph.Set('chart.gutter', 70);
                             graph.Set('chart.tickmarks', 'circle');
                             graph.Set('chart.shadow', 'true');
@@ -81,6 +82,7 @@
                             graph.Set('chart.ymax', $max_js);
                             graph.Set('chart.scale.decimals', 5);
                             graph.Set('chart.key', ['IPv4', 'IPv6']);
+                            graph.Set('chart.contextmenu', [['Zoom entire graph', RGraph.Zoom]]);
                             graph.Draw();
                         }
                 </script>

@@ -20,7 +20,7 @@ css_file = config.get('web','css_file')
 website_images_dir = config.get('web','images')
 
 rgraph_dir = 'RGraph/'
-rgraph_scripts = ['RGraph.common.core.js', 'RGraph.line.js']
+rgraph_scripts = ['RGraph.common.core.js', 'RGraph.common.zoom.js', 'RGraph.common.resizing.js', 'RGraph.common.context.js', 'RGraph.line.js', 'RGraph.common.tooltips.js']
 
 from master_controler import MasterControler
 
@@ -54,6 +54,7 @@ class Master(object):
         infos = self.controler.as_graph_infos
         self.template.ipv4_js = infos[0]
         self.template.ipv6_js = infos[1]
+        self.template.tooltips = infos[0] + infos[1]
         self.template.dates_js = infos[2]
         self.template.max_js = infos[3]
     

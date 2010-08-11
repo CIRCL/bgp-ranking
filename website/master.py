@@ -47,6 +47,7 @@ class Master(object):
         self.template.sources = self.controler.sources
         self.template.asn_descs = None 
         self.template.ip_descs = None
+        self.template.query = None
         self.template.source = source
     
     def set_graph_infos(self):
@@ -74,7 +75,7 @@ class Master(object):
                 if ip_details is not None:
                     self.template.ip_details = ip_details
                     self.controler.get_ip_infos(ip_details)
-                    self.template.ip_descs = self.ip_infos
+                    self.template.ip_descs = self.controler.ip_infos
             else: 
                 self.template.error = "Invalid query: " +  query
                 self.init_index(source)

@@ -69,7 +69,7 @@ class Reports():
             prec_date = date
             date = history.timestamp.date()
             if date != prec_date:
-                tmptable.append([str(history.timestamp.date()), str(history.rankv4), str(history.rankv6)] )
+                tmptable.append([str(history.timestamp.date()), float(history.rankv4), float(history.rankv6)] )
         dates = []
         ipv4 = []
         ipv6 = []

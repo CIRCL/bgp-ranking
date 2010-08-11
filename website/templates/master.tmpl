@@ -94,6 +94,7 @@
                                 <th scope="col" >Timestamp</th>
                                 <th scope="col" >Owner</th>
                                 <th scope="col" >Block</th>
+                                <th scope="col" >Number of IPs today</th>
                             </tr>
                         </thead>
                         #for $asn_desc in $asn_descs
@@ -101,6 +102,7 @@
                             <td>$asn_desc[1]</td>
                             <td>$asn_desc[2]</td>
                             <td><a href="/?query=$query;ip_details=$asn_desc[0]">$asn_desc[3]</a></td>
+                            <td>$asn_desc[4]</td>
                         </tr>
                         #end for
                     </table>

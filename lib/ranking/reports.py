@@ -27,6 +27,7 @@ class Reports():
             self.sources.append(s.source)
 
     #FIXME: query on IPv6
+    #FIXME: the code is just ugly... 
     def best_of_day(self, limit = 50, source = None):
         global_query = True
         if source is not None and len(source) >0 :
@@ -37,18 +38,24 @@ class Reports():
         if global_query:
             query = History.query.filter(and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp)
         entries = query.count()
-        self.histories = {}
+        asns = []
+        self.histories = []
         first = 0 
         last = limit
         while limit > 0:
             select = query[first:last]
             for s in select:
-                h_temp = self.histories.get(s.asn, None)
-                if h_temp is None:
-                    self.histories[s.asn] = [s.timestamp, s.asn, s.rankv4]
+                if s.asn not in asns:
+                    asns.append(s.asn)
+                    self.histories.append([s.timestamp, s.asn, s.rankv4])
                     limit -= 1
-                elif h_temp.source != s.source:
-                    self.histories[s.asn][2] += s.rankv4
+                    if global_query:
+                        other_sources = History.query.filter(and_(History.asn == s.asn, and_(History.source != s.source, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))))).order_by(History.timestamp).all()
+                        added_sources = []
+                        for os in other_sources:
+                            if os.source not in added_sources:
+                                self.histories[2] += os.rankv4
+                                other_sources.append(os.source)
             first = last
             last = last + limit
             if first > entries:

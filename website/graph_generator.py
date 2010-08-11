@@ -26,10 +26,10 @@ window.onload = function ()
 """)
     
     def __init__(self, name):
-        lines = []
-        keys = []
-        labels = None
-        title = None
+        self.lines = []
+        self.keys = []
+        self.labels = None
+        self.title = None
         self.name = name
 
     def add_line(self, line, key):

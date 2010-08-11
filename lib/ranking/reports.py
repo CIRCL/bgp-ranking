@@ -85,7 +85,7 @@ class Reports():
             self.asn_descs_to_print = []
             for desc in asn_descs:
                 nb_of_ips = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))).count()
-                self.asn_descs_to_print.append([desc.id, desc.timestamp, desc.owner, desc.block, nb_of_ips])
+                self.asn_descs_to_print.append([desc.id, desc.timestamp, desc.owner, desc.ips_block, nb_of_ips])
 
     def get_ips_descs(self, asn_desc_id):
         asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()

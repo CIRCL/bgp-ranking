@@ -46,7 +46,6 @@ class Reports():
                 h_temp = self.histories.get(s.asn, None)
                 if h_temp is None:
                     self.histories[s.asn] = [s.timestamp, s.asn, s.rankv4]
-                    self.histories.append(s)
                     limit -= 1
                 elif h_temp.source != s.source:
                     self.histories[s.asn][2] += s.rankv4

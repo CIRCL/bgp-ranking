@@ -63,30 +63,8 @@
                     #end for
                 </table>
             #else
-                <script type="text/javascript">
-                    window.onload = function ()
-                        {
-                            graph = new RGraph.Line('rank', $ipv4_js, $ipv6_js);
-                            graph.Set('chart.tooltips', $tooltips);
-                            graph.Set('chart.gutter', 70);
-                            graph.Set('chart.tickmarks', 'circle');
-                            graph.Set('chart.shadow', 'true');
-                            graph.Set('chart.background.grid.autofit', true);
-                            graph.Set('chart.labels', $dates_js);
-                            graph.Set('chart.text.angle', 45);
-                            graph.Set('chart.linewidth', 1);
-                            graph.Set('chart.title', '$query');
-                            graph.Set('chart.title.xaxis', 'Date');
-                            graph.Set('chart.title.yaxis', 'Rank');
-                            graph.Set('chart.ymin', 0);
-                            graph.Set('chart.ymax', $max_js);
-                            graph.Set('chart.scale.decimals', 5);
-                            graph.Set('chart.key', ['IPv4', 'IPv6']);
-                            graph.Set('chart.contextmenu', [['Zoom entire graph', RGraph.Zoom]]);
-                            graph.Draw();
-                        }
-                </script>
-                <canvas id="rank" width="900" height="500">[Please wait...]</canvas>
+                <script type="text/javascript">$js</script>
+                <canvas id="$js_name" width="900" height="500">[Please wait...]</canvas>
                 #if $asn_descs is not None
                     <table id="hor-minimalist-a">
                         <thead>

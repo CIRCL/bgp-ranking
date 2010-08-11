@@ -50,14 +50,6 @@ class Master(object):
         self.template.query = None
         self.template.source = source
     
-    def set_graph_infos(self):
-        infos = self.controler.as_graph_infos
-        self.template.ipv4_js = str(infos[0])
-        self.template.ipv6_js = str(infos[1])
-        self.template.tooltips = str(infos[0] + infos[1])
-        self.template.dates_js = str(infos[2])
-        self.template.max_js = str(infos[3])
-    
     def reload(self, source = None):
         self.init_index()
         return str(self.template)
@@ -72,7 +64,8 @@ class Master(object):
                 self.template.query = query
                 self.controler.get_as_infos(query)
                 self.template.asn_descs = self.controler.as_infos
-                self.set_graph_infos()
+                self.template.js = self.controler.js
+                self.template.js_name = self.controler.js_name
                 if ip_details is not None:
                     self.template.ip_details = ip_details
                     self.controler.get_ip_infos(ip_details)

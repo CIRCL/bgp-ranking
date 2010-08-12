@@ -50,7 +50,8 @@ window.onload = function ()
         for line in self.lines:
             form_lines += ', ' + str(line)
             tooltips += line
-            real_max = max(real_max, max(line))
+            if len(line) > 0:
+                real_max = max(real_max, max(line))
         form_keys = str(self.keys)
         self.js = self.template.substitute( name = self.name, lines = form_lines, tooltips = str(tooltips), labels = str(self.labels), title = self.title, max = real_max, keys = str(self.keys) )
 

@@ -47,22 +47,9 @@
                 <div class="error">$error</div>
             #end if
             #if $query is None
-                <table id="hor-minimalist-a">
-                    <thead>
-                        <tr>
-                            <th scope="col" >Timestamp</th>
-                            <th scope="col" >ASN</th>
-                            <th scope="col" >Rank</th>
-                        </tr>
-                    </thead>
-                    #for $history in $histories
-                    <tr>
-                        <td>$history[0]</td>
-                        <td><a href="/?query=$history[1]">$history[1]</a></td>
-                        <td>$history[2]</td>
-                    </tr>
-                    #end for
-                </table>
+                #block index
+                    Index block
+                #end block index
             #elif $asns is not None
                 <script type="text/javascript">$js_comparator</script>
                 <canvas id="$js_comparator_name" width="900" height="500">[Please wait...]</canvas>

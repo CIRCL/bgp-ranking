@@ -43,6 +43,7 @@ class MasterControler():
         for asn in splitted_asns:
             self.report.prepare_graphe_js(asn)
             as_graph_infos = self.report.graph_infos
+            
             g.add_line(as_graph_infos[0], asn + ' IPv4')
             g.add_line(as_graph_infos[1], asn + ' IPv6')
             g.set_labels(as_graph_infos[2])

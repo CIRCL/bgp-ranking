@@ -1,0 +1,18 @@
+#extends master
+
+<table id="hor-minimalist-a">
+    <thead>
+        <tr>
+            <th scope="col" >Timestamp</th>
+            <th scope="col" >ASN</th>
+            <th scope="col" >Rank</th>
+        </tr>
+    </thead>
+    #for $history in $histories
+    <tr>
+        <td>$history[0]</td>
+        <td><a href="/?query=$history[1]">$history[1]</a></td>
+        <td>$history[2]</td>
+    </tr>
+    #end for
+</table>

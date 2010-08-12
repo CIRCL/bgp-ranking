@@ -30,7 +30,7 @@ class Master(object):
     
     def __init__(self):
         self.controler = MasterControler()
-        self.init_index()
+        self.index()
     
     def init_template(self):
         self.template.rgraph_dir = rgraph_dir
@@ -39,13 +39,13 @@ class Master(object):
         self.controler.get_sources()
         self.template.sources = self.controler.sources
     
-    def init_index(self, source = None):
+    def index(self, source = None):
         self.template = Template(file = os.path.join(website_root, templates, 'index.tmpl'))
         self.init_template()
         self.controler.prepare_index(source)
         self.template.histories = self.controler.index_table
     
-    def init_asn_details(self, query = None, ip_details = None):
+    def ans_details(self, query = None, ip_details = None):
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
         self.init_template()
         query = query.lstrip('AS')
@@ -61,7 +61,8 @@ class Master(object):
                 self.template.ip_descs = self.controler.ip_infos
         else: 
             self.template.error = "Invalid query: " +  query
-            self.init_index(source)
+            self.index(source)
+        ans_details.exposed = true
     
     def comparator(self, asns = None):
         self.controler.comparator(asns)
@@ -71,16 +72,13 @@ class Master(object):
     comparator.exposed = True
         
     
-    def reload(self, source = None):
-        self.init_index()
+    def reload(self):
+        self.index()
         return str(self.template)
     reload.exposed = True
 
-    def default(self, query = None, source = None):
-        if query is None or len(query) == 0:
-            self.init_index(source)
-        else:
-            self.init_asn_details(query)
+    def default(self, source = None):
+        self.index(source)
         return str(self.template)
     default.exposed = True
 

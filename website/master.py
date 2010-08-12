@@ -60,8 +60,10 @@ class Master(object):
                     self.template.ip_details = ip_details
                     self.controler.get_ip_infos(ip_details)
                     self.template.ip_descs = self.controler.ip_infos
-        else: 
-            self.template.error = "Invalid query: " +  asn
+            else: 
+                self.template.error = "Invalid query: " +  asn
+                self.index()
+        else:
             self.index()
         return str(self.template)
     asn_details.exposed = True

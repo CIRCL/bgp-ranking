@@ -75,10 +75,13 @@ class Master(object):
     def comparator(self, asns = None):
         self.template = Template(file = os.path.join(website_root, templates, 'comparator.tmpl'))
         self.init_template()
-        if asns is not None:
-            self.controler.comparator(asns)
+        self.template.asns = asns
+        if self.template.asns is not None:
+            self.controler.comparator(self.template.asns)
             self.template.js_comparator = self.controler.js
             self.template.js_comparator_name = self.controler.js_name
+            if self.template.js_comparator is None:
+                self.template.error = "No valid ASN in the list..."
         return str(self.template)
     comparator.exposed = True
         

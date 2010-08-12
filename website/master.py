@@ -42,6 +42,7 @@ class Master(object):
     def init_index(self, source = None):
         self.template = Template(file = os.path.join(website_root, templates, 'index.tmpl'))
         self.init_template()
+        self.controler.prepare_index(source)
         self.template.histories = self.controler.index_table
     
     def init_asn_details(self, query = None, ip_details = None):

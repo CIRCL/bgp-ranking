@@ -12,11 +12,10 @@ from graph_generator import GraphGenerator
 
 class MasterControler():
 
-    def __init__(self):
-            pass
-
-    def prepare_index(self, source = None, limit = 50, date = datetime.datetime.now()):
+    def __init__(self, date = datetime.datetime.now()):
         self.report = Reports(date)
+
+    def prepare_index(self, source = None, limit = 50):
         self.report.best_of_day(limit, source)
         self.index_table = self.report.histories
     

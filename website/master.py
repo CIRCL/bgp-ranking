@@ -62,10 +62,11 @@ class Master(object):
                         self.controler.get_ip_infos(ip_details)
                         self.template.ip_descs = self.controler.ip_infos
                 else:
-                    self.template.error = asn + " not Found"
+                    self.index()
+                    self.template.error = asn + " not Found."
             else: 
-                self.template.error = "Invalid query: " +  asn
                 self.index()
+                self.template.error = "Invalid query: " +  asn
         else:
             self.index()
         return str(self.template)

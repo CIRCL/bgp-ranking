@@ -1,18 +1,23 @@
+#from templates.master import master
 #extends master
 
-<table id="hor-minimalist-a">
-    <thead>
+#attr title = Index
+
+#block main_content
+    <table id="hor-minimalist-a">
+        <thead>
+            <tr>
+                <th scope="col" >Timestamp</th>
+                <th scope="col" >ASN</th>
+                <th scope="col" >Rank</th>
+            </tr>
+        </thead>
+        #for $history in $histories
         <tr>
-            <th scope="col" >Timestamp</th>
-            <th scope="col" >ASN</th>
-            <th scope="col" >Rank</th>
+            <td>$history[0]</td>
+            <td><a href="/?query=$history[1]">$history[1]</a></td>
+            <td>$history[2]</td>
         </tr>
-    </thead>
-    #for $history in $histories
-    <tr>
-        <td>$history[0]</td>
-        <td><a href="/?query=$history[1]">$history[1]</a></td>
-        <td>$history[2]</td>
-    </tr>
-    #end for
-</table>
+        #end for
+    </table>
+#end block main_content

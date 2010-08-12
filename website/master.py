@@ -30,25 +30,41 @@ class Master(object):
     
     def __init__(self):
         self.controler = MasterControler()
-        self.init_template()
         self.init_index()
     
     def init_template(self):
-        self.template = Template(file = os.path.join(website_root, templates, 'master.tmpl'))
         self.template.rgraph_dir = rgraph_dir
         self.template.rgraph_scripts = rgraph_scripts
-        self.template.title = 'index'
         self.template.css_file = css_file
     
     def init_index(self, source = None):
+        self.template = Template(file = os.path.join(website_root, templates, 'index.tmpl'))
+        self.init_template()
+        
         self.controler.prepare_index(source = source)
-        self.template.histories = self.controler.index_table
         self.controler.get_sources()
+        
+        self.template.histories = self.controler.index_table
         self.template.sources = self.controler.sources
-        self.template.asn_descs = None 
-        self.template.ip_descs = None
-        self.template.query = None
         self.template.source = source
+    
+    def init_asn_details(self, query = None, ip_details = None):
+        self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
+        self.init_template()
+        query = query.lstrip('AS')
+        if query.isdigit():
+            self.template.query = query
+            self.controler.get_as_infos(query)
+            self.template.asn_descs = self.controler.as_infos
+            self.template.javascript = self.controler.js
+            self.template.js_name = self.controler.js_name
+            if ip_details is not None:
+                self.template.ip_details = ip_details
+                self.controler.get_ip_infos(ip_details)
+                self.template.ip_descs = self.controler.ip_infos
+        else: 
+            self.template.error = "Invalid query: " +  query
+            self.init_index(source)
     
     def comparator(self, asns = None):
         self.controler.comparator(asns)
@@ -63,24 +79,11 @@ class Master(object):
         return str(self.template)
     reload.exposed = True
 
-    def default(self, query = None, ip_details = None, source = None):
+    def default(self, query = None, source = None):
         if query is None or len(query) == 0:
             self.init_index(source)
         else:
-            query = query.lstrip('AS')
-            if query.isdigit():
-                self.template.query = query
-                self.controler.get_as_infos(query)
-                self.template.asn_descs = self.controler.as_infos
-                self.template.javascript = self.controler.js
-                self.template.js_name = self.controler.js_name
-                if ip_details is not None:
-                    self.template.ip_details = ip_details
-                    self.controler.get_ip_infos(ip_details)
-                    self.template.ip_descs = self.controler.ip_infos
-            else: 
-                self.template.error = "Invalid query: " +  query
-                self.init_index(source)
+            self.init_asn_details(query)
         return str(self.template)
     default.exposed = True
 

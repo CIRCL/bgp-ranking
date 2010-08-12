@@ -1,7 +1,5 @@
-#attr query = None
 #attr error = None
-#attr ip_details = None
-#attr asns = None
+#attr title = Master 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -46,63 +44,9 @@
             #if $error is not None
                 <div class="error">$error</div>
             #end if
-            #if $query is None
-                #block index
-                    Index block
-                #end block index
-            #elif $asns is not None
-                <script type="text/javascript">$js_comparator</script>
-                <canvas id="$js_comparator_name" width="900" height="500">[Please wait...]</canvas>
-            #else
-                <script type="text/javascript">$javascript</script>
-                <canvas id="$js_name" width="900" height="500">[Please wait...]</canvas>
-                #if $asn_descs is not None
-                    <table id="hor-minimalist-a">
-                        <thead>
-                            <tr>
-                                <th scope="col" >Timestamp</th>
-                                <th scope="col" >Owner</th>
-                                <th scope="col" >Block</th>
-                                <th scope="col" >Number of IPs today</th>
-                            </tr>
-                        </thead>
-                        #for $asn_desc in $asn_descs
-                        <tr>
-                            <td>$asn_desc[1]</td>
-                            <td>$asn_desc[2]</td>
-                            <td><a href="/?query=$query;ip_details=$asn_desc[0]">$asn_desc[3]</a></td>
-                            <td>$asn_desc[4]</td>
-                        </tr>
-                        #end for
-                    </table>
-                    #if $ip_details is not None
-                        #if $ip_descs is not None
-                            <table id="hor-minimalist-b">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" >Timestamp</th>
-                                        <th scope="col" >IP Address</th>
-                                        <th scope="col" >List Name</th>
-                                        <th scope="col" >Infection type</th>
-                                        <th scope="col" >Raw Informations</th>
-                                        <th scope="col" >Whois entry</th>
-                                    </tr>
-                                </thead>
-                                #for $ip_desc in $ip_descs
-                                <tr>
-                                    <td>$ip_desc[0]</td>
-                                    <td>$ip_desc[1]</td>
-                                    <td>$ip_desc[2]</td>
-                                    <td>$ip_desc[3]</td>
-                                    <td>$ip_desc[4]</td>
-                                    <td><pre>$ip_desc[5]</pre></td>
-                                </tr>
-                                #end for
-                            </table>
-                        #end if
-                    #end if
-                #end if
-            #end if
+            #block main_content
+                Main Content
+            #end block main_content
         </div>
         <div id="footer"> Footer </div>
     </div>

@@ -45,13 +45,13 @@ class Master(object):
         self.controler.prepare_index(source)
         self.template.histories = self.controler.index_table
     
-    def ans_details(self, query = None, ip_details = None):
+    def ans_details(self, asn = None, ip_details = None):
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
         self.init_template()
-        query = query.lstrip('AS')
-        if query.isdigit():
-            self.template.query = query
-            self.controler.get_as_infos(query)
+        asn = asn.lstrip('AS')
+        if asn.isdigit():
+            self.template.asn = asn
+            self.controler.get_as_infos(asn)
             self.template.asn_descs = self.controler.as_infos
             self.template.javascript = self.controler.js
             self.template.js_name = self.controler.js_name
@@ -60,8 +60,9 @@ class Master(object):
                 self.controler.get_ip_infos(ip_details)
                 self.template.ip_descs = self.controler.ip_infos
         else: 
-            self.template.error = "Invalid query: " +  query
+            self.template.error = "Invalid query: " +  asn
             self.index(source)
+        return str(self.template)
         ans_details.exposed = true
     
     def comparator(self, asns = None):

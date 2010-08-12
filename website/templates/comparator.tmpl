@@ -1,0 +1,17 @@
+#from templates.master import master
+#extends master
+
+#attr title = 'Comparator'
+#attr asns = None
+#attr js_comparator = None
+
+#block main_content
+    List of ASNs, separated with a blank:
+    <form method="get" action="comparator">
+        <div><input type="text" name="asns" value="$asns"/><input type="submit" value="Submit"/></div>
+    </form> <br/>
+    #if $js_comparator is not None
+        <script type="text/javascript">$js_comparator</script>
+        <canvas id="$js_comparator_name" width="900" height="500">[Please wait...]</canvas>
+    #end if 
+#end block main_content

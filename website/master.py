@@ -48,22 +48,23 @@ class Master(object):
     def asn_details(self, asn = None, ip_details = None):
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
         self.init_template()
-        asn = asn.lstrip('AS')
-        if asn.isdigit():
-            self.template.asn = asn
-            self.controler.get_as_infos(asn)
-            self.template.asn_descs = self.controler.as_infos
-            self.template.javascript = self.controler.js
-            self.template.js_name = self.controler.js_name
-            if ip_details is not None:
-                self.template.ip_details = ip_details
-                self.controler.get_ip_infos(ip_details)
-                self.template.ip_descs = self.controler.ip_infos
+        if asn is not None and len(asn) > 0:
+            asn = asn.lstrip('AS')
+            if asn.isdigit():
+                self.template.asn = asn
+                self.controler.get_as_infos(asn)
+                self.template.asn_descs = self.controler.as_infos
+                self.template.javascript = self.controler.js
+                self.template.js_name = self.controler.js_name
+                if ip_details is not None:
+                    self.template.ip_details = ip_details
+                    self.controler.get_ip_infos(ip_details)
+                    self.template.ip_descs = self.controler.ip_infos
         else: 
             self.template.error = "Invalid query: " +  asn
-            self.index(source)
+            self.index()
         return str(self.template)
-        asn_details.exposed = true
+    asn_details.exposed = True
     
     def comparator(self, asns = None):
         self.controler.comparator(asns)

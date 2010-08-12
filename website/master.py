@@ -45,7 +45,7 @@ class Master(object):
         self.controler.prepare_index(source)
         self.template.histories = self.controler.index_table
     
-    def ans_details(self, asn = None, ip_details = None):
+    def asn_details(self, asn = None, ip_details = None):
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
         self.init_template()
         asn = asn.lstrip('AS')
@@ -63,7 +63,7 @@ class Master(object):
             self.template.error = "Invalid query: " +  asn
             self.index(source)
         return str(self.template)
-        ans_details.exposed = true
+        asn_details.exposed = true
     
     def comparator(self, asns = None):
         self.controler.comparator(asns)

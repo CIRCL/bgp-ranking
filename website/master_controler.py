@@ -42,7 +42,7 @@ class MasterControler():
         else:
             splitted_asns = asns.split()
             g = GraphGenerator(js_name)
-            g.set_title(asns)
+            title = ''
             for asn in splitted_asns:
                 if asn.isdigit():
                     self.report.prepare_graphe_js(asn)
@@ -50,7 +50,9 @@ class MasterControler():
                     g.add_line(as_graph_infos[0], asn + ' IPv4')
                     g.add_line(as_graph_infos[1], asn + ' IPv6')
                     g.set_labels(as_graph_infos[2])
+                    title += asn + ' '
             if len(g.lines) > 0:
+                g.set_title(title)
                 g.make_js()
                 self.js = g.js
                 self.js_name = js_name

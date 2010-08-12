@@ -54,12 +54,15 @@ class Master(object):
                 self.template.asn = asn
                 self.controler.get_as_infos(asn)
                 self.template.asn_descs = self.controler.as_infos
-                self.template.javascript = self.controler.js
-                self.template.js_name = self.controler.js_name
-                if ip_details is not None:
-                    self.template.ip_details = ip_details
-                    self.controler.get_ip_infos(ip_details)
-                    self.template.ip_descs = self.controler.ip_infos
+                if self.template.asn_descs is not None:
+                    self.template.javascript = self.controler.js
+                    self.template.js_name = self.controler.js_name
+                    if ip_details is not None:
+                        self.template.ip_details = ip_details
+                        self.controler.get_ip_infos(ip_details)
+                        self.template.ip_descs = self.controler.ip_infos
+                else:
+                    self.template.error = asn + " not Found"
             else: 
                 self.template.error = "Invalid query: " +  asn
                 self.index()

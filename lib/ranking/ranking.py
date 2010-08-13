@@ -22,11 +22,16 @@ import redis
 import IPy
 
 routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
+processes = int(config.get('ranking','processes'))
 
 items = config.items('modules_to_parse')
 impacts = {}
 for item in items:
     impacts[item[0]] = int(item[1])
+
+
+import syslog
+syslog.openlog('Compute_Ranking', syslog.LOG_PID, syslog.LOG_USER)
 
 
 class Ranking():
@@ -45,15 +50,22 @@ class Ranking():
         self.make_history()
 
     def ip_count(self):
-        blocks = routing_db.smembers(self.asn)
-        self.ipv4 = 0
-        self.ipv6 = 0
-        for block in blocks:
-            ip = IPy.IP(block)
-            if ip.version() == 6:
-                self.ipv6 += ip.len()
-            else :
-                self.ipv4 += ip.len()
+        keyv4 = self.asn + ':v4'
+        keyv6 = self.asn + ':v6'
+        self.ipv4 = routing_db.get(keyv4)
+        self.ipv6 = routing_db.get(keyv6)
+        if self.ipv4 is None:
+            blocks = routing_db.smembers(self.asn)
+            self.ipv4 = 0
+            self.ipv6 = 0
+            for block in blocks:
+                ip = IPy.IP(block)
+                if ip.version() == 6:
+                    self.ipv6 += ip.len()
+                else :
+                    self.ipv4 += ip.len()
+            routing_db.set(keyv4, self.ipv4)
+            routing_db.set(keyv6, self.ipv6)
 
     def make_index(self):
         descs = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=self.asn).first()).all()
@@ -96,12 +108,37 @@ class Ranking():
         v_session.commit()
         v_session.close()
 
-class MetaRanking():
-    def make_ranking_all_asns(self, date = datetime.date.today()):
-        asns = ASNs.query.all()
+def ranking_on_interval(interval):
+        asns = ASNs.query.all()[interval[0]:interval[1]]
+        syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + len(asns) + ' ASNs: ' + interval)
         for asn in asns:
             r = Ranking(asn.asn)
             r.rank_and_save(date)
+        syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + interval + ' is done.')
+    
+
+class MetaRanking():
+    def make_ranking_all_asns(self, date = datetime.date.today()):
+        syslog.syslog(syslog.LOG_INFO, 'Start compute ranking')
+        nb_of_asns = ASNs.query.count()
+        intervals = intervals(nb_of_asns)
+        for interval in intervals:
+            p = Process(target=ranking_on_interval, args=(interval,))
+            p.start()
+            processes.append(p)
+        for p in processes:
+            p.join()
+        syslog.syslog(syslog.LOG_INFO, 'Ranking computed')
+
+    
+    def intervals(self, nb_of_asns):
+        interval = nb_of_asns / processes
+        first = 0 
+        intervals = []
+        while first < nb_of_asns:
+            intervals.append([first, first + interval])
+            first += interval + 1
+        return intervals
 
     def list_dates(self, first_date, last_date):
         list = []

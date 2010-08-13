@@ -53,6 +53,9 @@ class Ranking():
         self.make_index()
         self.rank()
         self.make_history()
+        v_session = VotingSession()
+        v_session.commit()
+        v_session.close()
 
     def ip_count(self):
         keyv4 = self.asn + ':v4'

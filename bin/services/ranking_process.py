@@ -1,16 +1,14 @@
 #!/usr/bin/python
 
-import os 
 import sys
-import ConfigParser
+import IPy
 config = ConfigParser.RawConfigParser()
-config.optionxform = str
-config.read("../../etc/bgp-ranking.conf")
-root_dir = config.get('directories','root')
+config.read("../etc/bgp-ranking.conf")
+root_dir =  config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+from ranking.compute import *
 
 from db_models.ranking import *
-from ranking.compute import *
 
 import redis
 
@@ -22,16 +20,15 @@ import syslog
 syslog.openlog('Compute_Ranking_Process', syslog.LOG_PID, syslog.LOG_USER)
 
 interval = sys.argv[1].split()
+first = int(interval[0])
+last = int(interval[1])
 
-asns = ASNs.query.all()[interval[0]:interval[1]]
-syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + str(len(asns)) + ' ASNs: ' + str(interval))
+asns = ASNs.query.all()[first:last]
+syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + str(len(asns)) + ' ASNs: ' + str(first) + ' ' + str(last))
 for asn in asns:
-#    r = Ranking(asn.asn)
-#    r.rank_and_save(date)
+    r = Ranking(asn.asn)
+    r.rank_and_save(date)
     pass
-syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + str(interval) + ' is done.')
+syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + str(first) + ' ' + str(last) + ' is done.')
 
 
-v_session = VotingSession()
-v_session.commit()
-v_session.close()

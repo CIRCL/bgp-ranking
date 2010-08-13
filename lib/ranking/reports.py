@@ -54,7 +54,7 @@ class Reports():
                         added_sources = []
                         for os in other_sources:
                             if os.source not in added_sources:
-                                self.histories[2] += os.rankv4
+                                self.histories[-1][2] += os.rankv4
                                 added_sources.append(os.source)
             first = last
             last = last + limit

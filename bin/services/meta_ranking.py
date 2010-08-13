@@ -9,6 +9,7 @@ root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 services_dir = os.path.join(root_dir,config.get('directories','services'))
 sleep_timer = int(config.get('sleep_timers','short'))
+ranking_timer = int(config.get('ranking','sleep'))
 
 from db_models.ranking import *
 from helpers.initscript import *
@@ -29,16 +30,18 @@ def intervals(nb_of_asns):
 
 service = os.path.join(services_dir, "ranking_process")
 
-syslog.syslog(syslog.LOG_INFO, 'Start compute ranking')
-nb_of_asns = ASNs.query.count()
-intervals = intervals(nb_of_asns)
-pids = []
-for interval in intervals:
-    pids.append(service_start(servicename = service, param = str(interval[0]) + ' ' + str(interval[1])))
+while 1:
+    syslog.syslog(syslog.LOG_INFO, 'Start compute ranking')
+    nb_of_asns = ASNs.query.count()
+    intervals = intervals(nb_of_asns)
+    pids = []
+    for interval in intervals:
+        pids.append(service_start(servicename = service, param = str(interval[0]) + ' ' + str(interval[1])))
 
-while len(pids) > 0:
-    pids = update_running_pids(pids)
-    time.sleep(sleep_timer)
-syslog.syslog(syslog.LOG_INFO, 'Ranking computed')
+    while len(pids) > 0:
+        pids = update_running_pids(pids)
+        time.sleep(sleep_timer)
+    syslog.syslog(syslog.LOG_INFO, 'Ranking computed')
+    time.sleep(ranking_timer)
 
     

@@ -13,6 +13,7 @@ sleep_timer = int(config.get('sleep_timers','short'))
 from db_models.ranking import *
 from helpers.initscript import *
 
+import time
 import syslog
 syslog.openlog('Compute_Ranking', syslog.LOG_PID, syslog.LOG_USER)
 
@@ -33,7 +34,7 @@ nb_of_asns = ASNs.query.count()
 intervals = intervals(nb_of_asns)
 pids = []
 for interval in intervals:
-    pids.append(service_start(servicename = service, param = interval[0] + ' ' + interval[1]))
+    pids.append(service_start(servicename = service, param = str(interval[0]) + ' ' + str(interval[1])))
 
 while len(pids) > 0:
     pids = update_running_pids(pids)

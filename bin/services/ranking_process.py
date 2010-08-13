@@ -1,9 +1,11 @@
 #!/usr/bin/python
 
+import os
 import sys
 import IPy
+import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.read("../etc/bgp-ranking.conf")
+config.read("../../etc/bgp-ranking.conf")
 root_dir =  config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 from ranking.compute import *

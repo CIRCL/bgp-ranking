@@ -58,8 +58,8 @@ class Ranking():
         v_session.close()
 
     def ip_count(self):
-        keyv4 = self.asn + ':v4'
-        keyv6 = self.asn + ':v6'
+        keyv4 = str(self.asn) + ':v4'
+        keyv6 = str(self.asn) + ':v6'
         self.ipv4 = routing_db.get(keyv4)
         self.ipv6 = routing_db.get(keyv6)
         if self.ipv4 is None:
@@ -74,6 +74,9 @@ class Ranking():
                     self.ipv4 += ip.len()
             routing_db.set(keyv4, self.ipv4)
             routing_db.set(keyv6, self.ipv6)
+        else:
+            self.ipv4 = int(self.ipv4)
+            self.ipv6 = int(self.ipv6)
 
     def make_index(self):
         descs = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=self.asn).first()).all()

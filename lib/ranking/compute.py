@@ -9,8 +9,6 @@ config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
-import syslog
-syslog.openlog('Ranking', syslog.LOG_PID, syslog.LOG_USER)
 from whois_parser.bgp_parsers import *
 
 from db_models.ranking import *
@@ -22,22 +20,29 @@ import redis
 import IPy
 
 routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
-processes = int(config.get('ranking','processes'))
-
 items = config.items('modules_to_parse')
-impacts = {}
-for item in items:
-    impacts[item[0]] = int(item[1])
 
-
-import syslog
-syslog.openlog('Compute_Ranking', syslog.LOG_PID, syslog.LOG_USER)
+class MetaRanking():
+    def list_dates(self, first_date, last_date):
+        list = []
+        number_of_days = (last_date + datetime.timedelta(days=1) - first_date).days
+        for day in range(number_of_days):
+            list += first_date + datetime.timedelta(days=day)
+        return list
+    
+    def make_ranking_all_asns_interval(self, first_date, last_date = datetime.date.today()):
+        dates = list_dates(first_date, last_date)
+        for date in dates:
+            make_ranking_all_asns(date)
 
 
 class Ranking():
     
     def __init__(self, asn):
         self.asn = asn 
+        self.impacts = {}
+        for item in items:
+            self.impacts[item[0]] = int(item[1])
     
     def rank_and_save(self, date = datetime.datetime.now()):
         self.date = date
@@ -82,9 +87,9 @@ class Ranking():
             if self.weight.get(str(i.list_name), None) is None:
                 self.weight[str(i.list_name)] = [0, 0]
             if ip.version() == 6:
-                self.weight[str(i.list_name)][1] += impacts[str(i.list_name)]
+                self.weight[str(i.list_name)][1] += self.impacts[str(i.list_name)]
             else :
-                self.weight[str(i.list_name)][0] += impacts[str(i.list_name)]
+                self.weight[str(i.list_name)][0] += self.impacts[str(i.list_name)]
 
     def rank(self):
         self.rank_by_source = {}
@@ -107,69 +112,3 @@ class Ranking():
         v_session = VotingSession()
         v_session.commit()
         v_session.close()
-
-def ranking_on_interval(interval):
-        asns = ASNs.query.all()[interval[0]:interval[1]]
-        syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + len(asns) + ' ASNs: ' + interval)
-        for asn in asns:
-            r = Ranking(asn.asn)
-            r.rank_and_save(date)
-        syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + interval + ' is done.')
-    
-
-class MetaRanking():
-    def make_ranking_all_asns(self, date = datetime.date.today()):
-        syslog.syslog(syslog.LOG_INFO, 'Start compute ranking')
-        nb_of_asns = ASNs.query.count()
-        intervals = intervals(nb_of_asns)
-        for interval in intervals:
-            p = Process(target=ranking_on_interval, args=(interval,))
-            p.start()
-            processes.append(p)
-        for p in processes:
-            p.join()
-        syslog.syslog(syslog.LOG_INFO, 'Ranking computed')
-
-    
-    def intervals(self, nb_of_asns):
-        interval = nb_of_asns / processes
-        first = 0 
-        intervals = []
-        while first < nb_of_asns:
-            intervals.append([first, first + interval])
-            first += interval + 1
-        return intervals
-
-    def list_dates(self, first_date, last_date):
-        list = []
-        number_of_days = (last_date + datetime.timedelta(days=1) - first_date).days
-        for day in range(number_of_days):
-            list += first_date + datetime.timedelta(days=day)
-        return list
-    
-    def make_ranking_all_asns_interval(self, first_date, last_date = datetime.date.today()):
-        dates = list_dates(first_date, last_date)
-        for date in dates:
-            make_ranking_all_asns(date)
-    
-    
-
-
-if __name__ == "__main__":
-    import datetime
-    import dateutil.parser
-#    r = Ranking(42473)
-#    r.ip_count()
-#    print(r.ipv4, r.ipv6)
-#    r.make_index(dateutil.parser.parse('2010-06-25'))
-#    print(r.weightv4, r.weightv6)
-#    r.rank()
-#    print('Rank v4:' + str(r.rankv4))
-#    print('Rank v6:' + str(r.rankv6))
-#    r.make_history()
-    mr = MetaRanking()
-    mr.make_ranking_all_asns()
-    v_session = VotingSession()
-    v_session.commit()
-    v_session.close()
-    

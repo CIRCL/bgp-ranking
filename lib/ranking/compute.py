@@ -44,7 +44,7 @@ class Ranking():
         for item in items:
             self.impacts[item[0]] = int(item[1])
     
-    def rank_and_save(self, date = datetime.datetime.now()):
+    def rank_and_save(self, date = datetime.date.today()):
         self.date = date
         self.old_entry = False
         if self.date > datetime.date.today():

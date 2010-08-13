@@ -29,8 +29,7 @@ asns = ASNs.query.all()[first:last]
 syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + str(len(asns)) + ' ASNs: ' + str(first) + ' ' + str(last))
 for asn in asns:
     r = Ranking(asn.asn)
-    r.rank_and_save(date)
-    pass
+    r.rank_and_save()
 syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + str(first) + ' ' + str(last) + ' is done.')
 
 

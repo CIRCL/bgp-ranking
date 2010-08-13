@@ -55,7 +55,7 @@ class Reports():
                         for os in other_sources:
                             if os.source not in added_sources:
                                 self.histories[2] += os.rankv4
-                                other_sources.append(os.source)
+                                added_sources.append(os.source)
             first = last
             last = last + limit
             if first > entries:

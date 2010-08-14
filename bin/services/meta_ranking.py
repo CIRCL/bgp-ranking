@@ -33,9 +33,9 @@ service = os.path.join(services_dir, "ranking_process")
 while 1:
     syslog.syslog(syslog.LOG_INFO, 'Start compute ranking')
     nb_of_asns = ASNs.query.count()
-    intervals = intervals(nb_of_asns)
+    all_intervals = intervals(nb_of_asns)
     pids = []
-    for interval in intervals:
+    for interval in all_intervals:
         pids.append(service_start(servicename = service, param = str(interval[0]) + ' ' + str(interval[1])))
 
     while len(pids) > 0:

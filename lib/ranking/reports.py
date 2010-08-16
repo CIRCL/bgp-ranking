@@ -25,41 +25,53 @@ class Reports():
         self.sources = []
         for s in Sources.query.all():
             self.sources.append(s.source)
-
-    #FIXME: query on IPv6
-    #FIXME: the code is just ugly... 
-    def best_of_day(self, limit = 50, source = None):
-        global_query = True
-        if source is not None and len(source) >0 :
-            s = Sources.query.get(unicode(source))
-            if s is not None:
-                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), History.timestamp)
-                global_query = False
-        if global_query:
-            query = History.query.filter(and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))).order_by(desc(History.rankv4), History.timestamp)
+    
+    def filter_query_source(self, query, limit):
         entries = query.count()
-        asns = []
-        self.histories = []
+        histories = {}
         first = 0 
         last = limit
         while limit > 0:
             select = query[first:last]
             for s in select:
-                if s.asn not in asns:
-                    asns.append(s.asn)
-                    self.histories.append([s.timestamp, s.asn, s.rankv4])
+                if histories.get(s.asn, None) is None:
+                    histories[s.asn] = [s.timestamp, s.asn, s.rankv4]
                     limit -= 1
-                    if global_query:
-                        other_sources = History.query.filter(and_(History.asn == s.asn, and_(History.source != s.source, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1)))))).order_by(History.timestamp).all()
-                        added_sources = []
-                        for os in other_sources:
-                            if os.source not in added_sources:
-                                self.histories[-1][2] += os.rankv4
-                                added_sources.append(os.source)
+                    if limit <= 0:
+                        break
             first = last
             last = last + limit
             if first > entries:
                 break
+        return histories
+
+    #FIXME: query on IPv6
+    #FIXME: the code is just ugly... 
+    def best_of_day(self, limit = 50, source = None):
+        global_query = True
+        histo = {}
+        if source is not None and len(source) >0 :
+            s = Sources.query.get(unicode(source))
+            if s is not None:
+                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.timestamp))
+                histo = filter_query_source(query, limit)
+                global_query = False
+        if global_query:
+            histo = {}
+            for s in Sources.query.all():
+                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.timestamp))
+                h_temp = filter_query_source(query, limit)
+                if len(histo) == 0:
+                    histo = h_temp
+                else:
+                    for t in h_temp:
+                        if histo.get(t[1], None):
+                            histo[t[1]] = t
+                        else:
+                            histo[t.asn][2] += t[2]
+        for h in histo:
+            self.histories.append(h)
+        self.histories.sort(key=lambda x:x[2], reverse=True )
 
     def prepare_graphe_js(self,  asn):
         histories = History.query.filter_by(asn=int(asn)).order_by(desc(History.timestamp)).all()

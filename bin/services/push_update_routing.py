@@ -42,7 +42,7 @@ from multiprocessing import Process
 from helpers.initscript import *
 from helpers.files_splitter import *
 
-def splitted_file_parser(fname):
+def splitted_file_parser(fname, pipe):
     file = open(fname)
     entry = ''
     for line in file:
@@ -76,7 +76,7 @@ while 1:
     processes = []
     pipe.flushdb()
     for file in splitted_files:
-        p = Process(target=splitted_file_parser, args=(file,))
+        p = Process(target=splitted_file_parser, args=(file,pipe))
         p.start()
         processes.append(p)
     for p in processes:
@@ -85,4 +85,3 @@ while 1:
     syslog.syslog(syslog.LOG_INFO, 'Pushing all routes done')
     os.unlink(output.name)
     os.unlink(filename)
-    

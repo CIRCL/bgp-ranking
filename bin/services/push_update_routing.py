@@ -65,6 +65,8 @@ while 1:
     if not os.path.exists(filename):
         time.sleep(sleep_timer)
         continue
+    while not redis_db_lock(routing_db):
+        time.sleep(sleep_timer)
     output = open(dir + '/bview', 'wr')
     p_bgp = Popen([bgpdump , filename], stdout=PIPE)
     for line in p_bgp.stdout:
@@ -81,6 +83,7 @@ while 1:
     for p in processes:
         p.join()
     syslog.syslog(syslog.LOG_INFO, 'Done')
+    redis_db_unlock(routing_db)
     os.unlink(output.name)
     os.unlink(filename)
     

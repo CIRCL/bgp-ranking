@@ -8,7 +8,9 @@ config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 services_dir = os.path.join(root_dir,config.get('directories','services'))
+
 sleep_timer = int(config.get('sleep_timers','short'))
+sleep_timer_long = int(config.get('sleep_timers','long'))
 ranking_timer = int(config.get('ranking','sleep'))
 
 from db_models.ranking import *
@@ -17,6 +19,8 @@ from helpers.initscript import *
 import time
 import syslog
 syslog.openlog('Compute_Ranking', syslog.LOG_PID, syslog.LOG_USER)
+
+routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
 
 processes = int(config.get('ranking','processes'))
 def intervals(nb_of_asns):
@@ -31,6 +35,8 @@ def intervals(nb_of_asns):
 service = os.path.join(services_dir, "ranking_process")
 
 while 1:
+    while not redis_db_lock(routing_db):
+        time.sleep(sleep_timer_long)
     syslog.syslog(syslog.LOG_INFO, 'Start compute ranking')
     nb_of_asns = ASNs.query.count()
     intervals = intervals(nb_of_asns)
@@ -42,6 +48,7 @@ while 1:
         pids = update_running_pids(pids)
         time.sleep(sleep_timer)
     syslog.syslog(syslog.LOG_INFO, 'Ranking computed')
+    redis_db_unlock(routing_db)
     time.sleep(ranking_timer)
 
     

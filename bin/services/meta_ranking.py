@@ -20,7 +20,6 @@ import time
 import syslog
 syslog.openlog('Compute_Ranking', syslog.LOG_PID, syslog.LOG_USER)
 
-routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
 
 processes = int(config.get('ranking','processes'))
 def intervals(nb_of_asns):
@@ -35,8 +34,6 @@ def intervals(nb_of_asns):
 service = os.path.join(services_dir, "ranking_process")
 
 while 1:
-    while not redis_db_lock(routing_db):
-        time.sleep(sleep_timer_long)
     syslog.syslog(syslog.LOG_INFO, 'Start compute ranking')
     nb_of_asns = ASNs.query.count()
     all_intervals = intervals(nb_of_asns)
@@ -48,7 +45,6 @@ while 1:
         pids = update_running_pids(pids)
         time.sleep(sleep_timer)
     syslog.syslog(syslog.LOG_INFO, 'Ranking computed')
-    redis_db_unlock(routing_db)
     time.sleep(ranking_timer)
 
     

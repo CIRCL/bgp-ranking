@@ -17,15 +17,6 @@ syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_USER)
 Standard functions used by the init scripts
 """
 
-def redis_db_lock(redis):
-    if redis.exists('lock'):
-        return False
-    redis.set('lock', 1)
-    return True
-
-def redis_db_unlock(redis):
-    redis.delete('lock')
-
 def service_start_multiple(servicename, number, param = None):
     i = 0 
     print('Starting ' + str(number) + ' times ' + servicename)

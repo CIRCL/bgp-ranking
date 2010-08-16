@@ -30,6 +30,7 @@ def usage():
 key = config.get('redis','key_temp_routing')
 temp_db = redis.Redis(db=config.get('redis','temp_reris_db'))
 routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
+pipe = routing_db.pipeline()
 
 filename = sys.argv[1]
 dir = os.path.dirname(filename)
@@ -53,20 +54,18 @@ def splitted_file_parser(fname):
                 asn = parsed.asn.split()[-1]
                 block = parsed.prefix
                 if block is not None:
-                    routing_db.sadd(asn, block)
-                    routing_db.sadd(block, asn)
+                    pipe.sadd(asn, block)
+                    pipe.sadd(block, asn)
                 entry = ''
         else :
             entry += line
-    syslog.syslog(syslog.LOG_INFO, 'Done')
+    syslog.syslog(syslog.LOG_INFO, fname + ' done')
     os.unlink(fname)
 
 while 1:
     if not os.path.exists(filename):
         time.sleep(sleep_timer)
         continue
-    while not redis_db_lock(routing_db):
-        time.sleep(sleep_timer)
     output = open(dir + '/bview', 'wr')
     p_bgp = Popen([bgpdump , filename], stdout=PIPE)
     for line in p_bgp.stdout:
@@ -75,15 +74,15 @@ while 1:
     fs = FilesSplitter(output.name, int(config.get('routing','processes_push')))
     splitted_files = fs.fplit()
     processes = []
-    routing_db.flushdb()
+    pipe.flushdb()
     for file in splitted_files:
         p = Process(target=splitted_file_parser, args=(file,))
         p.start()
         processes.append(p)
     for p in processes:
         p.join()
-    syslog.syslog(syslog.LOG_INFO, 'Done')
-    redis_db_unlock(routing_db)
+    pipe.execute()
+    syslog.syslog(syslog.LOG_INFO, 'Pushing all routes done')
     os.unlink(output.name)
     os.unlink(filename)
     

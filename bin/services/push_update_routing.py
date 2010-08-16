@@ -89,7 +89,7 @@ while 1:
     processes = []
     routing_db.flushdb()
     for file in splitted_files:
-        p = Process(target=splitted_file_parser, args=(file))
+        p = Process(target=splitted_file_parser, args=(file, ))
         p.start()
         processes.append(p)
     for p in processes:

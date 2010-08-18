@@ -87,6 +87,7 @@ class Master(object):
         
     
     def reload(self):
+        self.controler = MasterControler()
         self.index()
         return str(self.template)
     reload.exposed = True

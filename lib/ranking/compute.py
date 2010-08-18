@@ -20,7 +20,6 @@ import redis
 import IPy
 
 routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
-items = config.items('modules_to_parse')
 
 class MetaRanking():
     def list_dates(self, first_date, last_date):

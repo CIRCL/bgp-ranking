@@ -21,5 +21,6 @@ ASNs(asn=unicode('-1'))
 
 r_session = RankingSession()
 r_session.execute("create index i_whois on IPsDescriptions (whois(50));")
+r_session.execute("create index i_ipdesc_time_ans on IPsDescriptions (asn_id, timestamp);")
 r_session.commit()
 r_session.close()

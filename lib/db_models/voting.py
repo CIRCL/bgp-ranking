@@ -60,8 +60,8 @@ class History(Entity):
     """
     asn = Field(Integer)
     timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow)
-    rankv4 = Field(Float, required=True)
-    rankv6 = Field(Float, required=True)
+    rankv4 = Field(Float(precision=30), required=True)
+    rankv6 = Field(Float(precision=30), required=True)
     votes = ManyToMany('Votes')
     source = ManyToOne('Sources')
     using_options(metadata=voting_metadata, session=VotingSession, tablename='History')

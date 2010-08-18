@@ -60,13 +60,13 @@ class Reports():
         if source is not None and len(source) >0 :
             s = Sources.query.get(unicode(source))
             if s is not None:
-                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.asn), desc(History.timestamp))
+                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
                 histo = self.filter_query_source(query, limit)
                 global_query = False
         if global_query:
             histo = {}
             for s in Sources.query.all():
-                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.asn), desc(History.timestamp))
+                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
                 histo = self.filter_query_source(query, limit)
                 if len(histo) == 0:
                     histo = h_temp

@@ -89,7 +89,10 @@ class Reports():
             prec_date = date
             date = history.timestamp.date()
             if date != prec_date:
-                tmptable.append([str(history.timestamp.date()), float(history.rankv4), float(history.rankv6)] )
+                if history.source_source is not None:
+                    tmptable.append([str(history.timestamp.date()), float(history.rankv4) * float(self.impacts[str(s.source_source)]) + 1.0 , float(history.rankv6)] )
+                else:
+                    tmptable.append([str(history.timestamp.date()), float(history.rankv4) + 1.0 , float(history.rankv6)] )
         dates = []
         ipv4 = []
         ipv6 = []

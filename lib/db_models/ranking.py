@@ -17,7 +17,7 @@ host = config.get('mysql','hostname')
 dbname = config.get('mysql','dbname_ranking')
 os.chdir(precdir)
 
-ranking_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname, pool_size = 50, pool_recycle=7200, max_overflow=30 )
+ranking_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname, pool_size = 50, pool_recycle=3600, max_overflow=30 )
 RankingSession = scoped_session(sessionmaker(bind=ranking_engine))
 ranking_metadata = ThreadLocalMetaData()
 ranking_metadata.bind = ranking_engine

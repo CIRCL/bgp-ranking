@@ -40,7 +40,7 @@ class Reports():
             select = query[first:last]
             for s in select:
                 if histories.get(s.asn, None) is None:
-                    if s.list_name is not None:
+                    if s.source_source is not None:
                         histories[s.asn] = [s.timestamp, s.asn, s.rankv4 * float(self.impacts[str(s.source_source)]) + 1.0]
                     else:
                         histories[s.asn] = [s.timestamp, s.asn, s.rankv4 + 1.0]

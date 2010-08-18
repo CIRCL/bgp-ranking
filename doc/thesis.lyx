@@ -1,0 +1,3105 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\begin_modules
+theorems-std
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "BGP AS / ISP Security Ranking"
+\pdf_author "Raphaël Vinot"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref page
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 4cm
+\topmargin 3cm
+\rightmargin 4cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+BGP AS / ISP Security Ranking
+\end_layout
+
+\begin_layout Author
+Raphaël Vinot
+\end_layout
+
+\begin_layout Date
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+today
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace 5cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+For an Internet Service Provider, AS numbers are a logical representation
+ of the other ISP peering or communicating with his autonomous system.
+ ISP customers are using the capacity of the Internet Service Provider to
+ reach Internet services over other AS.
+ Some of those communications can be malicious (e.g.
+ due to malware activities on an end-user equipments) and hosted at specific
+ AS location.
+ In order to provide an improved security view on those AS numbers, a trust
+ ranking scheme will be implemented based on existing dataset of compromised
+ systems, malware C&C IP and existing datasets of the ISPs.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Context, motivation and non-technical view
+\end_layout
+
+\begin_layout Section
+Context
+\end_layout
+
+\begin_layout Subsection
+Internet and the peering
+\end_layout
+
+\begin_layout Standard
+Internet is not a centralized network but a bunch of operators, each operator
+ has his proper network and they exchange traffic together.
+ This exchange is called 
+\emph on
+peering
+\emph default
+.
+ Without this exchanges, Internet cannot work.
+ 
+\end_layout
+
+\begin_layout Standard
+There is three different types of peering:
+\end_layout
+
+\begin_layout Itemize
+Transit: you pay a provider to provide you a transit across his network
+\end_layout
+
+\begin_layout Itemize
+Peer: you exchange traffic with an other provider freely for 
+\emph on
+mutual benefit
+\end_layout
+
+\begin_layout Itemize
+Customer: you sell an access across your network to your customers
+\end_layout
+
+\begin_layout Standard
+The first of all 
+\emph on
+mutual benefits
+\emph default
+ between two peers will be the reduction of the costs of the exchanges.
+ But it will also provide redundancy, improve the capacity of each network
+ by increasing the number of possible routes and globally improve the performanc
+es.
+ 
+\end_layout
+
+\begin_layout Standard
+Two ISPs of the same size exchange traffic freely but when they need to
+ exchange traffic with bigger providers (upstream providers), they will
+ obviously have to pay.
+ When a smaller provider (downstream provider) want to do peering with an
+ ISP, he will pay too.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Border Gateway Protocol (BGP)
+\end_layout
+
+\begin_layout Standard
+The Border Gateway Protocol is the protocol used by everyone on the internet,
+ without knowing it exists.
+ This protocol is commonly presented as the routing protocol of the Internet,
+ all the core routers of the Internet are using it to communicate together.
+ It is a path vector protocol: the routing table contains the destination
+ network, the next router on the way to this network and the path (in this
+ case, the list of ASNs) to reach the destination.
+\end_layout
+
+\begin_layout Standard
+In the practice, every router maintains a routing table to associate a network
+ with the path of Autonomous system (AS) to this network, there is an example
+ of entry 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "Example-of-BGP"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+There is always more than one possible route to reach a particular network,
+ the decision is made using the path but also the network policies.
+ On a security point of view, we can for example blackhole the traffic to
+ a certain destination known as providing a Command & Control server and
+ block the communication between this server and the clients, or to protect
+ a destination under DDOS attack.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "BGP-policies"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Autonomous system (AS)
+\end_layout
+
+\begin_layout Standard
+The operators on the Internet exchange their routes, it is obvious that
+ this operators need a way to identify each other without using IP Adresses.
+ That is why there are Autonomous systems numbers (ASN), an operator which
+ wants to announce IP Addresses on the Internet needs at least one ASN,
+ an ASN will announce one or more networks.
+\end_layout
+
+\begin_layout Standard
+The ASNs are assigned by the IANA to the RIRs which will sell them to the
+ operators.
+ The RIR responsible for the Europa region is RIPE-NCC.
+\end_layout
+
+\begin_layout Subsection
+Threats
+\end_layout
+
+\begin_layout Standard
+Internet has always been an interesting place for the bad guys: Virus and
+ attack on Information Systems exists since the computers but now that almost
+ everybody can have an Internet access (with a computer or a mobile device).
+ It is also a way more easy for the attackers to gain access to more computer:
+ for a vast majority of the population IT security is absolutely not in
+ their scope and they have no clue on it.
+ 
+\end_layout
+
+\begin_layout Standard
+For this project, we will concentrate us mostly on the botnets.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Botnet 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+add schema + more infos + examples (liens)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Definition
+\end_layout
+
+\begin_layout Standard
+A botnet is a network of computer infected by a malware which are controlled
+ by a Command & Control Server and administrated by a Bot master.
+ The botmaster is often an organization which sell a certain amount of infected
+ computers to performs suspicious activities.
+ 
+\end_layout
+
+\begin_layout Paragraph
+Usage
+\end_layout
+
+\begin_layout Standard
+A botnet may be used to perform DDOS attack on servers, exchange data, provide
+ phishing sites, and many other...
+\end_layout
+
+\begin_layout Subsubsection
+Other Threats
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+add more threads, more details 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Keylogers
+\end_layout
+
+\begin_layout Standard
+they need to give the informations they catch to a server
+\end_layout
+
+\begin_layout Paragraph
+Port scanning 
+\end_layout
+
+\begin_layout Standard
+before attacking a server, the attackers will scan the internet to find
+ server to compromize 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can easily see that peering without any control is a bad idea.
+\end_layout
+
+\begin_layout Subsection
+Monitoring of the network
+\end_layout
+
+\begin_layout Standard
+Peering is fine but if an ISP is routing a lot of suspicious traffic he
+ may be blacklisted by other ISPs...
+ even if this traffic comes from an other ISP! It is so a necessity to have
+ an idea of what for traffic we are routing.
+ This task is critical for every ISP and of course for the satellite operators
+ too: they provide an Internet access to their customers (which may be ISP
+ too).
+ 
+\end_layout
+
+\begin_layout Standard
+The satellite operators announce their proper prefixes but also prefixes
+ of other ISPs.
+ As every classical ISP, they need to monitor the security of their network.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A ranking system is very useful for every ISP which want to know the reputation
+ of the traffic he is routing and mitigate the malicious activities originating
+ from their customers.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are at least three goals which can be achieved by the ranking: 
+\end_layout
+
+\begin_layout Itemize
+Disrupting the Malware C&C communication: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+drop all the traffic from an AS (black holing)
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+lien
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+modify the performance / bandwidth of the traffic coming from the C&C (traffic
+ shaping)...
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Limiting the 
+\emph on
+effectiveness
+\emph default
+ of the Botnet, reduce the propagation of the malware by informing the other
+ ISPs, the customers
+\end_layout
+
+\begin_layout Itemize
+Assessment between ISPs (the ranking can be influenced by other ISPs) and
+ also improving/limiting IP peering.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To be able to monitor a network, we need raw datasets.
+\end_layout
+
+\begin_layout Subsection
+Data Sources and their datasets
+\end_layout
+
+\begin_layout Standard
+It is possible to find some datasets freely available on the Internet but
+ a lot are not for different reasons: protection of the sources...
+ or basically because they sell this information to the ISP which have interest
+ in the monitoring of their network.
+ 
+\end_layout
+
+\begin_layout Standard
+It exists a large variety of datasets including IP and/or prefixes for malicious
+ activities but their level of trust is variable (e.g.
+ dshield datasets versus Arbor ATLAS/Active Threat Feed) mostly because
+ the scope and detection techniques can vary a lot between the datasets
+ (e.g.
+ Black-hole honeypot vs DNS sinkhole).
+ Concerning the scope, many data sources gives only information on a particular
+ ASN, this informations will be reserved to the owner of this AS 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+add how the data sets are generated
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Even ”whois” can be considered as datasets even if malicious ISP controls
+ some objects.
+ (e.g.
+ route-object updated by a bot master) 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+add details on the whois entries
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This raw-datasets need to be aggregated and analyzed to see their evolution
+ in the time.
+\end_layout
+
+\begin_layout Subsection
+Key points in the analysis 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+more details 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Size
+\end_layout
+
+\begin_layout Standard
+Some datasets are very large: the daily report of Dshield has about 1 million
+ lines.
+ 
+\end_layout
+
+\begin_layout Paragraph
+Quality 
+\end_layout
+
+\begin_layout Standard
+Analysis and ranking calculation depends on the dataset quality: the more
+ the quality is good, the more the dataset has an impact on the ranking.
+\end_layout
+
+\begin_layout Paragraph
+Format 
+\end_layout
+
+\begin_layout Standard
+The formats are unstable and incompatible from one data sources to another.
+ They are evolving over the time but a 24 hours step is usual.
+\end_layout
+
+\begin_layout Paragraph
+Type
+\end_layout
+
+\begin_layout Standard
+Some of the datasets only contains informations on a particular AS.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For classification, the least common denominator is most of the time used
+ (e.g.
+ CIDR block or ASN).
+ Analysis and ranking calculation depends on the dataset quality: the more
+ the quality is good, the more the dataset has an impact on the ranking.
+ The ISPs have an influence on the ranking too through a voting system
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Implementation 
+\end_layout
+
+\begin_layout Standard
+You can find directly the high-level diagram of the implementation
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "fig:High-level"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Highlights
+\end_layout
+
+\begin_layout Standard
+The details of the implementation will follow in the next part but those
+ points are mandatory:
+\end_layout
+
+\begin_layout Itemize
+Many of the datasets are not public but we wanted to release the software
+ backend as free software/open source
+\begin_inset CommandInset citation
+LatexCommand cite
+key "BGP Ranking"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Ranking of AS or Subnet must be fast enough to allow network divert/black
+ hole filtering.
+ (e.g.
+ using Flowspec
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Flowspec"
+
+\end_inset
+
+ to do ingress filtering on the border ISP infrastructure) 
+\end_layout
+
+\begin_layout Itemize
+Key/value store to allow 
+\emph on
+mapreduce
+\emph default
+-like processing
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Mapreduce"
+
+\end_inset
+
+: it must be possible to run as often as possible more than one process
+ on the same task.
+ 
+\end_layout
+
+\begin_layout Subsection
+High level view
+\end_layout
+
+\begin_layout Standard
+The software follows the following states: 
+\end_layout
+
+\begin_layout Enumerate
+The ranking system aggregates:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+the different datasets
+\end_layout
+
+\begin_layout Enumerate
+fetch the whois entries related to the data extracted of the datasets
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+The ISPs allowed to access to the system are able to vote against or for
+ an other ISP, the information is merged into the system
+\end_layout
+
+\begin_layout Enumerate
+All this information allow the ranking system to compute an index
+\end_layout
+
+\begin_layout Enumerate
+This index will be used by the ISP to know if his customers are suspicious
+ or not and investigate if necessary
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+enlargethispage{1cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways true
+status open
+
+\begin_layout Plain Layout
+encour
+\begin_inset Graphics
+	filename basics/highlevel.dia
+	lyxscale 50
+	scale 40
+	scaleBeforeRotation
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:High-level"
+
+\end_inset
+
+High level
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+BGP AS / ISP Security Ranking
+\end_layout
+
+\begin_layout Section
+Data storage
+\end_layout
+
+\begin_layout Standard
+We have two types of data to store in this project: 
+\end_layout
+
+\begin_layout Itemize
+static information: they are written one time in the database and never
+ updated/deleted after, only read.
+ The performances are not really important concerning this information.
+ We use a relational database.
+\end_layout
+
+\begin_layout Itemize
+temporary, volatile information: they are written/updated/deleted very often
+ and need a fast access.
+ A key/value storing solution is a good choice.
+ 
+\end_layout
+
+\begin_layout Subsection
+Relational database
+\end_layout
+
+\begin_layout Standard
+The software supports officially MySQL as relational database but because
+ we are using the python module 
+\emph on
+SQLAlchemy
+\emph default
+, all the databases supported by it may be used
+\begin_inset CommandInset citation
+LatexCommand cite
+key "SQLAlchemy-dbs"
+
+\end_inset
+
+.
+ Be aware that depending on the database you will use, you might encount
+ some (performance) problems, mostly if you decide to use SQLite.
+ PostgreSQL should work fine.
+ 
+\end_layout
+
+\begin_layout Standard
+This database contains actually all the static informations used by the
+ ranking system.
+ Static information means all the information extracted of the datasets
+ and the whois entries, when they are in the database, they will never be
+ modified.
+ The voting informations are also saved into this database as well as the
+ history of the ranking used to generate the graphes.
+ 
+\end_layout
+
+\begin_layout Standard
+On top of 
+\emph on
+SQLAlchemy
+\emph default
+, the module 
+\emph on
+elixir
+\emph default
+ is used because it implements the active record pattern
+\begin_inset CommandInset citation
+LatexCommand cite
+key "active-record"
+
+\end_inset
+
+: it allow the developer to see the entries of the database as objects and
+ simplify a lot the usage of the databases.
+ The most important point is that we will never use any SQL Queries.
+ On a security point of view, it will reduce the risk of SQL injections.
+ Note that the users will never write anything in the database and have
+ a read only access through the web interface: all the write process is
+ done by the scripts we will explain in the next part of this document.
+ 
+\end_layout
+
+\begin_layout Subsection
+Key/value store
+\end_layout
+
+\begin_layout Standard
+The Key/value store used by this software is Redis.
+ Depending on the part of the program, Redis is used differently:
+\end_layout
+
+\begin_layout Subsubsection
+Shared memory
+\end_layout
+
+\begin_layout Standard
+The whole program use a lot of processes and most of them need to exchange
+ information.
+ It is possible to use a 
+\emph on
+classical
+\emph default
+ shared memory between processes but it is a lot easier to put all the informati
+on in a shared database.
+ The process which need this information will pick them, do his work and
+ give the result to the next process through the same or an other database.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Caching
+\end_layout
+
+\begin_layout Standard
+It is common that an IP address is present more than one time in a dataset,
+ or the same IP in different datasets.
+ It is important to know that the whois entries have a life time of at least
+ 24 hours: they are not updated that often on the whois servers.
+ That is why a caching system is very useful to improve the performance
+ of the software: it is absolutely unnecessary to fetch more than one time
+ a particular whois entry for at least 24 hours.
+\end_layout
+
+\begin_layout Standard
+Redis implements a time to live command, we just have to give a TTL of 24
+ Hours to each cached entry and it will be automatically deleted after that
+ amount of time.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Fast access
+\end_layout
+
+\begin_layout Standard
+The other usage of Redis is quite obvious: we need to be able to do a lot
+ of queries in a small period of time.
+ It is the case for the the whois database for example: the most we do queries
+ per second, the fastest we update the ranking database.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+more informations, links, stats 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Redis define several types of values the following are used in the software:
+ 
+\end_layout
+
+\begin_layout Paragraph
+String
+\end_layout
+
+\begin_layout Standard
+it is the simplest type: key - value 
+\end_layout
+
+\begin_layout Paragraph
+Set 
+\end_layout
+
+\begin_layout Standard
+It is the same as a list but each element is unique.
+ 
+\end_layout
+
+\begin_layout Section
+Implementation, Technical overview
+\end_layout
+
+\begin_layout Standard
+You can find directly the global diagram representing the whole architecture
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "fig:Technical-global-view"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+MySQL databases
+\end_layout
+
+\begin_layout Subsubsection
+Database containing the data extracted from the datasets
+\end_layout
+
+\begin_layout Standard
+The model of the database is the following: 
+\end_layout
+
+\begin_layout Paragraph
+Table IPs
+\end_layout
+
+\begin_layout Standard
+contains only the IPs extracted of the datasets, for each entry, the IP
+ is the primary key.
+\end_layout
+
+\begin_layout Standard
+This table allow us to dump easily all the IPs we found in the datasets.
+\end_layout
+
+\begin_layout Paragraph
+Table IPsDescriptions
+\end_layout
+
+\begin_layout Standard
+for each ip found in the datasets, we create a new entry in this table.
+ 
+\end_layout
+
+\begin_layout Standard
+The following information are extracted of the dataset, if they exists:
+ 
+\end_layout
+
+\begin_layout Itemize
+The name of the class where the ip is from.
+ This name has to be unique for each class: it will be used for the ranking,
+ more information on it later.
+ 
+\end_layout
+
+\begin_layout Itemize
+The time-stamp of the insertion into the database: it is most of the time
+ the current day but it cam also be used to re import old datasets, more
+ information on it later.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Problem: the ris-whois entries will be 
+\begin_inset Quotes eld
+\end_inset
+
+wrong
+\begin_inset Quotes erd
+\end_inset
+
+ (their evolution is not saved)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The date of generation of the list: it is the date given by the file or
+ the current day if we don't have enough information
+\end_layout
+
+\begin_layout Itemize
+The number of times the the same ip is present in the same dataset and we
+ don't have any exact detection time-stamp
+\end_layout
+
+\begin_layout Itemize
+The type of the infection
+\end_layout
+
+\begin_layout Itemize
+Other raw information given by the dataset
+\end_layout
+
+\begin_layout Standard
+The following information are set in the next part of the processing, more
+ information on it later : 
+\end_layout
+
+\begin_layout Itemize
+The whois entry
+\end_layout
+
+\begin_layout Itemize
+The source of the whois entry
+\end_layout
+
+\begin_layout Itemize
+Information on the ASN announcing the IP
+\end_layout
+
+\begin_layout Paragraph
+Table ASNs
+\end_layout
+
+\begin_layout Standard
+same as for the table IPs: the table contains only the ASNs and for each
+ entry, the ASN is the primary key.
+\end_layout
+
+\begin_layout Standard
+This table allow us to dump easily all the ASNs of all the IPS we found
+ in the datasets.
+\end_layout
+
+\begin_layout Paragraph
+Table ASNsDescriptions
+\end_layout
+
+\begin_layout Standard
+The following information are extracted of the RIS whois entries: 
+\end_layout
+
+\begin_layout Itemize
+The owner announcing the ip-block containing the IP 
+\end_layout
+
+\begin_layout Itemize
+The IP block 
+\end_layout
+
+\begin_layout Itemize
+The source of the RIS whois entry
+\end_layout
+
+\begin_layout Subsubsection
+Database containing the informations used to vote and an history of the
+ rankings
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Data Aggregation 
+\end_layout
+
+\begin_layout Subsubsection
+Fetching the datasets
+\end_layout
+
+\begin_layout Standard
+This part is quite obvious: if the datasets are freely available on the
+ Internet, it is handy to automatically download them.
+ Each dataset has his proper directory where the file is put.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Parsing the datasets
+\end_layout
+
+\begin_layout Standard
+The role of the parser is simple: extract all the information of the datasets
+ and put them into the database.
+ 
+\end_layout
+
+\begin_layout Standard
+To do it, the parser check periodically the directory of his dataset and
+ if there is a new file, he will parse it.
+ 
+\end_layout
+
+\begin_layout Standard
+A description of all the actual modules is available
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:Existing-modules"
+
+\end_inset
+
+.
+ If you want to learn how to write a new module, please read
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:Write-a-new"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+After this part, the rest of the software does not need any human intervention
+ (modules to write, changes in the configuration...) and will process the informati
+on given by the modules automatically.
+\end_layout
+
+\begin_layout Subsubsection
+Getting the RIS entries
+\end_layout
+
+\begin_layout Standard
+There are two different processes to get the RIS entries (diagram 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "fig:Get-RIS-Whois"
+
+\end_inset
+
+): 
+\end_layout
+
+\begin_layout Itemize
+the first one extract of the database all the IPs without ASN and ask for
+ each IP the corresponding entry in the cache database (1).
+ If the entry is not there, the IP is pushed in the sharing database (2)
+ and the server will query again the cache database later (3).
+ 
+\begin_inset Newline newline
+\end_inset
+
+Note: It should never be the case but if the entry is not found at this
+ time, the process will deffer maximum 5 times the check in the cache database:
+ it avoid the deadlocks in the sub-processes and be able to close properly
+ the application.
+ Getting the cached informations
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+extract of the database all the IPs without ASN
+\end_layout
+
+\begin_layout Itemize
+ask for each IP the corresponding entry in the cache database (1).
+ 
+\end_layout
+
+\begin_layout Itemize
+if the entry is not there:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+the IP is pushed in the sharing database (2)
+\end_layout
+
+\begin_layout Itemize
+the server will query again the cache database later (3).
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Fetching the information
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+ask periodically the shared database (A) 
+\end_layout
+
+\begin_layout Itemize
+if there is a query:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+pass the query to the fetching function (B) which will fetch the entry (C)
+ 
+\end_layout
+
+\begin_layout Itemize
+give it back (D)
+\end_layout
+
+\begin_layout Itemize
+the Connector push it into the cache database (E)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename uml-diagramms/RIS Fetching.png
+	lyxscale 50
+	scale 65
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Get-RIS-Whois"
+
+\end_inset
+
+Get RIS Whois entries
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Getting the Whois entries
+\end_layout
+
+\begin_layout Standard
+It is the same idea as for the RIS entries but there is a small difference:
+ all the queries will not be done to the same server because the IPs are
+ assigned to different whois server.
+ It is also necessary to do the queries to the right server.
+ 
+\end_layout
+
+\begin_layout Standard
+That is why there is a third service, it will dispatch the queries depending
+ on the server: 
+\end_layout
+
+\begin_layout Itemize
+The first service do the same as for the RIS entries.
+ The queries it push have this format: 
+\family typewriter
+key = whois / query = <ip_address>
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+The queries it push have this format: 
+\emph on
+key = whois / query = <ip_address>
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The second 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+pop periodically the queries of the sharing database (I) 
+\end_layout
+
+\begin_layout Itemize
+find their assignation (II) (this part is explained
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:Generation-index"
+
+\end_inset
+
+) and push it back into the sharing database(III).
+ The format is now : 
+\family typewriter
+keys = <server> / query = <ip_address>
+\end_layout
+
+\begin_layout Itemize
+push it back into the sharing database (III).
+ 
+\end_layout
+
+\begin_layout Standard
+The format is now: 
+\emph on
+keys = <server> / query = <ip_address>
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The third do the same as for the RIS entries.
+ 
+\end_layout
+
+\begin_layout Standard
+At least one fetcher is started for each servers to query (you can configure
+ this number in the config file).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+enlargethispage{1cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways true
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename uml-diagramms/Whois Fetching.png
+	lyxscale 50
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Get Whois entries
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+enlargethispage{1cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways true
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename global.dia
+	lyxscale 30
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Technical-global-view"
+
+\end_inset
+
+Technical global view
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Ranking
+\end_layout
+
+\begin_layout Subsubsection
+Routing informations
+\end_layout
+
+\begin_layout Subsubsection
+Computing
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Libraries
+\end_layout
+
+\begin_layout Subsection
+IPs Keys generator 
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:IPs-Keys-generator"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Context
+\end_layout
+
+\begin_layout Standard
+We have on one side a list of IP sets, each of them is connected to a particular
+ information andon the other side IP addresses.
+ 
+\end_layout
+
+\begin_layout Standard
+This library aims to provide a fast method to get the better information
+ corresponting to this ip addresses.
+ To find this information, we have to find the smallest set where the IP
+ is.
+\end_layout
+
+\begin_layout Paragraph
+Usage
+\end_layout
+
+\begin_layout Standard
+The library need to know if we are working with IPv4 or IPv6 and the first
+ and the last IP of the interval to compute.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Example
+\end_layout
+
+\begin_layout Standard
+The list of sets and corresponding informations: 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+1.0.0.0 - 1.255.255.255 : Big provider
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+1.1.1.0 - 1.1.1.255 : Small provider
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+1.1.1.1 - 1.1.1.5 : Company selling websites
+\end_layout
+
+\begin_layout Standard
+IP address : 
+\family typewriter
+1.1.1.3
+\end_layout
+
+\begin_layout Standard
+This ip address is in all the sets but the most accurate information is
+ that it is owned by the company selling websites.
+\end_layout
+
+\begin_layout Subsubsection
+Algorithm
+\end_layout
+
+\begin_layout Paragraph
+First idea 
+\end_layout
+
+\begin_layout Standard
+Push all the IPv4 and IPv6 in the database.
+\end_layout
+
+\begin_layout Subparagraph
+Pros
+\end_layout
+
+\begin_layout Itemize
+Easy 
+\end_layout
+
+\begin_layout Itemize
+Fast: acces to the informations in O(1)
+\end_layout
+
+\begin_layout Subparagraph
+Cons
+\end_layout
+
+\begin_layout Itemize
+there is about 
+\begin_inset Formula $4,3\cdot10^{9}$
+\end_inset
+
+ IPv4 and about 
+\begin_inset Formula $3,4·10^{38}$
+\end_inset
+
+ IPv6, it is impossible to push in the database all the IPv4 (and obviously
+ IPv6)
+\end_layout
+
+\begin_layout Paragraph
+Second idea
+\end_layout
+
+\begin_layout Standard
+To reduce drastically the number of keys, the easiest solution is to push
+ in the database the first and the last element of the interval.
+\end_layout
+
+\begin_layout Subparagraph
+Pros
+\end_layout
+
+\begin_layout Itemize
+Easy
+\end_layout
+
+\begin_layout Itemize
+Few keys
+\end_layout
+
+\begin_layout Subparagraph
+Cons
+\end_layout
+
+\begin_layout Itemize
+Huge amount of queries to redis: we have to find the best interval...
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+And it can take some time: in the worst case, it will be O(n) with n the
+ number of IPs in the interval.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ipkeys1.dia
+	lyxscale 50
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+IPs Keys generator 1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We have to do a query for each IP until we find the interval containing
+ our IP.
+ Even if we are able to jump the intermediate networks, it will take too
+ much time for a network like 1.0.0.0/8 with more than 
+\begin_inset Formula $16\text{·}10^{6}$
+\end_inset
+
+ IPs.
+\end_layout
+
+\begin_layout Paragraph
+Third Idea 
+\end_layout
+
+\begin_layout Standard
+The keys saved in redis are strings, the easiest way was to find a way based
+ on the representation of an IP address.
+ 
+\end_layout
+
+\begin_layout Standard
+For the first and the last IP of an interval, we will split the address
+ with the .
+ (IPv4) or the : (IPv6), find the equal part and push it into the database.
+ The value of this key will be the following: 
+\emph on
+<integer representation of the first IP of the interval>_<integer representation
+ of the last IP of the interval>
+\emph default
+ and be used to ensure that the IP of the query is really in this interval.
+ 
+\end_layout
+
+\begin_layout Example
+Generate a key for an easy interval 
+\end_layout
+
+\begin_layout Example
+Interval: 1.1.1.0 - 1.1.1.255
+\end_layout
+
+\begin_layout Example
+Equal Part: 1.1.1
+\end_layout
+
+\begin_layout Example
+Value: 16843008_16843263
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Example
+Generate a key for a more complex interval 
+\end_layout
+
+\begin_layout Example
+Interval: 1.1.1.0 - 1.1.5.255
+\end_layout
+
+\begin_layout Example
+Equal Part: 1.1
+\end_layout
+
+\begin_layout Example
+But be want more precision, the key will be the following: 1.1.{1-5} => 5
+ keys
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Example
+Generate a key for a very compley interval
+\end_layout
+
+\begin_layout Example
+Interval: 1.2.3.0 - 1.4.5.255
+\end_layout
+
+\begin_layout Example
+Equal Part: 1
+\end_layout
+
+\begin_layout Example
+The key will be the following: 1.2.{3-255}, 1.3, 1.4.{0-5} => 252+1+6 = 259 keys
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subparagraph
+IPv6
+\end_layout
+
+\begin_layout Standard
+the idea is the same but the intervals are usually big and there is never
+ such intervals as in the third example, we always push intervals like in
+ the first and second example, usually only like the second example.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To get the smallest interval, we will split the IP address in the same way
+ and begin to get the longest possible key.
+ 
+\end_layout
+
+\begin_layout Example
+For the IP 
+\family typewriter
+1.1.1.1
+\family default
+, we will begin with 
+\family typewriter
+1.1.1
+\family default
+ then 
+\family typewriter
+1.1
+\family default
+ and finally 
+\family typewriter
+1
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+The second problem is that we will sometime have more than one value at
+ a key: in IPv4, a lot of intervals are smallest than a /24.
+ We may have the same problem in IPv6 in the future and to be scalable,
+ it is allready implemented: we have to be able to find the smallest network
+ within a set of intervals.
+ 
+\end_layout
+
+\begin_layout Standard
+To do it, we just have to split the values, check if the IP in in this interval.
+ When one if found, we have to verify that there is no other smallest network
+ containing the IP.
+\end_layout
+
+\begin_layout Subparagraph
+Pros
+\end_layout
+
+\begin_layout Itemize
+Fast: the key will be find in O(3) for IPv4 and O(7) for IPv6.
+ After that, we have to find the right interval in the set but it is just
+ a comparison of a small number of values and goes very fast.
+ 
+\end_layout
+
+\begin_layout Itemize
+Few keys
+\end_layout
+
+\begin_layout Subparagraph
+Cons
+\end_layout
+
+\begin_layout Itemize
+More complicated 
+\end_layout
+
+\begin_layout Subsection
+File splitting
+\end_layout
+
+\begin_layout Subsubsection
+Context
+\end_layout
+
+\begin_layout Standard
+One of the requirements is that the system has to to allow mapreduce-like
+ processing.
+ The problem with files is that it is not possible to parse it with more
+ than one process at the same time.
+ It would be great to be able to split a big file into smaller one and launch
+ differents processes on this files.
+ That is the aim of this library.
+ It has also to be included in an existing code and should be as transparent
+ as possible.
+ 
+\end_layout
+
+\begin_layout Paragraph
+Usage 
+\end_layout
+
+\begin_layout Standard
+The library only need a file to split, the number of files to generate and
+ the separator.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Example
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Algorithm 
+\end_layout
+
+\begin_layout Paragraph
+Separator
+\end_layout
+
+\begin_layout Standard
+The separator is used to split the file at a particular point: there is
+ usually blocks in the files we want to split and we cannot cut the files
+ within this blocks.
+ usualy it is a 
+\family typewriter
+'
+\backslash
+n'
+\family default
+:
+\end_layout
+
+\begin_layout Paragraph
+Splitting
+\end_layout
+
+\begin_layout Standard
+First, we get the size of the file and divide it by the number of files
+ we want.
+ 
+\end_layout
+
+\begin_layout Standard
+To split we just 
+\begin_inset Quotes eld
+\end_inset
+
+jump
+\begin_inset Quotes erd
+\end_inset
+
+ of the size we compute and look for the next separator.
+ The data in the interval is finally copied in a new file.
+\end_layout
+
+\begin_layout Standard
+When the end of the file is reached, we return the list of generated files.
+ The original file is not removed.
+ 
+\end_layout
+
+\begin_layout Subsection
+Whois Client
+\end_layout
+
+\begin_layout Subsubsection
+Initialisation 
+\end_layout
+
+\begin_layout Standard
+It is a bit more complicated: I implement a whois client based on the assignatio
+ns given by the whois package of Debian/Ubuntu to ask the whois entries
+ to the right server.
+\end_layout
+
+\begin_layout Standard
+The following information are saved in a Redis database:
+\end_layout
+
+\begin_layout Itemize
+block: the IPs assigned to the server
+\end_layout
+
+\begin_layout Itemize
+whois: the URL of the server 
+\end_layout
+
+\begin_layout Itemize
+port: port on the server 
+\end_layout
+
+\begin_layout Itemize
+options: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+pre: prefix of the query 
+\end_layout
+
+\begin_layout Itemize
+post: string appended to the query 
+\end_layout
+
+\begin_layout Itemize
+keepalive: other prefix, make the query keepalive (the server doesn't close
+ the connexion after each query)
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+Usage
+\end_layout
+
+\begin_layout Paragraph
+Finding the best range
+\end_layout
+
+\begin_layout Standard
+The ranges are saved into redis using the library described earlier 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:IPs-Keys-generator"
+
+\end_inset
+
+.
+ How to get the best range and with it the right server is described there.
+\end_layout
+
+\begin_layout Standard
+One process will do this job and put the IPs in the queues of their servers.
+ 
+\end_layout
+
+\begin_layout Paragraph
+Fetching
+\end_layout
+
+\begin_layout Standard
+There is one other process for each server found in the assignations file.
+ This process has a queue initialized by the sorting process we just describe.
+ Using the informations put in the database during the initialisation, we
+ establish a connection to the server and fetch the entry.
+ If possible, the connection is not closed but very few servers authorize
+ it, slowing a lot the process.
+ That's why we have also a proper whois server 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Whois-server"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Whois Parser
+\end_layout
+
+\begin_layout Subsubsection
+Abstract part
+\end_layout
+
+\begin_layout Subsubsection
+Implementation 
+\end_layout
+
+\begin_layout Section
+Modules 
+\end_layout
+
+\begin_layout Subsection
+Abstract part
+\end_layout
+
+\begin_layout Subsection
+Features
+\end_layout
+
+\begin_layout Subsubsection
+Configuration
+\end_layout
+
+\begin_layout Standard
+All the configuration is defined in 
+\emph on
+etc/bgp-ranking.conf
+\emph default
+.
+ You can almost configure all the system.
+ More details in the file itself.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Modularity 
+\end_layout
+
+\begin_layout Standard
+You can run each initscript in the order you want: they are all 
+\series bold
+totally independent
+\series default
+.
+ An example: Obviously the parsing will not be done until the files are
+ fetched but if the parsing service has nothing to do, it will just wait
+ a certain amount of seconds (defined in the configuration file) and check
+ again if there is something to do.
+ 
+\end_layout
+
+\begin_layout Standard
+Because the sharing of the information between the services is done using
+ Redis it is possible to run each part of the system on a different computer.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Multiprocessing
+\end_layout
+
+\begin_layout Standard
+Except the fetching of the datasets, each part of the system support multiproces
+sing: for each service, you can configure the number of process in the configura
+tion file.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+What is multiprocessed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Existing modules 
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Existing-modules"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Dshield
+\end_layout
+
+\begin_layout Standard
+Dshiels provide two lists:
+\end_layout
+
+\begin_layout Itemize
+a list containing the 100 most reported IPs with sometime a reverse dns.
+ The reverse DNS are saved in the database because they may be useful to
+ trace the evolution of a particular IP 
+\end_layout
+
+\begin_layout Itemize
+the daily sources which contains ~1.000.000 IPs, probably many false positive
+ entries but it is at least useful to stress-test the application :)
+\end_layout
+
+\begin_layout Subsubsection
+Zeustracker
+\end_layout
+
+\begin_layout Standard
+Zeus provide a list to track the ZeuS Command&Control servers and malicious
+ hosts which are hosting ZeuS files.
+ It is just a list of IPs.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Atlas
+\end_layout
+
+\begin_layout Standard
+Active Threat Level Analysis System is a list provided by Arbor which contains
+ many information on the type of the alert.
+ The format of the report is a RSS feed.
+ The reports are not freely available.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Shadowserver
+\end_layout
+
+\begin_layout Standard
+Shadowserver provide three lists containing about the same information as
+ atlas but are CSV files.
+ Of course, the three reports are slightly different and need three different
+ parsers...
+ :) The reports are not freely available.
+ 
+\end_layout
+
+\begin_layout Subsection
+Write a new module
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Write-a-new"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Each dataset needs a proper module to extract the needed information.
+ You can already take a look at the existing modules.
+\end_layout
+
+\begin_layout Standard
+Every module has his requirements:
+\end_layout
+
+\begin_layout Itemize
+Unique name: a module is a class, it is obvious that two class with the
+ same name will be a problem...
+ 
+\end_layout
+
+\begin_layout Itemize
+The variable name has to be unique too: it is used in the database to trace
+ the origin of the entry.
+ 
+\end_layout
+
+\begin_layout Itemize
+The variable directory: it is the directory where the script checks periodically
+ if there is a new file.
+\end_layout
+
+\begin_layout Standard
+There are actually two types of modules : 
+\end_layout
+
+\begin_layout Subsubsection
+First type (Dshield and Zeustracker)
+\end_layout
+
+\begin_layout Standard
+The freely available datasets contains the IP addresses and sometimes a
+ reverse dns but this information is so easily falsified that it is totally
+ unnecessary to save it.
+ The dataset may contain the date of generation of the report, it will be
+ extracted too.
+\end_layout
+
+\begin_layout Standard
+This type require:
+\end_layout
+
+\begin_layout Itemize
+The function parse: extract the IPs 
+\end_layout
+
+\begin_layout Itemize
+A variable datetime: if possible extracted of the file.
+ If there is no date in the file, the date will be set to 'today' (datetime.date.t
+oday()).
+ 
+\end_layout
+
+\begin_layout Itemize
+The variable module_type set to 1
+\end_layout
+
+\begin_layout Subsubsection
+Second type (Atlas and Shadowserver)
+\end_layout
+
+\begin_layout Standard
+The reports provide more information on the attackers.
+ They provide obviously the ip but also the time of the attack, and the
+ attack (the name of the malware, if known).
+ Atlas provide some more information such as an URL to get more information,
+ the coverage time and category of the attack.
+ But the atlas report is an XML file, this information are extracted of
+ the file and saved as a string in the database.
+ Shadowserver is a CSV report, the whole line will be pushed in the database.
+\end_layout
+
+\begin_layout Standard
+This type require:
+\end_layout
+
+\begin_layout Itemize
+The Function parse which return a table of table with each line like: [IP,
+ date, infection, rest of the line] 
+\end_layout
+
+\begin_layout Itemize
+The variable module_type set to 2
+\end_layout
+
+\begin_layout Subsubsection
+Automation
+\end_layout
+
+\begin_layout Enumerate
+Edit lib/modules/__init__.py and append the module to import 
+\end_layout
+
+\begin_layout Enumerate
+Edit etc/bgp-ranking.conf and append the name of your new class to the item
+ modules_to_parse
+\end_layout
+
+\begin_layout Standard
+All the files you put into directory will be automatically parsed.
+ It is (of course) possible to automatize this process: you just need to
+ edit etc/bgp-ranking.conf and add in the section raw_fetching an entry like:
+\end_layout
+
+\begin_layout LyX-Code
+uniq_name = module directory URL
+\end_layout
+
+\begin_layout Standard
+Now your dataset will be automatically fetched and parsed.
+ 
+\end_layout
+
+\begin_layout Section
+Information
+\end_layout
+
+\begin_layout Standard
+What the application do when all the information we want/need are extracted
+ of the datasets.
+ We will fetch the RIS Whois and the Whois entries for each IP but it is
+ not that easy! 
+\end_layout
+
+\begin_layout Subsection
+Dataset
+\end_layout
+
+\begin_layout Standard
+infection -> interesting to know the evolution 
+\end_layout
+
+\begin_layout Standard
+all the line -> why are we saving the whole line ? whole line savent in
+ csv formal => easy to reread & extract 
+\end_layout
+
+\begin_layout Subsection
+RIS Whois
+\end_layout
+
+\begin_layout Standard
+The RIS information are fetched from 
+\emph on
+riswhois.ripe.net
+\emph default
+ to know who is announcing the network of the IP.
+\end_layout
+
+\begin_layout Standard
+From the response, we extract:
+\end_layout
+
+\begin_layout Itemize
+the origin, which is the AS announcing the IP 
+\end_layout
+
+\begin_layout Itemize
+the route 
+\end_layout
+
+\begin_layout Itemize
+the description of the ASN
+\end_layout
+
+\begin_layout Standard
+The query server is also saved: it is the URL of the server where we do
+ the query.
+ It is actually always 
+\emph on
+riswhois.ripe.net
+\emph default
+ but in the future, we may directly use a BGP session on a router.
+ We will have to be able to know where the information are coming from.
+\end_layout
+
+\begin_layout Standard
+If there is no response, we assume that the ip is not announced any more.
+ If the IP is RESERVED or PRIVATE, it will be discarded before the inclusion
+ in the database: it is for sure a false positive.
+\end_layout
+
+\begin_layout Subsection
+Whois
+\end_layout
+
+\begin_layout Standard
+As for the RIS Whois, the URL of the server is saved in the database.
+ 
+\end_layout
+
+\begin_layout Standard
+The rest of the Whois entry is directly pushed in the database.
+ There are two problems:
+\end_layout
+
+\begin_layout Itemize
+the time: it takes ~1sec to get a whois entry 
+\end_layout
+
+\begin_layout Itemize
+the number of queries: the RIR Afrinic blacklists the ip address which make
+ too much queries
+\end_layout
+
+\begin_layout Standard
+This problems will be solved by using a local Whois server 
+\end_layout
+
+\begin_layout Section
+Whois server
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Whois-server"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Generation of the index 
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Generation-index"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is the most challenging part of the whois server: it 
+\series bold
+has to be faster
+\series default
+ than the querying through the Internet! 
+\end_layout
+
+\begin_layout Section
+Websites
+\end_layout
+
+\begin_layout Subsection
+Used technologies 
+\end_layout
+
+\begin_layout Standard
+Cheetah and cherry-py
+\end_layout
+
+\begin_layout Part
+Usage
+\end_layout
+
+\begin_layout Section
+Installation
+\end_layout
+
+\begin_layout Section
+Launch
+\end_layout
+
+\begin_layout Standard
+You can run each initscript in the order you want: they are all 
+\series bold
+totally independent
+\series default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+An example: Obviously the parsing will not be done until the files are fetched
+ but if the parsing service has nothing to do, it will just wait a certain
+ amount of seconds (defined in the configuration file) and check again if
+ there is something to do.
+ 
+\end_layout
+
+\begin_layout Standard
+Because the sharing of the information between the services is done using
+ Redis it is possible to run each part of the system on computer, in a cloud.
+ 
+\end_layout
+
+\begin_layout Standard
+More informations on redis on the official website
+\begin_inset CommandInset citation
+LatexCommand cite
+key "redis_official"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Except the fetching of the datasets, each part of the system support multiproces
+sing: for each service, you can configure the number of process in the configura
+tion file.
+ 
+\end_layout
+
+\begin_layout Part
+Ranking
+\end_layout
+
+\begin_layout Standard
+There is three type of ranking in the system, the first is public and a
+ global overview of the Internet 
+\end_layout
+
+\begin_layout Section
+Different types of rankings
+\end_layout
+
+\begin_layout Subsection
+Global Ranking
+\end_layout
+
+\begin_layout Standard
+It is a global overview of the Internet: all the sources are aggregated
+ and merged in a global view.
+ Every 24 hours, an index is generated...
+\end_layout
+
+\begin_layout Subsection
+ISP Ranking
+\end_layout
+
+\begin_layout Standard
+same with weight givem by the ISPs
+\end_layout
+
+\begin_layout Subsection
+Private Ranking
+\end_layout
+
+\begin_layout Standard
+totally private, the weight of the source can be changed, it is possible
+ to vote for all the ISP you want
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout Section
+Interpretation
+\end_layout
+
+\begin_layout Part
+Improvements and future usage
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "AS"
+description "The classic definition of an Autonomous System is a set of routers under a single technical administration, using an interior gateway protocol (IGP) and common metrics to determine how to route packets within the AS, and using an inter-AS routing protocol to determine how to route packets to other ASes. Since this classic definition was developed, it has become common for a single AS to use several IGPs and, sometimes, several sets of metrics within an AS. The use of the term Autonomous System stresses the fact that, even when multiple IGPs and metrics are used, the administration of an AS appears to other ASes to have a single coherent interior routing plan, and presents a consistent picture of the destinations that are reachable through it. (RFC 4271)\\\\\\\\Shortly, an AS manages one or more prefixes and propagates all the prefixes he knows to the other ASes.\\\\\\\\Each AS is uniquely identified by an Autonomous System Number."
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "ASN"
+description "Autonomous System Number it is a unique 16-bit number associated with one or more prefix(es)."
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "Prefix"
+description "it is a network represented like this: first ip of the network/bit-length of the prefix\\\\Example: 192.168.0.0/24"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "ISP"
+description "Internet Service Provider it has at least one autonomous system number (ASN) with or without prefixes announced. "
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "SO"
+description "Satellite operator it is an ISP which provide an Internet access through satellites. "
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "Data source"
+description "it is the entity/company/person which provide a dataset. "
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "Dataset"
+description "it contains the most important part of the information used by the ranking system."
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "Whois entry"
+description "the information given by a whois server when the system do a query on a particular IP. "
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "C\\&C"
+description "Command and Control it is the infrastructure used by the bot master to control his botnet."
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "Botnet"
+description "itis a group of computers used by criminal entities for nefarious purposes.\\\\"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "Bot Master"
+description "it is the person or the entity which control the botnet."
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "Malware"
+description "All the nefarious softwares which can installed on a system."
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "Peering"
+description "exchange of traffic between ISPs, it is the base of the internet which makes the whole system working"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "IANA"
+description "The Internet Assigned Numbers Authority is the global entity controlling the assignation of IP addresses, AS numbers, Top-Level domains, and all IP related assignments."
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+symbol "RIR"
+description "The Regional Internet Registries manage the AS numbers and IPs assignations in their zones."
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+printnomenclature[0.8in]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "AS"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "RFC 4271"
+target "http://ftp.rfc-editor.org/in-notes/rfc4271.txt"
+
+\end_inset
+
+: A Border Gateway Protocol 4 (BGP-4)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Overview"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Exploring Autonomous System Numbers"
+target "http://www.cisco.com/web/about/ac123/ac147/archived_issues/ipj_9-1/autonomous_system_numbers.html"
+
+\end_inset
+
+ by Geoff Huston, APNIC in the The Internet Protocol Journal - Volume 9,
+ Number 1 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "BGP Ranking"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "BGP AS / ISP Security Ranking"
+target "http://gitorious.org/bgp-ranking"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Flowspec"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "RFC 5575"
+target "http://ftp.rfc-editor.org/in-notes/rfc5575.txt"
+
+\end_inset
+
+: Dissemination of Flow Specification Rules 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "art_peering"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "The Art of Peering: The Peering Playbook"
+target "http://www.blogg.ch/uploads/peering-playbook.pdf"
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "peering_transit"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "How the 'Net works: an introduction to peering and transit"
+target "http://arstechnica.com/old/content/2008/09/peering-and-transit.ars"
+
+\end_inset
+
+ - Ars Technica
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "SQLAlchemy-dbs"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "SQLAlchemy - Supported Databases"
+target "http://www.sqlalchemy.org/docs/dbengine.html#supported-databases"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "active-record"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Active record pattern"
+target "https://secure.wikimedia.org/wikipedia/en/wiki/Active_record_pattern"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Mapreduce"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "MapReduce"
+target "https://secure.wikimedia.org/wikipedia/de/wiki/MapReduce"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "redis_official"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Redis Official Website "
+target "https://code.google.com/p/redis/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "BGP-policies"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "BGP Policies"
+target "www.cs.princeton.edu/~jrex/papers/policies.pdf"
+
+\end_inset
+
+ - Matthew Caesar and Jennifer Rexford 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FloatList figure
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\start_of_appendix
+Example of BGP Entry : 
+\begin_inset CommandInset label
+LatexCommand label
+name "Example-of-BGP"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+TIME: 07/19/10 08:00:00 
+\end_layout
+
+\begin_layout Standard
+TYPE: TABLE_DUMP_V2/IPV4_UNICAST 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+PREFIX: 41.138.240.0/21 
+\end_layout
+
+\begin_layout Standard
+SEQUENCE: 10022 
+\end_layout
+
+\begin_layout Standard
+FROM: 91.103.24.2 AS42109 
+\end_layout
+
+\begin_layout Standard
+ORIGINATED: 07/18/10 23:36:39 
+\end_layout
+
+\begin_layout Standard
+ORIGIN: IGP 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+ASPATH: 42109 41965 41877 3356 174 42652 12684 12684 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+NEXT_HOP: 91.103.24.2 
+\end_layout
+
+\begin_layout Standard
+COMMUNITY: 3356:2 3356:22 3356:86 3356:503 3356:666 3356:2067 
+\end_layout
+
+\begin_layout Standard
+
+\lyxline
+
+\end_layout
+
+\end_body
+\end_document

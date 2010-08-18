@@ -16,7 +16,7 @@ window.onload = function ()
         graph.Set('chart.title', '$title');
         graph.Set('chart.title.xaxis', 'Date');
         graph.Set('chart.title.yaxis', 'Rank');
-        graph.Set('chart.ymin', 0);
+        graph.Set('chart.ymin', $min);
         graph.Set('chart.ymax', $max);
         graph.Set('chart.scale.decimals', 5);
         graph.Set('chart.key', $keys);
@@ -53,7 +53,8 @@ window.onload = function ()
             if len(line) > 0:
                 real_max = max(real_max, max(line))
         form_keys = str(self.keys)
-        self.js = self.template.substitute( name = self.name, lines = form_lines, tooltips = str(tooltips), labels = str(self.labels), title = self.title, max = real_max, keys = str(self.keys) )
+        real_min = 1.0
+        self.js = self.template.substitute( name = self.name, lines = form_lines, tooltips = str(tooltips), labels = str(self.labels), title = self.title, min = real_min, max = real_max, keys = str(self.keys) )
 
 if __name__ == "__main__":
     g = GraphGenerator('plop')

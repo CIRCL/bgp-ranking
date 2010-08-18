@@ -40,9 +40,6 @@ class Ranking():
     
     def __init__(self, asn):
         self.asn = asn 
-        self.impacts = {}
-        for item in items:
-            self.impacts[item[0]] = int(item[1])
     
     def rank_and_save(self, date = datetime.date.today()):
         self.date = date
@@ -88,11 +85,11 @@ class Ranking():
         for i in ips:
             ip = IPy.IP(i.ip_ip)
             if self.weight.get(str(i.list_name), None) is None:
-                self.weight[str(i.list_name)] = [0, 0]
+                self.weight[str(i.list_name)] = [0.0, 0.0]
             if ip.version() == 6:
-                self.weight[str(i.list_name)][1] += self.impacts[str(i.list_name)]
+                self.weight[str(i.list_name)][1] += 1.0
             else :
-                self.weight[str(i.list_name)][0] += self.impacts[str(i.list_name)]
+                self.weight[str(i.list_name)][0] += 1.0
 
     def rank(self):
         self.rank_by_source = {}

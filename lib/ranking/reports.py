@@ -9,10 +9,12 @@ if __name__ == "__main__":
     config.read("../../etc/bgp-ranking.conf")
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
-    
+
 from db_models.ranking import *
 from db_models.voting import *
 
+
+items = config.items('modules_to_parse')
 
 from sqlalchemy import and_, desc
 
@@ -20,6 +22,9 @@ class Reports():
     
     def __init__(self, date = datetime.datetime.now()):
         self.date = date
+        self.impacts = {}
+        for item in items:
+            self.impacts[item[0]] = int(item[1])
     
     def get_sources(self):
         self.sources = []
@@ -35,7 +40,7 @@ class Reports():
             select = query[first:last]
             for s in select:
                 if histories.get(s.asn, None) is None:
-                    histories[s.asn] = [s.timestamp, s.asn, s.rankv4]
+                    histories[s.asn] = [s.timestamp, s.asn, s.rankv4 * float(self.impacts[str(s.list_name)]) + 1.0]
                     limit -= 1
                     if limit <= 0:
                         break
@@ -46,7 +51,6 @@ class Reports():
         return histories
 
     #FIXME: query on IPv6
-    #FIXME: the code is just ugly... 
     def best_of_day(self, limit = 50, source = None):
         global_query = True
         histo = {}

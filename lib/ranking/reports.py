@@ -53,23 +53,24 @@ class Reports():
         if source is not None and len(source) >0 :
             s = Sources.query.get(unicode(source))
             if s is not None:
-                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.timestamp))
-                histo = filter_query_source(query, limit)
+                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.asn), desc(History.timestamp))
+                histo = self.filter_query_source(query, limit)
                 global_query = False
         if global_query:
             histo = {}
             for s in Sources.query.all():
-                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.timestamp))
-                h_temp = filter_query_source(query, limit)
+                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.asn), desc(History.timestamp))
+                histo = self.filter_query_source(query, limit)
                 if len(histo) == 0:
                     histo = h_temp
                 else:
-                    for t in h_temp:
-                        if histo.get(t[1], None):
-                            histo[t[1]] = t
+                    for t, h in h_temp.items():
+                        if histo.get(h[1], None) is None:
+                            histo[h[1]] = h
                         else:
-                            histo[t.asn][2] += t[2]
-        for h in histo:
+                            histo[h[1]][2] += h[2]
+        self.histories = []
+        for t, h in histo.items():
             self.histories.append(h)
         self.histories.sort(key=lambda x:x[2], reverse=True )
 

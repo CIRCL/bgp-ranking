@@ -44,22 +44,21 @@ class Master(object):
         self.controler.prepare_index(source)
         self.template.histories = self.controler.index_table
     
-    def asn_details(self, asn = None, ip_details = None, source = None):
+    def asn_details(self, asn = None, ip_details = None):
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
         self.init_template()
         if asn is not None and len(asn) > 0:
             asn = asn.lstrip('AS')
             if asn.isdigit():
                 self.template.asn = asn
-                self.template.sources = source
-                self.controler.get_as_infos(asn, source)
+                self.controler.get_as_infos(asn)
                 self.template.asn_descs = self.controler.as_infos
                 if self.template.asn_descs is not None:
                     self.template.javascript = self.controler.js
                     self.template.js_name = self.controler.js_name
                     if ip_details is not None and ip_details.isdigit():
                         self.template.ip_details = ip_details
-                        self.controler.get_ip_infos(ip_details, source)
+                        self.controler.get_ip_infos(ip_details)
                         self.template.ip_descs = self.controler.ip_infos
                 else:
                     self.index()
@@ -72,12 +71,12 @@ class Master(object):
         return str(self.template)
     asn_details.exposed = True
     
-    def comparator(self, asns = None, source = None):
+    def comparator(self, asns = None):
         self.template = Template(file = os.path.join(website_root, templates, 'comparator.tmpl'))
         self.init_template()
         self.template.asns = asns
         if self.template.asns is not None:
-            self.controler.comparator(self.template.asns, source)
+            self.controler.comparator(self.template.asns)
             self.template.js_comparator = self.controler.js
             self.template.js_comparator_name = self.controler.js_name
             if self.template.js_comparator is None:

@@ -18,7 +18,6 @@ class MasterControler():
     def prepare_index(self, source = None, limit = 50):
         self.report.best_of_day(limit, source)
         self.index_table = self.report.histories
-        self.source = source
     
     def get_sources(self):
         self.report.get_sources()
@@ -26,7 +25,6 @@ class MasterControler():
     
     def get_as_infos(self, asn = None, source = None):
         self.asn = int(asn)
-        self.source = source
         self.report.get_asn_descs(self.asn, source)
         self.as_infos = self.report.asn_descs_to_print
         as_graph_infos = self.report.graph_infos
@@ -34,13 +32,11 @@ class MasterControler():
             self.make_graph(as_graph_infos, source)
     
     def get_ip_infos(self, asn_desc = None, source = None):
-        self.source = source
         self.report.get_ips_descs(asn_desc, source)
         self.ip_infos = self.report.ip_descs_to_print
     
     #FIXME: what if len(labels) != len(line)
     def comparator(self, asns = None, js_name = 'comparator', source = None):
-        self.source = source
         if asns is None:
             pass
         else:

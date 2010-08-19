@@ -31,23 +31,22 @@ class Master(object):
         self.controler = MasterControler()
         self.index()
     
-    def init_template(self, source = None):
+    def init_template(self):
         self.template.rgraph_dir = rgraph_dir
         self.template.rgraph_scripts = rgraph_scripts
         self.template.css_file = css_file
         self.controler.get_sources()
         self.template.sources = self.controler.sources
-        self.template.source = self.controler.source
     
     def index(self, source = None):
         self.template = Template(file = os.path.join(website_root, templates, 'index.tmpl'))
-        self.init_template(source)
+        self.init_template()
         self.controler.prepare_index(source)
         self.template.histories = self.controler.index_table
     
     def asn_details(self, asn = None, ip_details = None, source = None):
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
-        self.init_template(source)
+        self.init_template()
         if asn is not None and len(asn) > 0:
             asn = asn.lstrip('AS')
             if asn.isdigit():
@@ -75,7 +74,7 @@ class Master(object):
     
     def comparator(self, asns = None, source = None):
         self.template = Template(file = os.path.join(website_root, templates, 'comparator.tmpl'))
-        self.init_template(source)
+        self.init_template()
         self.template.asns = asns
         self.template.source = source
         if self.template.asns is not None:

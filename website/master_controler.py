@@ -23,20 +23,20 @@ class MasterControler():
         self.report.get_sources()
         self.sources = self.report.sources
     
-    def get_as_infos(self, asn = None):
+    def get_as_infos(self, asn = None, source = None):
         self.asn = int(asn)
-        self.report.get_asn_descs(self.asn)
+        self.report.get_asn_descs(self.asn, source)
         self.as_infos = self.report.asn_descs_to_print
         as_graph_infos = self.report.graph_infos
         if as_graph_infos is not None:
-            self.make_graph(as_graph_infos)
+            self.make_graph(as_graph_infos, source)
     
-    def get_ip_infos(self, asn_desc = None):
-        self.report.get_ips_descs(asn_desc)
+    def get_ip_infos(self, asn_desc = None, source = None):
+        self.report.get_ips_descs(asn_desc, source)
         self.ip_infos = self.report.ip_descs_to_print
     
     #FIXME: what if len(labels) != len(line)
-    def comparator(self, asns = None, js_name = 'comparator'):
+    def comparator(self, asns = None, js_name = 'comparator', source = None):
         if asns is None:
             pass
         else:
@@ -45,7 +45,7 @@ class MasterControler():
             title = ''
             for asn in splitted_asns:
                 if asn.isdigit():
-                    self.report.prepare_graphe_js(asn)
+                    self.report.prepare_graphe_js(asn, source)
                     as_graph_infos = self.report.graph_infos
                     g.add_line(as_graph_infos[0], asn + ' IPv4')
                     g.add_line(as_graph_infos[1], asn + ' IPv6')

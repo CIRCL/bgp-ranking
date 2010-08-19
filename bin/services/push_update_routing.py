@@ -74,7 +74,9 @@ while 1:
     
     # start computing
     syslog.syslog(syslog.LOG_INFO, 'Start compute ranking')
+    r_session = RankingSession()
     nb_of_asns = ASNs.query.count()
+    r_session.close()
     all_intervals = intervals_ranking(nb_of_asns)
     pids = []
     for interval in all_intervals:

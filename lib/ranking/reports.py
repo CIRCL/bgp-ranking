@@ -63,7 +63,7 @@ class Reports():
     def best_of_day(self, limit = 50, source = None):
         global_query = True
         histo = {}
-        s = self.get_source_entry(source)
+        s = get_source_entry(source)
         if s is not None:
             query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
             histo = self.filter_query_source(query, limit)
@@ -87,7 +87,7 @@ class Reports():
         self.histories.sort(key=lambda x:x[2], reverse=True )
 
     def prepare_graphe_js(self,  asn, source = None):
-        s = self.get_source_entry(source)
+        s = get_source_entry(source)
         if s is not None:
             query = History.query.filter(and_(History.source == s, asn == int(asn))).order_by(desc(History.timestamp))
         else : 
@@ -120,7 +120,7 @@ class Reports():
         else:
             asn_descs = None
         self.asn_descs_to_print = None
-        s = self.get_source_entry(source)
+        s = get_source_entry(source)
         if s is not None:
             query = IPsDescriptions.query.filter(and_(History.source == s, and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
         else:
@@ -134,7 +134,7 @@ class Reports():
     def get_ips_descs(self, asn_desc_id, source = None):
         asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()
         if asn_desc is not None:
-            s = self.get_source_entry(source)
+            s = get_source_entry(source)
             if s is not None:
                 query = IPsDescriptions.query.filter(and_(History.source == s, and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
             else : 

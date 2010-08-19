@@ -195,7 +195,7 @@ Border Gateway Protocol (BGP)
 \end_layout
 
 \begin_layout Standard
-The Border Gateway Protocol is the protocol used by everyone on the internet,
+The Border Gateway Protocol is the protocol used by everyone on the Internet,
  without knowing it exists.
  This protocol is commonly presented as the routing protocol of the Internet,
  all the core routers of the Internet are using it to communicate together.
@@ -224,7 +224,7 @@ There is always more than one possible route to reach a particular network,
  On a security point of view, we can for example blackhole the traffic to
  a certain destination known as providing a Command & Control server and
  block the communication between this server and the clients, or to protect
- a destination under DDOS attack.
+ a destination under DDoS attack.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "BGP-policies"
@@ -240,39 +240,48 @@ Autonomous system (AS)
 
 \begin_layout Standard
 The operators on the Internet exchange their routes, it is obvious that
- this operators need a way to identify each other without using IP Adresses.
+ this operators need a way to identify each other without using IP Addresses.
  That is why there are Autonomous systems numbers (ASN), an operator which
  wants to announce IP Addresses on the Internet needs at least one ASN,
  an ASN will announce one or more networks.
 \end_layout
 
 \begin_layout Standard
-The ASNs are assigned by the IANA to the RIRs which will sell them to the
- operators.
+The ASNs are assigned by the IANA to the Regional Internet Registries (RIRs)
+ which will sell them to the operators.
  The RIR responsible for the Europa region is RIPE-NCC.
 \end_layout
 
 \begin_layout Subsection
-Threats
-\end_layout
-
-\begin_layout Standard
-Internet has always been an interesting place for the bad guys: Virus and
- attack on Information Systems exists since the computers but now that almost
- everybody can have an Internet access (with a computer or a mobile device).
- It is also a way more easy for the attackers to gain access to more computer:
- for a vast majority of the population IT security is absolutely not in
- their scope and they have no clue on it.
- 
-\end_layout
-
-\begin_layout Standard
-For this project, we will concentrate us mostly on the botnets.
- 
+Resources
 \end_layout
 
 \begin_layout Subsubsection
-Botnet 
+Routing Information Service (RIS) Database
+\end_layout
+
+\begin_layout Standard
+This service is described like this on the official website: 
+\emph on
+RIS is a RIPE NCC project that collects and stores Internet routing data
+ from several locations around the globe.
+ RIS offers tools that bring this data to the Internet community.
+\emph default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "RIS"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+An other very important point to keep in good memory is that the routes
+ are highly volatile, the project provide each eight hours a new version
+ of the routing database.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -280,7 +289,7 @@ Botnet
 status open
 
 \begin_layout Plain Layout
-add schema + more infos + examples (liens)
+diff the bviews 
 \end_layout
 
 \end_inset
@@ -288,29 +297,67 @@ add schema + more infos + examples (liens)
 
 \end_layout
 
-\begin_layout Paragraph
-Definition
+\begin_layout Standard
+Thanks to the dump of the routing database, it is possible to compute the
+ number of IP addresses assigned to each ASN.
 \end_layout
 
 \begin_layout Standard
-A botnet is a network of computer infected by a malware which are controlled
- by a Command & Control Server and administrated by a Bot master.
- The botmaster is often an organization which sell a certain amount of infected
- computers to performs suspicious activities.
+This service allow also to fetch in real time the ASN assignation of an
+ IP address.
+ And usually to get a small textual description of this AS.
  
 \end_layout
 
-\begin_layout Paragraph
-Usage
+\begin_layout Subsubsection
+Whois Databases
 \end_layout
 
 \begin_layout Standard
-A botnet may be used to perform DDOS attack on servers, exchange data, provide
- phishing sites, and many other...
+The well-known whois protocol allows us to fetch information on the owners
+ of ip addresses.
+ A whois entry contains much more in formations than a riswois entry but
+ is not so often updated, about once a week.
+\end_layout
+
+\begin_layout Standard
+We should speak of whois databases and not whois database because there
+ are many servers providing different databases: each RIR maintain a whois
+ database with the information he wants.
+ To get the most precise information on a particular IP Address, it is important
+ to query the right server.
+ The implementations of whois clients maintain an list of assignations to
+ know for each IP what is the server to query.
+ The implementation of Debian contains also the whois servers of some Local
+ Internet Registries (LIRs), a subdivision of the RIRs.
+ 
+\end_layout
+
+\begin_layout Standard
+Almost all the databases are incompatible with each other.
 \end_layout
 
 \begin_layout Subsubsection
-Other Threats
+Data Sources and their datasets
+\end_layout
+
+\begin_layout Standard
+It is possible to find some datasets freely available on the Internet but
+ a lot are not for different reasons: protection of the sources...
+ or basically because they sell this information to the ISP which have interest
+ in the monitoring of their network.
+ 
+\end_layout
+
+\begin_layout Standard
+It exists a large variety of datasets including IP and/or prefixes for malicious
+ activities but their level of trust is variable (e.g.
+ dshield datasets versus Arbor ATLAS/Active Threat Feed) mostly because
+ the scope and detection techniques can vary a lot between the datasets
+ (e.g.
+ Black-hole honeypot vs DNS sinkhole).
+ Concerning the scope, many data sources gives only information on a particular
+ ASN, this information will be reserved to the owner of this AS 
 \end_layout
 
 \begin_layout Standard
@@ -318,7 +365,7 @@ Other Threats
 status open
 
 \begin_layout Plain Layout
-add more threads, more details 
+add how the data sets are generated
 \end_layout
 
 \end_inset
@@ -326,21 +373,24 @@ add more threads, more details
 
 \end_layout
 
-\begin_layout Paragraph
-Keylogers
+\begin_layout Standard
+Even ”whois” can be considered as datasets even if malicious ISP controls
+ some objects.
+ (e.g.
+ route-object updated by a bot master) 
 \end_layout
 
 \begin_layout Standard
-they need to give the informations they catch to a server
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+add details on the whois entries
 \end_layout
 
-\begin_layout Paragraph
-Port scanning 
-\end_layout
+\end_inset
 
-\begin_layout Standard
-before attacking a server, the attackers will scan the internet to find
- server to compromize 
+
 \end_layout
 
 \begin_layout Standard
@@ -351,7 +401,112 @@ before attacking a server, the attackers will scan the internet to find
 \end_layout
 
 \begin_layout Standard
-We can easily see that peering without any control is a bad idea.
+This raw-datasets need to be aggregated and analyzed to see their evolution
+ in the time.
+\end_layout
+
+\begin_layout Subsection
+Threats
+\end_layout
+
+\begin_layout Standard
+In the past, the malwares were often used to beak a computer or make him
+ crash.
+ But now this activity is a real business with organizations doing malwares,
+ administrating Botnets and selling their competencies.
+ 
+\end_layout
+
+\begin_layout Standard
+Internet has always been an interesting place for the bad guys: Virus and
+ attack on Information Systems exists since the computers exist but now
+ that almost everybody can have an Internet access (with a computer or a
+ mobile device).
+ It is also a way more easy for the attackers to gain access to more computer:
+ for a vast majority of the population IT security is absolutely not in
+ their scope and they have no clue on it.
+\end_layout
+
+\begin_layout Standard
+One of the most used way to commit illegal activities on the Internet these
+ days are the Botnets.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Botnet
+\end_layout
+
+\begin_layout Standard
+A botnet is a network of devices (Bots) infected by a malware which are
+ controlled by a Command & Control Server and administrated by a Bot master.
+ The Bot master is often an organization which sell a certain amount of
+ infected computers to performs suspicious activities.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename botnet.dia
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Botnet - Basics
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A botnet may be used to perform DDOS attack on servers, exchange data, provide
+ phishing sites, send Spam, distribute Malwares and many other.
+\end_layout
+
+\begin_layout Subsubsection
+Usage of the network
+\end_layout
+
+\begin_layout Standard
+The Bot-master will communicate with his Bots to give orders, the bots will
+ sometime communicate together (P2P based botnet
+\begin_inset CommandInset citation
+LatexCommand cite
+key "p2p-botnet"
+
+\end_inset
+
+) and they will attack their targets in case of DDoS or the victims will
+ come on the servers in case of phishing.
+\end_layout
+
+\begin_layout Standard
+As we can see, the communication is the key of a Botnet.
+ We can easily understand that if we are able to stop the communication
+ between the master and the bots, or know the members of the botnet and
+ do not browse on websites hosted on them, the botnet will be armless.
 \end_layout
 
 \begin_layout Subsection
@@ -453,74 +608,6 @@ To be able to monitor a network, we need raw datasets.
 \end_layout
 
 \begin_layout Subsection
-Data Sources and their datasets
-\end_layout
-
-\begin_layout Standard
-It is possible to find some datasets freely available on the Internet but
- a lot are not for different reasons: protection of the sources...
- or basically because they sell this information to the ISP which have interest
- in the monitoring of their network.
- 
-\end_layout
-
-\begin_layout Standard
-It exists a large variety of datasets including IP and/or prefixes for malicious
- activities but their level of trust is variable (e.g.
- dshield datasets versus Arbor ATLAS/Active Threat Feed) mostly because
- the scope and detection techniques can vary a lot between the datasets
- (e.g.
- Black-hole honeypot vs DNS sinkhole).
- Concerning the scope, many data sources gives only information on a particular
- ASN, this informations will be reserved to the owner of this AS 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-add how the data sets are generated
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Even ”whois” can be considered as datasets even if malicious ISP controls
- some objects.
- (e.g.
- route-object updated by a bot master) 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-add details on the whois entries
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-This raw-datasets need to be aggregated and analyzed to see their evolution
- in the time.
-\end_layout
-
-\begin_layout Subsection
 Key points in the analysis 
 \end_layout
 
@@ -570,7 +657,7 @@ Type
 \end_layout
 
 \begin_layout Standard
-Some of the datasets only contains informations on a particular AS.
+Some of the datasets only contains information on a particular AS.
 \end_layout
 
 \begin_layout Standard
@@ -3013,6 +3100,42 @@ target "www.cs.princeton.edu/~jrex/papers/policies.pdf"
 \end_inset
 
  - Matthew Caesar and Jennifer Rexford 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "p2p-botnet"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "P2P Botnet"
+target "http://www.usenix.org/events/hotbots07/tech/full_papers/.../wang.pdf"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "RIS"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Routing Information Service"
+target "http://www.ripe.net/projects/ris/index.html"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

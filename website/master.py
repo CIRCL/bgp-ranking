@@ -51,7 +51,7 @@ class Master(object):
             asn = asn.lstrip('AS')
             if asn.isdigit():
                 self.template.asn = asn
-                self.template.source = source
+                self.template.sources = source
                 self.controler.get_as_infos(asn, source)
                 self.template.asn_descs = self.controler.as_infos
                 if self.template.asn_descs is not None:
@@ -76,7 +76,6 @@ class Master(object):
         self.template = Template(file = os.path.join(website_root, templates, 'comparator.tmpl'))
         self.init_template()
         self.template.asns = asns
-        self.template.source = source
         if self.template.asns is not None:
             self.controler.comparator(self.template.asns, source)
             self.template.js_comparator = self.controler.js

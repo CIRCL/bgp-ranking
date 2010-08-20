@@ -28,7 +28,7 @@ graphes_dir = os.path.join(root_dir,config.get('web','graphes'))
 class Master(object):
     
     def __init__(self):
-        self.controler = MasterControler()
+        self.controler = None
         self.index()
     
     def init_template(self):
@@ -39,10 +39,13 @@ class Master(object):
         self.template.sources = self.controler.sources
     
     def index(self, source = None):
+        if self.controler is None:
+            self.controler = MasterControler()
         self.template = Template(file = os.path.join(website_root, templates, 'index.tmpl'))
         self.init_template()
         self.controler.prepare_index(source)
         self.template.histories = self.controler.index_table
+        self.template.source = source
     
     def asn_details(self, asn = None, ip_details = None):
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
@@ -86,9 +89,8 @@ class Master(object):
         
     
     def reload(self):
-        self.controler = MasterControler()
-        self.index()
-        return str(self.template)
+        self.controler = None
+        self.default()
     reload.exposed = True
 
     def default(self, source = None):

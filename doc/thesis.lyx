@@ -257,7 +257,7 @@ Resources
 \end_layout
 
 \begin_layout Subsubsection
-Routing Information Service (RIS) Database
+Routing Information Service (RIS)
 \end_layout
 
 \begin_layout Standard
@@ -274,13 +274,17 @@ key "RIS"
 
 \end_inset
 
-
+ 
 \end_layout
 
 \begin_layout Standard
-An other very important point to keep in good memory is that the routes
- are highly volatile, the project provide each eight hours a new version
- of the routing database.
+The service provide a dump of the routing database directly extracted from
+ their routers.
+ This dump is exported each eight hours and contains around 350.000 different
+ routes.
+ An other very important point to keep in good memory is that the routes
+ are volatile, each new version of the routing database has between 800
+ and 1000 changes.
  
 \end_layout
 
@@ -289,7 +293,7 @@ An other very important point to keep in good memory is that the routes
 status open
 
 \begin_layout Plain Layout
-diff the bviews 
+bviews graph
 \end_layout
 
 \end_inset
@@ -298,8 +302,8 @@ diff the bviews
 \end_layout
 
 \begin_layout Standard
-Thanks to the dump of the routing database, it is possible to compute the
- number of IP addresses assigned to each ASN.
+Thanks to this dump , it is possible to compute the number of IP addresses
+ assigned to each ASN.
 \end_layout
 
 \begin_layout Standard
@@ -310,13 +314,19 @@ This service allow also to fetch in real time the ASN assignation of an
 \end_layout
 
 \begin_layout Subsubsection
-Whois Databases
+Whois 
 \end_layout
 
 \begin_layout Standard
 The well-known whois protocol allows us to fetch information on the owners
  of ip addresses.
- A whois entry contains much more in formations than a riswois entry but
+ Even if the malicious ISP controls some objects of the whois entries (e.g.
+ route-object updated by a bot master), they can be considered as datasets
+ because it will give us informations on the power of the bot master.
+\end_layout
+
+\begin_layout Standard
+A whois entry contains much more in formations than a riswois entry but
  is not so often updated, about once a week.
 \end_layout
 
@@ -343,9 +353,8 @@ Data Sources and their datasets
 
 \begin_layout Standard
 It is possible to find some datasets freely available on the Internet but
- a lot are not for different reasons: protection of the sources...
- or basically because they sell this information to the ISP which have interest
- in the monitoring of their network.
+ a lot are not for different reasons: protection of the sources or basically
+ because they sell this information to the ISP which have interest in it.
  
 \end_layout
 
@@ -355,9 +364,9 @@ It exists a large variety of datasets including IP and/or prefixes for malicious
  dshield datasets versus Arbor ATLAS/Active Threat Feed) mostly because
  the scope and detection techniques can vary a lot between the datasets
  (e.g.
- Black-hole honeypot vs DNS sinkhole).
+ DNS sinkhole versus Black-hole honeypot).
  Concerning the scope, many data sources gives only information on a particular
- ASN, this information will be reserved to the owner of this AS 
+ ASN, it is the case for Arbor for example.
 \end_layout
 
 \begin_layout Standard
@@ -368,33 +377,6 @@ status open
 add how the data sets are generated
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Even ”whois” can be considered as datasets even if malicious ISP controls
- some objects.
- (e.g.
- route-object updated by a bot master) 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-add details on the whois entries
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace defskip
 \end_inset
 
 

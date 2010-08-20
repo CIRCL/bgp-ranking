@@ -28,7 +28,11 @@ def get_all_servers_urls():
     """
     Get the URLs of all the whois servers 
     """
-    return  redis.Redis(db=config.get('redis','whois_assignations')).smembers(config.get('assignations','servers_key'))
+    if int(config.get('whois_servers','desactivate_whois')) :
+        return ['riswhois.ripe.net']        
+    else:
+        return redis.Redis(db=config.get('redis','whois_assignations')).smembers(config.get('assignations','servers_key'))
+
 
 
 def get_server_by_query(query, r):

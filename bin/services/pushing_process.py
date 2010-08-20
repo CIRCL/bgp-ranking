@@ -1,4 +1,9 @@
 #!/usr/bin/python
+
+# Extract interesting informations of the bview file, prepare to do a diff 
+# egrep -w "^$|PREFIX:|ASPATH:"| awk -F' ' '{print $NF}' |  sed 's/^$/XXXXX/' | tr '\n' ' ' | sed 's/XXXXX/\n/g'| sed 's/^ //' | sort | uniq
+
+
 import os 
 import sys
 import ConfigParser

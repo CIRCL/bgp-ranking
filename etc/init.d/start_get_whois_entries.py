@@ -26,6 +26,10 @@ def usage():
     print "start_get_whois_queries.py (start|stop)"
     exit (1)
 
+if int(config.get('whois_servers','desactivate_whois')) :
+    print "Impossible to start the whois fetching: it has been desactivated in the config file"
+    exit (1)
+
 if len(sys.argv) < 2:
     usage()
 

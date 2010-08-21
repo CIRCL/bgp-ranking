@@ -1,11 +1,11 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
 \textclass article
 \use_default_options true
 \begin_modules
-theorems-std
+theorems-ams
 \end_modules
 \language english
 \inputencoding auto
@@ -261,20 +261,20 @@ Routing Information Service (RIS)
 \end_layout
 
 \begin_layout Standard
-This service is described like this on the official website: 
-\emph on
-RIS is a RIPE NCC project that collects and stores Internet routing data
- from several locations around the globe.
- RIS offers tools that bring this data to the Internet community.
-\emph default
-
+This service is described like this on the website
 \begin_inset CommandInset citation
 LatexCommand cite
 key "RIS"
 
 \end_inset
 
- 
+ : 
+\end_layout
+
+\begin_layout Quote
+RIS is a RIPE NCC project that collects and stores Internet routing data
+ from several locations around the globe.
+ RIS offers tools that bring this data to the Internet community.
 \end_layout
 
 \begin_layout Standard
@@ -348,35 +348,189 @@ Almost all the databases are incompatible with each other.
 \end_layout
 
 \begin_layout Subsubsection
-Data Sources and their datasets
+Datasets of suspicious activities
 \end_layout
 
 \begin_layout Standard
 It is possible to find some datasets freely available on the Internet but
- a lot are not for different reasons: protection of the sources or basically
- because they sell this information to the ISP which have interest in it.
+ a lot are not and that for different reasons (protection of the sources
+ or because the company providding the dataset sell this information to
+ the ISP which have interest in it).
  
 \end_layout
 
 \begin_layout Standard
 It exists a large variety of datasets including IP and/or prefixes for malicious
- activities but their level of trust is variable (e.g.
- dshield datasets versus Arbor ATLAS/Active Threat Feed) mostly because
- the scope and detection techniques can vary a lot between the datasets
- (e.g.
- DNS sinkhole versus Black-hole honeypot).
- Concerning the scope, many data sources gives only information on a particular
- ASN, it is the case for Arbor for example.
-\end_layout
-
-\begin_layout Standard
+ activities.
+ But their level of trust is variable, 
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-add how the data sets are generated
+(e.g.
+ dshield datasets versus Arbor ATLAS/Active Threat Feed)
 \end_layout
 
+\end_inset
+
+ the methods used to generate the datasets can vary a lot from a source
+ to another 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+(e.g.
+ DNS sinkhole versus Black-hole honeypot)
+\end_layout
+
+\end_inset
+
+.
+ To be exhaustive on this description of the datasets we have to say that
+ many data sources gives only information on a particular ASN
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+, it is the case for Arbor for example
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Arbor ATLAS/Active Threat Feed
+\end_layout
+
+\begin_layout Standard
+The dataset provided by Arbor is not freely available and their quality
+ is quite high because the reports are analyzed and classified.
+ Arbor gives informations on it in his FAQ
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Arbor-faq"
+
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Quote
+Data is captured by using a distributed network of sensors running a number
+ of data capture and analysis tools.
+ These sensors can:
+\end_layout
+
+\begin_layout Quote
+- Interact with attackers to discover what activity they are attempting
+ 
+\end_layout
+
+\begin_layout Quote
+- Capture full payloads and classify them 
+\end_layout
+
+\begin_layout Quote
+- Characterize scan traffic 
+\end_layout
+
+\begin_layout Standard
+And this informations are merged with logs, statistics and reports to have
+ an exhaustive view of the threads and reduce the false positives.
+\end_layout
+
+\begin_layout Paragraph
+Dshield
+\end_layout
+
+\begin_layout Standard
+The lists of Dshield are public and they are generated using only the firewall
+ logs of the users, the precision and the quality is less good than for
+ Arbor but there is however a small analyze because Dshield provide two
+ lists: the first one is a full dump of the todays information, no filtred
+ at all and contains around one million entries, and many false positives
+ like private address.
+ But this list stays interesting because of the big amount of IPs it contains
+ and it is usefull to correlate it with other sources.
+ 
+\end_layout
+
+\begin_layout Standard
+The second contains only the "Top 100" of the daily dump and less false
+ positive but should not be used as blocklist says Dshield.
+ 
+\end_layout
+
+\begin_layout Paragraph
+abuse.ch ZeuS Tracker
+\end_layout
+
+\begin_layout Standard
+This list is only concentrated on one unique thread: ZeuS.
+ On the FAQ, ZeuS is described like this
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ZeuS-faq"
+
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Quotation
+ZeuS (also known as Zbot / WSNPoem) is a crimeware kit, which steals credentials
+ from various online services like social networks, online banking accounts,
+ ftp accounts, email accounts and other (phishing).
+ The web admin panel can be bought for 700$ (source: RSA Security 4/21/2008)
+ and the exe builder for 4'000$ (source: Prevx 3/15/2009).
+\end_layout
+
+\begin_layout Standard
+The detection of ZeuS Command&Control servers is done by traffic sniffing
+ and study of the captured (in Honeypots) Zeus clients.
+ This list contains all known ZeuS Command&Control servers and is expected
+ to be used as a blocklist, it is highly reliable.
+ When a server is in the list, it is periodically checked to be sure that
+ he stays infected by ZeuS.
+ If not, the IP is dropped.
+ 
+\end_layout
+
+\begin_layout Paragraph
+Shadowserver 
+\end_layout
+
+\begin_layout Standard
+The Shadowserver Foundation works the same way than Arbor: providing private
+ reports on a particular ASN.
+ The datasets are generated the same way than the one of Arbor.
+\end_layout
+
+\begin_layout Paragraph
+Abusix
+\end_layout
+
+\begin_layout Standard
+It is completely different: Abusix does not provide list but permit to find
+ easily the abuse address of a provider by the IP address of the attacker,
+ will send a mail to this address and tell what the problem is and on what
+ IP address.
+ The data comming from Abusix are usualy good but should be verified because
+ it is always possible to report a false positif.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
@@ -400,10 +554,10 @@ In the past, the malwares were often used to beak a computer or make him
 \end_layout
 
 \begin_layout Standard
-Internet has always been an interesting place for the bad guys: Virus and
- attack on Information Systems exists since the computers exist but now
- that almost everybody can have an Internet access (with a computer or a
- mobile device).
+Internet has always been an interesting place for the cybercriminals: Virus
+ and attack on Information Systems exists since the computers exist but
+ now that almost everybody can have an Internet access (with a computer
+ or a mobile device).
  It is also a way more easy for the attackers to gain access to more computer:
  for a vast majority of the population IT security is absolutely not in
  their scope and they have no clue on it.
@@ -3114,6 +3268,42 @@ key "RIS"
 LatexCommand href
 name "Routing Information Service"
 target "http://www.ripe.net/projects/ris/index.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Arbor-faq"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "FAQ Arbor"
+target "https://atlas.arbor.net/faq/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "ZeuS-faq"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "FAQ ZeuS"
+target "https://zeustracker.abuse.ch/faq.php"
 
 \end_inset
 

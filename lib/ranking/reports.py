@@ -132,7 +132,7 @@ class Reports():
                 if nb_of_ips > 0:
                     self.asn_descs_to_print.append([desc.id, desc.timestamp, desc.owner, desc.ips_block, nb_of_ips])
 
-    def get_ips_descs(self, asn_desc_idf, source = None):
+    def get_ips_descs(self, asn_desc_id, source = None):
         asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()
         if asn_desc is not None:
             if source is not None:

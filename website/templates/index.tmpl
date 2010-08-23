@@ -15,7 +15,11 @@
         #for $history in $histories
         <tr>
             <td>$history[0]</td>
-            <td><a href="/asn_details?asn=${history[1]}">${history[1]}</a></td>
+            #if $source is not None
+                <td><a href="/asn_details?asn=${history[1]};source=${source}">${history[1]}</a></td>
+            #elif
+                <td><a href="/asn_details?asn=${history[1]}">${history[1]}</a></td>
+            #endif
             <td>$history[2]</td>
         </tr>
         #end for

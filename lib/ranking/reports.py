@@ -55,15 +55,14 @@ class Reports():
 
     #FIXME: query on IPv6
     def best_of_day(self, limit = 50, source = None):
-        global_query = True
+        query = None
         histo = {}
-        if source is not None and len(source) >0 :
-            s = Sources.query.get(unicode(source))
-            if s is not None:
-                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
-                histo = self.filter_query_source(query, limit)
-                global_query = False
-        if global_query:
+        s = self.existing_source(source)
+        if s is not None:
+            query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
+            histo = self.filter_query_source(query, limit)
+            global_query = False
+        if query is None:
             histo = {}
             for s in Sources.query.all():
                 query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
@@ -81,8 +80,14 @@ class Reports():
             self.histories.append(h)
         self.histories.sort(key=lambda x:x[2], reverse=True )
 
-    def prepare_graphe_js(self,  asn):
-        histories = History.query.filter_by(asn=int(asn)).order_by(desc(History.timestamp)).all()
+    def prepare_graphe_js(self,  asn, source = None):
+        query = None
+        s = self.existing_source(source)
+        if s is not None:
+            query = History.query.filter_by(and_(History.source == s, asn=int(asn))).order_by(desc(History.timestamp))
+        if query is None: 
+            query = History.query.filter_by(asn=int(asn)).order_by(desc(History.timestamp))
+        histories = query.all()
         date = None
         tmptable = []
         for history in histories:
@@ -101,20 +106,32 @@ class Reports():
             ipv4.append(t[1])
             ipv6.append(t[2])
         self.graph_infos = [ipv4, ipv6, dates]
+    
+    def existing_source(self, source = None):
+        if source is not None:
+            return Sources.query.get(unicode(source))
+        return None
 
-    def get_asn_descs(self, asn):
-        self.prepare_graphe_js(asn)
+    def get_asn_descs(self, asn, source = None):
+        self.prepare_graphe_js(asn, source)
         asn_db = ASNs.query.filter_by(asn=int(asn)).first()
         if asn_db is not None:
-            asn_descs = ASNsDescriptions.query.filter(ASNsDescriptions.asn==asn_db).all()
+            asn_descs = ASNsDescriptions.query.filter(ASNsDescriptions.asn == asn_db).all()
         else:
             asn_descs = None
         self.asn_descs_to_print = None
         if asn_descs is not None:
             self.asn_descs_to_print = []
             for desc in asn_descs:
-                nb_of_ips = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))).count()
-                self.asn_descs_to_print.append([desc.id, desc.timestamp, desc.owner, desc.ips_block, nb_of_ips])
+                query = None
+                s = self.existing_source(source)
+                if s is not None:
+                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == s, and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
+                if query is None: 
+                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1))))
+                nb_of_ips = query.count()
+                if nb_of_ips > 0:
+                    self.asn_descs_to_print.append([desc.id, desc.timestamp, desc.owner, desc.ips_block, nb_of_ips])
 
     def get_ips_descs(self, asn_desc_id):
         asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()

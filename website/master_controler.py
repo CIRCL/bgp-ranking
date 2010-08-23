@@ -31,8 +31,8 @@ class MasterControler():
         if as_graph_infos is not None:
             self.make_graph(as_graph_infos)
     
-    def get_ip_infos(self, asn_desc = None):
-        self.report.get_ips_descs(asn_desc)
+    def get_ip_infos(self, asn_desc = None, source = None):
+        self.report.get_ips_descs(asn_desc, source)
         self.ip_infos = self.report.ip_descs_to_print
     
     #FIXME: what if len(labels) != len(line)

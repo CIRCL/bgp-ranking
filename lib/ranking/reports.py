@@ -124,19 +124,22 @@ class Reports():
             self.asn_descs_to_print = []
             for desc in asn_descs:
                 query = None
-                s = self.existing_source(source)
-                if s is not None:
-                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == s, and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
-                if query is None: 
+                if source is not None:
+                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == source, and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
+                else: 
                     query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1))))
                 nb_of_ips = query.count()
                 if nb_of_ips > 0:
                     self.asn_descs_to_print.append([desc.id, desc.timestamp, desc.owner, desc.ips_block, nb_of_ips])
 
-    def get_ips_descs(self, asn_desc_id):
+    def get_ips_descs(self, asn_desc_idf, source = None):
         asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()
         if asn_desc is not None:
-            ip_descs = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))).all()
+            if source is not None:
+                query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == source, and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
+            else:
+                query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1))))
+            ip_descs = query.all()
         else:
             ip_descs = None
         self.ip_descs_to_print = None

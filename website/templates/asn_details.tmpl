@@ -21,7 +21,11 @@
         <tr>
             <td>$asn_desc[1]</td>
             <td>$asn_desc[2]</td>
-            <td><a href="/asn_details?asn=${asn}&ip_details=${asn_desc[0]}">$asn_desc[3]</a></td>
+            #if $source is not None
+                <td><a href="/asn_details?source=${source};asn=${asn};ip_details=${asn_desc[0]}">$asn_desc[3]</a></td>
+            #else
+                <td><a href="/asn_details?asn=${asn};ip_details=${asn_desc[0]}">$asn_desc[3]</a></td>
+            #end if
             <td>$asn_desc[4]</td>
         </tr>
         #end for

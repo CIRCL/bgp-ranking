@@ -22,6 +22,7 @@ window.onload = function ()
         graph.Set('chart.key', $keys);
         graph.Set('chart.contextmenu', [['Zoom entire graph', RGraph.Zoom]]);
         graph.Draw();
+    }
 """)
     
     def __init__(self, name):

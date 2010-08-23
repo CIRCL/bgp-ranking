@@ -84,7 +84,7 @@ class Reports():
         query = None
         s = self.existing_source(source)
         if s is not None:
-            query = History.query.filter_by(and_(History.source == s, asn=int(asn))).order_by(desc(History.timestamp))
+            query = History.query.filter(and_(History.source == s, asn == int(asn))).order_by(desc(History.timestamp))
         if query is None: 
             query = History.query.filter_by(asn=int(asn)).order_by(desc(History.timestamp))
         histories = query.all()

@@ -36,12 +36,12 @@ class MasterControler():
         self.ip_infos = self.report.ip_descs_to_print
     
     #FIXME: what if len(labels) != len(line)
-    def comparator(self, asns = None, js_name = 'comparator'):
+    def comparator(self, asns = None):
         if asns is None:
             pass
         else:
             splitted_asns = asns.split()
-            g = GraphGenerator(js_name)
+            g = GraphGenerator(config.get('web','canvas_comparator_name'))
             title = ''
             for asn in splitted_asns:
                 if asn.isdigit():
@@ -59,8 +59,8 @@ class MasterControler():
             else:
                 self.js = self.js_name = None
     
-    def make_graph(self, infos, js_name = 'rank'):
-        g = GraphGenerator(js_name)
+    def make_graph(self, infos):
+        g = GraphGenerator(config.get('web','canvas_asn_name'))
         g.add_line(infos[0], 'IPv4')
         g.add_line(infos[1], 'IPv6')
         g.set_labels(infos[2])

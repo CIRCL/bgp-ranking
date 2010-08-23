@@ -21,8 +21,16 @@ window.onload = function ()
         graph.Set('chart.scale.decimals', 5);
         graph.Set('chart.key', $keys);
         graph.Set('chart.contextmenu', [['Zoom entire graph', RGraph.Zoom]]);
-        graph.Draw();
+        draw()
+        
     }
+function draw() {
+    var canvas = document.getElementById('$name');
+    var ctx = example.getContext('2d');
+    ctx.canvas.width  = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+}
+
 """)
     
     def __init__(self, name):

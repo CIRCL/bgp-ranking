@@ -89,9 +89,11 @@ class Connector(object):
                 elif self.server in desactivated_servers:
                     whois = config.get('whois_servers','desactivate_message')
                     self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
+                    self.cache_db.expire(entry, cache_ttl)
                 elif self.server in non_routed:
                     whois = config.get('whois_servers','non_routed_message')
                     self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
+                    self.cache_db.expire(entry, cache_ttl)
                 elif self.cache_db.get(entry) is None:
                     if not self.connected:
                         self.__connect()

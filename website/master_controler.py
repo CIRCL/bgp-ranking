@@ -23,9 +23,9 @@ class MasterControler():
         self.report.get_sources()
         self.sources = self.report.sources
     
-    def get_as_infos(self, asn = None):
+    def get_as_infos(self, asn = None, source = None):
         self.asn = int(asn)
-        self.report.get_asn_descs(self.asn)
+        self.report.get_asn_descs(self.asn, source)
         self.as_infos = self.report.asn_descs_to_print
         as_graph_infos = self.report.graph_infos
         if as_graph_infos is not None:

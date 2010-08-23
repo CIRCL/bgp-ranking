@@ -17,9 +17,9 @@
             <td>$history[0]</td>
             #if $source is not None
                 <td><a href="/asn_details?asn=${history[1]};source=${source}">${history[1]}</a></td>
-            #elif
+            #else
                 <td><a href="/asn_details?asn=${history[1]}">${history[1]}</a></td>
-            #endif
+            #end if
             <td>$history[2]</td>
         </tr>
         #end for

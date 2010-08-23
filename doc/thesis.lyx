@@ -709,24 +709,30 @@ As we can see, there is a gap between the world where everybody will peer
  
 \end_layout
 
-\begin_layout Standard
-An other point to keep in good memory is that the Internet is based on confidenc
-e: if an ISP decide that he does not care what is happening on his network
- he may be blacklisted by the other ISPs or at least his bandwidth will
- be reduced, even if the the suspicious traffic is originating from a third
- ISP.
- That is why it is a necessity for each Internet operator to know what for
- traffic he is routing.
- This task is critical for every ISP and of course for the satellite operators
- too because they provide an Internet access to their customers (which may
- be ISP too).
+\begin_layout Subsubsection
+Confidence
 \end_layout
 
 \begin_layout Standard
-\begin_inset VSpace defskip
-\end_inset
+An other point to keep in good memory is that the Internet is based on confidenc
+e...
+ but confidence without any control will not work: if an ISP decide that
+ he does not care what is happening on his network he may be blacklisted
+ by the other ISPs.
+ Or at least his bandwidth will be reduced, even if the the suspicious traffic
+ is originating from a third ISP.
+ 
+\end_layout
 
+\begin_layout Standard
+This is why it is a necessity for each Internet operator to know what for
+ traffic he is routing.
+ This task is critical for every ISP and of course for the satellite operators
+ too: they often provide an Internet access to their customers.
+\end_layout
 
+\begin_layout Subsubsection
+Reputation and ranking system 
 \end_layout
 
 \begin_layout Standard
@@ -736,12 +742,12 @@ To know the reputation of the traffic he is routing and mitigate the malicious
 \end_layout
 
 \begin_layout Standard
-There are at least three goals which can be achieved by using the results
- of the ranking: 
+There are at least three goals which can be achieved by using a ranking
+ system: 
 \end_layout
 
 \begin_layout Itemize
-Disrupting the malware Command&Control communication: 
+Disrupting the malware Command & Control communication: 
 \end_layout
 
 \begin_deeper
@@ -777,57 +783,109 @@ Assessment between ISPs: the ranking can be influenced by other ISPs and
  it is possible to improve or limit the peering with an other ISP 
 \end_layout
 
+\begin_layout Standard
+To monitor properly the network, we need to aggregate informations comming
+ from different sources and analyze it.
+ 
+\end_layout
+
 \begin_layout Subsection
 Key points in the analysis 
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-more details 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-Size
+The data are coming from differents sources, it is important because this
+ sources sources will cover different threads ant it will allow us to have
+ a more global overview on the malicious ASNs.
 \end_layout
 
 \begin_layout Standard
-Some datasets are very large: the daily report of Dshield has about 1 million
- lines.
+To classify properly the informations, the least common denominator, present
+ in each datasets: CIDR block and / or ASN.
+\end_layout
+
+\begin_layout Subsubsection
+Size and quality 
+\end_layout
+
+\begin_layout Standard
+As we saw, we have some poor-quality sources but with a lot of entries they
+ are very usefull to see trends.
+ The other, with an higher quality but less entries will be used to emphasize
+ the trends of the first sources: they have already been analyzed and contains
+ much less false positive.
+ It is the first and most important point of the analysis: we have to be
+ able to make the difference between the low-quality entries and the high-qualit
+y one.
  
 \end_layout
 
-\begin_layout Paragraph
-Quality 
+\begin_layout Subparagraph
+Solution
 \end_layout
 
 \begin_layout Standard
-Analysis and ranking calculation depends on the dataset quality: the more
- the quality is good, the more the dataset has an impact on the ranking.
+This differentiation will be done by using a weight on each entries: the
+ best sources will have an high weight and the other a lower one.
+ Like this, they will not be lost in the other datasets.
+ 
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Subsubsection
 Format 
 \end_layout
 
 \begin_layout Standard
-The formats are unstable and incompatible from one data sources to another.
- They are evolving over the time but a 24 hours step is usual.
+Every dataset has his proper format, they are obviously incompatible from
+ one data sources to another: we will find plain text, CSV and XML files.
+ Some files contains only the ip addresses, some other the type of the attack
+ and a timestamp.
+ Some files are updated evey couple hours, most of them every 24 hours.
+ But the insertion in the database has to be same for every source.
 \end_layout
 
-\begin_layout Paragraph
-Type
+\begin_layout Subparagraph
+Solution
 \end_layout
 
 \begin_layout Standard
-Some of the datasets only contains information on a particular AS.
+Every source will have his proper module, extracting the needed informations
+ of the files and return this informations to a standard interface which
+ will insert it in the database.
+ This way, the overhead induced by the new datasets will be highly reduced.
+ More informations on this particular point 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:Modules"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Type of the information
+\end_layout
+
+\begin_layout Standard
+Last but not least, some of the datasets contains only information on a
+ particular AS.
+ We already spoke of this datasets: they are usually provided by companies
+ selling this informations to ISPs.
+ This datasets may badly influence the results by increasing the weight
+ of a particular AS.
+ 
+\end_layout
+
+\begin_layout Subparagraph
+Solution
+\end_layout
+
+\begin_layout Standard
+It is actually not fully implemented but the goal will be to offer to each
+ ISP interested by this system to obtain an account on the website and manage
+ this datasets on the way he wants: compare the datasets with the global
+ data or have a view on the evolution of his ASN.
 \end_layout
 
 \begin_layout Standard
@@ -838,12 +896,10 @@ Some of the datasets only contains information on a particular AS.
 \end_layout
 
 \begin_layout Standard
-For classification, the least common denominator is most of the time used
- (e.g.
- CIDR block or ASN).
- Analysis and ranking calculation depends on the dataset quality: the more
- the quality is good, the more the dataset has an impact on the ranking.
- The ISPs have an influence on the ranking too through a voting system
+After all this theoritical part, we will now give you a small overview of
+ the system without too much details of the implementation.
+ But it will allow you to have a better view of the principes and architecture
+ of the system and on the requirements imposed by the future usages.
 \end_layout
 
 \begin_layout Section
@@ -2356,6 +2412,13 @@ Implementation
 
 \begin_layout Section
 Modules 
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Modules"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection

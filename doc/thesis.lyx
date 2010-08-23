@@ -1,11 +1,11 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
 \textclass article
 \use_default_options true
 \begin_modules
-theorems-std
+theorems-ams
 \end_modules
 \language english
 \inputencoding auto
@@ -100,7 +100,7 @@ For an Internet Service Provider, AS numbers are a logical representation
  due to malware activities on an end-user equipments) and hosted at specific
  AS location.
  In order to provide an improved security view on those AS numbers, a trust
- ranking scheme will be implemented based on existing dataset of compromised
+ ranking scheme will be implemented based on existing datasets of compromised
  systems, malware C&C IP and existing datasets of the ISPs.
 \end_layout
 
@@ -261,20 +261,20 @@ Routing Information Service (RIS)
 \end_layout
 
 \begin_layout Standard
-This service is described like this on the official website: 
-\emph on
-RIS is a RIPE NCC project that collects and stores Internet routing data
- from several locations around the globe.
- RIS offers tools that bring this data to the Internet community.
-\emph default
-
+This service is described like this on the website
 \begin_inset CommandInset citation
 LatexCommand cite
 key "RIS"
 
 \end_inset
 
- 
+ : 
+\end_layout
+
+\begin_layout Quote
+RIS is a RIPE NCC project that collects and stores Internet routing data
+ from several locations around the globe.
+ RIS offers tools that bring this data to the Internet community.
 \end_layout
 
 \begin_layout Standard
@@ -285,25 +285,30 @@ The service provide a dump of the routing database directly extracted from
  An other very important point to keep in good memory is that the routes
  are volatile, each new version of the routing database has between 800
  and 1000 changes.
- 
+ A change is a new route: an ASN announce a new network or a dropped route:
+ the network is not announced by this ASN anymore.
+ Thanks to this dump , it is possible to compute the number of IP addresses
+ assigned to each ASN.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-bviews graph
-\end_layout
+If you want to see graphs and visualize the evolution of the routes by as
+ and by networks, you should visit the Routing Information Service website
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "RIS"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Standard
-Thanks to this dump , it is possible to compute the number of IP addresses
- assigned to each ASN.
+\begin_inset VSpace defskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -319,15 +324,18 @@ Whois
 
 \begin_layout Standard
 The well-known whois protocol allows us to fetch information on the owners
- of ip addresses.
+ of IP addresses.
  Even if the malicious ISP controls some objects of the whois entries (e.g.
  route-object updated by a bot master), they can be considered as datasets
- because it will give us informations on the power of the bot master.
+ because it will give us information on the bot master.
 \end_layout
 
 \begin_layout Standard
-A whois entry contains much more in formations than a riswois entry but
- is not so often updated, about once a week.
+A whois entry contains much more information than a riswois entry but is
+ not so often updated, about once a week.
+ The most interesting information you can find in the whois entry is the
+ name of the owner of the block of IPs with his address and phone number.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -344,47 +352,197 @@ We should speak of whois databases and not whois database because there
 \end_layout
 
 \begin_layout Standard
-Almost all the databases are incompatible with each other.
-\end_layout
-
-\begin_layout Subsubsection
-Data Sources and their datasets
-\end_layout
-
-\begin_layout Standard
-It is possible to find some datasets freely available on the Internet but
- a lot are not for different reasons: protection of the sources or basically
- because they sell this information to the ISP which have interest in it.
- 
-\end_layout
-
-\begin_layout Standard
-It exists a large variety of datasets including IP and/or prefixes for malicious
- activities but their level of trust is variable (e.g.
- dshield datasets versus Arbor ATLAS/Active Threat Feed) mostly because
- the scope and detection techniques can vary a lot between the datasets
- (e.g.
- DNS sinkhole versus Black-hole honeypot).
- Concerning the scope, many data sources gives only information on a particular
- ASN, it is the case for Arbor for example.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-add how the data sets are generated
-\end_layout
-
+\begin_inset VSpace defskip
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-This raw-datasets need to be aggregated and analyzed to see their evolution
- in the time.
+Almost all the databases are incompatible with each other, the keys and
+ the information is different.
+\end_layout
+
+\begin_layout Subsubsection
+Datasets of suspicious activities
+\end_layout
+
+\begin_layout Standard
+It is possible to find some datasets freely available on the Internet but
+ a lot are not and that for different reasons:
+\end_layout
+
+\begin_layout Itemize
+protection of the sources: each company has his proper way to gather information.
+ If the attacker know this methods, he will attempt to be more stealthy
+ and it will be more complicated for the company to find him again
+\end_layout
+
+\begin_layout Itemize
+the company providing the dataset sells this information to the ISPs which
+ have interest in it 
+\end_layout
+
+\begin_layout Standard
+It exists a large variety of datasets including IP and/or prefixes for malicious
+ activities.
+ But their level of trust is variable, the methods used to generate the
+ datasets can vary a lot from a source to another .
+ To be exhaustive on this description of the datasets we have to say that
+ many data sources gives only information on a particular ASN.
+\end_layout
+
+\begin_layout Paragraph
+Arbor ATLAS/Active Threat Feed
+\end_layout
+
+\begin_layout Standard
+The dataset provided by Arbor is not freely available and their quality
+ is quite high because the reports are analyzed and classified.
+ Arbor gives information on it in his FAQ
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Arbor-faq"
+
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Quote
+Data is captured by using a distributed network of sensors running a number
+ of data capture and analysis tools.
+ These sensors can:
+\end_layout
+
+\begin_layout Quote
+- Interact with attackers to discover what activity they are attempting
+ 
+\end_layout
+
+\begin_layout Quote
+- Capture full payloads and classify them 
+\end_layout
+
+\begin_layout Quote
+- Characterize scan traffic to know the reputation of the traffic he is
+ routing and mitigate the malicious activities originating from their customers.
+ 
+\end_layout
+
+\begin_layout Standard
+And this information are merged with logs, statistics and reports to have
+ an exhaustive view of the threads and reduce the false positives.
+\end_layout
+
+\begin_layout Paragraph
+Dshield
+\end_layout
+
+\begin_layout Standard
+The lists of Dshield are public and they are generated using only the firewall
+ logs of the users 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Dshield-about"
+
+\end_inset
+
+, the precision and the quality is less good than for Arbor but there is
+ however a small analyze because Dshield provide two lists: the first one
+ is a full dump of the today's information, no filtered at all and contains
+ around one million entries, and many false positives like private address.
+ But this list stays interesting because of the big amount of IPs it contains
+ and it is useful to correlate it with other sources.
+ 
+\end_layout
+
+\begin_layout Standard
+The second contains only the "Top 100" of the daily dump and less false
+ positive but should not be used as blocklist says Dshield.
+ 
+\end_layout
+
+\begin_layout Paragraph
+abuse.ch ZeuS Tracker
+\end_layout
+
+\begin_layout Standard
+This list is only concentrated on one unique thread: ZeuS.
+ On the FAQ, ZeuS is described like this
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ZeuS-faq"
+
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Quotation
+ZeuS (also known as Zbot / WSNPoem) is a crimeware kit, which steals credentials
+ from various online services like social networks, online banking accounts,
+ ftp accounts, email accounts and other (phishing).
+ The web admin panel can be bought for 700$ (source: RSA Security 4/21/2008)
+ and the exe builder for 4'000$ (source: Prevx 3/15/2009).
+\end_layout
+
+\begin_layout Standard
+The detection of ZeuS Command&Control servers is done by traffic sniffing
+ and study of the captured (in Honeypots) Zeus clients.
+ This list contains all known ZeuS Command&Control servers and is expected
+ to be used as a blocklist, it is highly reliable.
+ 
+\end_layout
+
+\begin_layout Paragraph
+Shadowserver 
+\end_layout
+
+\begin_layout Standard
+The mission of the Shadowserver Foundation is presented like this on the
+ website: 
+\end_layout
+
+\begin_layout Quote
+The Shadowserver Foundation is an all volunteer watchdog group of security
+ professionals that gather, track, and report on malware, botnet activity,
+ and electronic fraud.
+ It is the mission of the Shadowserver Foundation to improve the security
+ of the Internet by raising awareness of the presence of compromised servers,
+ malicious attackers, and the spread of malware.
+ 
+\end_layout
+
+\begin_layout Standard
+They are working the same way as Arbor by providing reports on particular
+ AS, only to the members but they does not have to pay for it.
+\end_layout
+
+\begin_layout Paragraph
+Abusix
+\end_layout
+
+\begin_layout Standard
+It is completely different: Abusix does not provide list but permit to find
+ easily the abuse address of a provider by the IP address of the attacker,
+ will send a mail to this address and tell what the problem is and on what
+ IP address.
+ The data coming from Abusix are usually good but should be verified because
+ it is always possible to report a false positive.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This raw-datasets will be aggregated and analyzed to see their evolution
+ in the time and generate statistics.
 \end_layout
 
 \begin_layout Subsection
@@ -392,21 +550,53 @@ Threats
 \end_layout
 
 \begin_layout Standard
-In the past, the malwares were often used to beak a computer or make him
- crash.
- But now this activity is a real business with organizations doing malwares,
- administrating Botnets and selling their competencies.
- 
+Internet has always been an interesting place for the cybercriminals: virus
+ and attack on Information Systems exists since the computers exist but
+ now that almost everybody can have an Internet access (with a computer
+ or a mobile device) it is a way more easy for the attackers to gain access
+ to more computer: for a vast majority of the population IT security is
+ absolutely not in their scope and they have no clue on it.
 \end_layout
 
 \begin_layout Standard
-Internet has always been an interesting place for the bad guys: Virus and
- attack on Information Systems exists since the computers exist but now
- that almost everybody can have an Internet access (with a computer or a
- mobile device).
- It is also a way more easy for the attackers to gain access to more computer:
- for a vast majority of the population IT security is absolutely not in
- their scope and they have no clue on it.
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the past, the malwares were often used to beak a computer or make them
+ crash.
+ Not anymore: already in 2007, Kaspersky proclaim the 
+\emph on
+death of "non-profit" malicious software
+\emph default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "non-profit-malware"
+
+\end_inset
+
+.
+ Now this activity is a real business with organizations doing malwares,
+ administrating Botnets for their own needs or renting a part of the botnet
+ to clients 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sell botnet"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -421,9 +611,9 @@ Botnet
 
 \begin_layout Standard
 A botnet is a network of devices (Bots) infected by a malware which are
- controlled by a Command & Control Server and administrated by a Bot master.
- The Bot master is often an organization which sell a certain amount of
- infected computers to performs suspicious activities.
+ controlled by a Command & Control Server and administrated by a Botmaster.
+ The Botmaster is often an organization which rent a certain amount of infected
+ computers to performs suspicious activities.
  
 \end_layout
 
@@ -465,6 +655,17 @@ Botnet - Basics
 \begin_layout Standard
 A botnet may be used to perform DDOS attack on servers, exchange data, provide
  phishing sites, send Spam, distribute Malwares and many other.
+ 
+\end_layout
+
+\begin_layout Standard
+The big advantage for the cybercriminals is that they are (virtually) invisible
+ because they never attack directly their targets and are never seen as
+ attacker in the logfiles.
+ An other advantage is that it costs almost nothing to them: they does not
+ need to earn thousand computers, they just need to develop a malware and
+ let it working.
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -489,28 +690,36 @@ As we can see, the communication is the key of a Botnet.
  We can easily understand that if we are able to stop the communication
  between the master and the bots, or know the members of the botnet and
  do not browse on websites hosted on them, the botnet will be armless.
+ This techniques are called black-holing: all the data coming or to the
+ designated hosts will be silently dropped.
+ 
 \end_layout
 
 \begin_layout Subsection
-Monitoring of the network
+Monitoring the network
 \end_layout
 
 \begin_layout Standard
-Peering is fine but if an ISP is routing a lot of suspicious traffic he
- may be blacklisted by other ISPs...
- even if this traffic comes from an other ISP! It is so a necessity to have
- an idea of what for traffic we are routing.
+As we can see, there is a gap between the world where everybody will peer
+ together without any control, just to make Internet faster and the real
+ world where there is Botnets and companies selling those to perform DDoS,
+ send Spams and provide phishing websites.
+ We need a way to be able to know what is happening in his network and respond
+ to the attacks.
+ 
+\end_layout
+
+\begin_layout Standard
+An other point to keep in good memory is that the Internet is based on confidenc
+e: if an ISP decide that he does not care what is happening on his network
+ he may be blacklisted by the other ISPs or at least his bandwidth will
+ be reduced, even if the the suspicious traffic is originating from a third
+ ISP.
+ That is why it is a necessity for each Internet operator to know what for
+ traffic he is routing.
  This task is critical for every ISP and of course for the satellite operators
- too: they provide an Internet access to their customers (which may be ISP
- too).
- 
-\end_layout
-
-\begin_layout Standard
-The satellite operators announce their proper prefixes but also prefixes
- of other ISPs.
- As every classical ISP, they need to monitor the security of their network.
- 
+ too because they provide an Internet access to their customers (which may
+ be ISP too).
 \end_layout
 
 \begin_layout Standard
@@ -521,36 +730,26 @@ The satellite operators announce their proper prefixes but also prefixes
 \end_layout
 
 \begin_layout Standard
-A ranking system is very useful for every ISP which want to know the reputation
- of the traffic he is routing and mitigate the malicious activities originating
- from their customers.
- 
+To know the reputation of the traffic he is routing and mitigate the malicious
+ activities originating from their customers, an ISP can for example use
+ a ranking system based on datasets of suspicious activities.
 \end_layout
 
 \begin_layout Standard
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-There are at least three goals which can be achieved by the ranking: 
+There are at least three goals which can be achieved by using the results
+ of the ranking: 
 \end_layout
 
 \begin_layout Itemize
-Disrupting the Malware C&C communication: 
+Disrupting the malware Command&Control communication: 
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-drop all the traffic from an AS (black holing)
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-lien
-\end_layout
+drop all the traffic from and/or to an AS or a network (blackholing)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "blackhole-malware"
 
 \end_inset
 
@@ -558,8 +757,8 @@ lien
 \end_layout
 
 \begin_layout Itemize
-modify the performance / bandwidth of the traffic coming from the C&C (traffic
- shaping)...
+modify the performance and/or the bandwidth of the traffic coming from and
+ to the C&C server (traffic shaping)
 \end_layout
 
 \end_deeper
@@ -569,24 +768,13 @@ Limiting the
 effectiveness
 \emph default
  of the Botnet, reduce the propagation of the malware by informing the other
- ISPs, the customers
+ ISPs or the customers that a particular AS is a bad peer or that the websites
+ hosted there should not be trusted
 \end_layout
 
 \begin_layout Itemize
-Assessment between ISPs (the ranking can be influenced by other ISPs) and
- also improving/limiting IP peering.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-To be able to monitor a network, we need raw datasets.
+Assessment between ISPs: the ranking can be influenced by other ISPs and
+ it is possible to improve or limit the peering with an other ISP 
 \end_layout
 
 \begin_layout Subsection
@@ -656,13 +844,6 @@ For classification, the least common denominator is most of the time used
  Analysis and ranking calculation depends on the dataset quality: the more
  the quality is good, the more the dataset has an impact on the ranking.
  The ISPs have an influence on the ranking too through a voting system
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
@@ -3095,7 +3276,7 @@ key "p2p-botnet"
 \begin_inset CommandInset href
 LatexCommand href
 name "P2P Botnet"
-target "http://www.usenix.org/events/hotbots07/tech/full_papers/.../wang.pdf"
+target "http://honeyblog.org/archives/44-Walowdac-Analysis-of-a-Peer-to-Peer-Botnet.html"
 
 \end_inset
 
@@ -3114,6 +3295,132 @@ key "RIS"
 LatexCommand href
 name "Routing Information Service"
 target "http://www.ripe.net/projects/ris/index.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Dshield-about"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "About Dshield"
+target "http://www.dshield.org/about.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Shadowserver-mission"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Shadowserver Mission"
+target "http://www.shadowserver.org/wiki/pmwiki.php/Shadowserver/Mission"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Arbor-faq"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "FAQ Arbor"
+target "https://atlas.arbor.net/faq/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "ZeuS-faq"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "FAQ ZeuS"
+target "https://zeustracker.abuse.ch/faq.php"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "non-profit-malware"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Kaspersky Security Bulletin 2007"
+target "http://www.kaspersky.com/reading_room?chapter=207716662"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "sell botnet"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Botnet price for hourly hire on par with cost of two pints"
+target "http://www.zdnet.co.uk/news/security-threats/2010/05/25/botnet-price-for-hourly-hire-on-par-with-cost-of-two-pints-40089028/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "blackhole-malware"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Blackhole your malware"
+target "http://www.theregister.co.uk/2010/08/13/sysadmin_black_hole/"
 
 \end_inset
 

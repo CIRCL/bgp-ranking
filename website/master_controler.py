@@ -47,10 +47,10 @@ class MasterControler():
             for asn in splitted_asns:
                 if asn.isdigit():
                     self.report.prepare_graphe_js(asn)
+                    # as_graph_infos : [ipv4, ipv6, dates, first_date, last_date]
                     as_graph_infos = self.report.graph_infos
-                    g.add_line(as_graph_infos[0], asn + ' IPv4')
-                    g.add_line(as_graph_infos[1], asn + ' IPv6')
-                    g.set_labels(as_graph_infos[2])
+                    g.add_line([as_graph_infos[0], as_graph_infos[2]], asn + ' IPv4', as_graph_infos[3], as_graph_infos[4] )
+                    g.add_line([as_graph_infos[1], as_graph_infos[2]], asn + ' IPv6', as_graph_infos[3], as_graph_infos[4] )
                     title += asn + ' '
             if len(g.lines) > 0:
                 g.set_title(title)

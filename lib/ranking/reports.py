@@ -88,6 +88,8 @@ class Reports():
         if query is None: 
             query = History.query.filter(History.asn == int(asn)).order_by(desc(History.timestamp))
         histories = query.all()
+        first_date = histories[-1].timestamp.date()
+        last_date = histories[0].timestamp.date()
         date = None
         tmptable = []
         for history in histories:
@@ -106,7 +108,7 @@ class Reports():
             dates.append(t[0])
             ipv4.append(t[1])
             ipv6.append(t[2])
-        self.graph_infos = [ipv4, ipv6, dates]
+        self.graph_infos = [ipv4, ipv6, dates, first_date, last_date]
     
     def existing_source(self, source = None):
         if source is not None:

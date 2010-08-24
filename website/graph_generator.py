@@ -1,6 +1,10 @@
 from string import Template
+import datetime
 
 class GraphGenerator():
+    
+    empty = ''
+    
     template = Template("""
 window.onload = function ()
     {
@@ -32,16 +36,38 @@ window.onload = function ()
         self.title = None
         self.name = name
 
-    def add_line(self, line, key):
-        self.lines.append(line)
+    def add_line(self, line, key, first_date, last_date):
+        self.set_labels(first_date, last_date)
+        self.lines.append(self.line_values(line))
         self.keys.append(key)
     
+    def line_values(self, line):
+        to_return = []
+        values = line[0]
+        dates = line[1]
+        i = 0
+        for label in self.labels:
+            if label in dates:
+                to_return.append(values[i])
+                i +=1
+            else:
+                to_return.append(self.empty)
+        return to_return
+    
     # xaxis
-    def set_labels(self, labels):
-        self.labels = labels
+    def set_labels(self, first_date, last_date):
+        if self.first_date is None or self.last_date is None or first_date < self.first_date or last_date > self.last_date:
+            self.first_date = first_date
+            self.last_date = last_date
+            self.labels = []
+            current = first_date
+            while current <= last_date:
+                self.labels.append(current.strftime("%Y-%m-%d"))
+                dt += datetime.timedelta(days=1)
     
     def set_title(self, title):
         self.title = title
+
     
     def make_js(self):
         form_lines = ''

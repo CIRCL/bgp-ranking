@@ -74,7 +74,7 @@ class Reports():
                         if histo.get(h[1], None) is None:
                             histo[h[1]] = h
                         else:
-                            histo[h[1]][2] += h[2]
+                            histo[h[1]][2] += h[2] - 1 
         self.histories = []
         for t, h in histo.items():
             self.histories.append(h)
@@ -97,7 +97,8 @@ class Reports():
                 if history.source_source is not None:
                     tmptable.append([str(history.timestamp.date()), float(history.rankv4) * float(self.impacts[str(history.source_source)]) + 1.0 , float(history.rankv6)* float(self.impacts[str(history.source_source)]) + 1.0] )
                 else:
-                    tmptable.append([str(history.timestamp.date()), float(history.rankv4) + 1.0 , float(history.rankv6) + 1.0] )
+                    pass
+                    #tmptable.append([str(history.timestamp.date()), float(history.rankv4) + 1.0 , float(history.rankv6) + 1.0] )
         dates = []
         ipv4 = []
         ipv6 = []
@@ -125,7 +126,7 @@ class Reports():
             for desc in asn_descs:
                 query = None
                 if source is not None:
-                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == source, and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
+                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
                 else: 
                     query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1))))
                 nb_of_ips = query.count()
@@ -136,7 +137,7 @@ class Reports():
         asn_desc = ASNsDescriptions.query.filter_by(id=int(asn_desc_id)).first()
         if asn_desc is not None:
             if source is not None:
-                query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == source, and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
+                query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
             else:
                 query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1))))
             ip_descs = query.all()

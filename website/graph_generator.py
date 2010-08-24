@@ -88,10 +88,10 @@ window.onload = function ()
             form_lines += ', ' + self.repr_list(line)
             tooltips += line
             if len(line) > 0:
-                real_max = max(real_max, max(line))
+                real_max = max(real_max, max(filter (lambda a: a != self.empty, line)))
         form_keys = str(self.keys)
         real_min = 1.0
-        self.js = self.template.substitute( name = self.name, lines = form_lines, tooltips = str(tooltips), labels = str(self.labels), title = self.title, min = real_min, max = real_max, keys = str(self.keys) )
+        self.js = self.template.substitute( name = self.name, lines = form_lines, tooltips = self.repr_list(tooltips), labels = str(self.labels), title = self.title, min = real_min, max = real_max, keys = str(self.keys) )
 
 if __name__ == "__main__":
     g = GraphGenerator('plop')

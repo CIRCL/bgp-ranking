@@ -54,7 +54,9 @@ window.onload = function ()
                 i +=1
             else:
                 list.append(self.empty)
+        return list
 
+    def repr_list(self, list):
         to_return = '['
         for l in list:
             if len(to_return) > 1:
@@ -83,7 +85,7 @@ window.onload = function ()
         tooltips = []
         real_max = 0
         for line in self.lines:
-            form_lines += ', ' + str(line)
+            form_lines += ', ' + self.repr_list(line)
             tooltips += line
             if len(line) > 0:
                 real_max = max(real_max, max(line))

@@ -63,9 +63,8 @@ class MasterControler():
     def make_graph(self, infos):
         js_name = config.get('web','canvas_asn_name')
         g = GraphGenerator(js_name)
-        g.add_line(infos[0], 'IPv4')
-        g.add_line(infos[1], 'IPv6')
-        g.set_labels(infos[2])
+        g.add_line([infos[0], infos[2]], asn + ' IPv4', infos[3], infos[4] )
+        g.add_line([infos[1], infos[2]], asn + ' IPv6', infos[3], infos[4] )
         g.set_title(self.asn)
         g.make_js()
         self.js = g.js

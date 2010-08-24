@@ -117,7 +117,7 @@ class Reports():
 
     def get_asn_descs(self, asn, source = None):
         self.prepare_graphe_js(asn, source)
-        asn_db = ASNs.query.filter(History.asn == int(asn)).first()
+        asn_db = ASNs.query.filter(ASNs.asn == int(asn)).first()
         if asn_db is not None:
             asn_descs = ASNsDescriptions.query.filter(ASNsDescriptions.asn == asn_db).all()
         else:

@@ -3,7 +3,7 @@ import datetime
 
 class GraphGenerator():
     
-    empty = ''
+    empty = 'null'
     
     template = Template("""
 window.onload = function ()
@@ -30,6 +30,8 @@ window.onload = function ()
 """)
     
     def __init__(self, name):
+        self.first_date = None
+        self.last_date = None
         self.lines = []
         self.keys = []
         self.labels = None
@@ -42,16 +44,23 @@ window.onload = function ()
         self.keys.append(key)
     
     def line_values(self, line):
-        to_return = []
+        list = []
         values = line[0]
         dates = line[1]
         i = 0
         for label in self.labels:
             if label in dates:
-                to_return.append(values[i])
+                list.append(values[i])
                 i +=1
             else:
-                to_return.append(self.empty)
+                list.append(self.empty)
+
+        to_return = '['
+        for l in list:
+            if len(to_return) > 1:
+                to_return += ', '
+            to_return += str(l)
+        to_return += ']'
         return to_return
     
     # xaxis
@@ -63,7 +72,7 @@ window.onload = function ()
             current = first_date
             while current <= last_date:
                 self.labels.append(current.strftime("%Y-%m-%d"))
-                dt += datetime.timedelta(days=1)
+                current += datetime.timedelta(days=1)
     
     def set_title(self, title):
         self.title = title

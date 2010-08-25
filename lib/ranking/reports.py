@@ -88,7 +88,7 @@ class Reports():
         if query is None: 
             query = History.query.filter(History.asn == int(asn)).order_by(desc(History.timestamp))
         histories = query.all()
-        if histories is not None:
+        if histories is not None and len(histories) > 0:
             first_date = histories[-1].timestamp.date()
             last_date = histories[0].timestamp.date()
             date = None

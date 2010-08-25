@@ -17,7 +17,7 @@ class MasterControler():
 
     def prepare_index(self, source = None, limit = 50):
         self.report.best_of_day(limit, source)
-        self.index_table = self.report.histories
+        self.histories = self.report.histories
     
     def get_sources(self):
         self.report.get_sources()

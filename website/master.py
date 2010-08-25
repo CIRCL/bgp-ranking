@@ -42,13 +42,21 @@ class Master(object):
     def index(self, source = None):
         if self.controler is None:
             self.controler = MasterControler()
+        if len(source) == 0:
+            source = None
         self.template = Template(file = os.path.join(website_root, templates, 'index.tmpl'))
         self.init_template(source)
         self.controler.prepare_index(source)
-        self.template.histories = self.controler.index_table
+        self.template.histories = self.controler.histories
     
     def asn_details(self, asn = None, ip_details = None, source = None):
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
+        if len(asn) == 0:
+            asn = None
+        if len(ip_details) == 0:
+            ip_details = None
+        if len(source) == 0:
+            source = None
         self.init_template(source)
         if asn is not None and len(asn) > 0:
             asn = asn.lstrip('AS')
@@ -79,6 +87,10 @@ class Master(object):
     
     def comparator(self, asns = None, source = None):
         self.template = Template(file = os.path.join(website_root, templates, 'comparator.tmpl'))
+        if len(asn) == 0:
+            asn = None
+        if len(source) == 0:
+            source = None
         self.init_template(source)
         self.template.asns = asns
         if self.template.asns is not None:
@@ -97,6 +109,10 @@ class Master(object):
     reload.exposed = True
 
     def default(self, asn = None, source = None):
+        if len(asn) == 0:
+            asn = None
+        if len(source) == 0:
+            source = None
         if asn is None:
             self.index(source)
         else:

@@ -28,8 +28,7 @@ graphes_dir = os.path.join(root_dir,config.get('web','graphes'))
 class Master(object):
     
     def __init__(self):
-        self.controler = None
-        self.index()
+        self.controler = MasterControler()
     
     def init_template(self, source = None):
         self.template.rgraph_dir = rgraph_dir
@@ -39,32 +38,24 @@ class Master(object):
         self.template.sources = self.controler.sources
         self.template.source = source
     
-    def index(self, source = None):
-        if self.controler is None:
-            self.controler = MasterControler()
-        if source is not None and len(source) == 0:
-            source = None
-        self.template = Template(file = os.path.join(website_root, templates, 'index.tmpl'))
+    def asns(self, source = None, asn = None):
+        self.template = Template(file = os.path.join(website_root, templates, 'index_asn.tmpl'))
         self.init_template(source)
         self.controler.prepare_index(source)
         self.template.histories = self.controler.histories
+        return str(self.template)
+    asns.exposed = True
     
-    def asn_details(self, asn = None, ip_details = None, source = None):
+    def asn_details(self, source = None, asn = None, ip_details = None):
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
-        if len(asn) == 0:
-            asn = None
-        if len(ip_details) == 0:
-            ip_details = None
-        if len(source) == 0:
-            source = None
         self.init_template(source)
         if asn is not None and len(asn) > 0:
             asn = asn.lstrip('AS')
             if asn.isdigit():
                 self.template.asn = asn
                 self.controler.get_as_infos(asn, source)
-                self.template.asn_descs = self.controler.as_infos
-                if self.template.asn_descs is not None: 
+                if self.controler.as_infos is not None: 
+                    self.template.asn_descs = self.controler.as_infos
                     if len(self.template.asn_descs) > 0:
                         self.template.javascript = self.controler.js
                         self.template.js_name = self.controler.js_name
@@ -72,25 +63,18 @@ class Master(object):
                             self.template.ip_details = ip_details
                             self.controler.get_ip_infos(ip_details, source)
                             self.template.ip_descs = self.controler.ip_infos
+                            return str(self.template)
                     else:
-                        self.template.error = "No data to generate the graph."
+                        self.template.error = "No data for " + asn + " on " + source
                 else:
-                    self.index()
-                    self.template.error = asn + " not Found."
+                    self.template.error = asn + " not found in the database."
             else: 
-                self.index()
                 self.template.error = "Invalid query: " +  asn
-        else:
-            self.index()
-        return str(self.template)
+        return str(self.default())
     asn_details.exposed = True
     
-    def comparator(self, asns = None, source = None):
+    def comparator(self, source = None, asns = None):
         self.template = Template(file = os.path.join(website_root, templates, 'comparator.tmpl'))
-        if len(asn) == 0:
-            asn = None
-        if len(source) == 0:
-            source = None
         self.init_template(source)
         self.template.asns = asns
         if self.template.asns is not None:
@@ -101,23 +85,13 @@ class Master(object):
                 self.template.error = "No valid ASN in the list..."
         return str(self.template)
     comparator.exposed = True
-        
-    
+
     def reload(self):
-        self.controler = None
         return self.default()
     reload.exposed = True
 
-    def default(self, asn = None, source = None):
-        if len(asn) == 0:
-            asn = None
-        if len(source) == 0:
-            source = None
-        if asn is None:
-            self.index(source)
-        else:
-            self.asn_details(asn = asn, source = source)
-        return str(self.template)
+    def default(self):
+        return str(self.asns())
     default.exposed = True
 
 if __name__ == "__main__":

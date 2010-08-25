@@ -23,32 +23,10 @@
             <h1><a href="/">BGP Ranking</a></h1>
         </div>
         <div id="menu">
-            <a href="/reload">Reload the report</a>
-            #if $source is None
-            <a href="/comparator">Compare a list of ASNs</a>
-            #else
-            <a href="/comparator?source=${source}">Compare a list of ASNs</a>
-            #end if 
-            #if $asn is not None:
-            <form method="get" action="/asn_details">
-            #else
-            <form method="get" action="/">
-            #end if 
-                <div>
-                    <input type="text" name="asn" value="$asn"/>
-                    <select name="source">
-                        <option value="">Select a particular source</option>
-                        #for $s in $sources
-                            #if $source == $s
-                                <option value="${s}" selected>${s}</option>
-                            #else
-                                <option value="${s}">${s}</option>
-                            #end if
-                        #end for
-                    </select>
-                    <input type="submit" value="Submit"/>
-                </div>
-            </form>
+            <a href="/reload">Reload</a><br/>
+            #block menu
+                Menu Content
+            #end block menu
         </div>
         <div id="content">
             #if $error is not None

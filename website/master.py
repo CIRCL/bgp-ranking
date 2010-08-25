@@ -39,6 +39,8 @@ class Master(object):
         self.template.source = source
     
     def asns(self, source = None, asn = None):
+        if asn is not None and len(asn) > 0:
+            return asn_details(source, asn)
         self.template = Template(file = os.path.join(website_root, templates, 'index_asn.tmpl'))
         self.init_template(source)
         self.controler.prepare_index(source)
@@ -63,14 +65,15 @@ class Master(object):
                             self.template.ip_details = ip_details
                             self.controler.get_ip_infos(ip_details, source)
                             self.template.ip_descs = self.controler.ip_infos
-                        return str(self.template)
                     else:
                         self.template.error = "No data for " + asn + " on " + source
                 else:
                     self.template.error = asn + " not found in the database."
             else: 
                 self.template.error = "Invalid query: " +  asn
-        return str(self.default())
+            return str(self.template)
+        else:
+            return str(self.default())
     asn_details.exposed = True
     
     def comparator(self, source = None, asns = None):

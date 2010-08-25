@@ -27,9 +27,10 @@ class MasterControler():
         self.asn = int(asn)
         self.report.get_asn_descs(self.asn, source)
         self.as_infos = self.report.asn_descs_to_print
-        as_graph_infos = self.report.graph_infos
-        if as_graph_infos is not None:
-            self.make_graph(as_graph_infos)
+        if self.as_infos is not None:
+            as_graph_infos = self.report.graph_infos
+            if as_graph_infos is not None:
+                self.make_graph(as_graph_infos)
     
     def get_ip_infos(self, asn_desc = None, source = None):
         self.report.get_ips_descs(asn_desc, source)

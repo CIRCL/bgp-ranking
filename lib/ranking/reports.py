@@ -114,7 +114,7 @@ class Reports():
             self.graph_infos = None
     
     def existing_source(self, source = None):
-        if source is not None:
+        if source is not None and len(source) > 0:
             return Sources.query.get(unicode(source))
         return None
 
@@ -131,7 +131,7 @@ class Reports():
             self.asn_descs_to_print = []
             for desc in asn_descs:
                 query = None
-                if source is not None:
+                if source is not None and len(source) > 0:
                     query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
                 else: 
                     query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1))))
@@ -142,7 +142,7 @@ class Reports():
     def get_ips_descs(self, asn_desc_id, source = None):
         asn_desc = ASNsDescriptions.query.filter(ASNsDescriptions.id == int(asn_desc_id)).first()
         if asn_desc is not None:
-            if source is not None:
+            if source is not None and len(source) > 0:
                 query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
             else:
                 query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1))))

@@ -40,7 +40,7 @@ class Master(object):
     
     def asns(self, source = None, asn = None):
         if asn is not None and len(asn) > 0:
-            return asn_details(source, asn)
+            return self.asn_details(source, asn)
         self.template = Template(file = os.path.join(website_root, templates, 'index_asn.tmpl'))
         self.init_template(source)
         self.controler.prepare_index(source)

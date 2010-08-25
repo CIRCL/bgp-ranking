@@ -39,16 +39,13 @@ class Master(object):
         self.template.sources = self.controler.sources
         self.template.source = source
     
-    def index(self, asn = None, source = None):
+    def index(self, source = None):
         if self.controler is None:
             self.controler = MasterControler()
-        if asn is None:
-            self.template = Template(file = os.path.join(website_root, templates, 'index.tmpl'))
-            self.init_template(source)
-            self.controler.prepare_index(source)
-            self.template.histories = self.controler.index_table
-        else:
-            self.asn_details(asn = asn, source = source)
+        self.template = Template(file = os.path.join(website_root, templates, 'index.tmpl'))
+        self.init_template(source)
+        self.controler.prepare_index(source)
+        self.template.histories = self.controler.index_table
     
     def asn_details(self, asn = None, ip_details = None, source = None):
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
@@ -99,8 +96,11 @@ class Master(object):
         return self.default()
     reload.exposed = True
 
-    def default(self, source = None):
-        self.index(source)
+    def default(self, asn = None, source = None):
+        if asn is None:
+            self.index(source)
+        else:
+            self.asn_details(asn = asn, source = source)
         return str(self.template)
     default.exposed = True
 

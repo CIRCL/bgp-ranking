@@ -33,17 +33,17 @@ class Reports():
     
     def filter_query_source(self, query, limit):
         entries = query.count()
-        histories = {}
+        self.histories_by_asn = {}
         first = 0 
         last = limit
         while limit > 0:
             select = query[first:last]
             for s in select:
-                if histories.get(s.asn, None) is None:
+                if self.histories_by_asn.get(s.asn, None) is None:
                     if s.source_source is not None:
-                        histories[s.asn] = [s.timestamp, s.asn, s.rankv4 * float(self.impacts[str(s.source_source)]) + 1.0]
+                        self.histories_by_asn[s.asn] = [s.timestamp, s.asn, s.rankv4 * float(self.impacts[str(s.source_source)]) + 1.0]
                     else:
-                        histories[s.asn] = [s.timestamp, s.asn, s.rankv4 + 1.0]
+                        self.histories_by_asn[s.asn] = [s.timestamp, s.asn, s.rankv4 + 1.0]
                     limit -= 1
                     if limit <= 0:
                         break
@@ -51,7 +51,7 @@ class Reports():
             last = last + limit
             if first > entries:
                 break
-        return histories
+        return self.histories_by_asn
 
     #FIXME: query on IPv6
     def best_of_day(self, limit = 50, source = None):
@@ -131,10 +131,11 @@ class Reports():
             self.asn_descs_to_print = []
             for desc in asn_descs:
                 query = None
+                date = self.histories_by_asn[asn][0]
                 if source is not None and len(source) > 0:
-                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))))
+                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1)))))
                 else: 
-                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1))))
+                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1))))
                 nb_of_ips = query.count()
                 if nb_of_ips > 0:
                     self.asn_descs_to_print.append([desc.id, desc.timestamp, desc.owner, desc.ips_block, nb_of_ips])

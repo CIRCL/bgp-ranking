@@ -80,7 +80,7 @@ class Reports():
             self.histories.append(h)
         self.histories.sort(key=lambda x:x[2], reverse=True )
     
-    def asn_histo_query(self, source = None):
+    def asn_histo_query(self, asn, source = None):
         query = None
         s = self.existing_source(source)
         if s is not None:
@@ -90,7 +90,7 @@ class Reports():
         return query
 
     def prepare_graphe_js(self,  asn, source = None):
-        query = self.asn_histo_query(source)
+        query = self.asn_histo_query(asn, source)
         histories = query.all()
         if histories is not None and len(histories) > 0:
             first_date = histories[-1].timestamp.date()
@@ -122,6 +122,13 @@ class Reports():
             return Sources.query.get(unicode(source))
         return None
 
+    def ip_desc_query(self, asn_id, source, date):
+        if source is not None and len(source) > 0:
+            query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), and_(IPsDescriptions.asn == asn_id, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1)))))
+        else: 
+            query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_id, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1))))
+        return query
+
     def get_asn_descs(self, asn, source = None):
         asn_db = ASNs.query.filter(ASNs.asn == int(asn)).first()
         if asn_db is not None:
@@ -134,27 +141,20 @@ class Reports():
             self.prepare_graphe_js(asn, source)
             self.asn_descs_to_print = []
             for desc in asn_descs:
-                last_histo = self.asn_histo_query(source).first()
+                last_histo = self.asn_histo_query(asn, source).first()
                 if last_histo is not None:
-                    date = last_histo.timestamp
-                    if source is not None and len(source) > 0:
-                        query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1)))))
-                    else: 
-                        query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1))))
+                    query = ip_desc_query(desc, source, last_histo.timestamp)
                     nb_of_ips = query.count()
                     if nb_of_ips > 0:
                         self.asn_descs_to_print.append([desc.id, desc.timestamp, desc.owner, desc.ips_block, nb_of_ips])
 
     def get_ips_descs(self, asn_desc_id, source = None):
         asn_desc = ASNsDescriptions.query.filter(ASNsDescriptions.id == int(asn_desc_id)).first()
+        ip_descs = None
         if asn_desc is not None:
-            last_histo = self.asn_histo_query(source).first()
+            last_histo = self.asn_histo_query(asn_desc.asn_asn,source).first()
             if last_histo is not None:
-                date = last_histo.timestamp
-                if source is not None and len(source) > 0:
-                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1)))))
-                else:
-                    query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_desc, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1))))
+                query = ip_desc_query(desc, source, last_histo.timestamp)
                 ip_descs = query.all()
         else:
             ip_descs = None

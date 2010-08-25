@@ -58,7 +58,7 @@ class Master(object):
                 self.controler.get_as_infos(asn, source)
                 if self.controler.as_infos is not None: 
                     self.template.asn_descs = self.controler.as_infos
-                    if len(self.template.asn_descs) > 0:
+                    if len(self.template.asn_descs) is not None:
                         self.template.javascript = self.controler.js
                         self.template.js_name = self.controler.js_name
                         if ip_details is not None and ip_details.isdigit():

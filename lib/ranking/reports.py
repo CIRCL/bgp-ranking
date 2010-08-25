@@ -88,27 +88,30 @@ class Reports():
         if query is None: 
             query = History.query.filter(History.asn == int(asn)).order_by(desc(History.timestamp))
         histories = query.all()
-        first_date = histories[-1].timestamp.date()
-        last_date = histories[0].timestamp.date()
-        date = None
-        tmptable = []
-        for history in histories:
-            prec_date = date
-            date = history.timestamp.date()
-            if date != prec_date:
-                #FIXME: legacy code, to support the first version of the database: the source was not saved
-                if history.source_source is not None:
-                    tmptable.append([str(history.timestamp.date()), float(history.rankv4) * float(self.impacts[str(history.source_source)]) + 1.0 , float(history.rankv6)* float(self.impacts[str(history.source_source)]) + 1.0] )
-                else:
-                    tmptable.append([str(history.timestamp.date()), float(history.rankv4) + 1.0 , float(history.rankv6) + 1.0] )
-        dates = []
-        ipv4 = []
-        ipv6 = []
-        for t in reversed(tmptable):
-            dates.append(t[0])
-            ipv4.append(t[1])
-            ipv6.append(t[2])
-        self.graph_infos = [ipv4, ipv6, dates, first_date, last_date]
+        if histories is not None:
+            first_date = histories[-1].timestamp.date()
+            last_date = histories[0].timestamp.date()
+            date = None
+            tmptable = []
+            for history in histories:
+                prec_date = date
+                date = history.timestamp.date()
+                if date != prec_date:
+                    #FIXME: legacy code, to support the first version of the database: the source was not saved
+                    if history.source_source is not None:
+                        tmptable.append([str(history.timestamp.date()), float(history.rankv4) * float(self.impacts[str(history.source_source)]) + 1.0 , float(history.rankv6)* float(self.impacts[str(history.source_source)]) + 1.0] )
+                    else:
+                        tmptable.append([str(history.timestamp.date()), float(history.rankv4) + 1.0 , float(history.rankv6) + 1.0] )
+            dates = []
+            ipv4 = []
+            ipv6 = []
+            for t in reversed(tmptable):
+                dates.append(t[0])
+                ipv4.append(t[1])
+                ipv6.append(t[2])
+            self.graph_infos = [ipv4, ipv6, dates, first_date, last_date]
+        else:
+            self.graph_infos = None
     
     def existing_source(self, source = None):
         if source is not None:

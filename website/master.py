@@ -73,7 +73,7 @@ class Master(object):
             else: 
                 self.template.error = "Invalid query: " +  asn
             if self.template.javascript is None:
-                self.template.error = "No data available to generate the graph for "+ asn + " on " + source
+                self.template.error = "No data available to generate the graph for "+ asn
             return str(self.template)
         else:
             return str(self.default())

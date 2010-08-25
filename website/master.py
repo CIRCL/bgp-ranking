@@ -42,7 +42,7 @@ class Master(object):
     def index(self, source = None):
         if self.controler is None:
             self.controler = MasterControler()
-        if len(source) == 0:
+        if source is not None and len(source) == 0:
             source = None
         self.template = Template(file = os.path.join(website_root, templates, 'index.tmpl'))
         self.init_template(source)

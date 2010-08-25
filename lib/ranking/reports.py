@@ -143,7 +143,7 @@ class Reports():
             for desc in asn_descs:
                 last_histo = self.asn_histo_query(asn, source).first()
                 if last_histo is not None:
-                    query = self.ip_desc_query(desc, source, last_histo.timestamp)
+                    query = self.ip_desc_query(desc.asn_asn, source, last_histo.timestamp)
                     nb_of_ips = query.count()
                     if nb_of_ips > 0:
                         self.asn_descs_to_print.append([desc.id, desc.timestamp, desc.owner, desc.ips_block, nb_of_ips])
@@ -154,7 +154,7 @@ class Reports():
         if asn_desc is not None:
             last_histo = self.asn_histo_query(asn_desc.asn_asn,source).first()
             if last_histo is not None:
-                query = self.ip_desc_query(desc, source, last_histo.timestamp)
+                query = self.ip_desc_query(asn_desc.asn_asn, source, last_histo.timestamp)
                 ip_descs = query.all()
         else:
             ip_descs = None

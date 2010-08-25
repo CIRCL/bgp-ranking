@@ -72,6 +72,8 @@ class Master(object):
                     self.template.error = asn + " not found in the database."
             else: 
                 self.template.error = "Invalid query: " +  asn
+            if self.template.javascript is None:
+                self.template.error = "No data available to generate the graph for "+ asn + " on " + source
             return str(self.template)
         else:
             return str(self.default())

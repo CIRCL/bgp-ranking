@@ -126,7 +126,7 @@ class Reports():
         else:
             asn_descs = None
         self.asn_descs_to_print = None
-        if asn_descs is not None:
+        if asn_descs is not None and len(asn_descs) > 0:
             self.asn_descs_to_print = []
             for desc in asn_descs:
                 query = None

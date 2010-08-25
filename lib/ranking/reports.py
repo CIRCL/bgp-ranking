@@ -119,14 +119,15 @@ class Reports():
         return None
 
     def get_asn_descs(self, asn, source = None):
-        self.prepare_graphe_js(asn, source)
         asn_db = ASNs.query.filter(ASNs.asn == int(asn)).first()
         if asn_db is not None:
             asn_descs = ASNsDescriptions.query.filter(ASNsDescriptions.asn == asn_db).all()
         else:
             asn_descs = None
         self.asn_descs_to_print = None
+        self.graph_infos = None
         if asn_descs is not None and len(asn_descs) > 0:
+            self.prepare_graphe_js(asn, source)
             self.asn_descs_to_print = []
             for desc in asn_descs:
                 query = None

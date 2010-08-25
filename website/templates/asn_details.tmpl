@@ -6,6 +6,25 @@
 #attr javascript = None
 #attr asn_descs = []
 
+#block menu
+    <form method="get" action="/asn_details">
+        <div>
+            <input type="text" name="asn" value="$asn"/>
+            <select name="source">
+                <option value="">Select a particular source</option>
+                #for $s in $sources
+                    #if $source == $s
+                        <option value="${s}" selected>${s}</option>
+                    #else
+                        <option value="${s}">${s}</option>
+                    #end if
+                #end for
+            </select>
+            <input type="submit" value="Submit"/>
+        </div>
+    </form>
+#end block menu
+
 #block main_content
     </style>
     #if $javascript is not None

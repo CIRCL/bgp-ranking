@@ -63,7 +63,7 @@ class Master(object):
                             self.template.ip_details = ip_details
                             self.controler.get_ip_infos(ip_details, source)
                             self.template.ip_descs = self.controler.ip_infos
-                            return str(self.template)
+                        return str(self.template)
                     else:
                         self.template.error = "No data for " + asn + " on " + source
                 else:

@@ -35,7 +35,6 @@ class MasterControler():
         self.report.get_ips_descs(asn_desc, source)
         self.ip_infos = self.report.ip_descs_to_print
     
-    #FIXME: what if len(labels) != len(line)
     def comparator(self, asns = None):
         js_name = config.get('web','canvas_comparator_name')
         if asns is None:

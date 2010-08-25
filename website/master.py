@@ -50,6 +50,7 @@ class Master(object):
     def asn_details(self, asn = None, ip_details = None, source = None):
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
         self.init_template(source)
+        self.template.javascript = self.template.js_name = self.template.ip_details = self.template.ip_descs = None
         if asn is not None and len(asn) > 0:
             asn = asn.lstrip('AS')
             if asn.isdigit():

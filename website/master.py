@@ -26,6 +26,10 @@ from master_controler import MasterControler
 
 graphes_dir = os.path.join(root_dir,config.get('web','graphes'))
 
+def handle_error():
+    cherrypy.response.status = 500
+    cherrypy.response.body = ["<html><body>Sorry, an error occured</body></html>"]
+
 class Master(object):
     
     _cp_config = {'request.error_response': handle_error}
@@ -105,10 +109,6 @@ class Master(object):
 
 def error_page_404(status, message, traceback, version):
     return "Error %s - This page does not exist." % status
-    
-def handle_error():
-    cherrypy.response.status = 500
-    cherrypy.response.body = ["<html><body>Sorry, an error occured</body></html>"]
 
 if __name__ == "__main__":
     cherrypy.config.update({'error_page.404': error_page_404})

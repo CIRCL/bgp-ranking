@@ -1,4 +1,4 @@
-#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -60,10 +60,6 @@ theorems-ams
 
 \begin_body
 
-\begin_layout Standard
-
-\end_layout
-
 \begin_layout Title
 BGP AS / ISP Security Ranking
 \end_layout
@@ -89,7 +85,7 @@ today
 \end_layout
 
 \begin_layout Standard
-\begin_inset VSpace 5cm
+\begin_inset VSpace 4cm
 \end_inset
 
 
@@ -106,6 +102,22 @@ For an Internet Service Provider, AS numbers are a logical representation
  In order to provide an improved security view on those AS numbers, a trust
  ranking scheme will be implemented based on existing datasets of compromised
  systems, malware C&C IP and existing datasets of the ISPs.
+\end_layout
+
+\begin_layout Abstract
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+BGP ranking is a free software to calculate the security ranking of a specific
+ AS number.
+ The system is gathering external datasources (e.g.
+ dshield, shadowserver, Arbor ATLAS) to calculate the ranking over time.
+ The purpose is to show the malicious activities of a specific AS and maybe
+ limits its impact on other ASes.
 \end_layout
 
 \begin_layout Standard
@@ -788,7 +800,7 @@ Assessment between ISPs: the ranking can be influenced by other ISPs and
 \end_layout
 
 \begin_layout Standard
-To monitor properly the network, we need to aggregate informations comming
+To monitor properly the network, we need to aggregate information coming
  from different sources and analyze it.
  
 \end_layout
@@ -798,13 +810,13 @@ Key points in the analysis
 \end_layout
 
 \begin_layout Standard
-The data are coming from differents sources, it is important because this
+The data are coming from different sources, it is important because this
  sources sources will cover different threads ant it will allow us to have
  a more global overview on the malicious ASNs.
 \end_layout
 
 \begin_layout Standard
-To classify properly the informations, the least common denominator, present
+To classify properly the information, the least common denominator, present
  in each datasets: CIDR block and / or ASN.
 \end_layout
 
@@ -814,7 +826,7 @@ Size and quality
 
 \begin_layout Standard
 As we saw, we have some poor-quality sources but with a lot of entries they
- are very usefull to see trends.
+ are very useful to see trends.
  The other, with an higher quality but less entries will be used to emphasize
  the trends of the first sources: they have already been analyzed and contains
  much less false positive.
@@ -844,7 +856,7 @@ Every dataset has his proper format, they are obviously incompatible from
  one data sources to another: we will find plain text, CSV and XML files.
  Some files contains only the ip addresses, some other the type of the attack
  and a timestamp.
- Some files are updated evey couple hours, most of them every 24 hours.
+ Some files are updated every couple hours, most of them every 24 hours.
  But the insertion in the database has to be same for every source.
 \end_layout
 
@@ -853,11 +865,11 @@ Solution
 \end_layout
 
 \begin_layout Standard
-Every source will have his proper module, extracting the needed informations
- of the files and return this informations to a standard interface which
+Every source will have his proper module, extracting the needed information
+ of the files and return this in formations to a standard interface which
  will insert it in the database.
  This way, the overhead induced by the new datasets will be highly reduced.
- More informations on this particular point 
+ More in formations on this particular point 
 \begin_inset CommandInset ref
 LatexCommand vpageref
 reference "sec:Modules"
@@ -875,7 +887,7 @@ Type of the information
 Last but not least, some of the datasets contains only information on a
  particular AS.
  We already spoke of this datasets: they are usually provided by companies
- selling this informations to ISPs.
+ selling this in formations to ISPs.
  This datasets may badly influence the results by increasing the weight
  of a particular AS.
  
@@ -900,10 +912,11 @@ It is actually not fully implemented but the goal will be to offer to each
 \end_layout
 
 \begin_layout Standard
-After all this theoritical part, we will now give you a small overview of
+After all this theoretical part, we will now give you a small overview of
  the system without too much details of the implementation.
- But it will allow you to have a better view of the principes and architecture
- of the system and on the requirements imposed by the future usages.
+ But it will allow you to have a better view of the basic principles and
+ the architecture of the system and on the requirements imposed by the future
+ usages.
 \end_layout
 
 \begin_layout Section
@@ -912,7 +925,7 @@ Implementation
 
 \begin_layout Standard
 After this exhaustive presentation of the context, it is now time to give
- some informations on the implementation and what are the requirements of
+ some information on the implementation and what are the requirements of
  the application.
  
 \end_layout
@@ -933,27 +946,26 @@ Highlights
 \end_layout
 
 \begin_layout Standard
-There are two requirement on this project: the code will be opensource and
- it has to be as fast as possible to allow to use the results on a corporate
- network.
+There are two requirement on this project: the code has to be opensource
+ and as fast as possible to allow to use the results on a corporate network.
 \end_layout
 
 \begin_layout Subsubsection
-Licence
+License
 \end_layout
 
 \begin_layout Standard
-The whole project is opensource because the purpose of the project is to
- allow every company interested by this project to use it.
+The whole project is opensource because its purpose is to allow every company
+ interested by this project to use it.
  But we also want that if this companies use the code and make modifications,
  they participate to the project.
  
 \end_layout
 
 \begin_layout Standard
-That's why we choose a GPL licence and more precisely the version 3 of the
+That's why we choose a GPL license and more precisely the version 3 of the
  Affero GPL.
- The advantage of this licence (Affero) is that if someone want to use the
+ The advantage of this license (Affero) is that if someone want to use the
  system and only allow the users to use it over the network, he will have
  to release the code 
 \begin_inset CommandInset citation
@@ -1001,8 +1013,12 @@ The code will be used to filter the network flow:
 \end_layout
 
 \begin_layout Itemize
-divert filtering: the packets will be stopped, send to the userspace, analyzed,
- modified, whatever and may be pushed back into the IP stack 
+
+\emph on
+divert filtering
+\emph default
+: the packets will be stopped, send to the userspace, analyzed, modified,
+ whatever and may be pushed back into the IP stack 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "divert_filter"
@@ -1013,7 +1029,11 @@ key "divert_filter"
 \end_layout
 
 \begin_layout Itemize
-blackhole filtering: the packet are silently dropped 
+
+\emph on
+blackhole filtering
+\emph default
+: the packet are silently dropped 
 \end_layout
 
 \begin_layout Standard
@@ -1024,16 +1044,18 @@ key "Flowspec"
 
 \end_inset
 
-: flow spec is a sort of Quality of Service in BGP, it allows for example
- to increase or decrease the priority of the traffic originating from a
- particular subnet or AS.
+: it is a Quality of Service but for the BGP protocol.
+ This RFC allows for example to increase or decrease the priority of the
+ traffic originating from a particular Subnet or AS.
  
 \end_layout
 
 \begin_layout Standard
 Flow spec can also be used to do ingress filtering on the border of the
- ISP infrastructure: it means to find the origin of the traffic, even if
- this traffic comes from
+ ISP infrastructure.
+ If the source IP address of a flux is not in the range announced by the
+ originating AS, the traffic will be discarded, even if this traffic comes
+ from
 \emph on
  'behind' an Internet Service Provider's (ISP) aggregation point
 \emph default
@@ -1044,16 +1066,7 @@ key "ingress_filter"
 
 \end_inset
 
- and apply rules on it.
- 
-\end_layout
-
-\begin_layout Standard
-It meens that the process of computing the ranking of an AS (and later of
- a subnet) has to be fast enough to allow the user to manipulate the traffic
- originating from a malicious source.
- This work has to be done almost in real time, depending on the frequence
- of the update of the sources.
+.
  
 \end_layout
 
@@ -1065,7 +1078,26 @@ It meens that the process of computing the ranking of an AS (and later of
 \end_layout
 
 \begin_layout Standard
-The solution is to do a 
+The first consequence is that the process of computing the ranking of an
+ AS (and later of a subnet) has to be fast enough to allow the user to manipulat
+e the traffic originating from a malicious source when it is detected in
+ the datasets.
+ The definition of 
+\emph on
+fast enough
+\emph default
+ depends on the the frequency of the update of the sources.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The solution we decide to use is to do a 
 \emph on
 mapreduce
 \emph default
@@ -1089,47 +1121,161 @@ key "redis_official"
 .
 \end_layout
 
+\begin_layout Subsection
+High-level view
+\end_layout
+
 \begin_layout Standard
-\begin_inset Newpage newpage
+The ranking system can be reduced as two different parts: the aggregations
+ of the data and the ranking himself.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Aggregation
+\end_layout
+
+\begin_layout Standard
+The first data inserted into the database will be the one from the datasets,
+ typically the IP Addresses.
+ At the same time, two other processes will find in the database all the
+ new entries by looking for the one without RIS and Whois entries and fetch
+ the most up-to-date available information from the Internet.
+ 
+\end_layout
+
+\begin_layout Standard
+The most important information to fetch is the RIS Whois entry because it
+ contains the ASN announcing the IP and the block of the IP.
+ Both of this information are very important because even if the ranking
+ is actually only based on the ASNs, it is planned to implement a ranking
+ based on the subnets.
+ 
+\end_layout
+
+\begin_layout Subparagraph
+Note: 
+\end_layout
+
+\begin_layout Standard
+it is possible to deactivate the fetching of the whois entries in the configurat
+ion: it is only useful to have complementary information on a particular
+ IP address but this fetching takes quite a lot of time (see 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:Whois-server"
+
+\end_inset
+
+ for more information) and use an huge amount of space in the database.
+ 
+\end_layout
+
+\begin_layout Standard
+It is deactivated by default.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Ranking
+\end_layout
+
+\begin_layout Standard
+Based on the data in the database, we will be able to compute the ranking
+ 
+\emph on
+for one ASN
+\emph default
+ with the following formula: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
 \end_layout
 
-\begin_layout Subsection
-High level view
+\begin_layout Standard
+
+\size largest
+\begin_inset Formula $R=1+\frac{\left(SUM\left(Occurrences*source\_impact\right)*SUM\left(Vote\right)\right)}{AS\_Size}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Occurrences all the IPs from the ASN, by sources.
+ 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Each Occurrence per source is unique even if we see multiple the same IP
+ address for the same source.
+\end_layout
+
+\begin_layout Description
+Source_impact
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+ the value assigned to the source, it will depend of his quality
+\end_layout
+
+\begin_layout Description
+Vote the vote against this AS given by an other user of the system (actually
+ not implemented)
+\end_layout
+
+\begin_layout Description
+AS_Size The number of IPs announced by the AS when the ranking is computed
 \end_layout
 
 \begin_layout Standard
-The software follows the following states: 
+\begin_inset VSpace defskip
+\end_inset
+
+
 \end_layout
 
-\begin_layout Enumerate
-The ranking system aggregates:
+\begin_layout Standard
+We can see the same IP address among the different source, the formula is
+ not limiting that as this usually a good sign of malicious activities.
+ The information is validated by multiple sources.
 \end_layout
 
-\begin_deeper
-\begin_layout Enumerate
-the different datasets
+\begin_layout Subparagraph
+Note
 \end_layout
 
-\begin_layout Enumerate
-fetch the whois entries related to the data extracted of the datasets
+\begin_layout Standard
+Only The ISPs allowed to access to the system will are able to vote against
+ an other ISP
 \end_layout
 
-\end_deeper
-\begin_layout Enumerate
-The ISPs allowed to access to the system are able to vote against or for
- an other ISP, the information is merged into the system
-\end_layout
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
 
-\begin_layout Enumerate
-All this information allow the ranking system to compute an index
-\end_layout
-
-\begin_layout Enumerate
+\begin_layout Plain Layout
 This index will be used by the ISP to know if his customers are suspicious
  or not and investigate if necessary
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1155,7 +1301,6 @@ sideways true
 status open
 
 \begin_layout Plain Layout
-encour
 \begin_inset Graphics
 	filename basics/highlevel.dia
 	lyxscale 50

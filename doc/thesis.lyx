@@ -60,6 +60,10 @@ theorems-ams
 
 \begin_body
 
+\begin_layout Standard
+
+\end_layout
+
 \begin_layout Title
 BGP AS / ISP Security Ranking
 \end_layout
@@ -907,7 +911,14 @@ Implementation
 \end_layout
 
 \begin_layout Standard
-You can find directly the high-level diagram of the implementation
+After this exhaustive presentation of the context, it is now time to give
+ some informations on the implementation and what are the requirements of
+ the application.
+ 
+\end_layout
+
+\begin_layout Standard
+The high-level diagram of the implementation is available 
 \begin_inset CommandInset ref
 LatexCommand vpageref
 reference "fig:High-level"
@@ -922,38 +933,139 @@ Highlights
 \end_layout
 
 \begin_layout Standard
-The details of the implementation will follow in the next part but those
- points are mandatory:
+There are two requirement on this project: the code will be opensource and
+ it has to be as fast as possible to allow to use the results on a corporate
+ network.
 \end_layout
 
-\begin_layout Itemize
-Many of the datasets are not public but we wanted to release the software
- backend as free software/open source
+\begin_layout Subsubsection
+Licence
+\end_layout
+
+\begin_layout Standard
+The whole project is opensource because the purpose of the project is to
+ allow every company interested by this project to use it.
+ But we also want that if this companies use the code and make modifications,
+ they participate to the project.
+ 
+\end_layout
+
+\begin_layout Standard
+That's why we choose a GPL licence and more precisely the version 3 of the
+ Affero GPL.
+ The advantage of this licence (Affero) is that if someone want to use the
+ system and only allow the users to use it over the network, he will have
+ to release the code 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "mongodb-agpl"
+
+\end_inset
+
+.
+ It is not the case for the standard version of the GPL but for this project,
+ it is very important because the system will most of the time / always
+ be accessed through the network.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subparagraph
+Note:
+\end_layout
+
+\begin_layout Standard
+the code of the system is released opensource 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "BGP Ranking"
 
 \end_inset
 
+, not the datasets and the results, for the reasons exposed above.
+ 
+\end_layout
 
+\begin_layout Subsubsection
+Usages and consequences
+\end_layout
+
+\begin_layout Standard
+The code will be used to filter the network flow: 
 \end_layout
 
 \begin_layout Itemize
-Ranking of AS or Subnet must be fast enough to allow network divert/black
- hole filtering.
- (e.g.
- using Flowspec
+divert filtering: the packets will be stopped, send to the userspace, analyzed,
+ modified, whatever and may be pushed back into the IP stack 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "divert_filter"
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+blackhole filtering: the packet are silently dropped 
+\end_layout
+
+\begin_layout Standard
+To achieve this goal it is possible to use flow spec
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Flowspec"
 
 \end_inset
 
- to do ingress filtering on the border ISP infrastructure) 
+: flow spec is a sort of Quality of Service in BGP, it allows for example
+ to increase or decrease the priority of the traffic originating from a
+ particular subnet or AS.
+ 
 \end_layout
 
-\begin_layout Itemize
-Key/value store to allow 
+\begin_layout Standard
+Flow spec can also be used to do ingress filtering on the border of the
+ ISP infrastructure: it means to find the origin of the traffic, even if
+ this traffic comes from
+\emph on
+ 'behind' an Internet Service Provider's (ISP) aggregation point
+\emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ingress_filter"
+
+\end_inset
+
+ and apply rules on it.
+ 
+\end_layout
+
+\begin_layout Standard
+It meens that the process of computing the ranking of an AS (and later of
+ a subnet) has to be fast enough to allow the user to manipulate the traffic
+ originating from a malicious source.
+ This work has to be done almost in real time, depending on the frequence
+ of the update of the sources.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The solution is to do a 
 \emph on
 mapreduce
 \emph default
@@ -964,9 +1076,24 @@ key "Mapreduce"
 
 \end_inset
 
-: it must be possible to run as often as possible more than one process
+: it means to be able to run as often as possible more than one process
  on the same task.
- 
+ To do it, we will share the information between the processes using a key/value
+ storage server called redis 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "redis_official"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -3488,6 +3615,44 @@ target "http://www.theregister.co.uk/2010/08/13/sysadmin_black_hole/"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "mongodb-agpl"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Why AGPLv3 - MongoDb"
+target "http://blog.mongodb.org/post/103832439/the-agpl"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "divert_filter"
+
+\end_inset
+
+http://www.faqs.org/docs/Linux-mini/Divert-Sockets-mini-HOWTO.html#s4
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "ingress_filter"
+
+\end_inset
+
+http://www.ietf.org/rfc/rfc2827.txt
 \end_layout
 
 \begin_layout Standard

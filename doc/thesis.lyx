@@ -451,13 +451,9 @@ And this information are merged with logs, statistics and reports to have
  an exhaustive view of the threads and reduce the false positives.
 \end_layout
 
-\begin_layout Paragraph
-Dshield
-\end_layout
-
-\begin_layout Standard
-The lists of Dshield are public and they are generated using only the firewall
- logs of the users 
+\begin_layout Description
+Dshield The lists of Dshield are public and they are generated using only
+ the firewall logs of the users 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Dshield-about"
@@ -511,13 +507,9 @@ The detection of ZeuS Command&Control servers is done by traffic sniffing
  
 \end_layout
 
-\begin_layout Paragraph
-Shadowserver 
-\end_layout
-
-\begin_layout Standard
-The mission of the Shadowserver Foundation is presented like this on the
- website: 
+\begin_layout Description
+Shadowserver The mission of the Shadowserver Foundation is presented like
+ this on the website: 
 \end_layout
 
 \begin_layout Quote
@@ -535,15 +527,11 @@ They are working the same way as Arbor by providing reports on particular
  AS, only to the members but they does not have to pay for it.
 \end_layout
 
-\begin_layout Paragraph
-Abusix
-\end_layout
-
-\begin_layout Standard
-It is completely different: Abusix does not provide list but permit to find
- easily the abuse address of a provider by the IP address of the attacker,
- will send a mail to this address and tell what the problem is and on what
- IP address.
+\begin_layout Description
+Abusix It is completely different: Abusix does not provide list but permit
+ to find easily the abuse address of a provider by the IP address of the
+ attacker, will send a mail to this address and tell what the problem is
+ and on what IP address.
  The data coming from Abusix are usually good but should be verified because
  it is always possible to report a false positive.
  
@@ -836,13 +824,9 @@ y one.
  
 \end_layout
 
-\begin_layout Subparagraph
-Solution
-\end_layout
-
-\begin_layout Standard
-This differentiation will be done by using a weight on each entries: the
- best sources will have an high weight and the other a lower one.
+\begin_layout Description
+Solution This differentiation will be done by using a weight on each entries:
+ the best sources will have an high weight and the other a lower one.
  Like this, they will not be lost in the other datasets.
  
 \end_layout
@@ -860,14 +844,10 @@ Every dataset has his proper format, they are obviously incompatible from
  But the insertion in the database has to be same for every source.
 \end_layout
 
-\begin_layout Subparagraph
-Solution
-\end_layout
-
-\begin_layout Standard
-Every source will have his proper module, extracting the needed information
- of the files and return this in formations to a standard interface which
- will insert it in the database.
+\begin_layout Description
+Solution Every source will have his proper module, extracting the needed
+ information of the files and return this in formations to a standard interface
+ which will insert it in the database.
  This way, the overhead induced by the new datasets will be highly reduced.
  More in formations on this particular point 
 \begin_inset CommandInset ref
@@ -893,15 +873,11 @@ Last but not least, some of the datasets contains only information on a
  
 \end_layout
 
-\begin_layout Subparagraph
-Solution
-\end_layout
-
-\begin_layout Standard
-It is actually not fully implemented but the goal will be to offer to each
- ISP interested by this system to obtain an account on the website and manage
- this datasets on the way he wants: compare the datasets with the global
- data or have a view on the evolution of his ASN.
+\begin_layout Description
+Solution It is actually not fully implemented but the goal will be to offer
+ to each ISP interested by this system to obtain an account on the website
+ and manage this datasets on the way he wants: compare the datasets with
+ the global data or have a view on the evolution of his ASN.
 \end_layout
 
 \begin_layout Standard
@@ -988,12 +964,8 @@ key "mongodb-agpl"
 
 \end_layout
 
-\begin_layout Subparagraph
-Note:
-\end_layout
-
-\begin_layout Standard
-the code of the system is released opensource 
+\begin_layout Description
+Note the code of the system is released opensource 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "BGP Ranking"
@@ -1153,14 +1125,11 @@ The most important information to fetch is the RIS Whois entry because it
  
 \end_layout
 
-\begin_layout Subparagraph
-Note: 
-\end_layout
-
-\begin_layout Standard
-it is possible to deactivate the fetching of the whois entries in the configurat
-ion: it is only useful to have complementary information on a particular
- IP address but this fetching takes quite a lot of time (see 
+\begin_layout Description
+Note it is possible to deactivate the fetching of the whois entries in the
+ configuration: it is only useful to have complementary information on a
+ particular IP address but this fetching takes quite a lot of time (see
+ 
 \begin_inset CommandInset ref
 LatexCommand vpageref
 reference "sec:Whois-server"
@@ -1250,18 +1219,14 @@ AS_Size The number of IPs announced by the AS when the ranking is computed
 \end_layout
 
 \begin_layout Standard
-We can see the same IP address among the different source, the formula is
- not limiting that as this usually a good sign of malicious activities.
- The information is validated by multiple sources.
+We can see the same IP address among the different sources, the formula
+ is not limiting that as this is usually a good sign of malicious activities:
+ the information is validated by multiple sources.
 \end_layout
 
-\begin_layout Subparagraph
-Note
-\end_layout
-
-\begin_layout Standard
-Only The ISPs allowed to access to the system will are able to vote against
- an other ISP
+\begin_layout Description
+Note Only The ISPs allowed to access to the system will are able to vote
+ against other ISPs.
 \end_layout
 
 \begin_layout Standard
@@ -1357,9 +1322,8 @@ We have two types of data to store in this project:
 
 \begin_layout Itemize
 static information: they are written one time in the database and never
- updated/deleted after, only read.
- The performances are not really important concerning this information.
- We use a relational database.
+ updated/deleted after anymore, only read.
+ The performances are not really important, we use a relational database.
 \end_layout
 
 \begin_layout Itemize
@@ -1387,9 +1351,9 @@ key "SQLAlchemy-dbs"
 \end_inset
 
 .
- Be aware that depending on the database you will use, you might encount
+ Be aware that depending on the database you will use, you might experience
  some (performance) problems, mostly if you decide to use SQLite.
- PostgreSQL should work fine.
+ But PostgreSQL for example should work fine.
  
 \end_layout
 
@@ -1398,7 +1362,7 @@ This database contains actually all the static informations used by the
  ranking system.
  Static information means all the information extracted of the datasets
  and the whois entries, when they are in the database, they will never be
- modified.
+ modified anymore.
  The voting informations are also saved into this database as well as the
  history of the ranking used to generate the graphes.
  
@@ -1424,9 +1388,13 @@ key "active-record"
  simplify a lot the usage of the databases.
  The most important point is that we will never use any SQL Queries.
  On a security point of view, it will reduce the risk of SQL injections.
- Note that the users will never write anything in the database and have
- a read only access through the web interface: all the write process is
- done by the scripts we will explain in the next part of this document.
+ 
+\end_layout
+
+\begin_layout Description
+Note the users will never write anything in the database and have a read
+ only access through the web interface: all the write process is done by
+ the scripts we will explain in the next part of this document.
  
 \end_layout
 
@@ -1446,13 +1414,15 @@ Shared memory
 \begin_layout Standard
 The whole program use a lot of processes and most of them need to exchange
  information.
- It is possible to use a 
-\emph on
-classical
-\emph default
- shared memory between processes but it is a lot easier to put all the informati
-on in a shared database.
- The process which need this information will pick them, do his work and
+ It would be possible to use a classical shared memory between processes
+ but it is a lot easier to put all the information in a shared database
+ which will deal on his side with the problem of the simultaneous access
+ to the ressources.
+ 
+\end_layout
+
+\begin_layout Standard
+The process which need this information will pick them, do his work and
  give the result to the next process through the same or an other database.
  
 \end_layout
@@ -1469,6 +1439,13 @@ It is common that an IP address is present more than one time in a dataset,
  That is why a caching system is very useful to improve the performance
  of the software: it is absolutely unnecessary to fetch more than one time
  a particular whois entry for at least 24 hours.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1491,11 +1468,119 @@ The other usage of Redis is quite obvious: we need to be able to do a lot
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
+Redis provide a command called redis-benchmark, it gives the following results
+ with the code present on the master branch of today (27.08.2010) on our test
+ server: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
 
 \begin_layout Plain Layout
-more informations, links, stats 
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout LyX-Code
+
+\size small
+$ ./redis-benchmark -q 
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+PING: 45477.27 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+PING (multi bulk): 50545.45 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+SET: 53475.94 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+GET: 52408.38 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+INCR: 51287.18 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+LPUSH: 53545.45 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+LPOP: 52392.67 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+SADD: 52652.63 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+SPOP: 51020.41 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+LPUSH (again, in order to bench LRANGE): 53223.40 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+LRANGE (first 100 elements): 4835.59 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+LRANGE (first 300 elements): 1786.67 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+LRANGE (first 450 elements): 1249.69 requests per second
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+LRANGE (first 600 elements): 932.05 requests per second
 \end_layout
 
 \end_inset
@@ -1511,25 +1596,166 @@ more informations, links, stats
 \end_layout
 
 \begin_layout Standard
-Redis define several types of values the following are used in the software:
- 
-\end_layout
-
-\begin_layout Paragraph
-String
+The test server is a Intel(R) Xeon(R) (Quad Core) with 2.66GHz per core,
+ 8Gb RAM and running Ubuntu 10.4.
 \end_layout
 
 \begin_layout Standard
-it is the simplest type: key - value 
-\end_layout
+\begin_inset VSpace defskip
+\end_inset
 
-\begin_layout Paragraph
-Set 
+
 \end_layout
 
 \begin_layout Standard
-It is the same as a list but each element is unique.
+Redis define several types of values 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Redis-types"
+
+\end_inset
+
+ the following types are used in the software: 
+\end_layout
+
+\begin_layout Description
+String it is the simplest type: we just put into the database a key and
+ a value.
  
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout LyX-Code
+
+\size small
+$ ./redis-cli set mykey "my binary safe value"
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+OK
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+$ ./redis-cli get mykey
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+my binary safe value
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Set it is a list of elements but each element is unique
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout LyX-Code
+
+\size small
+$ ./redis-cli sadd myset 1
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+(integer) 1
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+$ ./redis-cli sadd myset 2
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+(integer) 1
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+$ ./redis-cli sadd myset 3
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+(integer) 1
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+$ ./redis-cli smembers myset
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+1.
+ 3
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+2.
+ 1
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+3.
+ 2
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -1551,83 +1777,99 @@ reference "fig:Technical-global-view"
 MySQL databases
 \end_layout
 
+\begin_layout Standard
+Two databases are in use: the first one contains only the data of the datasets.
+ The second one, the results of the ranking and the voting informations.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+improvement: merge the two databases
+\end_layout
+
+\begin_layout Plain Layout
+use the sources db in the ipdesc db 
+\end_layout
+
+\begin_layout Plain Layout
+use the ASN db in the histo db 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
-Database containing the data extracted from the datasets
+Data from the datasets
 \end_layout
 
 \begin_layout Standard
-The model of the database is the following: 
+The database contains the the following tables: 
 \end_layout
 
-\begin_layout Paragraph
-Table IPs
+\begin_layout Description
+IPs contains only the IPs extracted of the datasets.
+ For each entry, the IP is the primary key.
 \end_layout
 
-\begin_layout Standard
-contains only the IPs extracted of the datasets, for each entry, the IP
- is the primary key.
-\end_layout
-
+\begin_deeper
 \begin_layout Standard
 This table allow us to dump easily all the IPs we found in the datasets.
 \end_layout
 
-\begin_layout Paragraph
-Table IPsDescriptions
-\end_layout
-
-\begin_layout Standard
-for each ip found in the datasets, we create a new entry in this table.
+\end_deeper
+\begin_layout Description
+IPsDescriptions for each ip found in the datasets, we create a new entry
+ in this table.
  
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 The following information are extracted of the dataset, if they exists:
  
 \end_layout
 
 \begin_layout Itemize
-The name of the class where the ip is from.
- This name has to be unique for each class: it will be used for the ranking,
- more information on it later.
- 
+The name of the class where the ip is coming from.
+ This name has to be unique for each class: it will be used for the ranking
 \end_layout
 
 \begin_layout Itemize
-The time-stamp of the insertion into the database: it is most of the time
- the current day but it cam also be used to re import old datasets, more
- information on it later.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Problem: the ris-whois entries will be 
-\begin_inset Quotes eld
-\end_inset
-
-wrong
-\begin_inset Quotes erd
-\end_inset
-
- (their evolution is not saved)
-\end_layout
+The timestamp of the insertion into the database: it is most of the time
+ the current day but it can also be used to reimport old datasets, this
+ functionality is actually not implemented.
+ See 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:Importing-old-datasets"
 
 \end_inset
 
-
+ for more informations
 \end_layout
 
 \begin_layout Itemize
 The date of generation of the list: it is the date given by the file or
- the current day if we don't have enough information
+ set to the current day if we don't have enough information
 \end_layout
 
 \begin_layout Itemize
-The number of times the the same ip is present in the same dataset and we
- don't have any exact detection time-stamp
+The number of times the the same ip is present in the same dataset.
 \end_layout
 
+\begin_deeper
+\begin_layout Description
+Note if there is in the dataset a timestamp for each entry, we will create
+ a new description each time, even if the same IP is present more than once.
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 The type of the infection
 \end_layout
@@ -1637,8 +1879,7 @@ Other raw information given by the dataset
 \end_layout
 
 \begin_layout Standard
-The following information are set in the next part of the processing, more
- information on it later : 
+The following information are set in the next part of the processing: 
 \end_layout
 
 \begin_layout Itemize
@@ -1653,24 +1894,26 @@ The source of the whois entry
 Information on the ASN announcing the IP
 \end_layout
 
-\begin_layout Paragraph
-Table ASNs
-\end_layout
-
-\begin_layout Standard
-same as for the table IPs: the table contains only the ASNs and for each
+\end_deeper
+\begin_layout Description
+ASNs is the same as the IPs table: it contains only the ASNs and for each
  entry, the ASN is the primary key.
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 This table allow us to dump easily all the ASNs of all the IPS we found
  in the datasets.
 \end_layout
 
-\begin_layout Paragraph
-Table ASNsDescriptions
+\end_deeper
+\begin_layout Description
+ASNsDescriptions a new entry is created if there is any new information
+ of if an information is updated.
+ 
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 The following information are extracted of the RIS whois entries: 
 \end_layout
@@ -1687,22 +1930,101 @@ The IP block
 The source of the RIS whois entry
 \end_layout
 
-\begin_layout Subsubsection
-Database containing the informations used to vote and an history of the
- rankings
-\end_layout
-
+\begin_deeper
 \begin_layout Standard
+It will always be riswhois.ripe.net but in the future, we may decide to use
+ a BGP session directly on a router.
+ 
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-TODO
+move it to 'future improvements' ? 
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsubsection
+Ranking and Voting 
+\end_layout
+
+\begin_layout Standard
+The two tables used to display the graphes are the following: 
+\end_layout
+
+\begin_layout Description
+Sources contains only the names of the sources we can find in the database.
+ For each entry, the source name is the primary key.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+It is used to display the results by source.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+History contains the information needed to display the graphs and the one
+ used to compute a report
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+the ASN of this rank
+\end_layout
+
+\begin_layout Itemize
+the timestamp of the entry, set to the creation time
+\end_layout
+
+\begin_layout Itemize
+the rank in IPv4 and IPv6
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Note this rank is unbalanced: it allows us to modify the weight of each
+ source in real time
+\end_layout
+
+\begin_layout Description
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+IMPROVEMENT: change the weight through the website 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Standard
+There is also two other tables, user and votes.
+ They are actually not used but will allow us in a near future to implement
+ the voting functionality, for the authorized users.
+ 
+\end_layout
+
+\begin_layout Description
+Users user database, used for the login.
+ Contains only a user name and a password.
+ 
+\end_layout
+
+\begin_layout Description
+Votes Save the history of the votes, contains the ASN and the value of the
+ vote.
+ It will also be possible to put a commentary.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -2023,6 +2345,25 @@ Get Whois entries
 \end_layout
 
 \begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Ranking
+\end_layout
+
+\begin_layout Subsubsection
+Routing informations
+\end_layout
+
+\begin_layout Subsubsection
+Computing
+\end_layout
+
+\begin_layout Standard
 \begin_inset ERT
 status open
 
@@ -2078,16 +2419,54 @@ Technical global view
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
-Ranking
+Known bugs and problems
 \end_layout
 
 \begin_layout Subsubsection
-Routing informations
+Importing old datasets
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Importing-old-datasets"
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Subsubsection
-Computing
+\begin_layout Standard
+It is possible but not totally implemented and we will have a nasty problem:
+ the association between the IP and the ASN is based on the actual version
+ of the RIS Whois database.
+ This database evolve quite often.
+ If we want to be able to import old data we need also to implement a module
+ which will use the corresponding version of the BGP Routing table.
+ 
+\end_layout
+
+\begin_layout Standard
+We will have the same problem (and the same solution) to compute the ranking.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is possible to solve this problem but it will be quite complicated.
+ This functionality will be not implemented in a near future.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -2957,6 +3336,42 @@ Now your dataset will be automatically fetched and parsed.
 \end_layout
 
 \begin_layout Section
+Third party programms
+\end_layout
+
+\begin_layout Subsection
+Redis 
+\end_layout
+
+\begin_layout Standard
+config + explanations
+\end_layout
+
+\begin_layout Standard
+ram usage 
+\end_layout
+
+\begin_layout Standard
+-> vm ? yes/not
+\end_layout
+
+\begin_layout Standard
+config 
+\end_layout
+
+\begin_layout Standard
+-> auto save
+\end_layout
+
+\begin_layout Subsection
+Rgraph
+\end_layout
+
+\begin_layout Standard
+why 
+\end_layout
+
+\begin_layout Section
 Information
 \end_layout
 
@@ -3798,6 +4213,16 @@ key "ingress_filter"
 \end_inset
 
 http://www.ietf.org/rfc/rfc2827.txt
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Redis-types"
+
+\end_inset
+
+https://code.google.com/p/redis/wiki/IntroductionToRedisDataTypes
 \end_layout
 
 \begin_layout Standard

@@ -2036,10 +2036,29 @@ Fetching the datasets
 \end_layout
 
 \begin_layout Standard
-This part is quite obvious: if the datasets are freely available on the
- Internet, it is handy to automatically download them.
- Each dataset has his proper directory where the file is put.
+It is not the case for all of them but all the datasets freely available
+ on the internet will be automatically downloaded.
  
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+improvement: the other too...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When the download is finished, the process check if the file is new.
+ Only if the file is new, it will be moved in the directory checked by the
+ parsing process of this particular source.
+\end_layout
+
+\begin_layout Description
+Note there is one process for each source.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2047,15 +2066,27 @@ Parsing the datasets
 \end_layout
 
 \begin_layout Standard
-The role of the parser is simple: extract all the information of the datasets
- and put them into the database.
+As we know, the new files are copied in a special directory, for each source.
+ The parser check periodically this directory and if there is a new file,
+ the new file will be parsed.
  
 \end_layout
 
 \begin_layout Standard
-To do it, the parser check periodically the directory of his dataset and
- if there is a new file, he will parse it.
+The parser will extract all the information of the datasets and put them
+ into the database.
  
+\end_layout
+
+\begin_layout Description
+Note as for the fetching, there is one process for each source.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2078,95 +2109,82 @@ reference "sub:Write-a-new"
 \end_layout
 
 \begin_layout Standard
-After this part, the rest of the software does not need any human intervention
- (modules to write, changes in the configuration...) and will process the informati
-on given by the modules automatically.
-\end_layout
+\begin_inset VSpace defskip
+\end_inset
 
-\begin_layout Subsubsection
-Getting the RIS entries
+
 \end_layout
 
 \begin_layout Standard
-There are two different processes to get the RIS entries (diagram 
-\begin_inset CommandInset ref
-LatexCommand vpageref
-reference "fig:Get-RIS-Whois"
+When the parsing is finished, the the system will automatically fetch the
+ rest of the information he needs and there is neither futher module to
+ write nor any other action to procede: the raw information is processed
+ and computed automatically to generate the ranking and build the reports.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+split getting ris/whois entries and the fetching 
+\end_layout
+
+\begin_layout Plain Layout
+split the graphs 
+\end_layout
+
+\begin_layout Plain Layout
+new subsection for
+\end_layout
+
+\begin_layout Plain Layout
+- sorting 
+\end_layout
+
+\begin_layout Plain Layout
+- getting ris/whois
+\end_layout
+
+\begin_layout Plain Layout
+- fetching (ris)whois entries 
+\end_layout
 
 \end_inset
 
-): 
+
 \end_layout
 
-\begin_layout Itemize
-the first one extract of the database all the IPs without ASN and ask for
- each IP the corresponding entry in the cache database (1).
- If the entry is not there, the IP is pushed in the sharing database (2)
- and the server will query again the cache database later (3).
- 
-\begin_inset Newline newline
-\end_inset
-
-Note: It should never be the case but if the entry is not found at this
- time, the process will deffer maximum 5 times the check in the cache database:
- it avoid the deadlocks in the sub-processes and be able to close properly
- the application.
- Getting the cached informations
+\begin_layout Subsubsection
+Getting the (RIS) Whois entries
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-extract of the database all the IPs without ASN
-\end_layout
-
-\begin_layout Itemize
-ask for each IP the corresponding entry in the cache database (1).
+\begin_layout Standard
+This process does not do any network connexions with an other computer (redis
+ is running on localhost).
+ It will only ask to redis is there is the needed entry in the database
+ and ask for it if not.
+ If the entry is not found, the process ask periodically to redis if it
+ is there.
  
 \end_layout
 
-\begin_layout Itemize
-if the entry is not there:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-the IP is pushed in the sharing database (2)
-\end_layout
-
-\begin_layout Itemize
-the server will query again the cache database later (3).
-\end_layout
-
-\end_deeper
-\end_deeper
-\begin_layout Itemize
-Fetching the information
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-ask periodically the shared database (A) 
-\end_layout
-
-\begin_layout Itemize
-if there is a query:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-pass the query to the fetching function (B) which will fetch the entry (C)
+\begin_layout Description
+Note it is also multiprocessed but a little bit more complicated: each process
+ getting RIS entries will recieve a certain interval of IPsDescriptions.
+ This interval is based on the number of allowed processes (in the default
+ configuration, it is 4) and the number of RIS entries to fetch.
  
 \end_layout
 
-\begin_layout Itemize
-give it back (D)
+\begin_deeper
+\begin_layout Standard
+There is also a limit to the size of the interval: this way it is possible
+ to reduce the RAM usage without reducing the speed.
+ 
 \end_layout
 
-\begin_layout Itemize
-the Connector push it into the cache database (E)
-\end_layout
-
-\end_deeper
 \end_deeper
 \begin_layout Standard
 \begin_inset Float figure
@@ -2204,13 +2222,6 @@ Get RIS Whois entries
 
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
 \end_inset
 
 

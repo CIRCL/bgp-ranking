@@ -2176,44 +2176,11 @@ reference "sub:Write-a-new"
 \end_layout
 
 \begin_layout Standard
-When the parsing is finished, the the system will automatically fetch the
- rest of the information he needs and there is neither futher module to
- write nor any other action to procede: the raw information is processed
- and computed automatically to generate the ranking and build the reports.
+When the parsing is finished, the system will automatically fetch the rest
+ of the information it needs and there is neither futher module to write
+ nor any other action to procede: the raw information is processed and computed
+ automatically to generate the ranking and build the reports.
  
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-split getting ris/whois entries and the fetching 
-\end_layout
-
-\begin_layout Plain Layout
-split the graphs 
-\end_layout
-
-\begin_layout Plain Layout
-new subsection for
-\end_layout
-
-\begin_layout Plain Layout
-- sorting 
-\end_layout
-
-\begin_layout Plain Layout
-- getting ris/whois
-\end_layout
-
-\begin_layout Plain Layout
-- fetching (ris)whois entries 
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsubsection
@@ -2221,31 +2188,28 @@ Getting the (RIS) Whois entries
 \end_layout
 
 \begin_layout Standard
-This process does not do any network connexions with an other computer (redis
- is running on localhost).
- It will only ask to redis is there is the needed entry in the database
- and ask for it if not.
- If the entry is not found, the process ask periodically to redis if it
- is there.
+There are two processes: the first one for the RIS Whois entries and the
+ second for the whois entries.
  
 \end_layout
 
-\begin_layout Description
-Note it is also multiprocessed but a little bit more complicated: each process
- getting RIS entries will recieve a certain interval of IPsDescriptions.
- This interval is based on the number of allowed processes (in the default
- configuration, it is 4) and the number of RIS entries to fetch.
- 
-\end_layout
-
-\begin_deeper
 \begin_layout Standard
-There is also a limit to the size of the interval: this way it is possible
- to reduce the RAM usage without reducing the speed.
- 
+They are working like this: 
 \end_layout
 
-\end_deeper
+\begin_layout Enumerate
+Ask the redis database if there is an entry for the current IP
+\end_layout
+
+\begin_layout Enumerate
+If not, put the IP in the set of pending queries (there are two sets, the
+ first one is called 'ris' and the second 'whois')
+\end_layout
+
+\begin_layout Enumerate
+Ask periodically if there is an entry for this IP 
+\end_layout
+
 \begin_layout Standard
 \begin_inset Float figure
 placement H
@@ -2254,10 +2218,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
-	filename uml-diagramms/RIS Fetching.png
+	filename ris_whois_process.dia
 	lyxscale 50
-	scale 65
+	scale 50
 
 \end_inset
 
@@ -2268,13 +2233,7 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Get-RIS-Whois"
-
-\end_inset
-
-Get RIS Whois entries
+(RIS) Whois process
 \end_layout
 
 \end_inset
@@ -2285,113 +2244,153 @@ Get RIS Whois entries
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsubsection
-Getting the Whois entries
 \end_layout
 
 \begin_layout Standard
-It is the same idea as for the RIS entries but there is a small difference:
- all the queries will not be done to the same server because the IPs are
- assigned to different whois server.
- It is also necessary to do the queries to the right server.
+This process does not do any network connexions with any other computer
+ (if redis is running on localhost).
  
 \end_layout
 
-\begin_layout Standard
-That is why there is a third service, it will dispatch the queries depending
- on the server: 
-\end_layout
-
-\begin_layout Itemize
-The first service do the same as for the RIS entries.
- The queries it push have this format: 
-\family typewriter
-key = whois / query = <ip_address>
+\begin_layout Description
+Note it is also multiprocessed: each process getting (RIS) Whois entries
+ will recieve a certain interval of IPsDescriptions.
+ This interval is based on the number of allowed processes (in the default
+ configuration: 4) and the number of RIS entries to fetch.
+ 
 \end_layout
 
 \begin_deeper
 \begin_layout Standard
-The queries it push have this format: 
-\emph on
-key = whois / query = <ip_address>
+There is also a limit on the size of the interval: this way it is possible
+ to reduce the RAM usage without influencing the speed.
+ 
 \end_layout
 
 \end_deeper
-\begin_layout Itemize
-The second 
+\begin_layout Subsubsection
+Fetching the (RIS) Whois entries
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-pop periodically the queries of the sharing database (I) 
+\begin_layout Standard
+There are one or more processes fetching the (RIS) Whois entries for each
+ available Whois server (in the default configuration: 4 by server).
+ The sets of pending queries are identified by the name of the server to
+ query.
 \end_layout
 
-\begin_layout Itemize
-find their assignation (II) (this part is explained
+\begin_layout Standard
+They are working like this: 
+\end_layout
+
+\begin_layout Enumerate
+Get a pending query from the redis database
+\end_layout
+
+\begin_layout Enumerate
+Fetch the entry from the server
+\end_layout
+
+\begin_layout Enumerate
+Set the entry in the database with the query as key and the entry as value
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ris_whois_fetch.dia
+	lyxscale 50
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+(RIS) Whois fetching process
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is not always possible but we always attempt to use the keepalive capabilitie
+s of the servers: it is almost five time faster to stay connected than to
+ reconnect between each query.
+ Actually, only the servers of the RIPE are supporting this option.
+ Of course, the local whois server does too.
+ 
+\end_layout
+
+\begin_layout Description
+Note the network is sometime unstable or the remote servers may have connectivit
+y problems.
+ This is why we catch all the network error and attempt to do the same query
+ later.
+\end_layout
+
+\begin_layout Subsubsection
+Sorting the whois entry
+\end_layout
+
+\begin_layout Standard
+As we already saw, all the whois entries are not on the same server and
+ to be able to fetch the right whois entries of an IP, we need to find the
+ server to query.
+ This task will be performed by an other process: 
+\end_layout
+
+\begin_layout Enumerate
+Get a pending query from the redis database
+\end_layout
+
+\begin_layout Enumerate
+Find the assignation by using the algorithm described 
 \begin_inset CommandInset ref
 LatexCommand vpageref
 reference "sub:Generation-index"
 
 \end_inset
 
-) and push it back into the sharing database(III).
- The format is now : 
-\family typewriter
-keys = <server> / query = <ip_address>
+
 \end_layout
 
-\begin_layout Itemize
-push it back into the sharing database (III).
- 
-\end_layout
-
-\begin_layout Standard
-The format is now: 
-\emph on
-keys = <server> / query = <ip_address>
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-The third do the same as for the RIS entries.
- 
-\end_layout
-
-\begin_layout Standard
-At least one fetcher is started for each servers to query (you can configure
- this number in the config file).
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-enlargethispage{1cm}
-\end_layout
-
-\end_inset
-
-
+\begin_layout Enumerate
+Set the entry in the database with the server name as key and the query
+ as value
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
-sideways true
+sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
-	filename uml-diagramms/Whois Fetching.png
+	filename whois_sort.dia
 	lyxscale 50
-	scale 60
+	scale 50
 
 \end_inset
 
@@ -2402,7 +2401,7 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Get Whois entries
+Whois sorting process
 \end_layout
 
 \end_inset
@@ -2415,86 +2414,67 @@ Get Whois entries
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
+\begin_layout Description
+Note it does not concern the RIS Whois entries: RIPE NCC provide a global
+ RIS Whois server which is able to answer to every query.
+ 
 \end_layout
 
 \begin_layout Subsection
 Ranking
 \end_layout
 
+\begin_layout Standard
+Based on the informations extracted from the datasets and the ones fetched
+ from the internet, we are able to compute a ranking.
+ 
+\end_layout
+
 \begin_layout Subsubsection
 Routing informations
 \end_layout
 
+\begin_layout Standard
+The routing informations are extracted from the dump of the BGP table of
+ RIPE NCC.
+ We are using the table of the router rrc00, it is the biggest one and he
+ 
+\begin_inset Quotes eld
+\end_inset
+
+knows
+\begin_inset Quotes erd
+\end_inset
+
+ all the routes of the Internet.
+ It allows us to build a database with all the announcements of all the
+ networks by the ASNs.
+\end_layout
+
+\begin_layout Standard
+The downloaded file is a file in MRT format -> http://www.ripe.net/projects/ris/ra
+wdata.html
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+The database is used to compute the number of IPs announced by the ASNs:
+ it is an very important information because the rank of the ASNs is based
+ on it: a small subnet with suspicious activities will have an higher rank
+ than a big subnet with the same amount of suspicious IPs.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 Computing
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-enlargethispage{1cm}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways true
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename global.dia
-	lyxscale 30
-	scale 30
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Technical-global-view"
-
-\end_inset
-
-Technical global view
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsection
@@ -2707,10 +2687,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename ipkeys1.dia
 	lyxscale 50
-	scale 30
+	scale 45
 
 \end_inset
 
@@ -3021,10 +3002,6 @@ The library needs only a file to split, the number of files to generate
 
 \begin_layout Subsubsection
 Example
-\begin_inset space \space{}
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -4395,49 +4372,56 @@ name "Example-of-BGP"
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 TIME: 07/19/10 08:00:00 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 TYPE: TABLE_DUMP_V2/IPV4_UNICAST 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 PREFIX: 41.138.240.0/21 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 SEQUENCE: 10022 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 FROM: 91.103.24.2 AS42109 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 ORIGINATED: 07/18/10 23:36:39 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 ORIGIN: IGP 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 ASPATH: 42109 41965 41877 3356 174 42652 12684 12684 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 NEXT_HOP: 91.103.24.2 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 COMMUNITY: 3356:2 3356:22 3356:86 3356:503 3356:666 3356:2067 
 \end_layout
 
@@ -4458,43 +4442,247 @@ name "riswhois entry google"
 
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 
 \series bold
 route:         74.125.42.0/23
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 origin:        AS15169
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 
 \series bold
 descr:         GOOGLE - Google Inc.
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 lastupd-frst:  2010-03-18 20:10Z 202.249.2.20@rrc06
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 lastupd-last:  2010-08-29 19:50Z 80.81.192.220@rrc12
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 seen-at:       rrc00,rrc01,rrc03,rrc04,rrc05,rrc06,rrc07,rrc10,rrc11,rrc12,rrc13
 ,rrc14,rrc15,rrc16
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 num-rispeers:  103
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
 source:        RISWHOIS
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+enlargethispage{1cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways true
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename uml-diagramms/RIS Fetching.png
+	lyxscale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Get RIS Whois entries
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Get-RIS-Whois"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+enlargethispage{1cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways true
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename uml-diagramms/Whois Fetching.png
+	lyxscale 50
+	scale 65
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Get Whois entries
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Get-Whois-entries"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+enlargethispage{1cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways true
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename global.dia
+	lyxscale 30
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Technical-global-view"
+
+\end_inset
+
+Technical global view
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \end_body

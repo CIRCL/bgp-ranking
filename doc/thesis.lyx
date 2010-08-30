@@ -156,14 +156,14 @@ Internet and the peering
 \end_layout
 
 \begin_layout Standard
-Internet is not a centralized network but a bunch of operators, each operator
+Internet is a decentralized network with a bunch of operators, each operator
  has his proper network and they exchange traffic together.
  This exchange is called 
 \emph on
 peering
 \emph default
 .
- Without this exchanges, Internet cannot work.
+ Without this exchanges, Internet can not work.
  
 \end_layout
 
@@ -172,7 +172,7 @@ There is three different types of peering:
 \end_layout
 
 \begin_layout Itemize
-Transit: you pay a provider to provide you a transit across his network
+Transit: you pay a provider to provide you a transit across its network
 \end_layout
 
 \begin_layout Itemize
@@ -200,9 +200,9 @@ es.
 \begin_layout Standard
 Two ISPs of the same size exchange traffic freely but when they need to
  exchange traffic with bigger providers (upstream providers), they will
- obviously have to pay.
- When a smaller provider (downstream provider) want to do peering with an
- ISP, he will pay too.
+ have to pay.
+ When a smaller provider (downstream provider) want to peer with an ISP,
+ he will pay too.
  
 \end_layout
 
@@ -215,9 +215,13 @@ The Border Gateway Protocol is the protocol used by everyone on the Internet,
  without knowing it exists.
  This protocol is commonly presented as the routing protocol of the Internet,
  all the core routers of the Internet are using it to communicate together.
- It is a path vector protocol: the routing table contains the destination
- network, the next router on the way to this network and the path (in this
- case, the list of ASNs) to reach the destination.
+ 
+\end_layout
+
+\begin_layout Standard
+It is a path vector protocol: the routing table contains the destination
+ network, the ip address of the next router on the way to this network and
+ the path (in this case, the list of ASNs) to reach the destination.
 \end_layout
 
 \begin_layout Standard
@@ -237,10 +241,14 @@ reference "Example-of-BGP"
 \begin_layout Standard
 There is always more than one possible route to reach a particular network,
  the decision is made using the path but also the network policies.
- On a security point of view, we can for example blackhole the traffic to
+ 
+\end_layout
+
+\begin_layout Standard
+On a security point of view, we can for example blackhole the traffic to
  a certain destination known as providing a Command & Control server and
- block the communication between this server and the clients, or to protect
- a destination under DDoS attack.
+ this way block the communication between this server and the clients, or
+ to protect a destination under DDoS attack.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "BGP-policies"
@@ -257,9 +265,9 @@ Autonomous system (AS)
 \begin_layout Standard
 The operators on the Internet exchange their routes, it is obvious that
  this operators need a way to identify each other without using IP Addresses.
- That is why there are Autonomous systems numbers (ASN), an operator which
+ That is why there are Autonomous systems numbers (ASNs), an operator which
  wants to announce IP Addresses on the Internet needs at least one ASN,
- an ASN will announce one or more networks.
+ an AS will announce one or more networks.
 \end_layout
 
 \begin_layout Standard
@@ -303,12 +311,12 @@ The service provide a dump of the routing database directly extracted from
  and 1000 changes.
  A change is a new route: an ASN announce a new network or a dropped route:
  the network is not announced by this ASN anymore.
- Thanks to this dump , it is possible to compute the number of IP addresses
+ Thanks to this dump, it is possible to compute the number of IP addresses
  assigned to each ASN.
 \end_layout
 
 \begin_layout Standard
-If you want to see graphs and visualize the evolution of the routes by as
+If you want to see graphs and visualize the evolution of the routes by AS
  and by networks, you should visit the Routing Information Service website
  
 \begin_inset CommandInset citation
@@ -329,8 +337,15 @@ key "RIS"
 
 \begin_layout Standard
 This service allow also to fetch in real time the ASN assignation of an
- IP address.
- And usually to get a small textual description of this AS.
+ IP address and usually to get a small textual description of this AS.
+ An example 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "riswhois entry google"
+
+\end_inset
+
+.
  
 \end_layout
 
@@ -350,7 +365,7 @@ The well-known whois protocol allows us to fetch information on the owners
 A whois entry contains much more information than a riswois entry but is
  not so often updated, about once a week.
  The most interesting information you can find in the whois entry is the
- name of the owner of the block of IPs with his address and phone number.
+ name, the address and the phone number of the owner of the block of IPs.
  
 \end_layout
 
@@ -358,7 +373,11 @@ A whois entry contains much more information than a riswois entry but is
 We should speak of whois databases and not whois database because there
  are many servers providing different databases: each RIR maintain a whois
  database with the information he wants.
- To get the most precise information on a particular IP Address, it is important
+ 
+\end_layout
+
+\begin_layout Standard
+To get the most precise information on a particular IP Address, it is important
  to query the right server.
  The implementations of whois clients maintain an list of assignations to
  know for each IP what is the server to query.
@@ -376,7 +395,7 @@ We should speak of whois databases and not whois database because there
 
 \begin_layout Standard
 Almost all the databases are incompatible with each other, the keys and
- the information is different.
+ the information are different.
 \end_layout
 
 \begin_layout Subsubsection
@@ -385,7 +404,7 @@ Datasets of suspicious activities
 
 \begin_layout Standard
 It is possible to find some datasets freely available on the Internet but
- a lot are not and that for different reasons:
+ a lot of them are not and that for different reasons:
 \end_layout
 
 \begin_layout Itemize
@@ -403,7 +422,7 @@ the company providing the dataset sells this information to the ISPs which
 It exists a large variety of datasets including IP and/or prefixes for malicious
  activities.
  But their level of trust is variable, the methods used to generate the
- datasets can vary a lot from a source to another .
+ datasets can vary a lot from a source to another.
  To be exhaustive on this description of the datasets we have to say that
  many data sources gives only information on a particular ASN.
 \end_layout
@@ -415,14 +434,14 @@ Arbor ATLAS/Active Threat Feed
 \begin_layout Standard
 The dataset provided by Arbor is not freely available and their quality
  is quite high because the reports are analyzed and classified.
- Arbor gives information on it in his FAQ
+ Arbor explains his work in an FAQ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Arbor-faq"
 
 \end_inset
 
-: 
+ and the gathering of the data is explained like this: 
 \end_layout
 
 \begin_layout Quote
@@ -448,12 +467,16 @@ Data is captured by using a distributed network of sensors running a number
 
 \begin_layout Standard
 And this information are merged with logs, statistics and reports to have
- an exhaustive view of the threads and reduce the false positives.
+ a complete view of the threads and reduce the false positives.
 \end_layout
 
-\begin_layout Description
-Dshield The lists of Dshield are public and they are generated using only
- the firewall logs of the users 
+\begin_layout Paragraph
+Dshield
+\end_layout
+
+\begin_layout Standard
+The lists of Dshield are public and they are generated using only the firewall
+ logs of the users 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Dshield-about"
@@ -461,9 +484,13 @@ key "Dshield-about"
 \end_inset
 
 , the precision and the quality is less good than for Arbor but there is
- however a small analyze because Dshield provide two lists: the first one
- is a full dump of the today's information, no filtered at all and contains
- around one million entries, and many false positives like private address.
+ however a small analyze because Dshield provide two lists.
+\end_layout
+
+\begin_layout Standard
+The first one is a full dump of the today's information, no filtered at
+ all, contains around one million entries and many false positives like
+ private address.
  But this list stays interesting because of the big amount of IPs it contains
  and it is useful to correlate it with other sources.
  
@@ -507,9 +534,20 @@ The detection of ZeuS Command&Control servers is done by traffic sniffing
  
 \end_layout
 
-\begin_layout Description
-Shadowserver The mission of the Shadowserver Foundation is presented like
- this on the website: 
+\begin_layout Paragraph
+Shadowserver 
+\end_layout
+
+\begin_layout Standard
+The mission of the Shadowserver Foundation is presented like this on the
+ website
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Shadowserver-mission"
+
+\end_inset
+
+: 
 \end_layout
 
 \begin_layout Quote
@@ -527,11 +565,15 @@ They are working the same way as Arbor by providing reports on particular
  AS, only to the members but they does not have to pay for it.
 \end_layout
 
-\begin_layout Description
-Abusix It is completely different: Abusix does not provide list but permit
- to find easily the abuse address of a provider by the IP address of the
- attacker, will send a mail to this address and tell what the problem is
- and on what IP address.
+\begin_layout Paragraph
+Abusix 
+\end_layout
+
+\begin_layout Standard
+It is completely different: Abusix does not provide list but permit to find
+ easily the abuse address of a provider by the IP address of the attacker,
+ will send a mail to this address and tell what the problem is and on what
+ IP address.
  The data coming from Abusix are usually good but should be verified because
  it is always possible to report a false positive.
  
@@ -667,8 +709,8 @@ The big advantage for the cybercriminals is that they are (virtually) invisible
  because they never attack directly their targets and are never seen as
  attacker in the logfiles.
  An other advantage is that it costs almost nothing to them: they does not
- need to earn thousand computers, they just need to develop a malware and
- let it working.
+ need to earn thousands of computers, they just need to develop a malware
+ and let it working.
  
 \end_layout
 
@@ -685,8 +727,8 @@ key "p2p-botnet"
 
 \end_inset
 
-) and they will attack their targets in case of DDoS or the victims will
- come on the servers in case of phishing.
+) and they will attack their targets in case of DDoS or attempt to make
+ the victims coming on the servers in case of phishing.
 \end_layout
 
 \begin_layout Standard
@@ -827,7 +869,8 @@ y one.
 \begin_layout Description
 Solution This differentiation will be done by using a weight on each entries:
  the best sources will have an high weight and the other a lower one.
- Like this, they will not be lost in the other datasets.
+ Like this, they will not be lost in the big amount of entries coming from
+ the other, low-quality datasets.
  
 \end_layout
 
@@ -846,7 +889,7 @@ Every dataset has his proper format, they are obviously incompatible from
 
 \begin_layout Description
 Solution Every source will have his proper module, extracting the needed
- information of the files and return this in formations to a standard interface
+ information of the files and return this information to a standard interface
  which will insert it in the database.
  This way, the overhead induced by the new datasets will be highly reduced.
  More in formations on this particular point 
@@ -1093,6 +1136,13 @@ key "redis_official"
 .
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 High-level view
 \end_layout
@@ -1225,7 +1275,7 @@ We can see the same IP address among the different sources, the formula
 \end_layout
 
 \begin_layout Description
-Note Only The ISPs allowed to access to the system will are able to vote
+Note Only The ISPs allowed to access to the system will be able to vote
  against other ISPs.
 \end_layout
 
@@ -1322,8 +1372,8 @@ We have two types of data to store in this project:
 
 \begin_layout Itemize
 static information: they are written one time in the database and never
- updated/deleted after anymore, only read.
- The performances are not really important, we use a relational database.
+ updated/deleted anymore, only read.
+ As the performances are not really important, we use a relational database.
 \end_layout
 
 \begin_layout Itemize
@@ -1338,7 +1388,7 @@ Relational database
 \end_layout
 
 \begin_layout Standard
-The software supports officially MySQL as relational database but because
+The system officially supports MySQL as relational database but because
  we are using the python module 
 \emph on
 SQLAlchemy
@@ -1403,7 +1453,7 @@ Key/value store
 \end_layout
 
 \begin_layout Standard
-The Key/value store used by this software is Redis.
+The Key/value store used by the system is Redis.
  Depending on the part of the program, Redis is used differently:
 \end_layout
 
@@ -1414,9 +1464,9 @@ Shared memory
 \begin_layout Standard
 The whole program use a lot of processes and most of them need to exchange
  information.
- It would be possible to use a classical shared memory between processes
- but it is a lot easier to put all the information in a shared database
- which will deal on his side with the problem of the simultaneous access
+ It would be possible to use shared memory between processes using the system
+ API but it is a lot easier to put all the information in a shared database
+ which will deal on its side with the problem of the simultaneous access
  to the ressources.
  
 \end_layout
@@ -1436,7 +1486,7 @@ It is common that an IP address is present more than one time in a dataset,
  or the same IP in different datasets.
  It is important to know that the whois entries have a life time of at least
  24 hours: they are not updated that often on the whois servers.
- That is why a caching system is very useful to improve the performance
+ This is why a caching system is very useful to improve the performance
  of the software: it is absolutely unnecessary to fetch more than one time
  a particular whois entry for at least 24 hours.
 \end_layout
@@ -1480,7 +1530,7 @@ Redis provide a command called redis-benchmark, it gives the following results
 
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset Box Frameless
 position "t"
 hor_pos "c"
@@ -1624,7 +1674,7 @@ String it is the simplest type: we just put into the database a key and
  
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset Box Frameless
 position "t"
 hor_pos "c"
@@ -1677,7 +1727,7 @@ my binary safe value
 Set it is a list of elements but each element is unique
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 \begin_inset Box Frameless
 position "t"
 hor_pos "c"
@@ -1836,8 +1886,8 @@ The following information are extracted of the dataset, if they exists:
 \end_layout
 
 \begin_layout Itemize
-The name of the class where the ip is coming from.
- This name has to be unique for each class: it will be used for the ranking
+The name of the class where the IP is coming from.
+ This name has to be different for each class: it will be used for the ranking
 \end_layout
 
 \begin_layout Itemize
@@ -1856,11 +1906,11 @@ reference "sub:Importing-old-datasets"
 
 \begin_layout Itemize
 The date of generation of the list: it is the date given by the file or
- set to the current day if we don't have enough information
+ set to the current day if we don't have this information in the dataset
 \end_layout
 
 \begin_layout Itemize
-The number of times the the same ip is present in the same dataset.
+The number of times the same IP is found in the same dataset
 \end_layout
 
 \begin_deeper
@@ -1902,24 +1952,24 @@ ASNs is the same as the IPs table: it contains only the ASNs and for each
 
 \begin_deeper
 \begin_layout Standard
-This table allow us to dump easily all the ASNs of all the IPS we found
+This table allow us to dump easily all the ASNs of all the IPs we found
  in the datasets.
 \end_layout
 
 \end_deeper
 \begin_layout Description
 ASNsDescriptions a new entry is created if there is any new information
- of if an information is updated.
+ or if an information is updated.
  
 \end_layout
 
 \begin_deeper
 \begin_layout Standard
-The following information are extracted of the RIS whois entries: 
+The following information is extracted of the RIS whois entries: 
 \end_layout
 
 \begin_layout Itemize
-The owner announcing the ip-block containing the IP 
+The owner announcing the IP-block containing the IP 
 \end_layout
 
 \begin_layout Itemize
@@ -1931,9 +1981,9 @@ The source of the RIS whois entry
 \end_layout
 
 \begin_deeper
-\begin_layout Standard
-It will always be riswhois.ripe.net but in the future, we may decide to use
- a BGP session directly on a router.
+\begin_layout Description
+Note It will always be riswhois.ripe.net but in the future, we may decide
+ to use a BGP session directly on a router.
  
 \begin_inset Note Note
 status open
@@ -1989,7 +2039,17 @@ the rank in IPv4 and IPv6
 \begin_deeper
 \begin_layout Description
 Note this rank is unbalanced: it allows us to modify the weight of each
- source in real time
+ source
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+ in real time
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Description
@@ -2037,7 +2097,7 @@ Fetching the datasets
 
 \begin_layout Standard
 It is not the case for all of them but all the datasets freely available
- on the internet will be automatically downloaded.
+ on the internet are automatically downloaded.
  
 \begin_inset Note Note
 status open
@@ -2068,7 +2128,7 @@ Parsing the datasets
 \begin_layout Standard
 As we know, the new files are copied in a special directory, for each source.
  The parser check periodically this directory and if there is a new file,
- the new file will be parsed.
+ it is parsed.
  
 \end_layout
 
@@ -2508,15 +2568,15 @@ Context
 
 \begin_layout Standard
 We have on one side a list of IP sets, each of them is connected to a particular
- information andon the other side IP addresses.
+ information and on the other side IP addresses.
  
 \end_layout
 
 \begin_layout Standard
 This library aims to provide a fast method to get the better information
- corresponting to this ip addresses.
- To find this information, we have to find the smallest set where the IP
- is.
+ corresponding to this IP addresses.
+ To find this information, we have to find the smallest subnet where the
+ IP is.
 \end_layout
 
 \begin_layout Paragraph
@@ -2534,7 +2594,7 @@ Example
 \end_layout
 
 \begin_layout Standard
-The list of sets and corresponding informations: 
+The list of sets and corresponding information: 
 \end_layout
 
 \begin_layout Itemize
@@ -2604,7 +2664,7 @@ there is about
 \end_inset
 
  IPv6, it is impossible to push in the database all the IPv4 (and obviously
- IPv6)
+ all the IPv6)
 \end_layout
 
 \begin_layout Paragraph
@@ -2633,18 +2693,12 @@ Cons
 \end_layout
 
 \begin_layout Itemize
-Huge amount of queries to redis: we have to find the best interval...
+Huge amount of queries to redis: we have to find the best interval and it
+ can take some time: in the worst case, it will be O(n) with n the number
+ of IPs in the interval.
  
 \end_layout
 
-\begin_deeper
-\begin_layout Standard
-And it can take some time: in the worst case, it will be O(n) with n the
- number of IPs in the interval.
- 
-\end_layout
-
-\end_deeper
 \begin_layout Standard
 \begin_inset Float figure
 placement H
@@ -2682,13 +2736,17 @@ IPs Keys generator 1
 
 \begin_layout Standard
 We have to do a query for each IP until we find the interval containing
- our IP.
+ ours.
  Even if we are able to jump the intermediate networks, it will take too
- much time for a network like 1.0.0.0/8 with more than 
+ much time.
+\end_layout
+
+\begin_layout Standard
+For a network like 1.0.0.0/8 with more than 
 \begin_inset Formula $16\text{·}10^{6}$
 \end_inset
 
- IPs.
+ IPs, it takes more than 15s.
 \end_layout
 
 \begin_layout Paragraph
@@ -2696,16 +2754,21 @@ Third Idea
 \end_layout
 
 \begin_layout Standard
-The keys saved in redis are strings, the easiest way was to find a way based
- on the representation of an IP address.
+The keys saved in redis are strings, the easiest way is to find an algorithm
+ based on the string representation of an IP address.
  
 \end_layout
 
 \begin_layout Standard
-For the first and the last IP of an interval, we will split the address
- with the .
+For the first and the last IP of an interval, we split the address with
+ the .
  (IPv4) or the : (IPv6), find the equal part and push it into the database.
- The value of this key will be the following: 
+ Equals part means the identical string in the two IPs, from left to right,
+ and stop on the first different character.
+\end_layout
+
+\begin_layout Standard
+The value of this key will be the following: 
 \emph on
 <integer representation of the first IP of the interval>_<integer representation
  of the last IP of the interval>
@@ -2715,7 +2778,7 @@ For the first and the last IP of an interval, we will split the address
 \end_layout
 
 \begin_layout Example
-Generate a key for an easy interval 
+Generate a key for a simple interval 
 \end_layout
 
 \begin_layout Example
@@ -2774,8 +2837,8 @@ Equal Part: 1
 \end_layout
 
 \begin_layout Example
-The key will be the following: 1.2.{3-255}, 1.3, 1.4.{0-5} => 252+1+6 = 259 keys
- 
+The keys will be the following: 1.2.{3-255}, 1.3, 1.4.{0-5} => 252+1+6 = 259
+ keys 
 \end_layout
 
 \begin_layout Standard
@@ -2792,7 +2855,7 @@ IPv6
 \begin_layout Standard
 the idea is the same but the intervals are usually big and there is never
  such intervals as in the third example, we always push intervals like in
- the first and second example, usually only like the second example.
+ the first and second example, usually only like the second.
  
 \end_layout
 
@@ -2830,20 +2893,78 @@ For the IP
 \end_layout
 
 \begin_layout Standard
-The second problem is that we will sometime have more than one value at
- a key: in IPv4, a lot of intervals are smallest than a /24.
- We may have the same problem in IPv6 in the future and to be scalable,
- it is allready implemented: we have to be able to find the smallest network
- within a set of intervals.
+The second problem is that we will have sometime more than one value at
+ a key: in IPv4, a lot of intervals are smaller than a /24.
+ We will have the same problem in IPv6: the subnets are actually very big
+ and they are not shared between operators.
  
 \end_layout
 
 \begin_layout Standard
-To do it, we just have to split the values, check if the IP in in this interval.
+This is why we want to be able to find the smallest network within a set
+ of intervals.
+ 
+\end_layout
+
+\begin_layout Standard
+To do it, we just have to split the the interval keys found for a IP, check
+ if it is in this interval.
  When one if found, we have to verify that there is no other smallest network
  containing the IP.
 \end_layout
 
+\begin_layout Example
+Looking for the smallest network
+\end_layout
+
+\begin_layout Example
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Example
+IP: 1.1.1.2
+\end_layout
+
+\begin_layout Example
+Network 1: 1.1.1.0 - 1.1.1.255
+\end_layout
+
+\begin_layout Example
+Network 2: 1.1.1.1 - 1.1.1.5
+\end_layout
+
+\begin_layout Example
+The equal part of the two networks and of the IP is 
+\emph on
+1.1.1
+\emph default
+.
+ In Redis, the key 
+\emph on
+1.1.1
+\emph default
+ contains the decimal representation of the two networks.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+the IP is in Network 1
+\end_layout
+
+\begin_layout Enumerate
+Network 2 is contained in Network 1 and the IP is also in Network 2
+\end_layout
+
+\begin_layout Standard
+The best network for 1.1.1.2 is Network 2.
+ 
+\end_layout
+
+\end_deeper
 \begin_layout Subparagraph
 Pros
 \end_layout
@@ -2893,13 +3014,17 @@ Usage
 \end_layout
 
 \begin_layout Standard
-The library only need a file to split, the number of files to generate and
- the separator.
+The library needs only a file to split, the number of files to generate
+ and the separator.
  
 \end_layout
 
 \begin_layout Subsubsection
 Example
+\begin_inset space \space{}
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2929,9 +3054,9 @@ The separator is used to split the file at a particular point: there is
  within this blocks.
  usualy it is a 
 \family typewriter
-'
+
 \backslash
-n'
+n
 \family default
 :
 \end_layout
@@ -4270,49 +4395,49 @@ name "Example-of-BGP"
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 TIME: 07/19/10 08:00:00 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 TYPE: TABLE_DUMP_V2/IPV4_UNICAST 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 
 \series bold
 PREFIX: 41.138.240.0/21 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 SEQUENCE: 10022 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 FROM: 91.103.24.2 AS42109 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 ORIGINATED: 07/18/10 23:36:39 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 ORIGIN: IGP 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 
 \series bold
 ASPATH: 42109 41965 41877 3356 174 42652 12684 12684 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 
 \series bold
 NEXT_HOP: 91.103.24.2 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 COMMUNITY: 3356:2 3356:22 3356:86 3356:503 3356:666 3356:2067 
 \end_layout
 
@@ -4320,6 +4445,56 @@ COMMUNITY: 3356:2 3356:22 3356:86 3356:503 3356:666 3356:2067
 
 \lyxline
 
+\end_layout
+
+\begin_layout Standard
+The riswhois entry of 74.125.43.99 the 30th of August 2010:
+\begin_inset CommandInset label
+LatexCommand label
+name "riswhois entry google"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+route:         74.125.42.0/23
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+origin:        AS15169
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+descr:         GOOGLE - Google Inc.
+\end_layout
+
+\begin_layout LyX-Code
+lastupd-frst:  2010-03-18 20:10Z 202.249.2.20@rrc06
+\end_layout
+
+\begin_layout LyX-Code
+lastupd-last:  2010-08-29 19:50Z 80.81.192.220@rrc12
+\end_layout
+
+\begin_layout LyX-Code
+seen-at:       rrc00,rrc01,rrc03,rrc04,rrc05,rrc06,rrc07,rrc10,rrc11,rrc12,rrc13
+,rrc14,rrc15,rrc16
+\end_layout
+
+\begin_layout LyX-Code
+num-rispeers:  103
+\end_layout
+
+\begin_layout LyX-Code
+source:        RISWHOIS
 \end_layout
 
 \end_body

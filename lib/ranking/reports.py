@@ -27,9 +27,11 @@ class Reports():
             self.impacts[item[0]] = int(item[1])
     
     def get_sources(self):
+        v_session = VotingSession()
         self.sources = []
         for s in Sources.query.all():
             self.sources.append(s.source)
+        v_session.close()
     
     def filter_query_source(self, query, limit):
         entries = query.count()
@@ -55,6 +57,7 @@ class Reports():
 
     #FIXME: query on IPv6
     def best_of_day(self, limit = 50, source = None):
+        v_session = VotingSession()
         query = None
         histo = {}
         s = self.existing_source(source)
@@ -79,14 +82,17 @@ class Reports():
         for t, h in histo.items():
             self.histories.append(h)
         self.histories.sort(key=lambda x:x[2], reverse=True )
+        v_session.close()
     
     def asn_histo_query(self, asn, source = None):
+        v_session = VotingSession()
         query = None
         s = self.existing_source(source)
         if s is not None:
             query = History.query.filter(and_(History.source == s, History.asn == int(asn))).order_by(desc(History.timestamp))
         if query is None: 
             query = History.query.filter(History.asn == int(asn)).order_by(desc(History.timestamp))
+        v_session.close()
         return query
 
     def prepare_graphe_js(self,  asn, source = None):
@@ -119,7 +125,10 @@ class Reports():
     
     def existing_source(self, source = None):
         if source is not None and len(source) > 0:
-            return Sources.query.get(unicode(source))
+            v_session = VotingSession()
+            to_return = Sources.query.get(unicode(source))
+            v_session.close()
+            return to_return
         return None
 
     def ip_desc_query(self, asn_id, source, date):
@@ -130,6 +139,7 @@ class Reports():
         return query
 
     def get_asn_descs(self, asn, source = None):
+        r_session = RankingSession()
         asn_db = ASNs.query.filter(ASNs.asn == int(asn)).first()
         if asn_db is not None:
             asn_descs = ASNsDescriptions.query.filter(ASNsDescriptions.asn == asn_db).all()
@@ -147,8 +157,10 @@ class Reports():
                     nb_of_ips = query.count()
                     if nb_of_ips > 0:
                         self.asn_descs_to_print.append([desc.id, desc.timestamp, desc.owner, desc.ips_block, nb_of_ips])
+        r_session.close()
 
     def get_ips_descs(self, asn_desc_id, source = None):
+        r_session = RankingSession()
         asn_desc = ASNsDescriptions.query.filter(ASNsDescriptions.id == int(asn_desc_id)).first()
         ip_descs = None
         if asn_desc is not None:
@@ -156,6 +168,7 @@ class Reports():
             if last_histo is not None:
                 query = self.ip_desc_query(asn_desc, source, last_histo.timestamp)
                 ip_descs = query.all()
+            r_session.close()
         else:
             ip_descs = None
         self.ip_descs_to_print = None

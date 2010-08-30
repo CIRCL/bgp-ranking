@@ -100,6 +100,7 @@ class Master(object):
     comparator.exposed = True
 
     def reload(self):
+        self.controler = MasterControler()
         return self.default()
     reload.exposed = True
 

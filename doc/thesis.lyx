@@ -1833,27 +1833,6 @@ Two databases are in use: the first one contains only the data of the datasets.
  
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-improvement: merge the two databases
-\end_layout
-
-\begin_layout Plain Layout
-use the sources db in the ipdesc db 
-\end_layout
-
-\begin_layout Plain Layout
-use the ASN db in the histo db 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsubsection
 Data from the datasets
 \end_layout
@@ -1897,7 +1876,7 @@ The timestamp of the insertion into the database: it is most of the time
  See 
 \begin_inset CommandInset ref
 LatexCommand vpageref
-reference "sub:Importing-old-datasets"
+reference "sub:Handling-old-datasets"
 
 \end_inset
 
@@ -1985,16 +1964,6 @@ The source of the RIS whois entry
 Note It will always be riswhois.ripe.net but in the future, we may decide
  to use a BGP session directly on a router.
  
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-move it to 'future improvements' ? 
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_deeper
@@ -2420,6 +2389,40 @@ Note it does not concern the RIS Whois entries: RIPE NCC provide a global
  
 \end_layout
 
+\begin_layout Description
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tow UML diagramms representing the process of getting from redis, fetching
+ and sorting the whois query for the RIS Whois (on page 
+\begin_inset CommandInset ref
+LatexCommand pageref
+reference "fig:Get-RIS-Whois"
+
+\end_inset
+
+) and Whois (on page 
+\begin_inset CommandInset ref
+LatexCommand pageref
+reference "fig:Get-Whois-entries"
+
+\end_inset
+
+) entries are available in the annexes.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Ranking
 \end_layout
@@ -2437,8 +2440,8 @@ Routing informations
 \begin_layout Standard
 The routing informations are extracted from the dump of the BGP table of
  RIPE NCC.
- We are using the table of the router rrc00, it is the biggest one and he
- 
+ We are using the routing table collected by the Remote Route Collectors
+ (RCC) called rrc00, it is the biggest one and he 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2447,34 +2450,111 @@ knows
 \end_inset
 
  all the routes of the Internet.
- It allows us to build a database with all the announcements of all the
- networks by the ASNs.
+ It allows us to build a database with all the ASNs and the networks they
+ announce.
 \end_layout
 
 \begin_layout Standard
-The downloaded file is a file in MRT format -> http://www.ripe.net/projects/ris/ra
-wdata.html
+The raw data are saved in in MRT format 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "MRT-RFC"
+
+\end_inset
+
+ and we need to use the libbgpdump library 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "libbgpdump"
+
+\end_inset
+
+ to convert the raw data to a readable format and be able populate the database.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-The database is used to compute the number of IPs announced by the ASNs:
- it is an very important information because the rank of the ASNs is based
- on it: a small subnet with suspicious activities will have an higher rank
- than a big subnet with the same amount of suspicious IPs.
- 
+The processing of the file is also multi-processed, the converted file is
+ first splited and one process populating the database if launched on each
+ file (by default, 4 at the same time).
 \end_layout
 
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
 \end_layout
 
+\begin_layout Standard
+When populated, the database is used to compute the number of IPs announced
+ by the ASNs: it is an very important information because the rank of the
+ ASNs is based on it.
+ A small subnet with a certain amound of surpicious IPs will have an higher
+ rank than a big subnet with the same amount of suspicious IPs.
+ 
+\end_layout
+
 \begin_layout Subsubsection
 Computing
+\end_layout
+
+\begin_layout Standard
+The routing database has to be fully populated before computing the ranking.
+ Elsewhere, we can not be sure that the number of IPs announced for an ASN
+ is right.
+ The easiest way is to sequentially populate the routing database and after
+ that compute the ranking.
+ There is a new dump every eight hours, it is enough if the ranking is computed
+ every eight hours too.
+ 
+\end_layout
+
+\begin_layout Standard
+For each ASN found in the database, the following actions are achieved:
+ 
+\end_layout
+
+\begin_layout Enumerate
+Counting the number of IP announced by the ASN 
+\end_layout
+
+\begin_layout Enumerate
+Counting the number of IPs, by sources, present im the database for the
+ current day 
+\end_layout
+
+\begin_layout Enumerate
+For each source, dividing the number of IP in the database by the total
+ number of IP announced
+\end_layout
+
+\begin_layout Enumerate
+Saving in the database
+\end_layout
+
+\begin_layout Description
+Note as usual, it is multi-processed: each process compute the ranking of
+ a certain interval of ASNs (by default, 4 processes at the same time).
+\end_layout
+
+\begin_layout Standard
+Like for importing old datasets, it is possible to compute the ranking for
+ old entries but we will also have the same problems.
+ See 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:Handling-old-datasets"
+
+\end_inset
+
+ for more informations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -2482,10 +2562,10 @@ Known bugs and problems
 \end_layout
 
 \begin_layout Subsubsection
-Importing old datasets
+Handling old datasets
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Importing-old-datasets"
+name "sub:Handling-old-datasets"
 
 \end_inset
 
@@ -2495,15 +2575,33 @@ name "sub:Importing-old-datasets"
 \begin_layout Standard
 It is possible but not totally implemented and we will have a nasty problem:
  the association between the IP and the ASN is based on the actual version
- of the RIS Whois database.
- This database evolve quite often.
+ of the RIS Whois database and this database evolve quite often.
  If we want to be able to import old data we need also to implement a module
  which will use the corresponding version of the BGP Routing table.
- 
 \end_layout
 
 \begin_layout Standard
-We will have the same problem (and the same solution) to compute the ranking.
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is possible to solve this problem but it will be quite complicated and
+ not very usefull.
+ This functionality will be not implemented in a near future.
+\end_layout
+
+\begin_layout Subsubsection
+IPv6 and ranking
+\end_layout
+
+\begin_layout Standard
+IPv6 is fully supported by the aggregation system but not for the ranking:
+ we need first to find an other formula because the size of the assignations
+ by ASN is so big in IPv6 that the result of the division of the number
+ of IPs found by the number total of IPs is almost 0.
  
 \end_layout
 
@@ -2515,8 +2613,55 @@ We will have the same problem (and the same solution) to compute the ranking.
 \end_layout
 
 \begin_layout Standard
-It is possible to solve this problem but it will be quite complicated.
- This functionality will be not implemented in a near future.
+This problem will be fixed as soon as possible.
+ 
+\end_layout
+
+\begin_layout Subsection
+Improvements 
+\end_layout
+
+\begin_layout Subsubsection
+Databases
+\end_layout
+
+\begin_layout Standard
+The first change to do on the databases will be to merge the two, the one
+ containing the data of the datasets and the one containing the ranking:
+\end_layout
+
+\begin_layout Itemize
+there is a table containing only the sources in the ranking database.
+ This sources are also present in the dataset database, as field.
+ It will be merged
+\end_layout
+
+\begin_layout Itemize
+the ASN table of the dataset will be used in the ranking database: the History
+ table has a field containing the ASN.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Configuration
+\end_layout
+
+\begin_layout Standard
+It is actually possible to modify the weight of a source through the configurati
+on file, and only through it.
+ When it is changed, the graphs are automatically redraw.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The improvement will be to give the possibility to the user to change this
+ weight directly through the website.
  
 \end_layout
 
@@ -2876,8 +3021,9 @@ For the IP
 \begin_layout Standard
 The second problem is that we will have sometime more than one value at
  a key: in IPv4, a lot of intervals are smaller than a /24.
- We will have the same problem in IPv6: the subnets are actually very big
- and they are not shared between operators.
+ It is actually not a problem in IPv6 because even though the subnets are
+ very big, they not shared between operators.
+ But sooner or later it will used too.
  
 \end_layout
 
@@ -2885,6 +3031,13 @@ The second problem is that we will have sometime more than one value at
 This is why we want to be able to find the smallest network within a set
  of intervals.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2931,20 +3084,26 @@ The equal part of the two networks and of the IP is
  
 \end_layout
 
+\begin_layout Example
+The two networks will be checked: 
+\end_layout
+
 \begin_deeper
 \begin_layout Enumerate
 the IP is in Network 1
 \end_layout
 
 \begin_layout Enumerate
-Network 2 is contained in Network 1 and the IP is also in Network 2
+the IP is in Network 2 and Network 2 is contained in Network 1
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 The best network for 1.1.1.2 is Network 2.
  
 \end_layout
 
+\end_deeper
 \end_deeper
 \begin_layout Subparagraph
 Pros
@@ -3021,33 +3180,24 @@ TODO
 Algorithm 
 \end_layout
 
-\begin_layout Paragraph
-Separator
-\end_layout
-
-\begin_layout Standard
-The separator is used to split the file at a particular point: there is
- usually blocks in the files we want to split and we cannot cut the files
- within this blocks.
+\begin_layout Description
+Separator The separator is used to split the file at a particular point:
+ there is usually blocks in the files we want to split and we cannot cut
+ the files within this blocks.
  usualy it is a 
 \family typewriter
 
 \backslash
-n
-\family default
-:
+n.
 \end_layout
 
-\begin_layout Paragraph
-Splitting
-\end_layout
-
-\begin_layout Standard
-First, we get the size of the file and divide it by the number of files
- we want.
+\begin_layout Description
+Splitting First, we get the size of the file and divide it by the number
+ of files we want.
  
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 To split we just 
 \begin_inset Quotes eld
@@ -3067,6 +3217,7 @@ When the end of the file is reached, we return the list of generated files.
  
 \end_layout
 
+\end_deeper
 \begin_layout Subsection
 Whois Client
 \end_layout
@@ -4338,6 +4489,26 @@ key "Redis-types"
 https://code.google.com/p/redis/wiki/IntroductionToRedisDataTypes
 \end_layout
 
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "MRT-RFC"
+
+\end_inset
+
+http://tools.ietf.org/html/draft-ietf-grow-mrt-11
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "libbgpdump"
+
+\end_inset
+
+http://www.ris.ripe.net/source/
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
@@ -4464,7 +4635,7 @@ origin:        AS15169
 \begin_layout Standard
 
 \series bold
-descr:         GOOGLE - Google Inc.
+descr:        GOOGLE - Google Inc.
 \end_layout
 
 \begin_layout Standard

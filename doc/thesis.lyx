@@ -3143,7 +3143,7 @@ One of the requirements is that the system has to to allow mapreduce-like
  than one process at the same time.
  It would be great to be able to split a big file into smaller one and launch
  differents processes on this files.
- That is the aim of this library.
+ This is the aim of this library.
  It has also to be included in an existing code and should be as transparent
  as possible.
  
@@ -3164,16 +3164,91 @@ Example
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
+The following lines are extracted of the dump of the BGP Routing table,
+ the whole file is around 1Gb.
+ It is very important to split it, at the right place.
+ The right place will be the empty line between the two announce.
+ 
 \end_layout
 
-\end_inset
+\begin_layout LyX-Code
+TIME: 08/19/10 08:00:00
+\end_layout
 
+\begin_layout LyX-Code
+TYPE: TABLE_DUMP_V2/IPV4_UNICAST
+\end_layout
 
+\begin_layout LyX-Code
+PREFIX: 1.9.0.0/16
+\end_layout
+
+\begin_layout LyX-Code
+SEQUENCE: 0
+\end_layout
+
+\begin_layout LyX-Code
+FROM: 193.136.5.1 AS1930
+\end_layout
+
+\begin_layout LyX-Code
+ORIGINATED: 08/18/10 13:33:40
+\end_layout
+
+\begin_layout LyX-Code
+ORIGIN: IGP
+\end_layout
+
+\begin_layout LyX-Code
+ASPATH: 1930 20965 3549 4788
+\end_layout
+
+\begin_layout LyX-Code
+NEXT_HOP: 193.136.5.1
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+TIME: 08/19/10 08:00:00
+\end_layout
+
+\begin_layout LyX-Code
+TYPE: TABLE_DUMP_V2/IPV4_UNICAST
+\end_layout
+
+\begin_layout LyX-Code
+PREFIX: 1.9.0.0/16
+\end_layout
+
+\begin_layout LyX-Code
+SEQUENCE: 0
+\end_layout
+
+\begin_layout LyX-Code
+FROM: 193.0.0.56 AS3333
+\end_layout
+
+\begin_layout LyX-Code
+ORIGINATED: 08/19/10 06:44:26
+\end_layout
+
+\begin_layout LyX-Code
+ORIGIN: IGP
+\end_layout
+
+\begin_layout LyX-Code
+ASPATH: 3333 1273 4788
+\end_layout
+
+\begin_layout LyX-Code
+NEXT_HOP: 193.0.0.56
+\end_layout
+
+\begin_layout LyX-Code
+COMMUNITY: 1273:12250 4788:200 4788:210
 \end_layout
 
 \begin_layout Subsubsection

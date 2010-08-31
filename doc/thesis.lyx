@@ -351,6 +351,13 @@ reference "riswhois entry google"
 
 \begin_layout Subsubsection
 Whois 
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Whois"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2239,6 +2246,13 @@ There is also a limit on the size of the interval: this way it is possible
 \end_deeper
 \begin_layout Subsubsection
 Fetching the (RIS) Whois entries
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Fetching-ris-whois"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3128,6 +3142,13 @@ Cons
 More complicated 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 File splitting
 \end_layout
@@ -3298,38 +3319,55 @@ Whois Client
 \end_layout
 
 \begin_layout Subsubsection
+Context
+\end_layout
+
+\begin_layout Standard
+As we already explained 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:Whois"
+
+\end_inset
+
+, there is not only one whois server but many.
+ The whois client has to be able to ask the right server.
+\end_layout
+
+\begin_layout Subsubsection
 Initialisation 
 \end_layout
 
 \begin_layout Standard
-It is a bit more complicated: I implement a whois client based on the assignatio
-ns given by the whois package of Debian/Ubuntu to ask the whois entries
- to the right server.
+The whois client is based on the assignations given by the whois package
+ of Debian/Ubuntu.
+ 
 \end_layout
 
 \begin_layout Standard
-The following information are saved in a Redis database:
+The ranges are pushed into the database using the library described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:IPs-Keys-generator"
+
+\end_inset
+
+.
+ Each resulting key is associated to its whois server: 
+\family typewriter
+<IP_key>|<whois_server_URL>
+\end_layout
+
+\begin_layout Standard
+Each server may have some special options:
 \end_layout
 
 \begin_layout Itemize
-block: the IPs assigned to the server
+port: port to connect to on the server 
 \end_layout
 
 \begin_layout Itemize
-whois: the URL of the server 
-\end_layout
-
-\begin_layout Itemize
-port: port on the server 
-\end_layout
-
-\begin_layout Itemize
-options: 
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-pre: prefix of the query 
+pre: string prepended to the query 
 \end_layout
 
 \begin_layout Itemize
@@ -3337,13 +3375,51 @@ post: string appended to the query
 \end_layout
 
 \begin_layout Itemize
-keepalive: other prefix, make the query keepalive (the server doesn't close
+keepalive: other prefix, makes the query keepalive (the server doesn't close
  the connexion after each query)
 \end_layout
 
-\end_deeper
+\begin_layout Standard
+This options looks like this in the database: 
+\family typewriter
+<whois_server_url>:<option_name>|<option>
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The options are set depending on the server: on some servers, it is possible
+ to reduce the responce to the most precise information, and reduce the
+ size of the entry in the database.
+ An other very interesting option is to fetch only the entry in english
+ (useful on some asiatic servers).
+ 
+\end_layout
+
+\begin_layout Standard
+This options have to be tested on each server.
+ The default config is the best choice.
+ 
+\end_layout
+
 \begin_layout Subsubsection
 Usage
+\end_layout
+
+\begin_layout Standard
+The client is used by the fetching process, described 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:Fetching-ris-whois"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Paragraph
@@ -3351,20 +3427,14 @@ Finding the best range
 \end_layout
 
 \begin_layout Standard
-The ranges are saved into redis using the library described earlier 
+The best range is found using the library described 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vpageref
 reference "sub:IPs-Keys-generator"
 
 \end_inset
 
 .
- How to get the best range and with it the right server is described there.
-\end_layout
-
-\begin_layout Standard
-One process will do this job and put the IPs in the queues of their servers.
- 
 \end_layout
 
 \begin_layout Paragraph
@@ -3372,15 +3442,14 @@ Fetching
 \end_layout
 
 \begin_layout Standard
-There is one other process for each server found in the assignations file.
- This process has a queue initialized by the sorting process we just describe.
- Using the informations put in the database during the initialisation, we
- establish a connection to the server and fetch the entry.
+When the best range is found, the fetcher initialize the connection to the
+ server using the informations put in the database during the initialisation
+ and fetch the entry.
  If possible, the connection is not closed but very few servers authorize
- it, slowing a lot the process.
- That's why we have also a proper whois server 
+ it, it slows a lot the process.
+ That is why we have also a proper whois server, described 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vpageref
 reference "sec:Whois-server"
 
 \end_inset
@@ -3388,8 +3457,26 @@ reference "sec:Whois-server"
 .
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Whois Parser
+\end_layout
+
+\begin_layout Standard
+The basic idea of the parser comes from the project pywhois 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pywhois"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -4582,6 +4669,16 @@ key "libbgpdump"
 \end_inset
 
 http://www.ris.ripe.net/source/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "pywhois"
+
+\end_inset
+
+https://code.google.com/p/pywhois/
 \end_layout
 
 \begin_layout Standard

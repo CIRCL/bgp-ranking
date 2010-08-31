@@ -28,8 +28,6 @@ graphes_dir = os.path.join(root_dir,config.get('web','graphes'))
 
 class Master(object):
     
-    _cp_config = {'request.error_response': handle_error}
-    
     def __init__(self):
         self.controler = MasterControler()
     
@@ -115,7 +113,7 @@ if __name__ == "__main__":
         cherrypy.response.status = 500
         cherrypy.response.body = ["<html><body>Sorry, an error occured</body></html>"]
     
-    
+    _cp_config = {'request.error_response': handle_error}
     
     cherrypy.config.update({'error_page.404': error_page_404})
     cherrypy.quickstart(website, config = config_file)

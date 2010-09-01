@@ -29,6 +29,7 @@
 \use_hyperref true
 \pdf_title "BGP AS / ISP Security Ranking"
 \pdf_author "Raphaël Vinot"
+\pdf_subject "BGP AS / ISP Security Ranking"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
 \pdf_bookmarksopen false
@@ -140,20 +141,16 @@ inst{?} command only if the authors have different affiliations.
 \end_layout
 
 \begin_layout Institute
-Master 2 SSIC
+Chaos Computer Club Trier
 \begin_inset Newline newline
 \end_inset
 
-ISFATES/DFHI
-\begin_inset Newline newline
-\end_inset
 
-Université Paul Verlaine - Metz
 \begin_inset OptArg
-status collapsed
+status open
 
 \begin_layout Plain Layout
-ISFATES/DFHI
+CCC Trier
 \end_layout
 
 \end_inset
@@ -181,9 +178,18 @@ inst command only if there are several affiliations.
 \end_layout
 
 \begin_layout Date
-Masterarbeit, 2010
 \begin_inset Note Note
-status collapsed
+status open
+
+\begin_layout Plain Layout
+Masterarbeit, 2010
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
 
 \begin_layout Plain Layout
 - Either use conference name or its abbreviation.
@@ -199,7 +205,7 @@ status collapsed
 
 
 \begin_inset OptArg
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Masterarbeit, 2010
@@ -613,11 +619,11 @@ Shadowserver
 \end_layout
 
 \begin_layout Subsection
-Threads
+Threats
 \end_layout
 
 \begin_layout BeginFrame
-Threads
+Threats
 \end_layout
 
 \begin_layout Itemize

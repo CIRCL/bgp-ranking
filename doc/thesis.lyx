@@ -1,4 +1,4 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -2016,29 +2016,6 @@ the rank in IPv4 and IPv6
 \begin_layout Description
 Note this rank is unbalanced: it allows us to modify the weight of each
  source
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
- in real time
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Description
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-IMPROVEMENT: change the weight through the website 
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_deeper
@@ -2679,8 +2656,61 @@ The improvement will be to give the possibility to the user to change this
  
 \end_layout
 
+\begin_layout Subsubsection
+Importing datasets
+\end_layout
+
 \begin_layout Standard
-\begin_inset Newpage newpage
+Actually, to be able to import new datasets, you have to write a sub-class
+ to ip_update.
+ The problem is that you have to understand how this class works.
+ 
+\end_layout
+
+\begin_layout Standard
+A big improvement would be to use a redis database as interface between
+ the modules and the class that push the new raw data inthe database.
+ This way, it would be possible to write modules in the language you want
+ and just push the new information into redis.
+ The new module will just have to respect a format but will be completly
+ independant of the existing code.
+ 
+\end_layout
+
+\begin_layout Standard
+It would also be possible to push new data directly through the network.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename new_modules.dia
+	lyxscale 40
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+New type of modules
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_inset
 
 
@@ -3480,11 +3510,38 @@ key "pywhois"
 \end_layout
 
 \begin_layout Subsubsection
-Abstract part
+Context
+\end_layout
+
+\begin_layout Standard
+Every Whois server has his proper format for the response.
+ It would be interesting to implement a simple way to handle every response
+ and be able to parse it automaically to get only the information we want.
+ 
 \end_layout
 
 \begin_layout Subsubsection
 Implementation 
+\end_layout
+
+\begin_layout Standard
+For every server we want to handle, we need to write a small python dictionary
+ with as key the entry to get and as value a regex extracting the needed
+ information.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+example + details 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section

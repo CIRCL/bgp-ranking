@@ -20,7 +20,7 @@ theorems-ams
 
 \graphics default
 \paperfontsize default
-\spacing single
+\spacing onehalf
 \use_hyperref true
 \pdf_title "BGP AS / ISP Security Ranking"
 \pdf_author "Raphaël Vinot"
@@ -42,7 +42,7 @@ theorems-ams
 \paperorientation portrait
 \leftmargin 4cm
 \topmargin 3cm
-\rightmargin 4cm
+\rightmargin 2cm
 \bottommargin 3cm
 \secnumdepth 3
 \tocdepth 3
@@ -137,7 +137,25 @@ LatexCommand tableofcontents
 \end_layout
 
 \begin_layout Standard
+\begin_inset FloatList figure
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand input
+filename "company.lyx"
+
 \end_inset
 
 
@@ -475,6 +493,18 @@ Data is captured by using a distributed network of sensors running a number
 \begin_layout Standard
 And this information are merged with logs, statistics and reports to have
  a complete view of the threads and reduce the false positives.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Atlas provide also some more information such as an URL to get more information,
+ the coverage time and category of the attack.
 \end_layout
 
 \begin_layout Paragraph
@@ -2307,6 +2337,13 @@ y problems.
  later.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 Sorting the whois entry
 \end_layout
@@ -2543,174 +2580,6 @@ reference "sub:Handling-old-datasets"
 
 \begin_layout Standard
 \begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Known bugs and problems
-\end_layout
-
-\begin_layout Subsubsection
-Handling old datasets
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Handling-old-datasets"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-It is possible but not totally implemented and we will have a nasty problem:
- the association between the IP and the ASN is based on the actual version
- of the RIS Whois database and this database evolve quite often.
- If we want to be able to import old data we need also to implement a module
- which will use the corresponding version of the BGP Routing table.
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-It is possible to solve this problem but it will be quite complicated and
- not very usefull.
- This functionality will be not implemented in a near future.
-\end_layout
-
-\begin_layout Subsubsection
-IPv6 and ranking
-\end_layout
-
-\begin_layout Standard
-IPv6 is fully supported by the aggregation system but not for the ranking:
- we need first to find an other formula because the size of the assignations
- by ASN is so big in IPv6 that the result of the division of the number
- of IPs found by the number total of IPs is almost 0.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-This problem will be fixed as soon as possible.
- 
-\end_layout
-
-\begin_layout Subsection
-Improvements 
-\end_layout
-
-\begin_layout Subsubsection
-Databases
-\end_layout
-
-\begin_layout Standard
-The first change to do on the databases will be to merge the two, the one
- containing the data of the datasets and the one containing the ranking:
-\end_layout
-
-\begin_layout Itemize
-there is a table containing only the sources in the ranking database.
- This sources are also present in the dataset database, as field.
- It will be merged
-\end_layout
-
-\begin_layout Itemize
-the ASN table of the dataset will be used in the ranking database: the History
- table has a field containing the ASN.
- 
-\end_layout
-
-\begin_layout Subsubsection
-Configuration
-\end_layout
-
-\begin_layout Standard
-It is actually possible to modify the weight of a source through the configurati
-on file, and only through it.
- When it is changed, the graphs are automatically redraw.
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The improvement will be to give the possibility to the user to change this
- weight directly through the website.
- 
-\end_layout
-
-\begin_layout Subsubsection
-Importing datasets
-\end_layout
-
-\begin_layout Standard
-Actually, to be able to import new datasets, you have to write a sub-class
- to ip_update.
- The problem is that you have to understand how this class works.
- 
-\end_layout
-
-\begin_layout Standard
-A big improvement would be to use a redis database as interface between
- the modules and the class that push the new raw data inthe database.
- This way, it would be possible to write modules in the language you want
- and just push the new information into redis.
- The new module will just have to respect a format but will be completly
- independant of the existing code.
- 
-\end_layout
-
-\begin_layout Standard
-It would also be possible to push new data directly through the network.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename new_modules.dia
-	lyxscale 40
-	scale 30
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-New type of modules
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \end_inset
 
 
@@ -3172,15 +3041,15 @@ Cons
 More complicated 
 \end_layout
 
-\begin_layout Standard
-\begin_inset Newpage newpage
+\begin_layout Subsection
+File splitting
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:File-splitting"
+
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsection
-File splitting
 \end_layout
 
 \begin_layout Subsubsection
@@ -3457,7 +3326,7 @@ Finding the best range
 \end_layout
 
 \begin_layout Standard
-The best range is found using the library described 
+The best range is found using the library described a
 \begin_inset CommandInset ref
 LatexCommand vpageref
 reference "sub:IPs-Keys-generator"
@@ -3487,15 +3356,15 @@ reference "sec:Whois-server"
 .
 \end_layout
 
-\begin_layout Standard
-\begin_inset Newpage newpage
+\begin_layout Subsection
+Whois Parser
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Whois-Parser"
+
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsection
-Whois Parser
 \end_layout
 
 \begin_layout Standard
@@ -3525,23 +3394,68 @@ Implementation
 \end_layout
 
 \begin_layout Standard
-For every server we want to handle, we need to write a small python dictionary
- with as key the entry to get and as value a regex extracting the needed
- information.
+It is possible in python to create new arguments 
+\begin_inset Quotes eld
+\end_inset
+
+on the fly
+\begin_inset Quotes erd
+\end_inset
+
+ by overloading the __getattr__ function.
+ The idea is quite simple: if the argument does not exist in the class (standard
+ python functions), we attempt to get it from qn other way.
  
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-example + details 
+In our case, we will use a dictionary: each entry in the dictionary will
+ have as key the name of the argument to get and as value a regex that will
+ be used to extract the information we want.
+ For every server we want to handle, we need to write a python dictionary.
+ 
 \end_layout
 
-\end_inset
+\begin_layout Paragraph
+Dictionary
+\end_layout
 
+\begin_layout LyX-Code
+RIS = {
+\end_layout
 
+\begin_layout LyX-Code
+'route'      : 'route[6]?:[ ]*([^
+\backslash
+n]*)',
+\end_layout
+
+\begin_layout LyX-Code
+'origin'     : 'origin:[ ]*AS([^
+\backslash
+n]*)',
+\end_layout
+
+\begin_layout LyX-Code
+'description': 'descr:[ ]*([^
+\backslash
+n]*)'
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout Standard
+By using this dictionary, when a RIS Whois entry is passed to the class,
+ we just have to do whois.route to get the route.
+ 
+\end_layout
+
+\begin_layout Standard
+The class is initialized with the URL to the server which did the query.
+ This way, it is possible to select the right dictionary.
+ 
 \end_layout
 
 \begin_layout Section
@@ -3555,73 +3469,33 @@ name "sec:Modules"
 
 \end_layout
 
+\begin_layout Paragraph
+Important Note 
+\end_layout
+
+\begin_layout Standard
+the format of the modules described there is almost deprecated: will change
+ in the nexts weeks, see 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:Importing-datasets"
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Subsection
 Abstract part
 \end_layout
 
-\begin_layout Subsection
-Features
-\end_layout
-
-\begin_layout Subsubsection
-Configuration
-\end_layout
-
 \begin_layout Standard
-All the configuration is defined in 
-\emph on
-etc/bgp-ranking.conf
-\emph default
-.
- You can almost configure all the system.
- More details in the file itself.
+Every module is a subclass of IPUpdate.
+ This class is responsible for the insertion of the data extracted from
+ the datasets into the MySQL database.
+ The module will only define the functions used to extract the information
+ of the dataset.
  
-\end_layout
-
-\begin_layout Subsubsection
-Modularity 
-\end_layout
-
-\begin_layout Standard
-You can run each initscript in the order you want: they are all 
-\series bold
-totally independent
-\series default
-.
- An example: Obviously the parsing will not be done until the files are
- fetched but if the parsing service has nothing to do, it will just wait
- a certain amount of seconds (defined in the configuration file) and check
- again if there is something to do.
- 
-\end_layout
-
-\begin_layout Standard
-Because the sharing of the information between the services is done using
- Redis it is possible to run each part of the system on a different computer.
- 
-\end_layout
-
-\begin_layout Subsubsection
-Multiprocessing
-\end_layout
-
-\begin_layout Standard
-Except the fetching of the datasets, each part of the system support multiproces
-sing: for each service, you can configure the number of process in the configura
-tion file.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-What is multiprocessed
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsection
@@ -3636,58 +3510,60 @@ name "sub:Existing-modules"
 \end_layout
 
 \begin_layout Subsubsection
-Dshield
+Format
+\end_layout
+
+\begin_layout Paragraph
+Plain text
 \end_layout
 
 \begin_layout Standard
-Dshiels provide two lists:
+The easiest format, the datasets of dshield, abuse.ch and abusix are provided
+ in plain text.
+ 
 \end_layout
 
-\begin_layout Itemize
-a list containing the 100 most reported IPs with sometime a reverse dns.
- The reverse DNS are saved in the database because they may be useful to
- trace the evolution of a particular IP 
-\end_layout
-
-\begin_layout Itemize
-the daily sources which contains ~1.000.000 IPs, probably many false positive
- entries but it is at least useful to stress-test the application :)
-\end_layout
-
-\begin_layout Subsubsection
-Zeustracker
+\begin_layout Paragraph
+XML/RSS
 \end_layout
 
 \begin_layout Standard
-Zeus provide a list to track the ZeuS Command&Control servers and malicious
- hosts which are hosting ZeuS files.
- It is just a list of IPs.
+Arbor provide its list in a RSS file.
+ 
+\end_layout
+
+\begin_layout Paragraph
+CSV
+\end_layout
+
+\begin_layout Standard
+The lists of Shadowserver are in CSV.
+ It is good to know that the order of the fields in the three lists is different...
+ That is why there is three modules.
  
 \end_layout
 
 \begin_layout Subsubsection
-Atlas
+Types
+\end_layout
+
+\begin_layout Paragraph
+Type 1
 \end_layout
 
 \begin_layout Standard
-Active Threat Level Analysis System is a list provided by Arbor which contains
- many information on the type of the alert.
- The format of the report is a RSS feed.
- The reports are not freely available.
- 
+the dataset contains only IP addresses and a date for the whole file (or
+ at least, the module set a date).
 \end_layout
 
-\begin_layout Subsubsection
-Shadowserver
+\begin_layout Paragraph
+Type 2 
 \end_layout
 
 \begin_layout Standard
-Shadowserver provide three lists containing about the same information as
- atlas but are CSV files.
- Of course, the three reports are slightly different and need three different
- parsers...
- :) The reports are not freely available.
- 
+the dataset contains more information like the type of the infection, a
+ date for each entry and maybe more.
+ All of this will be saved.
 \end_layout
 
 \begin_layout Subsection
@@ -3702,45 +3578,31 @@ name "sub:Write-a-new"
 \end_layout
 
 \begin_layout Standard
-Each dataset needs a proper module to extract the needed information.
- You can already take a look at the existing modules.
+\begin_inset VSpace defskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Every module has his requirements:
-\end_layout
-
-\begin_layout Itemize
-Unique name: a module is a class, it is obvious that two class with the
- same name will be a problem...
+A module is a class, the name of each class hast to bee unique: is allows
+ us to know the orgin of all the entries in the database.
+ The modules have also to define an home directory for their datasets.
  
-\end_layout
-
-\begin_layout Itemize
-The variable name has to be unique too: it is used in the database to trace
- the origin of the entry.
- 
-\end_layout
-
-\begin_layout Itemize
-The variable directory: it is the directory where the script checks periodically
- if there is a new file.
 \end_layout
 
 \begin_layout Standard
-There are actually two types of modules : 
+That is all for the standard part, there are actually two types of modules
+ : 
 \end_layout
 
 \begin_layout Subsubsection
-First type (Dshield and Zeustracker)
+First type
 \end_layout
 
 \begin_layout Standard
-The freely available datasets contains the IP addresses and sometimes a
- reverse dns but this information is so easily falsified that it is totally
- unnecessary to save it.
- The dataset may contain the date of generation of the report, it will be
- extracted too.
+The dataset contains a list of IPs, it may also give the date of generation
+ of the report, it will be extracted too.
 \end_layout
 
 \begin_layout Standard
@@ -3763,18 +3625,14 @@ The variable module_type set to 1
 \end_layout
 
 \begin_layout Subsubsection
-Second type (Atlas and Shadowserver)
+Second type
 \end_layout
 
 \begin_layout Standard
 The reports provide more information on the attackers.
- They provide obviously the ip but also the time of the attack, and the
- attack (the name of the malware, if known).
- Atlas provide some more information such as an URL to get more information,
- the coverage time and category of the attack.
- But the atlas report is an XML file, this information are extracted of
- the file and saved as a string in the database.
- Shadowserver is a CSV report, the whole line will be pushed in the database.
+ They provide the IP but also the time of the attack, and the type attack
+ (the name of the malware, if known).
+ 
 \end_layout
 
 \begin_layout Standard
@@ -3782,7 +3640,7 @@ This type require:
 \end_layout
 
 \begin_layout Itemize
-The Function parse which return a table of table with each line like: [IP,
+The function parse which return a table of table with each line like: [IP,
  date, infection, rest of the line] 
 \end_layout
 
@@ -3790,23 +3648,45 @@ The Function parse which return a table of table with each line like: [IP,
 The variable module_type set to 2
 \end_layout
 
-\begin_layout Subsubsection
-Automation
-\end_layout
-
-\begin_layout Enumerate
-Edit lib/modules/__init__.py and append the module to import 
-\end_layout
-
-\begin_layout Enumerate
-Edit etc/bgp-ranking.conf and append the name of your new class to the item
- modules_to_parse
+\begin_layout Paragraph
+Note
 \end_layout
 
 \begin_layout Standard
-All the files you put into directory will be automatically parsed.
- It is (of course) possible to automatize this process: you just need to
- edit etc/bgp-ranking.conf and add in the section raw_fetching an entry like:
+the atlas report is an XML file, the information we need are extracted of
+ the file and saved as a string in the database.
+ Shadowserver is a CSV report, the whole line will be pushed in the database.
+\end_layout
+
+\begin_layout Subsection
+Automation
+\end_layout
+
+\begin_layout Standard
+The automation is almost done through the configuration file but if you
+ write a new module, you will have to edit 
+\emph on
+lib/modules/__init__.py
+\emph default
+ and append the module to import first.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Downloading
+\end_layout
+
+\begin_layout Standard
+It is not always possible to download automatically the new datasets but
+ if it is public, you just have to edit 
+\emph on
+etc/bgp-ranking.conf
+\emph default
+ and add in the section 
+\emph on
+raw_fetching
+\emph default
+ an entry like:
 \end_layout
 
 \begin_layout LyX-Code
@@ -3814,140 +3694,98 @@ uniq_name = module directory URL
 \end_layout
 
 \begin_layout Standard
-Now your dataset will be automatically fetched and parsed.
+And restart the service 
+\emph on
+etc/init.d/start_fetch_raw_files.py
+\emph default
+.
+\end_layout
+
+\begin_layout Subsubsection
+Parsing
+\end_layout
+
+\begin_layout Standard
+To start a process watching in the root directory of a new module, edit
  
-\end_layout
-
-\begin_layout Section
-Third party programms
-\end_layout
-
-\begin_layout Subsection
-Redis 
-\end_layout
-
-\begin_layout Standard
-config + explanations
-\end_layout
-
-\begin_layout Standard
-ram usage 
-\end_layout
-
-\begin_layout Standard
--> vm ? yes/not
-\end_layout
-
-\begin_layout Standard
-config 
-\end_layout
-
-\begin_layout Standard
--> auto save
-\end_layout
-
-\begin_layout Subsection
-Rgraph
-\end_layout
-
-\begin_layout Standard
-why 
-\end_layout
-
-\begin_layout Section
-Information
-\end_layout
-
-\begin_layout Standard
-What the application do when all the information we want/need are extracted
- of the datasets.
- We will fetch the RIS Whois and the Whois entries for each IP but it is
- not that easy! 
-\end_layout
-
-\begin_layout Subsection
-Dataset
-\end_layout
-
-\begin_layout Standard
-infection -> interesting to know the evolution 
-\end_layout
-
-\begin_layout Standard
-all the line -> why are we saving the whole line ? whole line savent in
- csv formal => easy to reread & extract 
-\end_layout
-
-\begin_layout Subsection
-RIS Whois
-\end_layout
-
-\begin_layout Standard
-The RIS information are fetched from 
 \emph on
-riswhois.ripe.net
+etc/bgp-ranking.conf
 \emph default
- to know who is announcing the network of the IP.
-\end_layout
-
-\begin_layout Standard
-From the response, we extract:
-\end_layout
-
-\begin_layout Itemize
-the origin, which is the AS announcing the IP 
-\end_layout
-
-\begin_layout Itemize
-the route 
-\end_layout
-
-\begin_layout Itemize
-the description of the ASN
-\end_layout
-
-\begin_layout Standard
-The query server is also saved: it is the URL of the server where we do
- the query.
- It is actually always 
+ and add in the section 
 \emph on
-riswhois.ripe.net
+modules_to_parse
 \emph default
- but in the future, we may directly use a BGP session on a router.
- We will have to be able to know where the information are coming from.
+ an entry like:
+\end_layout
+
+\begin_layout LyX-Code
+classname = impact
 \end_layout
 
 \begin_layout Standard
-If there is no response, we assume that the ip is not announced any more.
- If the IP is RESERVED or PRIVATE, it will be discarded before the inclusion
- in the database: it is for sure a false positive.
-\end_layout
-
-\begin_layout Subsection
-Whois
-\end_layout
-
-\begin_layout Standard
-As for the RIS Whois, the URL of the server is saved in the database.
+impact is the weight of the new module on the global ranking.
  
 \end_layout
 
 \begin_layout Standard
-The rest of the Whois entry is directly pushed in the database.
- There are two problems:
+And restart the service 
+\emph on
+etc/init.d/start_parse_raw_files.py
+\emph default
+.
 \end_layout
 
-\begin_layout Itemize
-the time: it takes ~1sec to get a whois entry 
+\begin_layout Subsection
+Other Features
 \end_layout
 
-\begin_layout Itemize
-the number of queries: the RIR Afrinic blacklists the ip address which make
- too much queries
+\begin_layout Subsubsection
+Configuration
 \end_layout
 
 \begin_layout Standard
-This problems will be solved by using a local Whois server 
+All the configuration is defined in 
+\emph on
+etc/bgp-ranking.conf
+\emph default
+.
+ You can almost configure all the system.
+ More details in the file itself.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Modularity 
+\end_layout
+
+\begin_layout Standard
+You can run each initscript in the order you want: they are all totally
+ independent.
+ 
+\end_layout
+
+\begin_layout Description
+Example the parsing will not be done until the files are fetched but if
+ the parsing service has nothing to do, it will just wait a certain amount
+ of seconds (defined in the configuration file) and check again if there
+ is something to do.
+ 
+\end_layout
+
+\begin_layout Standard
+Because the sharing of the information between the services is done using
+ Redis it is possible to run each part of the system on a different computer.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Multiprocessing
+\end_layout
+
+\begin_layout Standard
+Except the fetching of the datasets, each part of the system support multiproces
+sing: for each service, you can configure the number of process in the configura
+tion file.
 \end_layout
 
 \begin_layout Section
@@ -3961,11 +3799,254 @@ name "sec:Whois-server"
 
 \end_layout
 
+\begin_layout Standard
+This is an other project, all the details will not be given in this document,
+ only the most important points.
+ 
+\end_layout
+
 \begin_layout Subsection
-Generation of the index 
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Generation-index"
+Context
+\end_layout
+
+\begin_layout Standard
+Querying the whois servers through the Internet has two disavantage: 
+\end_layout
+
+\begin_layout Enumerate
+it takes a big amount of time: some queries take almost one second.
+ With the number of query we have to do, it is a impossible.
+ 
+\end_layout
+
+\begin_layout Enumerate
+after a certain amount of queries (around 10.000) some servers will blacklist
+ our IP
+\end_layout
+
+\begin_layout Standard
+The project is fully opensource 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "whois_server"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsection
+Goal
+\end_layout
+
+\begin_layout Standard
+The most challenging part of the whois server is that it has to be faster
+ than the querying through the Internet.
+\end_layout
+
+\begin_layout Subsection
+Algorithms
+\end_layout
+
+\begin_layout Standard
+To initialize the whois database, we will re-use many of the libraries developpe
+d for the Ranking system:
+\end_layout
+
+\begin_layout Itemize
+File splitter (
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:File-splitting"
+
+\end_inset
+
+) to use many processes to initialize the database
+\end_layout
+
+\begin_layout Itemize
+IP keys generator (
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:IPs-Keys-generator"
+
+\end_inset
+
+) to generate the IP keys 
+\end_layout
+
+\begin_layout Itemize
+Whois parser (
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sub:Whois-Parser"
+
+\end_inset
+
+) to split the entries of the dump
+\end_layout
+
+\begin_layout Standard
+Because all the databases dumps are very differents, all the scripts to
+ initialize the databases have many differences but the idea is always the
+ same: each IP block has a unique identifiant and Keys of entries associated
+ to the block look like this in redis: 
+\end_layout
+
+\begin_layout LyX-Code
+<unique_id>:<entry_name> - <entry_key>
+\end_layout
+
+\begin_layout Description
+Example: 
+\family typewriter
+1:owner - RIPE-1234
+\end_layout
+
+\begin_layout Standard
+The entry key is used to extract the information on the key.
+ 
+\end_layout
+
+\begin_layout Description
+Example: 
+\family typewriter
+RIPE-1234 - <information on the key>
+\end_layout
+
+\begin_layout Standard
+The entry names are as normalized as possible: like this we just have to
+ define a list of names and try to get all of them when a client makes a
+ query and return a dump of all the strings extracted from the database.
+ 
+\end_layout
+
+\begin_layout Subsection
+Results
+\end_layout
+
+\begin_layout Standard
+With a local whois server, the queries takes always the same time: around
+ 0.05 seconds.
+ It is 5 times faster than the querying in 
+\begin_inset Quotes eld
+\end_inset
+
+keepalive mode
+\begin_inset Quotes erd
+\end_inset
+
+ of the RIPE and almost 20 times than the 
+\begin_inset Quotes eld
+\end_inset
+
+normal mode
+\begin_inset Quotes erd
+\end_inset
+
+ offered by the other servers.
+ 
+\end_layout
+
+\begin_layout Subsection
+Problems
+\end_layout
+
+\begin_layout Standard
+A whois server needs a big amount of memory: we have to generate a lot of
+ keys to be able to link alle the information together and at the end, the
+ whois database of the RIPE needs almost 3Gb of ram.
+ If we want to have all the whois databases on a single server, it will
+ need at least 8Gb (it is just an estimation).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Generating the tables takes a lot of time: depending on the size of the
+ dumb, it may need around one hour.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+An other quite anoying problem is that on a 32bits system, it is not possible
+ for a single process to use more than four giga bits of memory 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "memory_limit"
+
+\end_inset
+
+, even with a PAE kernel which allow the whole system to recognize until
+ 64Go of memory.
+ This problem can be solved by using a 64bits system.
+ 
+\end_layout
+
+\begin_layout Subsection
+Improvements
+\end_layout
+
+\begin_layout Standard
+It is actually not possible to do queries on ASNs.
+ This functionality will be implemented as soon as possible.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We actually do not have a dump of all the whois databases: only the RIPE,
+ ARIN and LACNIC gave us a dump, AFRINIC and APNIC do not.
+ It would be great to programm the rest of the modules and to be able to
+ run on a single server all the databases.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A website may be developped in the future.
+ 
+\end_layout
+
+\begin_layout Section
+Website
+\end_layout
+
+\begin_layout Subsection
+Used technologies 
+\end_layout
+
+\begin_layout Paragraph
+Cheetah 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "cheetah"
 
 \end_inset
 
@@ -3973,23 +4054,355 @@ name "sub:Generation-index"
 \end_layout
 
 \begin_layout Standard
-It is the most challenging part of the whois server: it 
-\series bold
-has to be faster
-\series default
- than the querying through the Internet! 
+is a templating system in python, it allows us to generate pages on the
+ fly.
+ 
 \end_layout
 
-\begin_layout Section
-Websites
-\end_layout
+\begin_layout Paragraph
+Cherry-py 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "cherrypy"
 
-\begin_layout Subsection
-Used technologies 
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Cheetah and cherry-py
+is a webserver able to use the cheetah templates.
+ 
+\end_layout
+
+\begin_layout Subsection
+Status
+\end_layout
+
+\begin_layout Standard
+The website is a work in progress.
+ It is possible to do the following the tasks on the website: 
+\end_layout
+
+\begin_layout Itemize
+View the 
+\begin_inset Quotes eld
+\end_inset
+
+worst ASNs
+\begin_inset Quotes erd
+\end_inset
+
+ of the last 24 hours, by sources and a merged view of all sources.
+ 
+\end_layout
+
+\begin_layout Itemize
+Display a graph of a list of ASNs, by sources and a merged view of all sources.
+ 
+\end_layout
+
+\begin_layout Itemize
+Display a graph for a particular ASN, using all the entries of the history
+\end_layout
+
+\begin_layout Itemize
+Display the lastest IPs (last 24 hours) found for a particular ASNs, their
+ block and the description of the ASN
+\end_layout
+
+\begin_layout Section
+Known bugs and problems
+\end_layout
+
+\begin_layout Subsection
+Handling old datasets
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Handling-old-datasets"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is possible but not totally implemented and we will have a nasty problem:
+ the association between the IP and the ASN is based on the actual version
+ of the RIS Whois database and this database evolve quite often.
+ If we want to be able to import old data we need also to implement a module
+ which will use the corresponding version of the BGP Routing table.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is possible to solve this problem but it will be quite complicated and
+ not very usefull.
+ This functionality will be not implemented in a near future.
+\end_layout
+
+\begin_layout Subsection
+IPv6 and ranking
+\end_layout
+
+\begin_layout Standard
+IPv6 is fully supported by the aggregation system but not for the ranking:
+ we need first to find an other formula because the size of the assignations
+ by ASN is so big in IPv6 that the result of the division of the number
+ of IPs found by the number total of IPs is almost zero.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This problem will be fixed as soon as possible.
+ 
+\end_layout
+
+\begin_layout Section
+Improvements 
+\end_layout
+
+\begin_layout Subsection
+Databases
+\end_layout
+
+\begin_layout Standard
+The first change to do on the databases will be to merge the two, the one
+ containing the data of the datasets and the one containing the ranking:
+\end_layout
+
+\begin_layout Itemize
+there is a table containing only the sources in the ranking database.
+ This sources are also present in the dataset database, as field.
+ It will be merged
+\end_layout
+
+\begin_layout Itemize
+the ASN table of the dataset will be used in the ranking database: the History
+ table has a field containing the ASN.
+ 
+\end_layout
+
+\begin_layout Subsection
+Configuration
+\end_layout
+
+\begin_layout Standard
+It is actually possible to modify the weight of a source through the configurati
+on file, and only through it.
+ When it is changed, the graphs are automatically redraw.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The improvement will be to give the possibility to the user to change this
+ weight directly through the website.
+ 
+\end_layout
+
+\begin_layout Subsection
+Importing datasets
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Importing-datasets"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Actually, to be able to import new datasets, you have to write a sub-class
+ to ip_update.
+ The problem is that you have to understand how this class works and it
+ is not that easy.
+ A big improvement would be to use a redis database as interface between
+ the modules and the class that push the new raw data inthe database.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename new_modules.dia
+	lyxscale 40
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+New type of modules
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Basics 
+\end_layout
+
+\begin_layout Standard
+For each new entry, we need at least two information: 
+\end_layout
+
+\begin_layout Itemize
+an IP address
+\end_layout
+
+\begin_layout Itemize
+the source of the IP
+\end_layout
+
+\begin_layout Standard
+A third information is very important but if the module does not give it,
+ it will be set to 
+\begin_inset Quotes eld
+\end_inset
+
+today
+\begin_inset Quotes erd
+\end_inset
+
+: the timestamp
+\end_layout
+
+\begin_layout Standard
+There is two other fields but they only exist on some particular datasets:
+\end_layout
+
+\begin_layout Itemize
+the type of the infection 
+\end_layout
+
+\begin_layout Itemize
+a text containing other fields, separated by semicolons
+\end_layout
+
+\begin_layout Subsubsection
+Format 
+\end_layout
+
+\begin_layout Standard
+Each new IP will be put into redis in a set called 
+\begin_inset Quotes eld
+\end_inset
+
+ip
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+For each IP, the module will also push into redis at least this entry: 
+\end_layout
+
+\begin_layout LyX-Code
+ip:source -> source_name
+\end_layout
+
+\begin_layout Standard
+And if possible an entry for each other fields: 
+\end_layout
+
+\begin_layout LyX-Code
+ip:timestamp -> timestamp (timestamp in UTC)
+\end_layout
+
+\begin_layout LyX-Code
+ip:infection -> infection
+\end_layout
+
+\begin_layout LyX-Code
+ip:raw -> other informations
+\end_layout
+
+\begin_layout Subsubsection
+Multiprocessing
+\end_layout
+
+\begin_layout Standard
+Every module can work at the same time.
+ 
+\end_layout
+
+\begin_layout Standard
+The process pushing the new entries into the mysql database will look in
+ the 
+\begin_inset Quotes eld
+\end_inset
+
+ip
+\begin_inset Quotes erd
+\end_inset
+
+ set and pick the new entries if it find something.
+ 
+\end_layout
+
+\begin_layout Description
+WARNING: The modules have to push first all the other fields 
+\series bold
+before
+\series default
+ pushing the IP into the set, elsewhere we will have inconsistent entries.
+\end_layout
+
+\begin_layout Subsubsection
+Advantages
+\end_layout
+
+\begin_layout Standard
+This way, it would be possible to write modules in the language you want
+ and just push the new information into redis.
+ The new module will just have to respect a format but will be completly
+ independant of the existing code.
+ 
+\end_layout
+
+\begin_layout Standard
+It would also be possible to push new data directly through the network,
+ from sensors.
+ 
 \end_layout
 
 \begin_layout Part
@@ -4112,6 +4525,10 @@ Improvements and future usage
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "AS"
@@ -4122,7 +4539,7 @@ description "The classic definition of an Autonomous System is a set of routers 
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "ASN"
@@ -4133,7 +4550,7 @@ description "Autonomous System Number it is a unique 16-bit number associated wi
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "Prefix"
@@ -4144,7 +4561,7 @@ description "it is a network represented like this: first ip of the network/bit-
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "ISP"
@@ -4155,7 +4572,7 @@ description "Internet Service Provider it has at least one autonomous system num
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "SO"
@@ -4166,7 +4583,7 @@ description "Satellite operator it is an ISP which provide an Internet access th
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "Data source"
@@ -4177,7 +4594,7 @@ description "it is the entity/company/person which provide a dataset. "
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "Dataset"
@@ -4188,7 +4605,7 @@ description "it contains the most important part of the information used by the 
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "Whois entry"
@@ -4199,7 +4616,7 @@ description "the information given by a whois server when the system do a query 
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "C\\&C"
@@ -4210,7 +4627,7 @@ description "Command and Control it is the infrastructure used by the bot master
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "Botnet"
@@ -4221,7 +4638,7 @@ description "itis a group of computers used by criminal entities for nefarious p
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "Bot Master"
@@ -4232,7 +4649,7 @@ description "it is the person or the entity which control the botnet."
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "Malware"
@@ -4243,7 +4660,7 @@ description "All the nefarious softwares which can installed on a system."
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "Peering"
@@ -4254,7 +4671,7 @@ description "exchange of traffic between ISPs, it is the base of the internet wh
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "IANA"
@@ -4265,7 +4682,7 @@ description "The Internet Assigned Numbers Authority is the global entity contro
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset CommandInset nomenclature
 LatexCommand nomenclature
 symbol "RIR"
@@ -4276,7 +4693,7 @@ description "The Regional Internet Registries manage the AS numbers and IPs assi
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset ERT
 status open
 
@@ -4292,8 +4709,13 @@ printnomenclature[0.8in]
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \end_inset
 
 
@@ -4738,19 +5160,45 @@ key "pywhois"
 https://code.google.com/p/pywhois/
 \end_layout
 
-\begin_layout Standard
-\begin_inset Newpage newpage
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "whois_server"
+
 \end_inset
 
-
+http://gitorious.org/whois-server
 \end_layout
 
-\begin_layout Standard
-\begin_inset FloatList figure
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "memory_limit"
 
 \end_inset
 
+http://www.cyberciti.biz/tips/maximum-memory-and-cpu-limitations-for-linux-server.h
+tml
+\end_layout
 
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "cheetah"
+
+\end_inset
+
+http://www.cheetahtemplate.org/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "cherrypy"
+
+\end_inset
+
+http://www.cherrypy.org/
 \end_layout
 
 \begin_layout Standard

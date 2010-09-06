@@ -92,8 +92,9 @@ today
 \end_layout
 
 \begin_layout Abstract
-For an Internet Service Provider, AS numbers are a logical representation
- of the other ISP peering or communicating with his autonomous system.
+For an Internet Service Provider, Autonomous system numbers (ASNs) are a
+ logical representation of the other ISP peering or communicating with his
+ autonomous system.
  ISP customers are using the capacity of the Internet Service Provider to
  reach Internet services over other AS.
  Some of those communications can be malicious (e.g.
@@ -101,7 +102,8 @@ For an Internet Service Provider, AS numbers are a logical representation
  AS location.
  In order to provide an improved security view on those AS numbers, a trust
  ranking scheme will be implemented based on existing datasets of compromised
- systems, malware C&C IP and existing datasets of the ISPs.
+ systems, IPs of malware Command and Control servers and existing datasets
+ of the ISPs.
 \end_layout
 
 \begin_layout Abstract
@@ -114,8 +116,8 @@ For an Internet Service Provider, AS numbers are a logical representation
 \begin_layout Abstract
 BGP ranking is a free software to calculate the security ranking of a specific
  AS number.
- The system is gathering external datasources (e.g.
- dshield, shadowserver, Arbor ATLAS) to calculate the ranking over time.
+ The system is gathering external datasets (e.g.
+ Dshield, Shadowserver, Arbor ATLAS) to calculate the ranking over the time.
  The purpose is to show the malicious activities of a specific AS and maybe
  limits its impact on other ASes.
 \end_layout
@@ -133,7 +135,7 @@ LatexCommand tableofcontents
 
 \end_inset
 
-:
+
 \end_layout
 
 \begin_layout Standard
@@ -180,13 +182,27 @@ Internet is a decentralized network with a bunch of operators, each operator
 \emph on
 peering
 \emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "peering_transit"
+
+\end_inset
+
 .
  Without this exchanges, Internet can not work.
  
 \end_layout
 
 \begin_layout Standard
-There is three different types of peering:
+There is three different types of peering 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "art_peering"
+
+\end_inset
+
+:
 \end_layout
 
 \begin_layout Itemize
@@ -229,8 +245,14 @@ Border Gateway Protocol (BGP)
 \end_layout
 
 \begin_layout Standard
-The Border Gateway Protocol is the protocol used by everyone on the Internet,
- without knowing it exists.
+The Border Gateway Protocol is the protocol 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "AS"
+
+\end_inset
+
+used by everyone on the Internet, without knowing it exists.
  This protocol is commonly presented as the routing protocol of the Internet,
  all the core routers of the Internet are using it to communicate together.
  
@@ -238,7 +260,7 @@ The Border Gateway Protocol is the protocol used by everyone on the Internet,
 
 \begin_layout Standard
 It is a path vector protocol: the routing table contains the destination
- network, the ip address of the next router on the way to this network and
+ network, the IP address of the next router on the way to this network and
  the path (in this case, the list of ASNs) to reach the destination.
 \end_layout
 
@@ -283,9 +305,15 @@ Autonomous system (AS)
 \begin_layout Standard
 The operators on the Internet exchange their routes, it is obvious that
  this operators need a way to identify each other without using IP Addresses.
- That is why there are Autonomous systems numbers (ASNs), an operator which
- wants to announce IP Addresses on the Internet needs at least one ASN,
- an AS will announce one or more networks.
+ That is why there are Autonomous systems numbers (ASNs) 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "asns_Overview"
+
+\end_inset
+
+, an operator which wants to announce IP Addresses on the Internet needs
+ at least one ASN, an AS will announce one or more networks.
 \end_layout
 
 \begin_layout Standard
@@ -310,7 +338,7 @@ key "RIS"
 
 \end_inset
 
- : 
+: 
 \end_layout
 
 \begin_layout Quote
@@ -918,7 +946,7 @@ Format
 \begin_layout Standard
 Every dataset has his proper format, they are obviously incompatible from
  one data sources to another: we will find plain text, CSV and XML files.
- Some files contains only the ip addresses, some other the type of the attack
+ Some files contains only the IP addresses, some other the type of the attack
  and a timestamp.
  Some files are updated every couple hours, most of them every 24 hours.
  But the insertion in the database has to be same for every source.
@@ -1109,7 +1137,7 @@ Flow spec can also be used to do ingress filtering on the border of the
  originating AS, the traffic will be discarded, even if this traffic comes
  from
 \emph on
- 'behind' an Internet Service Provider's (ISP) aggregation point
+ behind an Internet Service Provider's (ISP) aggregation point
 \emph default
  
 \begin_inset CommandInset citation
@@ -1163,7 +1191,7 @@ key "Mapreduce"
 : it means to be able to run as often as possible more than one process
  on the same task.
  To do it, we will share the information between the processes using a key/value
- storage server called redis 
+ storage server called Redis 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "redis_official"
@@ -1445,13 +1473,13 @@ key "SQLAlchemy-dbs"
 \end_layout
 
 \begin_layout Standard
-This database contains actually all the static informations used by the
- ranking system.
+This database contains actually all the static information used by the ranking
+ system.
  Static information means all the information extracted of the datasets
  and the whois entries, when they are in the database, they will never be
  modified anymore.
- The voting informations are also saved into this database as well as the
- history of the ranking used to generate the graphes.
+ The voting in formations are also saved into this database as well as the
+ history of the ranking used to generate the graphs.
  
 \end_layout
 
@@ -1504,7 +1532,7 @@ The whole program use a lot of processes and most of them need to exchange
  It would be possible to use shared memory between processes using the system
  API but it is a lot easier to put all the information in a shared database
  which will deal on its side with the problem of the simultaneous access
- to the ressources.
+ to the resources.
  
 \end_layout
 
@@ -1555,9 +1583,12 @@ The other usage of Redis is quite obvious: we need to be able to do a lot
 \end_layout
 
 \begin_layout Standard
-Redis provide a command called redis-benchmark, it gives the following results
- with the code present on the master branch of today (27.08.2010) on our test
- server: 
+Redis provide a command called 
+\emph on
+redis-benchmark
+\emph default
+, it gives the following results with the code present on the master branch
+ of today (27.08.2010) on our test server: 
 \end_layout
 
 \begin_layout Standard
@@ -1857,7 +1888,16 @@ reference "fig:Technical-global-view"
 
 \end_inset
 
-.
+ which gather the data.
+ And 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "fig:Technical-global-view-Ranking"
+
+\end_inset
+
+ for the ranking.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -1866,7 +1906,7 @@ MySQL databases
 
 \begin_layout Standard
 Two databases are in use: the first one contains only the data of the datasets.
- The second one, the results of the ranking and the voting informations.
+ The second one, the results of the ranking and the voting information.
  
 \end_layout
 
@@ -1890,7 +1930,7 @@ This table allow us to dump easily all the IPs we found in the datasets.
 
 \end_deeper
 \begin_layout Description
-IPsDescriptions for each ip found in the datasets, we create a new entry
+IPsDescriptions for each IP found in the datasets, we create a new entry
  in this table.
  
 \end_layout
@@ -1908,7 +1948,7 @@ The name of the class where the IP is coming from.
 
 \begin_layout Itemize
 The timestamp of the insertion into the database: it is most of the time
- the current day but it can also be used to reimport old datasets, this
+ the current day but it can also be used to re-import old datasets, this
  functionality is actually not implemented.
  See 
 \begin_inset CommandInset ref
@@ -1917,7 +1957,7 @@ reference "sub:Handling-old-datasets"
 
 \end_inset
 
- for more informations
+ for more information
 \end_layout
 
 \begin_layout Itemize
@@ -2010,7 +2050,7 @@ Ranking and Voting
 \end_layout
 
 \begin_layout Standard
-The two tables used to display the graphes are the following: 
+The two tables used to display the graphs are the following: 
 \end_layout
 
 \begin_layout Description
@@ -2087,7 +2127,7 @@ name "sub:Fetching-the-datasets"
 
 \begin_layout Standard
 It is not the case for all of them but all the datasets freely available
- on the internet are automatically downloaded.
+ on the Internet are automatically downloaded.
  
 \begin_inset Note Note
 status open
@@ -2174,8 +2214,8 @@ reference "sub:Write-a-new"
 
 \begin_layout Standard
 When the parsing is finished, the system will automatically fetch the rest
- of the information it needs and there is neither futher module to write
- nor any other action to procede: the raw information is processed and computed
+ of the information it needs and there is neither further module to write
+ nor any other action to proceed: the raw information is processed and computed
  automatically to generate the ranking and build the reports.
  
 \end_layout
@@ -2207,7 +2247,15 @@ Ask the redis database if there is an entry for the current IP
 
 \begin_layout Enumerate
 If not, put the IP in the set of pending queries (there are two sets, the
- first one is called 'ris' and the second 'whois')
+ first one is called 
+\emph on
+ris
+\emph default
+ and the second 
+\emph on
+whois
+\emph default
+)
 \end_layout
 
 \begin_layout Enumerate
@@ -2258,7 +2306,7 @@ This process does not do any network connexions with any other computer
 
 \begin_layout Description
 Note it is also multiprocessed: each process getting (RIS) Whois entries
- will recieve a certain interval of IPsDescriptions.
+ will receive a certain interval of IPsDescriptions.
  This interval is based on the number of allowed processes (in the default
  configuration: 4) and the number of RIS entries to fetch.
  
@@ -2358,13 +2406,6 @@ y problems.
  later.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsubsection
 Sorting the whois entry
 \begin_inset CommandInset label
@@ -2453,7 +2494,7 @@ Note it does not concern the RIS Whois entries: RIPE NCC provide a global
 \end_layout
 
 \begin_layout Standard
-Tow UML diagramms representing the process of getting from redis, fetching
+Tow UML diagrams representing the process of getting from redis, fetching
  and sorting the whois query for the RIS Whois (on page 
 \begin_inset CommandInset ref
 LatexCommand pageref
@@ -2484,17 +2525,17 @@ Ranking
 \end_layout
 
 \begin_layout Standard
-Based on the informations extracted from the datasets and the ones fetched
- from the internet, we are able to compute a ranking.
+Based on the information extracted from the datasets and the ones fetched
+ from the Internet, we are able to compute a ranking.
  
 \end_layout
 
 \begin_layout Subsubsection
-Routing informations
+Routing information
 \end_layout
 
 \begin_layout Standard
-The routing informations are extracted from the dump of the BGP table of
+The routing information are extracted from the dump of the BGP table of
  RIPE NCC.
  We are using the routing table collected by the Remote Route Collectors
  (RCC) called rrc00, it is the biggest one and he 
@@ -2529,9 +2570,9 @@ key "libbgpdump"
 \end_layout
 
 \begin_layout Standard
-The processing of the file is also multi-processed, the converted file is
- first splited and one process populating the database if launched on each
- file (by default, 4 at the same time).
+The processing of the file is also multiprocessed, the converted file is
+ splitted and one process populating the database if launched on each file
+ (by default, 4 at the same time).
 \end_layout
 
 \begin_layout Standard
@@ -2545,7 +2586,7 @@ The processing of the file is also multi-processed, the converted file is
 When populated, the database is used to compute the number of IPs announced
  by the ASNs: it is an very important information because the rank of the
  ASNs is based on it.
- A small subnet with a certain amound of surpicious IPs will have an higher
+ A small subnet with a certain amount of suspicious IPs will have an higher
  rank than a big subnet with the same amount of suspicious IPs.
  
 \end_layout
@@ -2575,7 +2616,7 @@ Counting the number of IP announced by the ASN
 \end_layout
 
 \begin_layout Enumerate
-Counting the number of IPs, by sources, present im the database for the
+Counting the number of IPs, by sources, present in the database for the
  current day 
 \end_layout
 
@@ -2589,7 +2630,7 @@ Saving in the database
 \end_layout
 
 \begin_layout Description
-Note as usual, it is multi-processed: each process compute the ranking of
+Note as usual, it is multiprocessed: each process compute the ranking of
  a certain interval of ASNs (by default, 4 processes at the same time).
 \end_layout
 
@@ -2603,14 +2644,7 @@ reference "sub:Handling-old-datasets"
 
 \end_inset
 
- for more informations.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
+ for more information.
 \end_layout
 
 \begin_layout Section
@@ -2688,7 +2722,7 @@ IP address :
 \end_layout
 
 \begin_layout Standard
-This ip address is in all the sets but the most accurate information is
+This IP address is in all the sets but the most accurate information is
  that it is owned by the company selling websites.
 \end_layout
 
@@ -2713,7 +2747,7 @@ Easy
 \end_layout
 
 \begin_layout Itemize
-Fast: acces to the informations in O(1)
+Fast: access to the information in O(1)
 \end_layout
 
 \begin_layout Subparagraph
@@ -2892,7 +2926,7 @@ But be want more precision, the key will be the following: 1.1.{1-5} => 5
 \end_layout
 
 \begin_layout Example
-Generate a key for a very compley interval
+Generate a key for a very complex interval
 \end_layout
 
 \begin_layout Example
@@ -3090,7 +3124,7 @@ One of the requirements is that the system has to to allow mapreduce-like
  The problem with files is that it is not possible to parse it with more
  than one process at the same time.
  It would be great to be able to split a big file into smaller one and launch
- differents processes on this files.
+ different processes on this files.
  This is the aim of this library.
  It has also to be included in an existing code and should be as transparent
  as possible.
@@ -3207,7 +3241,7 @@ Algorithm
 Separator The separator is used to split the file at a particular point:
  there is usually blocks in the files we want to split and we cannot cut
  the files within this blocks.
- usualy it is a 
+ usually it is a 
 \family typewriter
 
 \backslash
@@ -3262,7 +3296,7 @@ reference "sub:Whois"
 \end_layout
 
 \begin_layout Subsubsection
-Initialisation 
+Initialization 
 \end_layout
 
 \begin_layout Standard
@@ -3321,16 +3355,16 @@ This options looks like this in the database:
 
 \begin_layout Standard
 The options are set depending on the server: on some servers, it is possible
- to reduce the responce to the most precise information, and reduce the
+ to reduce the response to the most precise information, and reduce the
  size of the entry in the database.
- An other very interesting option is to fetch only the entry in english
- (useful on some asiatic servers).
+ An other very interesting option is to fetch only the entry in English
+ (useful on some Asiatic servers).
  
 \end_layout
 
 \begin_layout Standard
 This options have to be tested on each server.
- The default config is the best choice.
+ The default configuration is the best choice.
  
 \end_layout
 
@@ -3370,7 +3404,7 @@ Fetching
 
 \begin_layout Standard
 When the best range is found, the fetcher initialize the connection to the
- server using the informations put in the database during the initialisation
+ server using the information put in the database during the initialization
  and fetch the entry.
  If possible, the connection is not closed but very few servers authorize
  it, it slows a lot the process.
@@ -3413,7 +3447,7 @@ Context
 \begin_layout Standard
 Every Whois server has his proper format for the response.
  It would be interesting to implement a simple way to handle every response
- and be able to parse it automaically to get only the information we want.
+ and be able to parse it automatically to get only the information we want.
  
 \end_layout
 
@@ -3432,14 +3466,14 @@ on the fly
 
  by overloading the __getattr__ function.
  The idea is quite simple: if the argument does not exist in the class (standard
- python functions), we attempt to get it from qn other way.
+ python functions), we attempt to get it from an other way.
  
 \end_layout
 
 \begin_layout Standard
 In our case, we will use a dictionary: each entry in the dictionary will
- have as key the name of the argument to get and as value a regex that will
- be used to extract the information we want.
+ have as key the name of the argument to get and as value a regexp that
+ will be used to extract the information we want.
  For every server we want to handle, we need to write a python dictionary.
  
 \end_layout
@@ -3503,7 +3537,7 @@ Important Note
 
 \begin_layout Standard
 the format of the modules described there is almost deprecated: will change
- in the nexts weeks, see 
+ in the next weeks, see 
 \begin_inset CommandInset ref
 LatexCommand vpageref
 reference "sub:Importing-datasets"
@@ -3546,7 +3580,7 @@ Plain text
 \end_layout
 
 \begin_layout Standard
-The easiest format, the datasets of dshield, abuse.ch and abusix are provided
+The easiest format, the datasets of Dshield, abuse.ch and Abusix are provided
  in plain text.
  
 \end_layout
@@ -3614,7 +3648,7 @@ name "sub:Write-a-new"
 
 \begin_layout Standard
 A module is a class, the name of each class hast to bee unique: is allows
- us to know the orgin of all the entries in the database.
+ us to know the origin of all the entries in the database.
  The modules have also to define an home directory for their datasets.
  
 \end_layout
@@ -3638,18 +3672,33 @@ This type require:
 \end_layout
 
 \begin_layout Itemize
-The function parse: extract the IPs 
+The function 
+\emph on
+parse
+\emph default
+: extract the IPs 
 \end_layout
 
 \begin_layout Itemize
-A variable datetime: if possible extracted of the file.
- If there is no date in the file, the date will be set to 'today' (datetime.date.t
-oday()).
+A variable 
+\emph on
+datetime
+\emph default
+: if possible extracted of the file.
+ If there is no date in the file, the date will be set to 
+\emph on
+today
+\emph default
+ (datetime.date.today()).
  
 \end_layout
 
 \begin_layout Itemize
-The variable module_type set to 1
+The variable 
+\emph on
+module_type
+\emph default
+ set to 1
 \end_layout
 
 \begin_layout Subsubsection
@@ -3838,7 +3887,7 @@ Context
 \end_layout
 
 \begin_layout Standard
-Querying the whois servers through the Internet has two disavantage: 
+Querying the whois servers through the Internet has two disadvantage: 
 \end_layout
 
 \begin_layout Enumerate
@@ -3878,8 +3927,8 @@ Algorithms
 \end_layout
 
 \begin_layout Standard
-To initialize the whois database, we will re-use many of the libraries developpe
-d for the Ranking system:
+To initialize the whois database, we will re-use many of the libraries developed
+ for the Ranking system:
 \end_layout
 
 \begin_layout Itemize
@@ -3916,10 +3965,10 @@ reference "sub:Whois-Parser"
 \end_layout
 
 \begin_layout Standard
-Because all the databases dumps are very differents, all the scripts to
- initialize the databases have many differences but the idea is always the
- same: each IP block has a unique identifiant and Keys of entries associated
- to the block look like this in redis: 
+Because all the databases dumps are very different, all the scripts to initializ
+e the databases have many differences but the idea is always the same: each
+ IP block has a unique identifier and Keys of entries associated to the
+ block look like this in redis: 
 \end_layout
 
 \begin_layout LyX-Code
@@ -3983,7 +4032,7 @@ Problems
 
 \begin_layout Standard
 A whois server needs a big amount of memory: we have to generate a lot of
- keys to be able to link alle the information together and at the end, the
+ keys to be able to link all the information together and at the end, the
  whois database of the RIPE needs almost 3Gb of ram.
  If we want to have all the whois databases on a single server, it will
  need at least 8Gb (it is just an estimation).
@@ -4011,8 +4060,8 @@ Generating the tables takes a lot of time: depending on the size of the
 \end_layout
 
 \begin_layout Standard
-An other quite anoying problem is that on a 32bits system, it is not possible
- for a single process to use more than four giga bits of memory 
+An other quite annoying problem is that on a 32bits system, it is not possible
+ for a single process to use more than 4Gb of memory 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "memory_limit"
@@ -4045,7 +4094,7 @@ It is actually not possible to do queries on ASNs.
 \begin_layout Standard
 We actually do not have a dump of all the whois databases: only the RIPE,
  ARIN and LACNIC gave us a dump, AFRINIC and APNIC do not.
- It would be great to programm the rest of the modules and to be able to
+ It would be great to program the rest of the modules and to be able to
  run on a single server all the databases.
  
 \end_layout
@@ -4058,7 +4107,7 @@ We actually do not have a dump of all the whois databases: only the RIPE,
 \end_layout
 
 \begin_layout Standard
-A website may be developped in the future.
+A website may be developed in the future.
  
 \end_layout
 
@@ -4082,8 +4131,7 @@ key "cheetah"
 \end_layout
 
 \begin_layout Standard
-is a templating system in python, it allows us to generate pages on the
- fly.
+is a templates system in python, it allows us to generate pages on the fly.
  
 \end_layout
 
@@ -4099,7 +4147,7 @@ key "cherrypy"
 \end_layout
 
 \begin_layout Standard
-is a webserver able to use the cheetah templates.
+is a web server able to use the cheetah templates.
  
 \end_layout
 
@@ -4135,7 +4183,7 @@ Display a graph for a particular ASN, using all the entries of the history
 \end_layout
 
 \begin_layout Itemize
-Display the lastest IPs (last 24 hours) found for a particular ASNs, their
+Display the latest IPs (last 24 hours) found for a particular ASNs, their
  block and the description of the ASN
 \end_layout
 
@@ -4171,7 +4219,7 @@ It is possible but not totally implemented and we will have a nasty problem:
 
 \begin_layout Standard
 It is possible to solve this problem but it will be quite complicated and
- not very usefull.
+ not very useful.
  This functionality will be not implemented in a near future.
 \end_layout
 
@@ -4196,240 +4244,6 @@ IPv6 is fully supported by the aggregation system but not for the ranking:
 
 \begin_layout Standard
 This problem will be fixed as soon as possible.
- 
-\end_layout
-
-\begin_layout Section
-Improvements 
-\end_layout
-
-\begin_layout Subsection
-Databases
-\end_layout
-
-\begin_layout Standard
-The first change to do on the databases will be to merge the two, the one
- containing the data of the datasets and the one containing the ranking:
-\end_layout
-
-\begin_layout Itemize
-there is a table containing only the sources in the ranking database.
- This sources are also present in the dataset database, as field.
- It will be merged
-\end_layout
-
-\begin_layout Itemize
-the ASN table of the dataset will be used in the ranking database: the History
- table has a field containing the ASN.
- 
-\end_layout
-
-\begin_layout Subsection
-Configuration
-\end_layout
-
-\begin_layout Standard
-It is actually possible to modify the weight of a source through the configurati
-on file, and only through it.
- When it is changed, the graphs are automatically redraw.
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace defskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The improvement will be to give the possibility to the user to change this
- weight directly through the website.
- 
-\end_layout
-
-\begin_layout Subsection
-Importing datasets
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Importing-datasets"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Actually, to be able to import new datasets, you have to write a sub-class
- to ip_update.
- The problem is that you have to understand how this class works and it
- is not that easy.
- A big improvement would be to use a redis database as interface between
- the modules and the class that push the new raw data inthe database.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename new_modules.dia
-	lyxscale 40
-	scale 30
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-New type of modules
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Basics 
-\end_layout
-
-\begin_layout Standard
-For each new entry, we need at least two information: 
-\end_layout
-
-\begin_layout Itemize
-an IP address
-\end_layout
-
-\begin_layout Itemize
-the source of the IP
-\end_layout
-
-\begin_layout Standard
-A third information is very important but if the module does not give it,
- it will be set to 
-\begin_inset Quotes eld
-\end_inset
-
-today
-\begin_inset Quotes erd
-\end_inset
-
-: the timestamp
-\end_layout
-
-\begin_layout Standard
-There is two other fields but they only exist on some particular datasets:
-\end_layout
-
-\begin_layout Itemize
-the type of the infection 
-\end_layout
-
-\begin_layout Itemize
-a text containing other fields, separated by semicolons
-\end_layout
-
-\begin_layout Subsubsection
-Format 
-\end_layout
-
-\begin_layout Standard
-Each new IP will be put into redis in a set called 
-\begin_inset Quotes eld
-\end_inset
-
-ip
-\begin_inset Quotes erd
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-For each IP, the module will also push into redis at least this entry: 
-\end_layout
-
-\begin_layout LyX-Code
-ip:source -> source_name
-\end_layout
-
-\begin_layout Standard
-And if possible an entry for each other fields: 
-\end_layout
-
-\begin_layout LyX-Code
-ip:timestamp -> timestamp (timestamp in UTC)
-\end_layout
-
-\begin_layout LyX-Code
-ip:infection -> infection
-\end_layout
-
-\begin_layout LyX-Code
-ip:raw -> other informations
-\end_layout
-
-\begin_layout Subsubsection
-Multiprocessing
-\end_layout
-
-\begin_layout Standard
-Every module can work at the same time.
- 
-\end_layout
-
-\begin_layout Standard
-The process pushing the new entries into the mysql database will look in
- the 
-\begin_inset Quotes eld
-\end_inset
-
-ip
-\begin_inset Quotes erd
-\end_inset
-
- set and pick the new entries if it find something.
- 
-\end_layout
-
-\begin_layout Description
-WARNING: The modules have to push first all the other fields 
-\series bold
-before
-\series default
- pushing the IP into the set, elsewhere we will have inconsistent entries.
-\end_layout
-
-\begin_layout Subsubsection
-Advantages
-\end_layout
-
-\begin_layout Standard
-This way, it would be possible to write modules in the language you want
- and just push the new information into redis.
- The new module will just have to respect a format but will be completly
- independant of the existing code.
- 
-\end_layout
-
-\begin_layout Standard
-It would also be possible to push new data directly through the network,
- from sensors.
  
 \end_layout
 
@@ -4469,8 +4283,8 @@ Some of the dependencies are available in the depots, we usually chose this
 \end_layout
 
 \begin_layout Standard
-It is the case for the five following pyhon libraries (the names are the
- names of the packages in ubuntu) :
+It is the case for the five following Python libraries (the names are the
+ names of the packages in Ubuntu) :
 \end_layout
 
 \begin_layout Itemize
@@ -4493,7 +4307,7 @@ key "dateutil"
 
 \end_inset
 
-: used to convert a strig to a date, recognise a lot of string representations.
+: used to convert a string to a date, recognize a lot of string representations.
 \end_layout
 
 \begin_layout Itemize
@@ -4516,7 +4330,7 @@ key "mysqldb"
 
 \end_inset
 
-: the python connector to Mysql (if you decide to use an other database,
+: the python connector to MySQL (if you decide to use an other database,
  you will need an other connector
 \end_layout
 
@@ -4528,13 +4342,13 @@ key "feedparser"
 
 \end_inset
 
-: used to parse the entries comming from Atlas, which are provided as RSS
+: used to parse the entries coming from Atlas, which are provided as RSS
  feeds
 \end_layout
 
 \begin_layout Standard
 The following packages are not directly used by the application but are
- used to compile other programms: 
+ used to compile other programs: 
 \end_layout
 
 \begin_layout Itemize
@@ -4545,7 +4359,7 @@ key "build essential"
 
 \end_inset
 
-: metapackage installing gcc, make...
+: meta-package installing GCC, make...
  and all the necessary packages necessary to compile a program
 \end_layout
 
@@ -4572,9 +4386,9 @@ Package outside the depots
 \end_layout
 
 \begin_layout Standard
-The depots usually contains not the lastest version of the packages but
- it is sometimes important for us to use some functionalities only present
- in the lastest version of the application.
+The depots usually contains not the latest version of the packages but it
+ is sometimes important for us to use some functionalities only present
+ in the latest version of the application.
  
 \end_layout
 
@@ -4590,19 +4404,19 @@ key "cheetah"
 
 \end_inset
 
-: it is the templating system used by th website.
+: it is the templates system used by the website.
  The version 2.4.2 is necessary.
 \end_layout
 
 \begin_layout Itemize
-cherrypy 
+cherry-py 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "cherrypy"
 
 \end_inset
 
-: it is the server supporting the cheeth templates and we need at least
+: it is the server supporting the cheetah templates and we need at least
  the version 3.1.2
 \end_layout
 
@@ -4624,14 +4438,14 @@ key "libbgpdump"
 \end_layout
 
 \begin_layout Itemize
-rgraph 
+Rgraph 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "rgraph"
 
 \end_inset
 
-: generate graphes in javascript
+: generate graphs in javascript
 \end_layout
 
 \begin_layout Subsubsection
@@ -4639,7 +4453,7 @@ Live versions
 \end_layout
 
 \begin_layout Standard
-For some programms we want to use the very lastest version of the programm:
+For some programs we want to use the very latest version of the program:
  
 \end_layout
 
@@ -4668,7 +4482,7 @@ key "redis-py"
 
 : the python wrapper for redis.
  We are using the live version for the server, the client has to support
- and use the lastest functionalities that offer the server.
+ and use the latest functionalities that offer the server.
  
 \end_layout
 
@@ -4703,7 +4517,7 @@ Services
 First of all, you will have to be sure that the MySQL and the redis server
  are running.
  Feel free to tweak the default configuration of the both servers but the
- default config works fine.
+ default configuration works fine.
  
 \end_layout
 
@@ -4711,7 +4525,7 @@ First of all, you will have to be sure that the MySQL and the redis server
 You should create on MySQL a user and allow him to do at least the following
  operations: CREATE TABLE, CREATE INDEX, SELECT and UPDATE.
  Of course, you can use the root user but it is always better to create
- a dedicated user for the differents services running on the server.
+ a dedicated user for the different services running on the server.
  
 \end_layout
 
@@ -4730,8 +4544,8 @@ When it is done, create as root two databases: one for the data and the
 
 \begin_layout Standard
 If you want to use the whois server and when the redis server is started
- you have first to initialize the database with the sources you want (ripe,
- arin, lacnic).
+ you have first to initialize the database with the sources you want (RIPE,
+ ARIN, LACNIC).
  To do it, launch the following scripts, depending on your needs: 
 \emph on
 lib/init/init_{arin,ripe,lacnic}.py
@@ -4772,7 +4586,7 @@ etc/bgp-ranking.conf
 pwd
 \family default
  and replace the actual value by the result.
- The second is the mysql section: set your own user, password and the correct
+ The second is the MySQL section: set your own user, password and the correct
  names for the databases.
  
 \end_layout
@@ -4802,14 +4616,14 @@ init_ranking.py
 \emph on
 init_voting.py
 \emph default
- will respectively initialize the database containing the datas and the
- database containing the history.
+ will respectively initialize the database containing the data and the database
+ containing the history.
  
 \end_layout
 
 \begin_layout Standard
 You have also to initialize a redis database containing the assignations
- of ip addresses to the whois servers (
+ of IP addresses to the whois servers (
 \emph on
 init_assignations_redis.py
 \emph default
@@ -4961,7 +4775,7 @@ n of the last 24 hours
 \begin_layout Standard
 This two scripts are not absolutely necessary, they will just allow us to
  fetch the whois entries.
- They can not start if this fetching is desactivated in the configuration
+ They can not start if this fetching is deactivated in the configuration
  file :
 \end_layout
 
@@ -4987,56 +4801,333 @@ reference "sub:Sorting whois"
 
 \end_layout
 
-\begin_layout Part
-Ranking
-\end_layout
-
 \begin_layout Standard
-There is three type of ranking in the system, the first is public and a
- global overview of the Internet 
-\end_layout
+\begin_inset Newpage newpage
+\end_inset
 
-\begin_layout Section
-Different types of rankings
-\end_layout
 
-\begin_layout Subsection
-Global Ranking
-\end_layout
-
-\begin_layout Standard
-It is a global overview of the Internet: all the sources are aggregated
- and merged in a global view.
- Every 24 hours, an index is generated...
-\end_layout
-
-\begin_layout Subsection
-ISP Ranking
-\end_layout
-
-\begin_layout Standard
-same with weight givem by the ISPs
-\end_layout
-
-\begin_layout Subsection
-Private Ranking
-\end_layout
-
-\begin_layout Standard
-totally private, the weight of the source can be changed, it is possible
- to vote for all the ISP you want
-\end_layout
-
-\begin_layout Section
-Results
-\end_layout
-
-\begin_layout Section
-Interpretation
 \end_layout
 
 \begin_layout Part
 Improvements and future usage
+\end_layout
+
+\begin_layout Section
+Improvements 
+\end_layout
+
+\begin_layout Subsection
+Databases
+\end_layout
+
+\begin_layout Standard
+The first change to do on the databases will be to merge the two, the one
+ containing the data of the datasets and the one containing the ranking:
+\end_layout
+
+\begin_layout Itemize
+there is a table containing only the sources in the ranking database.
+ This sources are also present in the dataset database, as field.
+ It will be merged
+\end_layout
+
+\begin_layout Itemize
+the ASN table of the dataset will be used in the ranking database: the History
+ table has a field containing the ASN.
+ 
+\end_layout
+
+\begin_layout Subsection
+Configuration
+\end_layout
+
+\begin_layout Standard
+It is actually possible to modify the weight of a source through the configurati
+on file, and only through it.
+ When it is changed, the graphs are automatically redraw.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The improvement will be to give the possibility to the user to change this
+ weight directly through the website.
+ 
+\end_layout
+
+\begin_layout Subsection
+Importing datasets
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Importing-datasets"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Actually, to be able to import new datasets, you have to write a sub-class
+ to ip_update.
+ The problem is that you have to understand how this class works and it
+ is not that easy.
+ 
+\end_layout
+
+\begin_layout Standard
+A big improvement would be to use a redis database as interface between
+ the modules and the class that push the new raw data in the database.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename new_modules.dia
+	lyxscale 40
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+New type of modules
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Basics 
+\end_layout
+
+\begin_layout Standard
+For each new entry, we need at least two information: 
+\end_layout
+
+\begin_layout Itemize
+an IP address
+\end_layout
+
+\begin_layout Itemize
+the source of the IP
+\end_layout
+
+\begin_layout Standard
+A third information is very important but if the module does not give it,
+ it will be set to 
+\begin_inset Quotes eld
+\end_inset
+
+today
+\begin_inset Quotes erd
+\end_inset
+
+: the timestamp
+\end_layout
+
+\begin_layout Standard
+There is two other fields but they only exist on some particular datasets:
+\end_layout
+
+\begin_layout Itemize
+the type of the infection 
+\end_layout
+
+\begin_layout Itemize
+a text containing other fields, separated by semicolons
+\end_layout
+
+\begin_layout Subsubsection
+Format 
+\end_layout
+
+\begin_layout Standard
+It is not possible to put directly the IP into the set used by the process
+ pushing the new entries into the database for the simple reason that it
+ is possible to have the same IP more than one time at the same moment:
+ if it comes from different sources.
+ The entries put in the set called 
+\emph on
+ip
+\emph default
+ will have this format: 
+\emph on
+<ip>_<source>
+\emph default
+ because if the same IP is present more than one time in a particular dataset,
+ the module should silently remove the next occurrences.
+ 
+\end_layout
+
+\begin_layout Description
+Note each module has to ensure that if the same IP is present more than
+ one time in a dataset, it will not be pushed in the redis database.
+ 
+\end_layout
+
+\begin_layout Standard
+And if possible the module will push into redis an entry for this other
+ fields:
+\end_layout
+
+\begin_layout LyX-Code
+<ip>_<source>:timestamp -> timestamp (timestamp in UTC)
+\end_layout
+
+\begin_layout LyX-Code
+<ip>_<source>:infection -> infection
+\end_layout
+
+\begin_layout LyX-Code
+<ip>_<source>:raw -> other in formations
+\end_layout
+
+\begin_layout Subsubsection
+Multiprocessing
+\end_layout
+
+\begin_layout Standard
+Every module can work at the same time.
+ 
+\end_layout
+
+\begin_layout Standard
+The process pushing the new entries into the MySQL database will look in
+ the 
+\emph on
+ip
+\emph default
+ set and pick the new entries if it find something.
+ 
+\end_layout
+
+\begin_layout Description
+WARNING: The modules have to push first all the other fields 
+\series bold
+before
+\series default
+ pushing the IP into the set, elsewhere we will have inconsistent entries.
+\end_layout
+
+\begin_layout Subsubsection
+Advantages
+\end_layout
+
+\begin_layout Standard
+This way, it would be possible to write modules in the language you want
+ and just push the new information into redis.
+ The new module will just have to respect a format but will be completely
+ independent of the existing code.
+ 
+\end_layout
+
+\begin_layout Standard
+It would also be possible to push new data directly through the network,
+ from sensors.
+ 
+\end_layout
+
+\begin_layout Subsection
+Modules
+\end_layout
+
+\begin_layout Standard
+When the new modules system will be implemented, some new modules will arrive:
+ it would be for example very easy to use the logs generated by fail2ban
+ which block the IP addresses of clients attempt to do SSH brute force on
+ servers.
+ 
+\end_layout
+
+\begin_layout Subsection
+Ranking
+\end_layout
+
+\begin_layout Standard
+It is actually only possible to obtain a ranking by ASN.
+ In a near future, a ranking by subnet will be implemented.
+ 
+\end_layout
+
+\begin_layout Standard
+It is also planed to permit to the user to vote against a particular AS.
+ It will soon be possible to see the ranking with and without the weight
+ given by the other users.
+ 
+\end_layout
+
+\begin_layout Subsection
+Website
+\end_layout
+
+\begin_layout Standard
+There is a lot of work to do on the website: the rendering is actually very
+ static.
+ It would be interesting to see the details of a certain AS during a certain
+ amount of time, or only the graph for a particular subnet.
+ 
+\end_layout
+
+\begin_layout Standard
+Everything is possible: all this information are saved in the database and
+ it is possible to do query on it.
+ As soon at possible, the website will be updated to allow the users to
+ get more information.
+ 
+\end_layout
+
+\begin_layout Standard
+To implement the voting system properly, the website need a login functionality
+ to identify the users and allow them to vote.
+ 
+\end_layout
+
+\begin_layout Section
+Future usages
+\end_layout
+
+\begin_layout Standard
+It is difficult to say but the most obvious usage will be the generation
+ of blacklists based on the ranking by ASN and subnets.
+ 
+\end_layout
+
+\begin_layout Standard
+It is also thinkable to write a Firefox module that interrogate the server
+ before connecting to a website to know if the IP is known or if there is
+ a lot of suspicious IP in the same block or provided by the same AS.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -5246,74 +5337,19 @@ printnomenclature[0.8in]
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-key "AS"
+key "peering_transit"
 
 \end_inset
 
 
 \begin_inset CommandInset href
 LatexCommand href
-name "RFC 4271"
-target "http://ftp.rfc-editor.org/in-notes/rfc4271.txt"
+name "How the 'Net works: an introduction to peering and transit"
+target "http://arstechnica.com/old/content/2008/09/peering-and-transit.ars"
 
 \end_inset
 
-: A Border Gateway Protocol 4 (BGP-4)
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "Overview"
-
-\end_inset
-
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Exploring Autonomous System Numbers"
-target "http://www.cisco.com/web/about/ac123/ac147/archived_issues/ipj_9-1/autonomous_system_numbers.html"
-
-\end_inset
-
- by Geoff Huston, APNIC in the The Internet Protocol Journal - Volume 9,
- Number 1 
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "BGP Ranking"
-
-\end_inset
-
-
-\begin_inset CommandInset href
-LatexCommand href
-name "BGP AS / ISP Security Ranking"
-target "http://gitorious.org/bgp-ranking"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "Flowspec"
-
-\end_inset
-
-
-\begin_inset CommandInset href
-LatexCommand href
-name "RFC 5575"
-target "http://ftp.rfc-editor.org/in-notes/rfc5575.txt"
-
-\end_inset
-
-: Dissemination of Flow Specification Rules 
+ - Ars Technica
 \end_layout
 
 \begin_layout Bibliography
@@ -5337,91 +5373,19 @@ target "http://www.blogg.ch/uploads/peering-playbook.pdf"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-key "peering_transit"
+key "AS"
 
 \end_inset
 
 
 \begin_inset CommandInset href
 LatexCommand href
-name "How the 'Net works: an introduction to peering and transit"
-target "http://arstechnica.com/old/content/2008/09/peering-and-transit.ars"
+name "RFC 4271"
+target "http://ftp.rfc-editor.org/in-notes/rfc4271.txt"
 
 \end_inset
 
- - Ars Technica
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "SQLAlchemy-dbs"
-
-\end_inset
-
-
-\begin_inset CommandInset href
-LatexCommand href
-name "SQLAlchemy - Supported Databases"
-target "http://www.sqlalchemy.org/docs/dbengine.html#supported-databases"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "active-record"
-
-\end_inset
-
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Active record pattern"
-target "https://secure.wikimedia.org/wikipedia/en/wiki/Active_record_pattern"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "Mapreduce"
-
-\end_inset
-
-
-\begin_inset CommandInset href
-LatexCommand href
-name "MapReduce"
-target "https://secure.wikimedia.org/wikipedia/de/wiki/MapReduce"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "redis_official"
-
-\end_inset
-
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Redis Official Website "
-target "https://code.google.com/p/redis/"
-
-\end_inset
-
-
+: A Border Gateway Protocol 4 (BGP-4)
 \end_layout
 
 \begin_layout Bibliography
@@ -5445,19 +5409,20 @@ target "www.cs.princeton.edu/~jrex/papers/policies.pdf"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
-key "p2p-botnet"
+key "asns_Overview"
 
 \end_inset
 
 
 \begin_inset CommandInset href
 LatexCommand href
-name "P2P Botnet"
-target "http://honeyblog.org/archives/44-Walowdac-Analysis-of-a-Peer-to-Peer-Botnet.html"
+name "Exploring Autonomous System Numbers"
+target "http://www.cisco.com/web/about/ac123/ac147/archived_issues/ipj_9-1/autonomous_system_numbers.html"
 
 \end_inset
 
-
+ by Geoff Huston, APNIC in the The Internet Protocol Journal - Volume 9,
+ Number 1 
 \end_layout
 
 \begin_layout Bibliography
@@ -5490,24 +5455,6 @@ key "Dshield-about"
 LatexCommand href
 name "About Dshield"
 target "http://www.dshield.org/about.html"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Bibliography
-\begin_inset CommandInset bibitem
-LatexCommand bibitem
-key "Shadowserver-mission"
-
-\end_inset
-
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Shadowserver Mission"
-target "http://www.shadowserver.org/wiki/pmwiki.php/Shadowserver/Mission"
 
 \end_inset
 
@@ -5553,6 +5500,24 @@ target "https://zeustracker.abuse.ch/faq.php"
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
+key "Shadowserver-mission"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Shadowserver Mission"
+target "http://www.shadowserver.org/wiki/pmwiki.php/Shadowserver/Mission"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
 key "non-profit-malware"
 
 \end_inset
@@ -5589,6 +5554,24 @@ target "http://www.zdnet.co.uk/news/security-threats/2010/05/25/botnet-price-for
 \begin_layout Bibliography
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
+key "p2p-botnet"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "P2P Botnet"
+target "http://honeyblog.org/archives/44-Walowdac-Analysis-of-a-Peer-to-Peer-Botnet.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
 key "blackhole-malware"
 
 \end_inset
@@ -5598,6 +5581,42 @@ key "blackhole-malware"
 LatexCommand href
 name "Blackhole your malware"
 target "http://www.theregister.co.uk/2010/08/13/sysadmin_black_hole/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Mapreduce"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "MapReduce"
+target "https://secure.wikimedia.org/wikipedia/de/wiki/MapReduce"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "redis_official"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Redis Official Website "
+target "https://code.google.com/p/redis/"
 
 \end_inset
 
@@ -5629,7 +5648,15 @@ key "divert_filter"
 
 \end_inset
 
-http://www.faqs.org/docs/Linux-mini/Divert-Sockets-mini-HOWTO.html#s4
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Divert filtering"
+target "http://www.faqs.org/docs/Linux-mini/Divert-Sockets-mini-HOWTO.html#s4"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -5639,7 +5666,88 @@ key "ingress_filter"
 
 \end_inset
 
-http://www.ietf.org/rfc/rfc2827.txt
+
+\begin_inset CommandInset href
+LatexCommand href
+name "RFC 2827"
+target "http://www.ietf.org/rfc/rfc2827.txt"
+
+\end_inset
+
+- Network Ingress Filtering: Defeating Denial of Service Attacks which employ
+ IP Source Address Spoofing 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "BGP Ranking"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "BGP AS / ISP Security Ranking"
+target "http://gitorious.org/bgp-ranking"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Flowspec"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "RFC 5575"
+target "http://ftp.rfc-editor.org/in-notes/rfc5575.txt"
+
+\end_inset
+
+: Dissemination of Flow Specification Rules 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "SQLAlchemy-dbs"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "SQLAlchemy - Supported Databases"
+target "http://www.sqlalchemy.org/docs/dbengine.html#supported-databases"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "active-record"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Active record pattern"
+target "https://secure.wikimedia.org/wikipedia/en/wiki/Active_record_pattern"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -5649,7 +5757,15 @@ key "Redis-types"
 
 \end_inset
 
-https://code.google.com/p/redis/wiki/IntroductionToRedisDataTypes
+
+\begin_inset CommandInset href
+LatexCommand href
+name "A fifteen minutes introduction to Redis data types"
+target "https://code.google.com/p/redis/wiki/IntroductionToRedisDataTypes"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -5659,7 +5775,15 @@ key "MRT-RFC"
 
 \end_inset
 
-http://tools.ietf.org/html/draft-ietf-grow-mrt-11
+
+\begin_inset CommandInset href
+LatexCommand href
+name "MRT routing information export format"
+target "http://tools.ietf.org/html/draft-ietf-grow-mrt-11"
+
+\end_inset
+
+ - Version 11
 \end_layout
 
 \begin_layout Bibliography
@@ -5669,7 +5793,15 @@ key "libbgpdump"
 
 \end_inset
 
-http://www.ris.ripe.net/source/
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Source of libbgpdump"
+target "http://www.ris.ripe.net/source/"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -5679,7 +5811,15 @@ key "pywhois"
 
 \end_inset
 
-https://code.google.com/p/pywhois/
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Official Website of pywhois"
+target "https://code.google.com/p/pywhois/"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -5689,7 +5829,15 @@ key "whois_server"
 
 \end_inset
 
-http://gitorious.org/whois-server
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Official website of the new Whois Server"
+target "http://gitorious.org/whois-server"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -5699,8 +5847,15 @@ key "memory_limit"
 
 \end_inset
 
-http://www.cyberciti.biz/tips/maximum-memory-and-cpu-limitations-for-linux-server.h
-tml
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Maximum Memory and CPU Limitations for Linux Server"
+target "http://www.cyberciti.biz/tips/maximum-memory-and-cpu-limitations-for-linux-server.html"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
@@ -5710,7 +5865,15 @@ key "cheetah"
 
 \end_inset
 
-http://www.cheetahtemplate.org/
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Cheetah template"
+target "http://www.cheetahtemplate.org/"
+
+\end_inset
+
+ - Official Website
 \end_layout
 
 \begin_layout Bibliography
@@ -5720,7 +5883,15 @@ key "cherrypy"
 
 \end_inset
 
-http://www.cherrypy.org/
+
+\begin_inset CommandInset href
+LatexCommand href
+name "CherryPy"
+target "http://www.cherrypy.org/"
+
+\end_inset
+
+ - Official Website
 \end_layout
 
 \begin_layout Bibliography
@@ -5730,7 +5901,15 @@ key "IPy"
 
 \end_inset
 
-http://pypi.python.org/pypi/IPy/
+
+\begin_inset CommandInset href
+LatexCommand href
+name "IPy"
+target "http://pypi.python.org/pypi/IPy/"
+
+\end_inset
+
+ - Official Website
 \end_layout
 
 \begin_layout Bibliography
@@ -5740,7 +5919,15 @@ key "dateutil"
 
 \end_inset
 
-http://labix.org/python-dateutil
+
+\begin_inset CommandInset href
+LatexCommand href
+name "python-dateutil"
+target "http://labix.org/python-dateutil"
+
+\end_inset
+
+ - Official Website
 \end_layout
 
 \begin_layout Bibliography
@@ -5750,7 +5937,15 @@ key "elixir"
 
 \end_inset
 
-http://elixir.ematia.de/trac/wiki
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Elixir"
+target "http://elixir.ematia.de/trac/wiki"
+
+\end_inset
+
+ - Official Website
 \end_layout
 
 \begin_layout Bibliography
@@ -5760,7 +5955,15 @@ key "mysqldb"
 
 \end_inset
 
-http://mysql-python.sourceforge.net/MySQLdb.html
+
+\begin_inset CommandInset href
+LatexCommand href
+name "MySQLdb"
+target "http://mysql-python.sourceforge.net/MySQLdb.html"
+
+\end_inset
+
+ - Official Website
 \end_layout
 
 \begin_layout Bibliography
@@ -5770,7 +5973,15 @@ key "feedparser"
 
 \end_inset
 
-https://code.google.com/p/feedparser/
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Feedparser"
+target "https://code.google.com/p/feedparser/"
+
+\end_inset
+
+ - Official Website
 \end_layout
 
 \begin_layout Bibliography
@@ -5780,7 +5991,15 @@ key "build essential"
 
 \end_inset
 
-http://packages.ubuntu.com/de/lucid/build-essential
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Package build-essential"
+target "ttp://packages.ubuntu.com/de/lucid/build-essential"
+
+\end_inset
+
+ - On Ubuntu
 \end_layout
 
 \begin_layout Bibliography
@@ -5790,7 +6009,15 @@ key "zlib1g"
 
 \end_inset
 
-http://packages.ubuntu.com/lucid/zlib1g-dev
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Package zlib1g-dev"
+target "http://packages.ubuntu.com/lucid/zlib1g-dev"
+
+\end_inset
+
+ - On Ubuntu
 \end_layout
 
 \begin_layout Bibliography
@@ -5800,7 +6027,15 @@ key "libbz2"
 
 \end_inset
 
-http://packages.ubuntu.com/lucid/libbz2-dev
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Package libbz2-dev"
+target "http://packages.ubuntu.com/lucid/libbz2-dev"
+
+\end_inset
+
+ - On Ubuntu
 \end_layout
 
 \begin_layout Bibliography
@@ -5810,7 +6045,14 @@ key "rgraph"
 
 \end_inset
 
-http://www.rgraph.net/
+
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.rgraph.net/"
+
+\end_inset
+
+ - Official Website
 \end_layout
 
 \begin_layout Bibliography
@@ -5820,7 +6062,15 @@ key "redis"
 
 \end_inset
 
-https://code.google.com/p/redis/
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Redis"
+target "https://code.google.com/p/redis/"
+
+\end_inset
+
+ - Official Website
 \end_layout
 
 \begin_layout Bibliography
@@ -5830,7 +6080,15 @@ key "redis-py"
 
 \end_inset
 
-http://github.com/andymccurdy/redis-py
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Redis-py"
+target "http://github.com/andymccurdy/redis-py"
+
+\end_inset
+
+ - Official Website
 \end_layout
 
 \begin_layout Standard
@@ -6110,7 +6368,7 @@ status open
 
 
 \backslash
-enlargethispage{1cm}
+enlargethispage{0cm}
 \end_layout
 
 \end_inset
@@ -6146,6 +6404,53 @@ name "fig:Technical-global-view"
 \end_inset
 
 Technical global view
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Ranking.dia
+	lyxscale 30
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Technical-global-view-Ranking"
+
+\end_inset
+
+Technical global view - Ranking
 \end_layout
 
 \end_inset

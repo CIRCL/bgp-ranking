@@ -133,7 +133,7 @@ LatexCommand tableofcontents
 
 \end_inset
 
-
+:
 \end_layout
 
 \begin_layout Standard
@@ -2076,6 +2076,13 @@ Data Aggregation
 
 \begin_layout Subsubsection
 Fetching the datasets
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Fetching-the-datasets"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2106,6 +2113,13 @@ Note there is one process for each source.
 
 \begin_layout Subsubsection
 Parsing the datasets
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Parsing-the-datasets"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2168,6 +2182,13 @@ When the parsing is finished, the system will automatically fetch the rest
 
 \begin_layout Subsubsection
 Getting the (RIS) Whois entries
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Getting RIS Whois"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2346,6 +2367,13 @@ y problems.
 
 \begin_layout Subsubsection
 Sorting the whois entry
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Sorting whois"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2363,7 +2391,7 @@ Get a pending query from the redis database
 Find the assignation by using the algorithm described 
 \begin_inset CommandInset ref
 LatexCommand vpageref
-reference "sub:Generation-index"
+reference "sub:IPs-Keys-generator"
 
 \end_inset
 
@@ -4413,16 +4441,283 @@ Usage
 Installation
 \end_layout
 
-\begin_layout Section
-Launch
+\begin_layout Standard
+The ranking system needs some other applications to work.
+ The following has been tested with Ubuntu 10.4 and will work with other
+ distributions but some of the name will changes and it is possible that
+ you have other dependencies.
+ 
+\end_layout
+
+\begin_layout Subsection
+Dependencies
 \end_layout
 
 \begin_layout Standard
-You can run each initscript in the order you want: they are all 
-\series bold
-totally independent
-\series default
-.
+All the dependencies are opensource and freely available on the Internet.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Package of the depots
+\end_layout
+
+\begin_layout Standard
+Some of the dependencies are available in the depots, we usually chose this
+ method because it is easier.
+ 
+\end_layout
+
+\begin_layout Standard
+It is the case for the five following pyhon libraries (the names are the
+ names of the packages in ubuntu) :
+\end_layout
+
+\begin_layout Itemize
+python-ipy 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "IPy"
+
+\end_inset
+
+: allow us to do many operations on the IP addresses (normalize, cast...),
+ works in IPv4 and IPv6
+\end_layout
+
+\begin_layout Itemize
+python-dateutil 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dateutil"
+
+\end_inset
+
+: used to convert a strig to a date, recognise a lot of string representations.
+\end_layout
+
+\begin_layout Itemize
+python-elixir
+\begin_inset CommandInset citation
+LatexCommand cite
+key "elixir"
+
+\end_inset
+
+: the library implementing the Active Record model pattern to access to
+ the database
+\end_layout
+
+\begin_layout Itemize
+python-mysqldb
+\begin_inset CommandInset citation
+LatexCommand cite
+key "mysqldb"
+
+\end_inset
+
+: the python connector to Mysql (if you decide to use an other database,
+ you will need an other connector
+\end_layout
+
+\begin_layout Itemize
+python-feedparser 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "feedparser"
+
+\end_inset
+
+: used to parse the entries comming from Atlas, which are provided as RSS
+ feeds
+\end_layout
+
+\begin_layout Standard
+The following packages are not directly used by the application but are
+ used to compile other programms: 
+\end_layout
+
+\begin_layout Itemize
+build-essential 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "build essential"
+
+\end_inset
+
+: metapackage installing gcc, make...
+ and all the necessary packages necessary to compile a program
+\end_layout
+
+\begin_layout Itemize
+zlib1g-dev 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "zlib1g"
+
+\end_inset
+
+ and libbz2-dev 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "libbz2"
+
+\end_inset
+
+: dependencies of libbgpdump
+\end_layout
+
+\begin_layout Subsubsection
+Package outside the depots
+\end_layout
+
+\begin_layout Standard
+The depots usually contains not the lastest version of the packages but
+ it is sometimes important for us to use some functionalities only present
+ in the lastest version of the application.
+ 
+\end_layout
+
+\begin_layout Standard
+It is the case for this two programs: 
+\end_layout
+
+\begin_layout Itemize
+cheetah 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "cheetah"
+
+\end_inset
+
+: it is the templating system used by th website.
+ The version 2.4.2 is necessary.
+\end_layout
+
+\begin_layout Itemize
+cherrypy 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "cherrypy"
+
+\end_inset
+
+: it is the server supporting the cheeth templates and we need at least
+ the version 3.1.2
+\end_layout
+
+\begin_layout Standard
+An other possibility is that the needed program does not exists in the depots:
+ 
+\end_layout
+
+\begin_layout Itemize
+libbgpdump 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "libbgpdump"
+
+\end_inset
+
+: generate a dump of the RIS routing database from the MRT format to plain
+ text
+\end_layout
+
+\begin_layout Itemize
+rgraph 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "rgraph"
+
+\end_inset
+
+: generate graphes in javascript
+\end_layout
+
+\begin_layout Subsubsection
+Live versions
+\end_layout
+
+\begin_layout Standard
+For some programms we want to use the very lastest version of the programm:
+ 
+\end_layout
+
+\begin_layout Itemize
+redis 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "redis"
+
+\end_inset
+
+: the version 1.2.6 is quite slow and the version 2.X is already very stable
+ and usable.
+ The ranking system is actually using the trunk but it is also possible
+ to use the version 2.0 when it will be released.
+ 
+\end_layout
+
+\begin_layout Itemize
+redis-py 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "redis-py"
+
+\end_inset
+
+: the python wrapper for redis.
+ We are using the live version for the server, the client has to support
+ and use the lastest functionalities that offer the server.
+ 
+\end_layout
+
+\begin_layout Itemize
+whois server 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "whois_server"
+
+\end_inset
+
+: necessary only if you want to use it.
+ Allow you to do whois queries in local but need a lot of memory.
+ 
+\end_layout
+
+\begin_layout Subsection
+Ranking system
+\end_layout
+
+\begin_layout Standard
+When all the libraries/programs are installed, you will be able to run the
+ ranking system.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Services
+\end_layout
+
+\begin_layout Standard
+First of all, you will have to be sure that the MySQL and the redis server
+ are running.
+ Feel free to tweak the default configuration of the both servers but the
+ default config works fine.
+ 
+\end_layout
+
+\begin_layout Standard
+You should create on MySQL a user and allow him to do at least the following
+ operations: CREATE TABLE, CREATE INDEX, SELECT and UPDATE.
+ Of course, you can use the root user but it is always better to create
+ a dedicated user for the differents services running on the server.
+ 
+\end_layout
+
+\begin_layout Standard
+When it is done, create as root two databases: one for the data and the
+ other for the ranking.
  
 \end_layout
 
@@ -4434,28 +4729,122 @@ totally independent
 \end_layout
 
 \begin_layout Standard
-An example: Obviously the parsing will not be done until the files are fetched
- but if the parsing service has nothing to do, it will just wait a certain
- amount of seconds (defined in the configuration file) and check again if
- there is something to do.
+If you want to use the whois server and when the redis server is started
+ you have first to initialize the database with the sources you want (ripe,
+ arin, lacnic).
+ To do it, launch the following scripts, depending on your needs: 
+\emph on
+lib/init/init_{arin,ripe,lacnic}.py
+\end_layout
+
+\begin_layout Standard
+And start the listener by launching this script: 
+\emph on
+etc/init.d/start_whois_server.py
+\end_layout
+
+\begin_layout Subsubsection
+Configure the system
+\end_layout
+
+\begin_layout Standard
+First of all, you have to fetch the project, it is in a git repository.
+ To get it, do the following: 
+\end_layout
+
+\begin_layout LyX-Code
+git clone git://gitorious.org/bgp-ranking/bgp-ranking.git bgp-ranking 
+\end_layout
+
+\begin_layout LyX-Code
+cd bgp-ranking
+\end_layout
+
+\begin_layout Standard
+The configuration is in 
+\family typewriter
+etc/bgp-ranking.conf
+\family default
+ and there is at least two things you want to change: the root directory
+ of the application.
+ it you are in the directory bgp-ranking, just do 
+\family typewriter
+pwd
+\family default
+ and replace the actual value by the result.
+ The second is the mysql section: set your own user, password and the correct
+ names for the databases.
+ 
+\end_layout
+
+\begin_layout Standard
+As you can see, you can modify a lot of variables, most of them should not
+ be changed but you can for example increase or reduce the number of processes
+ or activate the fetching of whois entries.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Initialize the databases
+\end_layout
+
+\begin_layout Standard
+The last point before starting the system is to initialize the databases
+ by using the scripts present in 
+\emph on
+lib/db_init
+\emph default
+: 
+\emph on
+init_ranking.py
+\emph default
+ and 
+\emph on
+init_voting.py
+\emph default
+ will respectively initialize the database containing the datas and the
+ database containing the history.
+ 
+\end_layout
+
+\begin_layout Standard
+You have also to initialize a redis database containing the assignations
+ of ip addresses to the whois servers (
+\emph on
+init_assignations_redis.py
+\emph default
+).
+\end_layout
+
+\begin_layout Section
+Start the application
+\end_layout
+
+\begin_layout Subsection
+General information
+\end_layout
+
+\begin_layout Standard
+All the initscripts are in 
+\emph on
+etc/init.d
+\emph default
+, they are all totally independent and you can start each of them in the
+ order you want.
+ 
+\end_layout
+
+\begin_layout Description
+Example: the parsing will not be done until the files to parse are fetched
+ but if the parsing service does not find a file to parse, it will just
+ wait a certain amount of seconds (defined in the configuration file) and
+ check again later if there is something to do.
  
 \end_layout
 
 \begin_layout Standard
 Because the sharing of the information between the services is done using
- Redis it is possible to run each part of the system on computer, in a cloud.
- 
-\end_layout
-
-\begin_layout Standard
-More informations on redis on the official website
-\begin_inset CommandInset citation
-LatexCommand cite
-key "redis_official"
-
-\end_inset
-
-
+ Redis it is possible to run each part of the system on a different computer.
 \end_layout
 
 \begin_layout Standard
@@ -4463,6 +4852,139 @@ Except the fetching of the datasets, each part of the system support multiproces
 sing: for each service, you can configure the number of process in the configura
 tion file.
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Launching
+\end_layout
+
+\begin_layout Standard
+This scripts have always to be started: 
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+start_fetch_bview.py
+\emph default
+: start a process that fetch the dump of the routing database and put it
+ in the directory checked by 
+\emph on
+start_push_update_routing.py
+\emph default
+ if the dump is new
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+start_fetch_raw_files.py
+\emph default
+: start a process that fetch the raw files from the sources and put it in
+ the directory checked by 
+\emph on
+start_parse_raw_files.py
+\emph default
+ if the file is new (more information chapter 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Fetching-the-datasets"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+start_parse_raw_files.py
+\emph default
+: start a process that parse the raw files, more information chapter 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Parsing-the-datasets"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+start_get_ris_entries.py
+\emph default
+: start the process described chapter 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Getting RIS Whois"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+start_fetch_whois_entries.py
+\emph default
+: start the process described chapter 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Fetching-ris-whois"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+start_push_update_routing.py
+\emph default
+: start a process that check if there is any new routing dump.
+ If there is a new, it will be pushed into the database.
+ The second part of this script will compute the ranking based on the informatio
+n of the last 24 hours 
+\end_layout
+
+\begin_layout Standard
+This two scripts are not absolutely necessary, they will just allow us to
+ fetch the whois entries.
+ They can not start if this fetching is desactivated in the configuration
+ file :
+\end_layout
+
+\begin_layout Itemize
+start_get_whois_entries.py: start the process also described chapter 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Getting RIS Whois"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+start_sort_whois_queries.py: start the process described chapter 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sub:Sorting whois"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Part
@@ -5199,6 +5721,116 @@ key "cherrypy"
 \end_inset
 
 http://www.cherrypy.org/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "IPy"
+
+\end_inset
+
+http://pypi.python.org/pypi/IPy/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "dateutil"
+
+\end_inset
+
+http://labix.org/python-dateutil
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "elixir"
+
+\end_inset
+
+http://elixir.ematia.de/trac/wiki
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "mysqldb"
+
+\end_inset
+
+http://mysql-python.sourceforge.net/MySQLdb.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "feedparser"
+
+\end_inset
+
+https://code.google.com/p/feedparser/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "build essential"
+
+\end_inset
+
+http://packages.ubuntu.com/de/lucid/build-essential
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "zlib1g"
+
+\end_inset
+
+http://packages.ubuntu.com/lucid/zlib1g-dev
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "libbz2"
+
+\end_inset
+
+http://packages.ubuntu.com/lucid/libbz2-dev
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "rgraph"
+
+\end_inset
+
+http://www.rgraph.net/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "redis"
+
+\end_inset
+
+https://code.google.com/p/redis/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "redis-py"
+
+\end_inset
+
+http://github.com/andymccurdy/redis-py
 \end_layout
 
 \begin_layout Standard

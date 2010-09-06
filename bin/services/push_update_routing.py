@@ -9,7 +9,7 @@ sleep_timer = int(config.get('sleep_timers','long'))
 sleep_timer_short = int(config.get('sleep_timers','short'))
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 services_dir = os.path.join(root_dir,config.get('directories','services'))
-bgpdump = config.get('routing','bgpdump')
+bgpdump = os.path.join(root_dir,config.get('routing','bgpdump'))
 import syslog
 syslog.openlog('Push_n_Rank', syslog.LOG_PID, syslog.LOG_USER)
 

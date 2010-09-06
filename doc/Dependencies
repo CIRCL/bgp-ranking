@@ -12,7 +12,6 @@ Ubuntu:
     
 
     Website: 
-    Make graphs: Gnuplot
-	Server : 
 		cherrypy -> 3.1.2
 		cheetah -> 2.4.2
+		rgraph ->  http://www.rgraph.net/downloads/RGraph_2010-09-04-beta.zip

@@ -567,6 +567,13 @@ The second contains only the "Top 100" of the daily dump and less false
  
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Paragraph
 abuse.ch ZeuS Tracker
 \end_layout
@@ -1458,7 +1465,7 @@ The system officially supports MySQL as relational database but because
 \emph on
 SQLAlchemy
 \emph default
-, all the databases supported by it may be used
+, all the databases supported by it may be used 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "SQLAlchemy-dbs"
@@ -1499,8 +1506,8 @@ key "active-record"
 
 \end_inset
 
-: it allow the developer to see the entries of the database as objects and
- simplify a lot the usage of the databases.
+: it allows the developer to see the entries of the database as objects
+ and simplify a lot the usage of the databases.
  The most important point is that we will never use any SQL Queries.
  On a security point of view, it will reduce the risk of SQL injections.
  
@@ -1881,14 +1888,15 @@ Implementation, Technical overview
 \end_layout
 
 \begin_layout Standard
-You can find directly the global diagram representing the whole architecture
+You can find directly the global diagram representing the part of the system
+ gathering the data 
 \begin_inset CommandInset ref
 LatexCommand vpageref
 reference "fig:Technical-global-view"
 
 \end_inset
 
- which gather the data.
+.
  And 
 \begin_inset CommandInset ref
 LatexCommand vpageref
@@ -1925,7 +1933,7 @@ IPs contains only the IPs extracted of the datasets.
 
 \begin_deeper
 \begin_layout Standard
-This table allow us to dump easily all the IPs we found in the datasets.
+This table allows us to dump easily all the IPs we found in the datasets.
 \end_layout
 
 \end_deeper
@@ -2130,7 +2138,7 @@ It is not the case for all of them but all the datasets freely available
  on the Internet are automatically downloaded.
  
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 improvement: the other too...
@@ -4381,6 +4389,13 @@ key "libbz2"
 : dependencies of libbgpdump
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 Package outside the depots
 \end_layout
@@ -4669,7 +4684,7 @@ tion file.
 \end_layout
 
 \begin_layout Standard
-\begin_inset VSpace defskip
+\begin_inset Newpage newpage
 \end_inset
 
 

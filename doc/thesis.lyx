@@ -288,7 +288,7 @@ There is always more than one possible route to reach a particular network,
 On a security point of view, we can for example blackhole the traffic to
  a certain destination known as providing a Command & Control server and
  this way block the communication between this server and the clients, or
- to protect a destination under DDoS attack.
+ to protect a subnet under DDoS attack coming from an other AS/subnet.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "BGP-policies"
@@ -317,8 +317,8 @@ key "asns_Overview"
 \end_layout
 
 \begin_layout Standard
-The ASNs are assigned by the IANA to the Regional Internet Registries (RIRs)
- which will sell them to the operators.
+The ASNs and subnets are assigned by the IANA to the Regional Internet Registrie
+s (RIRs) which will sell it to its clients.
  The RIR responsible for the Europa region is RIPE-NCC.
 \end_layout
 
@@ -1005,8 +1005,8 @@ Solution It is actually not fully implemented but the goal will be to offer
 \begin_layout Standard
 After all this theoretical part, we will now give you a small overview of
  the system without too much details of the implementation.
- But it will allow you to have a better view of the basic principles and
- the architecture of the system and on the requirements imposed by the future
+ But it will allow you to have a better view of the basic principles, the
+ architecture of the system and on the requirements imposed by the future
  usages.
 \end_layout
 

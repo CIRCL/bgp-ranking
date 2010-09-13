@@ -1,0 +1,1142 @@
+#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass beamer
+\begin_preamble
+\usetheme{CambridgeUS}
+%\usetheme[hideothersubsections,width=2.2cm]{Berkeley}
+% or ...
+
+\setbeamercovered{transparent}
+% or whatever (possibly just delete it)
+\end_preamble
+\use_default_options false
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_title "BGP AS / ISP Security Ranking"
+\pdf_author "Raphaël Vinot"
+\pdf_subject "BGP AS / ISP Security Ranking"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+This file is a solution template for:
+\end_layout
+
+\begin_layout Plain Layout
+- Talk at a conference/colloquium.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- Talk length is about 20min.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- Style is ornate.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+In principle, this file can be redistributed and/or modified under the terms
+ of the GNU Public License, version 2.
+ However, this file is supposed to be a template to be modified for your
+ own needs.
+ For this reason, if you use this file as a template and not specifically
+ distribute it as part of a another package/program, the author grants the
+ extra permission to freely copy and modify this file as you see fit and
+ even to delete this copyright notice.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+BGP AS / ISP Security Ranking
+\end_layout
+
+\begin_layout Author
+Raphaël Vinot
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+- Give the names in the same order as the appear in the paper.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- Use the 
+\backslash
+inst{?} command only if the authors have different affiliations.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Institute
+
+\lang french
+Master 2 SSIC
+\begin_inset Newline newline
+\end_inset
+
+ISFATES/DFHI
+\begin_inset Newline newline
+\end_inset
+
+Université Paul Verlaine - Metz
+\lang english
+ 
+\begin_inset OptArg
+status open
+
+\begin_layout Plain Layout
+ISFATES/DFHI
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Date
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+- Use the 
+\backslash
+inst command only if there are several affiliations.
+\end_layout
+
+\begin_layout Plain Layout
+- Keep it simple, no one is interested in your street address.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Date
+Masterarbeit, 2010
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+- Either use conference name or its abbreviation.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- Not really informative to the audience, more for people (including yourself)
+ who are reading the slides online
+\end_layout
+
+\end_inset
+
+
+\begin_inset OptArg
+status open
+
+\begin_layout Plain Layout
+Masterarbeit, 2010
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+If you have a file called "institution-logo-filename.xxx", where xxx is a
+ graphic format that can be processed by latex or pdflatex, resp., then you
+ can add a logo by uncommenting the following:
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+pgfdeclareimage[interpolate=true,width=2.2cm,height=45pt]{institution-logo}{isfat
+es}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+logo{
+\backslash
+pgfuseimage{institution-logo}}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+The following causes the table of contents to be shown at the beginning
+ of every subsection.
+ Delete this, if you do not want it.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+AtBeginSubsection[]{
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+frame<beamer>{ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+frametitle{Content}   
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+tableofcontents[currentsection,currentsubsection] 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+If you wish to uncover everything in a step-wise fashion, uncomment the
+ following command:
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+beamerdefaultoverlayspecification{<+->}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Table of contents
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Structuring a talk is a difficult task and the following structure may not
+ be suitable.
+ Here are some rules that apply for this solution: 
+\end_layout
+
+\begin_layout Plain Layout
+- Exactly two or three sections (other than the summary).
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- At *most* three subsections per section.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- Talk about 30s to 2min per frame.
+ So there should be between about 15 and 30 frames, all told.
+\end_layout
+
+\begin_layout Plain Layout
+- A conference audience is likely to know very little of what you are going
+ to talk about.
+ So *simplify*! 
+\end_layout
+
+\begin_layout Plain Layout
+- In a 20min talk, getting the main ideas across is hard enough.
+ Leave out details, even if it means being less precise than you think necessary.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- If you omit details that are vital to the proof/implementation, just say
+ so once.
+ Everybody will be happy with that.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Context
+\end_layout
+
+\begin_layout Subsection
+Internet and peering
+\end_layout
+
+\begin_layout BeginFrame
+Internet and the peering
+\end_layout
+
+\begin_layout Itemize
+Decentralized network
+\end_layout
+
+\begin_layout Itemize
+Many operators
+\end_layout
+
+\begin_layout Itemize
+Different types of peering
+\end_layout
+
+\begin_layout BeginFrame
+Border Gateway Protocol (BGP)
+\end_layout
+
+\begin_layout Itemize
+Routing protocol of the Internet
+\end_layout
+
+\begin_layout Itemize
+Associate Autonomous Systems and Networks
+\end_layout
+
+\begin_layout Itemize
+Use policies (QoS and security)
+\end_layout
+
+\begin_layout BeginFrame
+Autonomous system
+\end_layout
+
+\begin_layout Itemize
+Identify operators without using IPs
+\end_layout
+
+\begin_layout Itemize
+One or more subnet for each ASN
+\end_layout
+
+\begin_layout Itemize
+Assignation: IANA, RIR and LIR 
+\end_layout
+
+\begin_layout Subsection
+Ressources
+\end_layout
+
+\begin_layout BeginFrame
+RIS Whois
+\end_layout
+
+\begin_layout Itemize
+Routing Information Service (RIS)
+\end_layout
+
+\begin_layout Itemize
+Updated every 8 hours
+\end_layout
+
+\begin_layout Block
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+193.0.19.19
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+
+\size small
+route: 193.0.18.0/23
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+origin: AS3333
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+descr: RIPE-NCC-AS RIPE Network Coordination Centre
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+lastupd-frst: 2010-06-21 15:10Z 198.32.176.24@rrc14
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+lastupd-last: 2010-08-31 22:48Z 198.32.160.187@rrc11
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+seen-at: rrc00,rrc01,rrc03,rrc04,rrc05,rrc06,rrc07,[...]
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+num-rispeers: 102
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+source: RISWHOIS
+\end_layout
+
+\end_deeper
+\begin_layout BeginFrame
+Whois
+\end_layout
+
+\begin_layout Itemize
+More information (owner)
+\end_layout
+
+\begin_layout Itemize
+Many, incompatible, databases
+\end_layout
+
+\begin_layout Itemize
+Find the right server
+\end_layout
+
+\begin_layout BeginFrame
+Datasets
+\end_layout
+
+\begin_layout Itemize
+Global
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+abuse.ch ZeuS Tracker
+\end_layout
+
+\begin_layout Itemize
+Dshield
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Particular AS
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Arbor ATLAS/Active Threat Feed
+\end_layout
+
+\begin_layout Itemize
+Shadowserver 
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Threats
+\end_layout
+
+\begin_layout BeginFrame
+Threats
+\end_layout
+
+\begin_layout Itemize
+Users just do not care.
+ At all.
+\end_layout
+
+\begin_layout Itemize
+Mobile devices and Internet
+\end_layout
+
+\begin_layout Itemize
+Growing business
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+"non-profit" malicious software are dead
+\emph default
+, Kaspersky - 2007
+\end_layout
+
+\begin_layout BeginFrame
+Botnet
+\end_layout
+
+\begin_layout Itemize
+Botmaster
+\end_layout
+
+\begin_layout Itemize
+Command & Control Server
+\end_layout
+
+\begin_layout Itemize
+Bots
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename botnet.dia
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Botnet - Basics
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+DDoS, phishing...
+\end_layout
+
+\begin_layout Subsection
+Usage of a Ranking system
+\end_layout
+
+\begin_layout BeginFrame
+Mitigation
+\end_layout
+
+\begin_layout Itemize
+Traffic shaping
+\end_layout
+
+\begin_layout Itemize
+Blackholing
+\end_layout
+
+\begin_layout Itemize
+Depending on the attack
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+From the AS (DDoS, Command & Control Server)
+\end_layout
+
+\begin_layout Itemize
+To the AS (Phishing, keylogger)
+\end_layout
+
+\end_deeper
+\begin_layout BeginFrame
+Information
+\end_layout
+
+\begin_layout Itemize
+Alert the user
+\end_layout
+
+\begin_layout Itemize
+Contact the provider
+\end_layout
+
+\begin_layout Itemize
+Contact the authorities
+\end_layout
+
+\begin_layout Itemize
+History
+\end_layout
+
+\begin_layout Section
+Implementation
+\end_layout
+
+\begin_layout Subsection
+Highlight
+\end_layout
+
+\begin_layout BeginFrame
+Requirements
+\end_layout
+
+\begin_layout Itemize
+Opensource 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Affero GPLv3
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Fast
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\emph on
+mapreduce
+\emph default
+-like processing
+\end_layout
+
+\end_deeper
+\begin_layout BeginFrame
+High-level view
+\end_layout
+
+\begin_layout Itemize
+Aggregation
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+datasets
+\end_layout
+
+\begin_layout Enumerate
+RIS Whois and Whois entries
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Ranking
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula $R=1+\frac{\left(SUM\left(occur*s\_impact\right)*SUM\left(vote\right)\right)}{AS\_size}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+occur all the IPs from the ASN, by sources.
+ 
+\end_layout
+
+\begin_layout Description
+s_impact
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\noun default
+\color inherit
+value assigned to the source
+\end_layout
+
+\begin_layout Description
+vote vote against this AS (actually not implemented)
+\end_layout
+
+\begin_layout Description
+AS_size total of IPs 
+\end_layout
+
+\end_deeper
+\begin_layout BeginFrame
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename basics/highlevel.dia
+	lyxscale 50
+	scale 20
+	scaleBeforeRotation
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:High-level"
+
+\end_inset
+
+High level
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Third party programs
+\end_layout
+
+\begin_layout Itemize
+Redis
+\end_layout
+
+\begin_layout Itemize
+MySQL
+\end_layout
+
+\begin_layout Itemize
+libbgpdump
+\end_layout
+
+\begin_layout Itemize
+Rgraph
+\end_layout
+
+\begin_layout Itemize
+Cheetah and Cherrypy
+\end_layout
+
+\begin_layout BeginFrame
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size giant
+Website and first results.
+\end_layout
+
+\begin_layout BeginFrame
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size giant
+Fragen ?
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\begin_layout Standard
+\start_of_appendix
+\begin_inset Note Note
+status open
+
+\begin_layout Section*
+\start_of_appendix
+Sources
+\end_layout
+
+\begin_layout Subsection*
+Quelques compléments d'information 
+\end_layout
+
+\begin_layout BeginFrame
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+[allowframebreaks]
+\end_layout
+
+\end_inset
+
+Complément d'information 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+beamertemplatebookbibitems
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Start with overview books.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Author1990"
+
+\end_inset
+
+A.
+ Author.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+newblock
+\end_layout
+
+\end_inset
+
+
+\emph on
+Handbook of Everything
+\emph default
+.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+newblock
+\end_layout
+
+\end_inset
+
+ Some Press, 1990.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+beamertemplatearticlebibitems
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Followed by interesting articles.
+ Keep the list short.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Someone2002"
+
+\end_inset
+
+S.
+ Someone.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+newblock
+\end_layout
+
+\end_inset
+
+ On this and that
+\emph on
+.
+
+\emph default
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+newblock
+\end_layout
+
+\end_inset
+
+
+\emph on
+Journal on This and That
+\emph default
+.
+ 2(1):50--100, 2000.
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

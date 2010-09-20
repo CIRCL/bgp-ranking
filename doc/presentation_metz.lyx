@@ -17,7 +17,7 @@
 \font_roman default
 \font_sans default
 \font_typewriter default
-\font_default_family default
+\font_default_family sfdefault
 \font_sc false
 \font_osf false
 \font_sf_scale 100
@@ -447,14 +447,20 @@ Internet and the peering
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Decentralized network
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Many operators
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Different types of peering
 \end_layout
 
@@ -463,30 +469,42 @@ Border Gateway Protocol (BGP)
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Routing protocol of the Internet
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Associate Autonomous Systems and Networks
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Use policies (QoS and security)
 \end_layout
 
 \begin_layout BeginFrame
-Autonomous system
+Autonomous System (AS)
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Identify operators without using IPs
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 One or more subnet for each ASN
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Assignation: IANA, RIR and LIR 
 \end_layout
 
@@ -499,10 +517,14 @@ RIS Whois
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Routing Information Service (RIS)
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Updated every 8 hours
 \end_layout
 
@@ -586,14 +608,20 @@ Whois
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 More information (owner)
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Many, incompatible, databases
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Find the right server
 \end_layout
 
@@ -602,29 +630,41 @@ Datasets
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Global
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
+
+\size larger
 abuse.ch ZeuS Tracker
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Dshield
 \end_layout
 
 \end_deeper
 \begin_layout Itemize
+
+\size larger
 Particular AS
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
+
+\size larger
 Arbor ATLAS/Active Threat Feed
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Shadowserver 
 \end_layout
 
@@ -634,24 +674,68 @@ Threats
 \end_layout
 
 \begin_layout BeginFrame
-Threats
+Threats 
+\size footnotesize
+(no threads :) )
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
+\align center
+
+\shape italic
+\size larger
 Users just do not care.
  At all.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename triste.jpg
+	scale 20
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Itemize
+
+\size larger
 Mobile devices and Internet
 \end_layout
 
 \begin_layout Itemize
-Growing business
+
+\size larger
+Growing business 
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \begin_layout Itemize
 
+\size larger
 \emph on
 "non-profit" malicious software are dead
 \emph default
@@ -663,14 +747,20 @@ Botnet
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Botmaster
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Command & Control Server
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Bots
 \end_layout
 
@@ -710,6 +800,8 @@ Botnet - Basics
 \end_layout
 
 \begin_layout Itemize
+
+\size large
 DDoS, phishing...
 \end_layout
 
@@ -718,48 +810,92 @@ Usage of a Ranking system
 \end_layout
 
 \begin_layout BeginFrame
+
+\size larger
 Mitigation
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Traffic shaping
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Blackholing
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Depending on the attack
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
+
+\size large
 From the AS (DDoS, Command & Control Server)
 \end_layout
 
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename atob.dia
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
+
+\size large
 To the AS (Phishing, keylogger)
 \end_layout
 
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename btoa.dia
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
 \end_deeper
 \begin_layout BeginFrame
 Information
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Alert the user
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Contact the provider
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Contact the authorities
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 History
 \end_layout
 
@@ -776,26 +912,33 @@ Requirements
 \end_layout
 
 \begin_layout Itemize
-Opensource 
-\end_layout
 
-\begin_deeper
-\begin_layout Itemize
-Affero GPLv3
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
+\size larger
 Fast
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
 
+\size larger
 \emph on
 mapreduce
 \emph default
 -like processing
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\size larger
+Opensource 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\size larger
+Affero GPLv3
 \end_layout
 
 \end_deeper
@@ -804,25 +947,35 @@ High-level view
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Aggregation
 \end_layout
 
 \begin_deeper
 \begin_layout Enumerate
+
+\size larger
 datasets
 \end_layout
 
 \begin_layout Enumerate
+
+\size larger
 RIS Whois and Whois entries
 \end_layout
 
 \end_deeper
 \begin_layout Itemize
+
+\size larger
 Ranking
 \end_layout
 
 \begin_deeper
 \begin_layout Standard
+
+\size larger
 \begin_inset Formula $R=1+\frac{\left(SUM\left(occur*s\_impact\right)*SUM\left(vote\right)\right)}{AS\_size}$
 \end_inset
 
@@ -830,37 +983,33 @@ Ranking
 \end_layout
 
 \begin_layout Description
+
+\size large
 occur all the IPs from the ASN, by sources.
  
 \end_layout
 
 \begin_layout Description
+
+\size large
 s_impact
 \family roman
 \series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
  
 \family default
 \series default
-\shape default
-\size default
-\emph default
-\bar default
-\noun default
-\color inherit
 value assigned to the source
 \end_layout
 
 \begin_layout Description
+
+\size large
 vote vote against this AS (actually not implemented)
 \end_layout
 
 \begin_layout Description
+
+\size large
 AS_size total of IPs 
 \end_layout
 
@@ -916,22 +1065,32 @@ Third party programs
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Redis
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 MySQL
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 libbgpdump
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Rgraph
 \end_layout
 
 \begin_layout Itemize
+
+\size larger
 Cheetah and Cherrypy
 \end_layout
 
@@ -944,6 +1103,36 @@ Cheetah and Cherrypy
 
 \size giant
 Website and first results.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename internet.jpg
+	lyxscale 10
+	scale 10
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout BeginFrame

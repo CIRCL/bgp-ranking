@@ -1,4 +1,12 @@
 #!/usr/bin/python
+
+"""
+Fetch a particular raw file and put it in a particular directory if the file is new.
+During the download, the file is put in a temporary directory. When the download is finished, 
+it is moved in the directory checked by an other process. 
+"""
+
+
 import os 
 import sys
 import ConfigParser
@@ -17,10 +25,6 @@ import urllib
 import filecmp
 import glob
 import time
-    
-"""
-Fetch the raw file
-"""
 
 def usage():
     print "fetch_raw_files.py dir url"
@@ -38,6 +42,11 @@ old_directory = os.path.join(args[0], old_dir)
 while 1:
     urllib.urlretrieve(args[1], temp_filename)
     drop_file = False
+    """
+    Check is the file already exists, if the same file is found, 
+    the downloaded file is dropped. Else, it is moved in his final directory. 
+    FIXME: I should not check ALL the file present, or do sth with old files 
+    """
     to_check = glob.glob( os.path.join(old_directory, '*') )
     to_check += glob.glob( os.path.join(args[0], '*') )
     for file in to_check:

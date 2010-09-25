@@ -1,68 +1,65 @@
 <p>
-	Please read <a href="http://blog.chavant.info/2010/06/13/bgp-as-isp-security-ranking-introduction-and-datasets">this article</a> first. I will now explain you what is <em>the rest</em>, what the application do when all the informations we want/need are extracted of the datasets.</p>
+        Please read <a href="http://blog.chavant.info/2010/06/13/bgp-as-isp-security-ranking-introduction-and-datasets">this article</a> first. I will now explain you what is <em>the rest</em>, what the application do when all the informations we want/need are extracted of the datasets.</p>
 <h1>
-	In short</h1>
+        In short</h1>
 <p>
-	We will fetch the RIS Whois and the Whois entries for each IP... </p>
+        We will fetch the RIS Whois and the Whois entries for each IP...</p>
 <p>
-	... but it is not that easy! :) </p>
+        ... but it is not that easy! :)</p>
 <h1>
-	RIS Whois </h1>
+        RIS Whois</h1>
 <p>
-	The ris informations are fetched from <em>riswhois.ripe.net</em> to know who is announcing the network of the IP. </p>
+        The ris informations are fetched from <em>riswhois.ripe.net</em> to know who is announcing the network of the IP.</p>
 <p>
-	From the response, we extract </p>
+        From the response, we extract</p>
 <ul>
-	<li>
-		the origin, which is the AS announcing the IP</li>
-	<li>
-		the route</li>
-	<li>
-		the description of the ASN</li>
+        <li>
+                the origin, which is the AS announcing the IP</li>
+        <li>
+                the route</li>
+        <li>
+                the description of the ASN</li>
 </ul>
 <p>
-	The query server is also saved: it is the URL of the server where we do the query. It is actually always <em>riswhois.ripe.net</em> but in the future, we may directly use a BGP session on a router. We will have to be able to know where the informations are coming from. </p>
+        The query server is also saved: it is the URL of the server where we do the query. It is actually always <em>riswhois.ripe.net</em> but in the future, we may directly use a BGP session on a router. We will have to be able to know where the informations are coming from.</p>
 <p>
-	If there is no response, we assume that the ip is not announced anymore. If the IP is <em>RESERVED</em> or <em>PRIVATE</em>, it will be discarded before the inclusion in the database. </p>
+        If there is no response, we assume that the ip is not announced any more. If the IP is <em>RESERVED</em> or <em>PRIVATE</em>, it will be discarded before the inclusion in the database.</p>
 <h1>
-	Whois </h1>
+        Whois</h1>
 <p>
-	It is a bit more complicated: I implement a whois client based on the assignations given by the <a href="https://launchpad.net/whois/head">whois package of debian/ubuntu</a> to ask the whois entries to the right server. </p>
+        It is a bit more complicated: I implement a whois client based on the assignations given by the <a href="https://launchpad.net/whois/head">whois package of debian/ubuntu</a> to ask the whois entries to the right server.</p>
 <p>
-	The following informations are saved in a MySQL database: </p>
+        The following informations are saved in a MySQL database:</p>
 <ul>
-	<li>
-		block: the ips assignated to the server\</li>
-	<li>
-		whois: the URL of the server </li>
-	<li>
-		options:
-		<li>
-			pre: string prepended to the query
-		</li>
-		<li>
-			post: string appended to the query
-		</li>
-		<li>
-			keepalive: prepended, make the query keepalive (the server doesn't close the connexion after each query)
-		</li>
-	</li>
-	<li>
-		port: port on the server
-	</li>
+        <li>
+                block: the IPs assigned to the server\</li>
+        <li>
+                whois: the URL of the server</li>
+        <li>
+                port: port on the server</li>
+        <li>
+                options:
+                <ul>
+                        <li>
+                                pre: prefix of the query</li>
+                        <li>
+                                post: string appended to the query</li>
+                        <li>
+                                keepalive: other prefix, make the query keepalive (the server doesn't close the connexion after each query)</li>
+                </ul>
+        </li>
 </ul>
 <p>
-	<b>Note</b>: this database will be switched to Redis as soon as possible. </p>
+        <b>Note</b>: this database will be switched to Redis as soon as possible.</p>
 <p>
-	As for the RIS Whois, the URL of the server is saved in the database. The rest of the Whois entry is directly pushed in the database. </p>
+        As for the RIS Whois, the URL of the server is saved in the database. The rest of the Whois entry is directly pushed in the database.</p>
 <p>
-	There are two problems: </p>
+        There are two problems:</p>
 <ul>
-	<li>
-		the time: it takes ~1sec to get a whois entry </li>
-	<li>
-		the number of queries: the RIR Afrinic blacklists the ip address which make too much queries </li>
+        <li>
+                the time: it takes ~1sec to get a whois entry</li>
+        <li>
+                the number of queries: the RIR Afrinic blacklists the ip address which make too much queries</li>
 </ul>
 <p>
-	So I begin to program a whois server based on redis. More informations on it in an other article but you can already <a href="http://gitorious.org/whois-server">take a look</a> at the code. In the next article, we will see how is used redis as a shared memory and caching server.</p>
-
+        So I began to program a whois server based on redis. More informations on it in an other article but you can already <a href="http://gitorious.org/whois-server">take a look</a> at the code. In the next article, we will see how is used redis as a shared memory and caching server.</p>

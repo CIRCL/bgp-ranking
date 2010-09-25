@@ -1,4 +1,10 @@
 #!/usr/bin/python
+
+"""
+Launch a fetcher of RIS Whois entries on a particular range found in the database.
+FIXME: It would be great to find a way to merge the fetching of RIS Whois and Whois entries
+"""
+
 import os 
 import sys
 import ConfigParser
@@ -8,10 +14,6 @@ root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 from fetch_asns import FetchASNs
-
-"""
-Get the ris entries from the redis server and put them into the database.
-"""
 
 def usage():
     print "get_range_ris_queries.py first_entry last_entry"

@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+"""
+Launch a connector for a particular whois server. 
+"""
+
 import os 
 import sys
 import ConfigParser
@@ -9,10 +13,6 @@ root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 from whois_client.connector import Connector
-
-"""
-A connector on a specific url
-"""
 
 def usage():
     print "whois_fetching.py server.tld"

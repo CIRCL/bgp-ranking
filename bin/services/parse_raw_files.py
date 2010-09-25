@@ -1,4 +1,9 @@
 #!/usr/bin/python
+
+"""
+Launche the parsing of a particular raw file.
+"""
+
 import os 
 import sys
 import ConfigParser
@@ -11,14 +16,8 @@ sleep_timer = int(config.get('sleep_timers','short'))
 
 import syslog
 syslog.openlog('BGP_Ranking_Get_Whois_Entries', syslog.LOG_PID, syslog.LOG_USER)
-
 from modules import *
-
 import time
-
-"""
-Parse the file of a module
-"""
 
 def usage():
     print "parse_raw_files.py name"

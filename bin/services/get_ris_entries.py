@@ -1,6 +1,15 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
-# Inspired by : http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
+
+"""
+Main process getting the RIS Whois entries. 
+This process manages a pool of processes working on an interval of entries in the database 
+without RIS Whois information. The number of processes and the size of the intervals 
+is defined in the config file. 
+
+This method allows us to use very few memory and start as much concurrent processes as we want.
+
+FIXME: It would be great to find a way to merge the fetching of RIS Whois and Whois entries
+"""
 
 import os 
 import sys
@@ -19,10 +28,7 @@ from helpers.initscript import *
 from db_models.ranking import *
 import time
 
-"""
-Start the getting processes on an interval of entry to process: 
-use *a way* less memory and is multithreaded 
-"""
+
 
 service = os.path.join(services_dir, "get_range_ris_entries")
 pids = []
@@ -34,9 +40,12 @@ while 1:
     limit_last = ip_counter['interval']
     while ip_counter['total_ips'] > 0:
         if ip_counter['total_ips'] <= ip_counter['interval']:
+            # Do not start more than one process if the total of IP Addresses to use is 
+            # smaller than the maximal size of an interval
             ip_counter['processes'] = 1
         syslog.syslog(syslog.LOG_INFO, 'Actually: ' + str(len(pids)) + ' subprocess(es) are running and getting the ris whois entries.')
         while len(pids) < ip_counter['processes'] :
+            # Start the processes on their intervals 
             if limit_first > ip_counter['total_ips'] or ip_counter['processes'] == 1:
                 limit_first = 0
                 limit_last = ip_counter['interval']
@@ -47,6 +56,7 @@ while 1:
             limit_last += ip_counter['interval']
         pids = update_running_pids(pids)
         if len(pids) >= ip_counter['processes']:
+            # Wait until one or more processes are finished
             time.sleep(sleep_timer)
         ip_counter = init_counter(IPsDescriptions.query.filter(IPsDescriptions.asn==None).count())
     time.sleep(sleep_timer)

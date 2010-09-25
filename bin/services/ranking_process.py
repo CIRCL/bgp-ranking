@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+"""
+Service computing the ranking. 
+For each ASN of the interval, compute the ranking.
+"""
+
 import os
 import sys
 import IPy

@@ -2,6 +2,11 @@
 # -*- coding: utf-8 -*-
 # Inspired by : http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
+"""
+Start the service fetching the dumps of routing information (bview files)
+provided by RIPE NCC
+"""
+
 import os 
 import sys
 import ConfigParser
@@ -14,10 +19,6 @@ services_dir = os.path.join(root_dir,config.get('directories','services'))
 import signal
 
 from helpers.initscript import *
-
-"""
-Launch the raw fetching processes 
-"""
 
 service = os.path.join(services_dir, "fetch_bview")
 

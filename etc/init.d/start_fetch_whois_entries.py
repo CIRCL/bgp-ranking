@@ -3,7 +3,7 @@
 # Inspired by : http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
 """
-Start/stop a connector to each whois server we know. 
+Start the services fetching the (RIS) Whois information from the whois servers.
 """
 
 import os 

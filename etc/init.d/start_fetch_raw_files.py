@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 # Inspired by : http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
+"""
+Start the service fetching the raw datasets
+"""
+
 import os 
 import sys
 import ConfigParser
@@ -13,12 +17,7 @@ services_dir = os.path.join(root_dir,config.get('directories','services'))
 raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
 
 import signal
-
 from helpers.initscript import *
-
-"""
-Launch the raw fetching processes 
-"""
 
 service = os.path.join(services_dir, "fetch_raw_files")
 

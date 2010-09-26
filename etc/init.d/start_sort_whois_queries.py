@@ -3,7 +3,7 @@
 # Inspired by : http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
 """
-Start/stop a script which sort the queries between connectors
+Start processes sorting the queries between whois servers
 """
 
 import os 

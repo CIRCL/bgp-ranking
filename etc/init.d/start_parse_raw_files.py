@@ -3,7 +3,7 @@
 # Inspired by : http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
 """
-Start a process for all the modules listed in 'options'
+Start a processes parsing the raw datasets for all the modules listed in 'options'
 """
 
 import os 

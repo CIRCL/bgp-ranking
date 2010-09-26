@@ -2,6 +2,13 @@
 # -*- coding: utf-8 -*-
 # Inspired by : http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
+"""
+Start the process pushing the update of the routing information. 
+NOTE: it will also compute the ranking 
+
+FIXME: rename the script 
+"""
+
 import os 
 import sys
 import ConfigParser
@@ -16,10 +23,6 @@ import signal
 
 from helpers.initscript import *
 from helpers.files_splitter import *
-
-"""
-Launch the raw fetching processes 
-"""
 
 service = os.path.join(services_dir, "push_update_routing")
 option = os.path.join(raw_data, config.get('routing','bviewfile'))

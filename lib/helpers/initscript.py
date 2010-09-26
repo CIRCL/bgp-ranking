@@ -1,3 +1,10 @@
+"""
+Standard functions used by the init scripts
+The original idea is of adulau: http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
+
+FIXME: More comments needed
+"""
+
 import os 
 import sys
 import ConfigParser
@@ -12,10 +19,6 @@ import subprocess
 import syslog
 syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_USER)
 
-
-"""
-Standard functions used by the init scripts
-"""
 
 def service_start_multiple(servicename, number, param = None):
     i = 0 

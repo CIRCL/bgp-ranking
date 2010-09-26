@@ -3,6 +3,13 @@
 
 # copy of the fonctions designed for the whois server 
 
+"""
+This class is generate the keys used to find the best network of a particular IP.
+You should read the doc if you really want to understand how it works :). 
+
+FIXME: put more comments there 
+"""
+
 class MakeIPKeys:
     
     def __init__(self, ipv4):

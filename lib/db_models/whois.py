@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+
+"""
+Definition of the database containing the assignations. 
+
+FIXME: not used anymore, drop it! 
+"""
+
+
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.schema import ThreadLocalMetaData

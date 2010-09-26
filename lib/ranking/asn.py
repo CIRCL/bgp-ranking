@@ -1,6 +1,10 @@
 #!/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+FIXME: not used anymore, generate a gnuplot graph
+"""
+
 
 import os 
 import sys

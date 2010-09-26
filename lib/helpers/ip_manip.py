@@ -1,6 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+FIXME: verify if it is used. 
+"""
+
 import IPy
 
 def ip_in_network(ip, network):

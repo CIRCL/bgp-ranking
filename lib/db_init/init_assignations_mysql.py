@@ -1,6 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+This script initialize the assignations in a mysql database. Is is not updated anymore. 
+
+FIXME: drop it?!
+"""
+
+
 import os 
 import sys
 import ConfigParser

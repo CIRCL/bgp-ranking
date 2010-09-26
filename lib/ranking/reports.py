@@ -1,5 +1,12 @@
 #!/usr/bin/python
 
+"""
+Quick and durty code generating reports based on the information found in the database. 
+
+FIXME: rewrite it!
+"""
+
+
 if __name__ == "__main__":
     import os 
     import sys

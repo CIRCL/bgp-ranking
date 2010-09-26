@@ -65,7 +65,7 @@ def get_server_by_query(query, r):
     return to_return
 
 class WhoisFetcher(object):
-    """Class to the Whois entry of a particular IP.
+    """Class to fetch the Whois entry of a particular IP.
     """
     
     # Some funny whois implementations.... 

@@ -1,6 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+this databases contains only the ranking information, the votes and the users. 
+
+FIXME: rename the database! Merge the two mysql databases! 
+"""
+
 
 import os 
 import sys

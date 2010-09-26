@@ -1,5 +1,12 @@
 #!/usr/bin/python
 
+"""
+Quick and durty code computing reports based on the information found in the database. 
+
+FIXME: rewrite it!
+"""
+
+
 import os 
 import sys
 import ConfigParser

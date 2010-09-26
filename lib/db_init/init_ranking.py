@@ -1,6 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+Initialize the database containing the fetched information (datasets, whois entries).
+
+FIXME: rename the database! Merge the two mysql databases! 
+"""
+
+
 
 import os 
 import sys

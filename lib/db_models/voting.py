@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+"""
+Definition of the databases containing the ranking information.
+"""
+
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.schema import ThreadLocalMetaData

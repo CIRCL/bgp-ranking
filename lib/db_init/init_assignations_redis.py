@@ -1,6 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+Script initializing the redis database of assignations, used by the sorting processes. 
+It defines also the options of the differents servers. 
+
+NOTE: This script has to be launched each time there is a new assignations files provided by debian. 
+
+FIXME: make two scripts: if the whois entries are not fetched, the only important part is the options of the servers. 
+"""
+
+
 from make_ip_keys import *
 
 import os 

@@ -1,12 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Original Idea :
-# =>  http://code.google.com/p/pywhois/source/browse/trunk/pywhois/parser.py
 
 from abstract_parser import AbstractParser
 
 
-"""Regex of the RIS-Whois entry.
+"""
+Regex of the Whois entry. 
+
+It is not really used because the whole whois entry is put in the database. 
 """
 RIS = {
     'route':       'route[6]?:[ ]*([^\n]*)',

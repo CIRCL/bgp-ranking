@@ -1,7 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Original Idea :
-# =>  http://code.google.com/p/pywhois/source/browse/trunk/pywhois/parser.py
+
+"""
+Initialize the BGP parsers. 
+
+There is only a parser for the information from RIPE NCC
+"""
 
 if __name__ == "__main__":
     import ConfigParser

@@ -1,7 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Original Idea :
-# =>  http://code.google.com/p/pywhois/source/browse/trunk/pywhois/parser.py
 
 
 #if __name__ == "__main__":

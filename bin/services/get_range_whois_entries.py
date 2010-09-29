@@ -13,7 +13,7 @@ config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
-from fetch_asns import FetchASNs
+from fetch_whois import FetchWhois
 
 def usage():
     print "get_range_whois_queries.py first_entry last_entry"
@@ -24,7 +24,7 @@ if len(sys.argv) < 2:
     
 args = sys.argv[1].split(' ')
 
-f = FetchASNs()
+f = FetchWhois()
 f.get_whois(int(args[0]), int(args[1]))
 
 sys.exit(1)

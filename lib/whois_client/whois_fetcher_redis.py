@@ -34,6 +34,9 @@ def get_all_servers_urls():
 
 
 def get_server_by_query(query, r):
+    """
+    Find the best server (using redis) for a particular IP.
+    """
     to_return = None
     ranges = None
     key = str(query)

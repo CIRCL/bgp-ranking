@@ -6,11 +6,15 @@ from datetime import datetime
 import dateutil.parser
 import os
 
-from ip_update import IPUpdate
+from adstract_module import AbstractModule
 
 
-class DshieldDaily(IPUpdate):
+class DshieldDaily(AbstractModule):
     directory = 'dshield/daily/'
+    
+    key_ip = ':ip'
+    key_src = ':source'
+    key_tstamp = ':timestamp'
 
     def __init__(self, raw_dir):
         IPUpdate.__init__(self)
@@ -22,8 +26,12 @@ class DshieldDaily(IPUpdate):
         """
         self.ips = []
         for file in self.files:
-            if not os.path.isdir(file):
-                daily = open(file).read()
-                self.ips += re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',daily)
-                self.date = dateutil.parser.parse(re.findall('updated (.*)\n', daily)[0])
-                self.move_file(file)
+            daily = open(file)
+            date = dateutil.parser.parse(re.findall('updated (.*)\n', daily.read())[0])
+            for line in daily:
+                entry[key_ip] = re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',daily)[0]
+                entry[key_src] = self.__class__.__name__
+                entry[key_tstamp] = date
+                self.put_entry(entry)
+            daily.close()
+            self.move_file(file)

@@ -1,4 +1,8 @@
+from db_models.ranking import *
+
+
 import datetime 
+import redis
 
 import syslog
 syslog.openlog('BGP_Ranking_Input', syslog.LOG_PID, syslog.LOG_USER)
@@ -21,19 +25,21 @@ class InputReader():
     def insert():
         while self.temp_db.llen(list_ips) > 0:
             uid = self.temp_db.pop(list_ips)
-            # FIXME: get-remove
             ip = self.temp_db.get(uid + key_ip)
             src = self.temp_db.get(uid + key_src)
             timestamp = self.temp_db.get(uid + key_tstamp)
             infection = self.temp_db.get(uid + key_infection)
             raw = self.temp_db.get(uid + key_raw)
             times = self.temp_db.get(uid + key_times)
-            # FIXME: find a way using
-            # keys = self.temp_db.keys(uid + '*')
-            self.temp_db.delete(uid + key_ip, uid + key_src, uid + key_tstamp, uid + key_infection, uid + key_raw, uid + key_times)
+            # NOTE: very elegant way to drop a list of keys :)
+            keys = self.temp_db.keys(uid + '*')
+            self.temp_db.delete(*keys)
             try:
                 # Check and normalize the IP 
                 ip_temp = IPy.IP(ip)
+                if ip_temp.iptype() != 'PUBLIC':
+                    syslog.syslog(syslog.LOG_ERR, str(ip_temp) + ' is not a PUBLIC IP Address but is ' + ip_temp.iptype())
+                    continue
                 ip = str(ip_temp)
             except:
                 syslog.syslog(syslog.LOG_ERR, 'error with IP:' + ip)

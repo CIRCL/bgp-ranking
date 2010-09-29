@@ -3,7 +3,13 @@ from abc import ABCMeta, abstractmethod
 
 import redis
 import glob
-import os
+
+import os 
+import sys
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../../etc/bgp-ranking.conf")
+#sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 # Temporary redis database
 temp_reris_db = int(config.get('modules_global','temp_db'))
@@ -28,8 +34,8 @@ class AbstractModule():
         uid = self.temp_db.incr(uid_var)
         # the format of "entry" is : { ':ip' : ip , ':timestamp' : timestamp ... }
         for key, value in entry.iteritems():
-            self.temp_db.set(uid + key, value)
-        self.temp_db.sadd(uid)
+            self.temp_db.set(str(uid) + key, value)
+        self.temp_db.sadd(list_ips, uid)
 
     def __glob_only_files(self):
         allfiles = glob.glob( self.directory + '/*')
@@ -37,6 +43,7 @@ class AbstractModule():
         for file in allfiles:
             if not os.path.isdir(file):
                 self.files.append(file)
+        print self.files
 
     __metaclass__ = ABCMeta    
     @abstractmethod

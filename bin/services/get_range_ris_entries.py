@@ -13,7 +13,7 @@ config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
-from fetch_asns import FetchASNs
+from fetch_RIS import FetchRIS
 
 def usage():
     print "get_range_ris_queries.py first_entry last_entry"
@@ -24,7 +24,7 @@ if len(sys.argv) < 2:
     
 args = sys.argv[1].split(' ')
 
-f = FetchASNs()
-f.get_asns(int(args[0]), int(args[1]))
+f = FetchRIS()
+f.get_ris(int(args[0]), int(args[1]))
 
 sys.exit(1)

@@ -26,7 +26,7 @@ The solution is to use an integer and to increment it for each new entry.
 
 For each new entry, all the corresponding information will be put in the redis database. 
 The two following information will always be there: 
-<unique_ID>:IP     -> <ip>
+<unique_ID>:ip     -> <ip>
 <unique_ID>:source -> <source>
 
 And if they are given by the dataset: 

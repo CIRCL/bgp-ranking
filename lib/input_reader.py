@@ -19,20 +19,22 @@ class InputReader():
     key_raw = ':raw'
     key_times = ':times'
     
-    def __init__():
+    def __init__(self):
         self.temp_db = redis.Redis(db=temp_reris_db)
     
-    def insert():
-        while self.temp_db.llen(list_ips) > 0:
-            uid = self.temp_db.pop(list_ips)
-            ip = self.temp_db.get(uid + key_ip)
-            src = self.temp_db.get(uid + key_src)
-            timestamp = self.temp_db.get(uid + key_tstamp)
-            infection = self.temp_db.get(uid + key_infection)
-            raw = self.temp_db.get(uid + key_raw)
-            times = self.temp_db.get(uid + key_times)
+    def insert(self):
+        while self.temp_db.scard(list_ips) > 0:
+            uid = str(self.temp_db.spop(list_ips))
+            keys = self.temp_db.keys(uid + ':*')
+            if len(keys) == 0:
+                continue
+            ip = self.temp_db.get(uid + self.key_ip)
+            src = self.temp_db.get(uid + self.key_src)
+            timestamp = self.temp_db.get(uid + self.key_tstamp)
+            infection = self.temp_db.get(uid + self.key_infection)
+            raw = self.temp_db.get(uid + self.key_raw)
+            times = self.temp_db.get(uid + self.key_times)
             # NOTE: very elegant way to drop a list of keys :)
-            keys = self.temp_db.keys(uid + '*')
             self.temp_db.delete(*keys)
             try:
                 # Check and normalize the IP 

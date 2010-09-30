@@ -23,6 +23,7 @@ class AbstractModule():
     
     To use this class you have to provide a variable called self.directory which is the directory 
     where the new files are. 
+    A variable date is also necessary to move the file when the parsing is done. 
     You have to define a function parse which extract the entries from the dataset and use 
     the function put_entry to put them in redis. 
     """

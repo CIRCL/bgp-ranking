@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
-import time
-import datetime
-from datetime import datetime
-import dateutil.parser
 import os
+import dateutil.parser
 
 from modules.abstract_module import AbstractModule
 

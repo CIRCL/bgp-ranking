@@ -60,8 +60,8 @@ class InputReader():
             IP = IPs.query.get(unicode(ip))
             if IP is None:
                 IP = IPs(ip=unicode(ip))
-            if IPsDescriptions.query.filter_by(ip=IP, list_name=unicode(self.name),\
-                                                list_date=current_timestamp).first() is None:
+            if IPsDescriptions.query.filter_by(ip=IP, list_name=unicode(src),\
+                                                list_date=timestamp).first() is None:
                 IPsDescriptions(ip=IP, list_name=unicode(src), list_date=timestamp, \
                                 infection=unicode(infection), raw_informations=unicode(raw), times=times)
             else:

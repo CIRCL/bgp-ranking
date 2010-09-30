@@ -46,7 +46,7 @@ class InputReader():
                     continue
                 ip = str(ip_temp)
             except:
-                syslog.syslog(syslog.LOG_ERR, 'error with IP:' + ip)
+                syslog.syslog(syslog.LOG_ERR, 'error with IP: ' + ip)
                 continue
             if src is None:
                 syslog.syslog(syslog.LOG_ERR, ip + ' without source, invalid')

@@ -23,7 +23,7 @@ class ZeustrackerIpBlockList(AbstractModule):
         for file in self.files:
             blocklist = open(file)
             for line in blocklist:
-                ip = re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',line)
+                ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})',line)
                 if len(ip) == 0:
                     continue
                 entry = {}

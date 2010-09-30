@@ -4,6 +4,8 @@ from db_models.ranking import *
 import datetime 
 import redis
 
+import IPy
+
 import syslog
 syslog.openlog('BGP_Ranking_Input', syslog.LOG_PID, syslog.LOG_USER)
 

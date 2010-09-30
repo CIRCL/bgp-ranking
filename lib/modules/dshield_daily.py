@@ -12,6 +12,7 @@ class DshieldDaily(AbstractModule):
     key_ip = ':ip'
     key_src = ':source'
     key_tstamp = ':timestamp'
+    key_raw = ':raw'
 
     def __init__(self, raw_dir):
         AbstractModule.__init__(self)
@@ -26,13 +27,17 @@ class DshieldDaily(AbstractModule):
             self.date = dateutil.parser.parse(re.findall('updated (.*)\n', open(file).read())[0])
             daily = open(file)
             for line in daily:
-                ip = re.findall('((?:\d{1,3}\.){3}\d{1,3}).*',line)
+                ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s]([^\r\n]*)',line)
                 if len(ip) == 0:
                     continue
                 entry = {}
                 entry[self.key_ip] = ip[0]
                 entry[self.key_src] = self.__class__.__name__
                 entry[self.key_tstamp] = self.date
+                if len(ip) > 1:
+                    raw = ip[1].strip()
+                    if len(raw)>0:
+                        entry[self.key_raw] = raw
                 self.put_entry(entry)
             daily.close()
             self.move_file(file)

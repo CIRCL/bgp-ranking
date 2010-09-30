@@ -1,21 +1,22 @@
 # -*- coding: utf-8 -*-
 import re
-import datetime 
 import os
-import glob
+import datetime 
 
-from ip_update import IPUpdate
+from modules.abstract_module import AbstractModule
 
 
-class DshieldTopIPs(IPUpdate):
+class DshieldTopIPs(AbstractModule):
     # Dshield doesn't give a date for his TopIPs list. So we assume that 
     # the list is updated every days
     date = datetime.date.today()
     directory = 'dshield/topips/'
+    key_ip = ':ip'
+    key_src = ':source'
+    key_raw = ':raw'
     
     def __init__(self, raw_dir):
-        IPUpdate.__init__(self)
-        self.module_type = 2
+        AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
  
     def parse(self):
@@ -23,8 +24,18 @@ class DshieldTopIPs(IPUpdate):
         """
         self.ips = []
         for file in self.files:
-            if not os.path.isdir(file):
-                entries = re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s]([^\r\n]*)', open(file).read())
-                for entry in entries:
-                    self.ips.append([entry[0], self.date, '', entry[1]])
-                self.move_file(file)
+            daily = open(file)
+            for line in daily:
+                ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s]([^\r\n]*)',line)
+                if len(ip) == 0:
+                    continue
+                entry = {}
+                entry[self.key_ip] = ip[0]
+                entry[self.key_src] = self.__class__.__name__
+                if len(ip) > 1:
+                    raw = ip[1].strip()
+                    if len(raw)>0:
+                        entry[self.key_raw] = raw
+                self.put_entry(entry)
+            daily.close()
+            self.move_file(file)

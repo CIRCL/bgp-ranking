@@ -44,7 +44,6 @@ class AbstractModule():
         for file in allfiles:
             if not os.path.isdir(file):
                 self.files.append(file)
-        print self.files
 
     __metaclass__ = ABCMeta    
     @abstractmethod

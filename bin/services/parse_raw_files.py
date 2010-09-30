@@ -26,8 +26,8 @@ def usage():
 if len(sys.argv) < 2:
     usage()
 
+module = eval(sys.argv[1])(raw_data)
 while 1:
-    module = eval(sys.argv[1])(raw_data)
     if module.update():
         syslog.syslog(syslog.LOG_INFO, 'Done with ' + sys.argv[1])
     else:

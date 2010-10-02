@@ -22,7 +22,7 @@ class InputReader():
     key_raw = ':raw'
     key_times = ':times'
     
-    def __init__(self):
+    def connect():
         self.temp_db = redis.Redis(db=temp_reris_db)
     
     def insert(self):
@@ -67,4 +67,10 @@ class InputReader():
                                 infection=unicode(infection), raw_informations=unicode(raw), times=times)
             #else:
                 #syslog.syslog(syslog.LOG_ERR, ip + ' already there.')
+        self.r_session = RankingSession()
+        self.r_session.commit()
+        self.r_session.close()
         return to_return
+        
+    def disconnect():
+        self.temp_db.disconnect()

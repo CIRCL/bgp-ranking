@@ -24,6 +24,8 @@ def usage():
 
 reader = InputReader()
 while 1:
+    reader.connect()
     if reader.insert():
         syslog.syslog(syslog.LOG_INFO, 'New entries inserted in MySQL.')
+    reader.disconnect()
     time.sleep(sleep_timer)

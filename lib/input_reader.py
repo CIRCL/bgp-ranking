@@ -35,6 +35,10 @@ class InputReader():
                 continue
             src = self.temp_db.get(uid + self.key_src)
             timestamp = self.temp_db.get(uid + self.key_tstamp)
+            if timestamp is None:
+                timestamp = datetime.datetime.now()
+            else:
+                timestamp = dateutil.parser.parse(timestamp)
             infection = self.temp_db.get(uid + self.key_infection)
             raw = self.temp_db.get(uid + self.key_raw)
             times = self.temp_db.get(uid + self.key_times)
@@ -52,8 +56,6 @@ class InputReader():
             if src is None:
                 syslog.syslog(syslog.LOG_ERR, ip + ' without source, invalid')
                 continue
-            if timestamp is None:
-                timestamp = datetime.date.today()
             if times is None:
                 times = 1
             IP = IPs.query.get(unicode(ip))
@@ -61,7 +63,7 @@ class InputReader():
                 IP = IPs(ip=unicode(ip))
             if IPsDescriptions.query.filter_by(ip=IP, list_name=unicode(src),\
                                                 list_date=timestamp).first() is None:
-                IPsDescriptions(ip=IP, list_name=unicode(src), list_date=dateutil.parser.parse(timestamp), \
+                IPsDescriptions(ip=IP, list_name=unicode(src), list_date=timestamp, \
                                 infection=unicode(infection), raw_informations=unicode(raw), times=times)
             #else:
                 #syslog.syslog(syslog.LOG_ERR, ip + ' already there.')

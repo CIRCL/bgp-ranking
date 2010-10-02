@@ -26,7 +26,7 @@ class DshieldDaily(AbstractModule):
             self.date = dateutil.parser.parse(re.findall('updated (.*)\n', open(file).read())[0])
             daily = open(file)
             for line in daily:
-                ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})',line)
+                ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s].*',line)
                 if len(ip) == 0:
                     continue
                 entry = {}

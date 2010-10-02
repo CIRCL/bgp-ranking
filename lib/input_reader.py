@@ -29,7 +29,6 @@ class InputReader():
         while self.temp_db.scard(list_ips) > 0:
             to_return = True
             uid = str(self.temp_db.spop(list_ips))
-            keys = self.temp_db.keys(uid + ':*')
             if len(keys) == 0:
                 continue
             ip = self.temp_db.get(uid + self.key_ip)
@@ -39,7 +38,7 @@ class InputReader():
             raw = self.temp_db.get(uid + self.key_raw)
             times = self.temp_db.get(uid + self.key_times)
             # NOTE: very elegant way to drop a list of keys :)
-            self.temp_db.delete(*keys)
+            self.temp_db.delete(uid + self.key_ip, uid + self.key_src, uid + self.key_tstamp, uid + self.key_infection, uid + self.key_raw, uid + self.key_times)
             try:
                 # Check and normalize the IP 
                 ip_temp = IPy.IP(ip)

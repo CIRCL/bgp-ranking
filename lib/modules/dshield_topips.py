@@ -13,6 +13,7 @@ class DshieldTopIPs(AbstractModule):
     directory = 'dshield/topips/'
     key_ip = ':ip'
     key_src = ':source'
+    key_tstamp = ':timestamp'
     
     def __init__(self, raw_dir):
         AbstractModule.__init__(self)
@@ -25,12 +26,13 @@ class DshieldTopIPs(AbstractModule):
         for file in self.files:
             daily = open(file)
             for line in daily:
-                ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})',line)
+                ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s].*',line)
                 if len(ip) == 0:
                     continue
                 entry = {}
                 entry[self.key_ip] = ip[0]
                 entry[self.key_src] = self.__class__.__name__
+                entry[self.key_tstamp] = self.date
                 self.put_entry(entry)
             daily.close()
             self.move_file(file)

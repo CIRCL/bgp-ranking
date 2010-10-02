@@ -11,6 +11,7 @@ class ZeustrackerIpBlockList(AbstractModule):
     directory = 'zeus/ipblocklist/'
     key_ip = ':ip'
     key_src = ':source'
+    key_tstamp = ':timestamp'
     
     def __init__(self, raw_dir):
         AbstractModule.__init__(self)
@@ -29,6 +30,7 @@ class ZeustrackerIpBlockList(AbstractModule):
                 entry = {}
                 entry[self.key_ip] = ip[0]
                 entry[self.key_src] = self.__class__.__name__
+                entry[self.key_tstamp] = self.date
                 self.put_entry(entry)
             blocklist.close()
             self.move_file(file)

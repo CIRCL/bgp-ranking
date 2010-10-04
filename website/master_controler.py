@@ -12,7 +12,7 @@ from graph_generator import GraphGenerator
 
 class MasterControler():
 
-    def __init__(self, date = datetime.datetime.now()):
+    def __init__(self, date = datetime.datetime.utcnow()):
         self.report = Reports(date)
 
     def prepare_index(self, source = None, limit = 50):

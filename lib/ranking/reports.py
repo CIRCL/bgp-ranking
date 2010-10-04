@@ -27,7 +27,7 @@ from sqlalchemy import and_, desc
 
 class Reports():
     
-    def __init__(self, date = datetime.datetime.now()):
+    def __init__(self, date = datetime.datetime.utcnow()):
         self.date = date
         self.impacts = {}
         for item in items:

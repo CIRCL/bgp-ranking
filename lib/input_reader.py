@@ -22,7 +22,7 @@ class InputReader():
     key_raw = ':raw'
     key_times = ':times'
     
-    def connect():
+    def connect(self):
         self.temp_db = redis.Redis(db=temp_reris_db)
     
     def insert(self):
@@ -72,5 +72,5 @@ class InputReader():
         self.r_session.close()
         return to_return
         
-    def disconnect():
+    def disconnect(self):
         self.temp_db.disconnect()

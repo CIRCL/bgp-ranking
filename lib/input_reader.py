@@ -36,7 +36,7 @@ class InputReader():
             src = self.temp_db.get(uid + self.key_src)
             timestamp = self.temp_db.get(uid + self.key_tstamp)
             if timestamp is None:
-                timestamp = datetime.datetime.now()
+                timestamp = datetime.datetime.utcnow()
             else:
                 timestamp = dateutil.parser.parse(timestamp)
             infection = self.temp_db.get(uid + self.key_infection)

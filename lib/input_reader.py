@@ -73,4 +73,4 @@ class InputReader():
         return to_return
         
     def disconnect(self):
-        self.temp_db.disconnect()
+        self.temp_db = None

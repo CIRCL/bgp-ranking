@@ -37,7 +37,7 @@ def service_start_once(servicename = None, param = None, processname = None):
         writepid(processname, proc)
     else:
         print(processname + ' already running on pid ' + str(pidof(processname)[0]))
-        syslog.syslog(syslog.LOG_ERR, param + ' already running on pid ' + str(pidof(processname)[0]))
+        syslog.syslog(syslog.LOG_ERR, "%s already running with pid %s" % (param, pidof(processname)[0]))
 
 def service_start(servicename = None, param = None):
     """

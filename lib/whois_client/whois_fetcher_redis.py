@@ -193,8 +193,9 @@ if __name__ == "__main__":
     f.disconnect()
     
     print get_all_servers_urls()
-    print get_server_by_query('200.3.14.10')
-    print get_server_by_query('127.0.0.1')
+    
+    print get_server_by_query('200.3.14.10', redis.Redis(db=config.get('redis','whois_assignations')))
+    print get_server_by_query('127.0.0.1', redis.Redis(db=config.get('redis','whois_assignations')))
   
     
     

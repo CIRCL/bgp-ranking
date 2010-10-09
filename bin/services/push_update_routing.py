@@ -117,4 +117,6 @@ while 1:
         # Wait until all the processes are finished
         pids = update_running_pids(pids)
         time.sleep(sleep_timer_short)
+    # Flush the old database to reduce the RAM usage
+    routing_db.flushdb()
     syslog.syslog(syslog.LOG_INFO, 'Ranking computed')

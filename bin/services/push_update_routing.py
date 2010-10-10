@@ -28,7 +28,7 @@ import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('directories','root')
-sleep_timer = int(config.get('sleep_timers','long'))
+sleep_timer = int(config.get('ranking','bview_check'))
 sleep_timer_short = int(config.get('sleep_timers','short'))
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 services_dir = os.path.join(root_dir,config.get('directories','services'))

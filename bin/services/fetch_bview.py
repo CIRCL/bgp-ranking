@@ -87,27 +87,30 @@ def downloadURL(url):
     urllib.urlretrieve(url, tmp_dest_file)
     os.rename(tmp_dest_file, dest_file)
 
-last_hour = None
+def already_downloaded(date, hour):
+    ts_file = os.path.join(raw_data, config.get('routing','bviewtimesamp'))
+    if os.path.exists(ts_file):
+        ts = open(ts_file, 'r').read().split()
+        if ts[0] == date:
+            if int(ts[1]) >= int(hour):
+                return True
+    open(ts_file, 'w').write(date + ' ' + hour)
+    return False
+
 current_date = None
 while 1:
-    last_date = current_date
     current_date = datetime.date.today()
-    if last_date != current_date:
-        # If the script just startor if the current day change, the hour is set to None
-        last_hour = None
     # Initialization of the URL to fetch
     dir = current_date.strftime("%Y.%m")
     file_day = current_date.strftime("%Y%m%d")
     daily_url = base_url + '/' + dir + '/' + prefix + file_day + '.%s' +  suffix
 
     for hour in reversed(hours):
-        # Check if there is a file available for the possible hours. 
-        if last_hour == hour and last_date == current_date:
-            break
         url = daily_url % hour
         if checkURL(url):
-            syslog.syslog(syslog.LOG_INFO, "New bview file found: " + url)
-            downloadURL(url)
-            last_hour = hour
-            break
+            if not already_downloaded(file_day, hour):
+                syslog.syslog(syslog.LOG_INFO, "New bview file found: " + url)
+                downloadURL(url)
+                last_hour = hour
+                break
     time.sleep(sleep_timer)

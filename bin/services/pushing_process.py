@@ -40,7 +40,7 @@ for line in file:
             block = parsed.prefix
             if block is not None:
                 routing_db.sadd(asn, block)
-                routing_db.sadd(block, asn)
+#                routing_db.sadd(block, asn)
             entry = ''
     else :
         # append the line to the current block.

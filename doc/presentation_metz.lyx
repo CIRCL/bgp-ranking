@@ -1060,6 +1060,10 @@ High level
 
 \end_layout
 
+\begin_layout Section
+Technical view
+\end_layout
+
 \begin_layout BeginFrame
 Third party programs
 \end_layout
@@ -1092,6 +1096,229 @@ Rgraph
 
 \size larger
 Cheetah and Cherrypy
+\end_layout
+
+\begin_layout Subsection
+Differents parts of the program
+\end_layout
+
+\begin_layout BeginFrame
+Input
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename whole_system/01_Input.dia
+	lyxscale 40
+	scale 20
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Input of new information
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Modules push the information into redis
+\end_layout
+
+\begin_layout Itemize
+A 
+\begin_inset Quotes eld
+\end_inset
+
+reader
+\begin_inset Quotes erd
+\end_inset
+
+ push them into MySQL
+\end_layout
+
+\begin_layout BeginFrame
+RIS Whois fetching
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename whole_system/02_RIS_Whois.dia
+	lyxscale 40
+	scale 20
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+RIS Whois fetching
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Whois Fetching
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename whole_system/03_Whois.dia
+	lyxscale 40
+	scale 20
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Whois Fetching
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Ranking
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename whole_system/04_Ranking.dia
+	lyxscale 20
+	scale 20
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Ranking
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Modules
+\end_layout
+
+\begin_layout Itemize
+Supported information: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Always: IP and Source
+\end_layout
+
+\begin_layout Itemize
+If possible: Timestamp
+\end_layout
+
+\begin_layout Itemize
+Sometimes: Infections type, raw field
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Concurrence
+\end_layout
+
+\begin_layout Itemize
+Format: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $<UID>:<FIELD>$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+List of UID
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Interest: completly free!
 \end_layout
 
 \begin_layout BeginFrame

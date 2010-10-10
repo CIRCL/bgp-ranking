@@ -22,13 +22,19 @@ host = config.get('mysql','hostname')
 dbname = config.get('mysql','dbname_voting')
 os.chdir(precdir)
 
+if __name__ == "__main__":
+    engine = create_engine( 'mysql://' + login + ':' + password + '@' + host, pool_size = 50, pool_recycle=3600, max_overflow=30 )
+    connection = engine.connect()
+    connection.execute('CREATE DATABASE IF NOT EXISTS ' + dbname)
+    connection = None
+
 voting_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname, pool_size = 50, pool_recycle=3600, max_overflow=30 )
 VotingSession = scoped_session(sessionmaker(bind=voting_engine))
 voting_metadata = ThreadLocalMetaData()
 voting_metadata.bind = voting_engine
-import re
-
 import datetime
+
+import re
 
 class Users(Entity):
     """ 

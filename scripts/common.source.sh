@@ -1,0 +1,7 @@
+PREFIX="/home/raphael"
+BGP_RANKING_ROOT="${PREFIX}/bgp-ranking"
+#PYTHON="${PREFIX}/Python-2.7/python"
+PYTHON="/usr/bin/python"
+#NICE="nice -n15 ionice -n2 -c7"
+NICE=""
+REDIS_ROOT="${PREFIX}/redis/src"

@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 import re
-import datetime 
 import os
-import glob
+import datetime 
 
-from ip_update import IPUpdate
+from modules.abstract_module import AbstractModule
 
 
-class ZeustrackerIpBlockList(IPUpdate):
+class ZeustrackerIpBlockList(AbstractModule):
     date = datetime.date.today()
     directory = 'zeus/ipblocklist/'
+    key_ip = ':ip'
+    key_src = ':source'
+    key_tstamp = ':timestamp'
     
     def __init__(self, raw_dir):
-        IPUpdate.__init__(self)
+        AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
  
     def parse(self):
@@ -20,7 +22,15 @@ class ZeustrackerIpBlockList(IPUpdate):
         """
         self.ips = []
         for file in self.files:
-            if not os.path.isdir(file):
-                blocklist = open(file)
-                self.ips += re.findall('((?:\d{1,3}\.){3}\d{1,3}).*', blocklist.read())
-                self.move_file(file)
+            blocklist = open(file)
+            for line in blocklist:
+                ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})',line)
+                if len(ip) == 0:
+                    continue
+                entry = {}
+                entry[self.key_ip] = ip[0]
+                entry[self.key_src] = self.__class__.__name__
+                entry[self.key_tstamp] = self.date
+                self.put_entry(entry)
+            blocklist.close()
+            self.move_file(file)

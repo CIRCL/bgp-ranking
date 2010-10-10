@@ -60,7 +60,7 @@ class IPsDescriptions(Entity):
     times = Field(Integer, default=1)
     infection = Field(UnicodeText, default=None)
     raw_informations = Field(UnicodeText, default=None)
-    whois = Field(LargeBinary)
+    whois = Field(Binary)
     whois_address = Field(UnicodeText)
     ip = ManyToOne('IPs')
     asn = ManyToOne('ASNsDescriptions')

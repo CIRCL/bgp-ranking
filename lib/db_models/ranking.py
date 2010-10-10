@@ -22,11 +22,17 @@ host = config.get('mysql','hostname')
 dbname = config.get('mysql','dbname_ranking')
 os.chdir(precdir)
 
+if __name__ == "__main__":
+    engine = create_engine( 'mysql://' + login + ':' + password + '@' + host, pool_size = 50, pool_recycle=3600, max_overflow=30 )
+    connection = engine.connect()
+    connection.execute('CREATE DATABASE IF NOT EXISTS ' + dbname)
+    connection = None
+
+
 ranking_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname, pool_size = 50, pool_recycle=3600, max_overflow=30 )
 RankingSession = scoped_session(sessionmaker(bind=ranking_engine))
 ranking_metadata = ThreadLocalMetaData()
 ranking_metadata.bind = ranking_engine
-
 import datetime 
 
 INET6_ADDRSTRLEN = 46
@@ -54,7 +60,7 @@ class IPsDescriptions(Entity):
     times = Field(Integer, default=1)
     infection = Field(UnicodeText, default=None)
     raw_informations = Field(UnicodeText, default=None)
-    whois = Field(Binary)
+    whois = Field(LargeBinary)
     whois_address = Field(UnicodeText)
     ip = ManyToOne('IPs')
     asn = ManyToOne('ASNsDescriptions')

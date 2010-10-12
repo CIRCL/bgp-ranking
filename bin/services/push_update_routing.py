@@ -93,7 +93,7 @@ while 1:
         while len(splitted_files) > 0 and len(pids) < int(config.get('routing','processes_push')):
             file = splitted_files.pop()
             pids.append(service_start(servicename = pushing_process_service, param = file))
-        while len(pids) == int(config.get('routing','processes_push'):
+        while len(pids) == int(config.get('routing','processes_push')):
             # Wait until all the processes are finished
             pids = update_running_pids(pids)
             time.sleep(sleep_timer_short)
@@ -119,7 +119,7 @@ while 1:
         while len(all_intervals) > 0 and len(pids) < int(config.get('ranking','processes')):
             interval = all_intervals.pop()
             pids.append(service_start(servicename = ranking_process_service, param = str(interval[0]) + ' ' + str(interval[1])))
-        while len(pids) == int(config.get('ranking','processes'):
+        while len(pids) == int(config.get('ranking','processes')):
             # Wait until all the processes are finished
             pids = update_running_pids(pids)
             time.sleep(sleep_timer_short)

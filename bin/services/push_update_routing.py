@@ -56,13 +56,11 @@ from subprocess import Popen, PIPE
 from helpers.initscript import *
 from helpers.files_splitter import *
 
-def intervals_ranking(nb_of_asns):
+def intervals_ranking(nb_of_asns, interval):
     """
     Compute the size of each intervals based on the number of ASNs found in the database
     and the number of processes defined in the configuration file
-    FIXME: is it possible to use the same function than the one used for the ris/whois entries ? 
     """
-    interval = nb_of_asns / int(config.get('ranking','processes'))
     first = 0 
     intervals = []
     while first < nb_of_asns:
@@ -108,15 +106,17 @@ while 1:
     nb_of_asns = ASNs.query.count()
     r_session.close()
     # compute the interval
-    all_intervals = intervals_ranking(nb_of_asns)
+    all_intervals = intervals_ranking(nb_of_asns, int(config.get('ranking','interval')))
     pids = []
     # Start them all!!!
-    for interval in all_intervals:
-        pids.append(service_start(servicename = ranking_process_service, param = str(interval[0]) + ' ' + str(interval[1])))
-    while len(pids) > 0:
-        # Wait until all the processes are finished
-        pids = update_running_pids(pids)
-        time.sleep(sleep_timer_short)
+    while len(all_intervals) > 0:
+        while len(all_intervals) > 0 and len(pids) < int(config.get('ranking','processes')):
+            interval = all_intervals.pop()
+            pids.append(service_start(servicename = ranking_process_service, param = str(interval[0]) + ' ' + str(interval[1])))
+        while len(pids) > 0:
+            # Wait until all the processes are finished
+            pids = update_running_pids(pids)
+            time.sleep(sleep_timer_short)
     # Flush the old database to reduce the RAM usage
     routing_db.flushdb()
     syslog.syslog(syslog.LOG_INFO, 'Ranking computed')

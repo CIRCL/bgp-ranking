@@ -83,17 +83,20 @@ while 1:
         output.write(line)
     output.close()
     # Split the plain text file 
-    fs = FilesSplitter(output.name, int(config.get('routing','processes_push')))
+    fs = FilesSplitter(output.name, int(config.get('routing','number_of_splits')))
     splitted_files = fs.fplit()
     # Flush the old database and launch the population of the new database
     routing_db.flushdb()
     pids = []
-    for file in splitted_files:
-        pids.append(service_start(servicename = pushing_process_service, param = file))
-    while len(pids) > 0:
-        # Wait until all the processes are finished
-        pids = update_running_pids(pids)
-        time.sleep(sleep_timer_short)
+    # FIXME: make a function with this loop and the loop of the ranking
+    while len(splitted_files) > 0:
+        while len(splitted_files) > 0 and len(pids) < int(config.get('routing','processes_push'))):
+            file = splitted_files.pop()
+            pids.append(service_start(servicename = pushing_process_service, param = file))
+        while len(pids) > 0:
+            # Wait until all the processes are finished
+            pids = update_running_pids(pids)
+            time.sleep(sleep_timer_short)
     syslog.syslog(syslog.LOG_INFO, 'Pushing all routes done')
     # Remove the binary and the plain text files
     os.unlink(output.name)

@@ -90,7 +90,7 @@ while 1:
     pids = []
     # FIXME: make a function with this loop and the loop of the ranking
     while len(splitted_files) > 0:
-        while len(splitted_files) > 0 and len(pids) < int(config.get('routing','processes_push'))):
+        while len(splitted_files) > 0 and len(pids) < int(config.get('routing','processes_push')):
             file = splitted_files.pop()
             pids.append(service_start(servicename = pushing_process_service, param = file))
         while len(pids) > 0:

@@ -5,6 +5,7 @@
 this databases contains only the ranking information, the votes and the users. 
 
 FIXME: rename the database! Merge the two mysql databases! 
+FIXME: grant the rights to the user
 """
 
 

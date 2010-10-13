@@ -26,7 +26,6 @@ pick the right dict_of_entries.
 """
 
 import re
-from helpers.ip_manip import ip_in_network
 from socket import *
 
 class AbstractParser(object):

@@ -4,7 +4,7 @@
 \begin_header
 \textclass beamer
 \begin_preamble
-\usetheme{CambridgeUS}
+\usetheme{Boadilla}
 %\usetheme[hideothersubsections,width=2.2cm]{Berkeley}
 % or ...
 
@@ -1028,7 +1028,7 @@ status open
 \begin_inset Graphics
 	filename basics/highlevel.dia
 	lyxscale 50
-	scale 20
+	scale 19
 	scaleBeforeRotation
 	rotateOrigin center
 
@@ -1158,7 +1158,16 @@ reader
 \end_layout
 
 \begin_layout BeginFrame
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 RIS Whois fetching
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1197,7 +1206,16 @@ RIS Whois fetching
 \end_layout
 
 \begin_layout BeginFrame
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 Whois Fetching
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1297,7 +1315,7 @@ Sometimes: Infections type, raw field
 
 \end_deeper
 \begin_layout Itemize
-Concurrence
+Multiprocessing
 \end_layout
 
 \begin_layout Itemize
@@ -1318,7 +1336,7 @@ List of UID
 
 \end_deeper
 \begin_layout Itemize
-Interest: completly free!
+Interest: No limitations on the type of the sources
 \end_layout
 
 \begin_layout BeginFrame

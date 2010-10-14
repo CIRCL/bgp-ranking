@@ -7,7 +7,7 @@ class ShadowserverReport2(Shadowserver):
     directory = 'shadowserver/report2/'
     
     def __init__(self, raw_dir):
-        IPUpdate.__init__(self)
+        Shadowserver.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
         
     def parse_line(self, line):

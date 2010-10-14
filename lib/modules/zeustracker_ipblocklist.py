@@ -9,9 +9,6 @@ from modules.abstract_module import AbstractModule
 class ZeustrackerIpBlockList(AbstractModule):
     date = datetime.date.today()
     directory = 'zeus/ipblocklist/'
-    key_ip = ':ip'
-    key_src = ':source'
-    key_tstamp = ':timestamp'
     
     def __init__(self, raw_dir):
         AbstractModule.__init__(self)
@@ -27,10 +24,7 @@ class ZeustrackerIpBlockList(AbstractModule):
                 ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})',line)
                 if len(ip) == 0:
                     continue
-                entry = {}
-                entry[self.key_ip] = ip[0]
-                entry[self.key_src] = self.__class__.__name__
-                entry[self.key_tstamp] = self.date
+                entry = self.prepare_entry(ip = ip[0], source = self.__class__.__name__, timestamp = self.date)
                 self.put_entry(entry)
             blocklist.close()
             self.move_file(file)

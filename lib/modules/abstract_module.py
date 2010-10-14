@@ -27,6 +27,12 @@ class AbstractModule():
     You have to define a function parse which extract the entries from the dataset and use 
     the function put_entry to put them in redis. 
     """
+    key_ip = ':ip'
+    key_src = ':source'
+    key_tstamp = ':timestamp'
+    key_infection = ':infection'
+    key_raw = ':raw'
+    key_times = ':times'
     
     def __init__(self):
         self.temp_db = redis.Redis(db=temp_reris_db)
@@ -35,7 +41,8 @@ class AbstractModule():
         uid = self.temp_db.incr(uid_var)
         # the format of "entry" is : { ':ip' : ip , ':timestamp' : timestamp ... }
         for key, value in entry.iteritems():
-            self.temp_db.set(str(uid) + key, value)
+            if value is not None:
+                self.temp_db.set(str(uid) + key, value)
         self.temp_db.sadd(list_ips, uid)
 
     def __glob_only_files(self):
@@ -44,6 +51,16 @@ class AbstractModule():
         for file in allfiles:
             if not os.path.isdir(file):
                 self.files.append(file)
+
+    def prepare_entry(self, ip, source, timestamp = None, infection = None, raw = None, times = None):
+        entry = {}
+        entry[self.key_ip] = ip
+        entry[self.key_src] = source
+        entry[self.key_tstamp] = timestamp
+        entry[self.key_infection] = infection
+        entry[self.key_raw] = raw
+        entry[self.key_times] = times
+        return entry
 
     __metaclass__ = ABCMeta    
     @abstractmethod

@@ -5,16 +5,15 @@ import datetime
 from datetime import datetime
 import os
 
-from ip_update import IPUpdate
+from modules.abstract_module import AbstractModule
 import dateutil.parser
 
 
-class Abusix(IPUpdate):
+class Abusix(AbstractModule):
     directory = 'abusix/'
 
     def __init__(self, raw_dir):
-        IPUpdate.__init__(self)
-        self.module_type = 2
+        AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
 
 
@@ -23,12 +22,14 @@ class Abusix(IPUpdate):
         """
         self.ips = []
         for file in self.files:
-            if not os.path.isdir(file):
-                text = open(file).read()
-                type = re.findall('Feedback-Type:[\s]*([^\r\n]*)', text)[0]
-                user_agent = re.findall('User-Agent:[\s]*([^\n]*)', text)[0]
-                ip = re.findall('Source-IP:[\s]*([^\n]*)', text)[0]
-                self.date = dateutil.parser.parse(re.findall('Received-Date:[\s]*([^\n]*)', text)[0])
-                version = re.findall('Version:[\s]*([^\n]*)', text)[0]
-                self.ips.append([ip, self.date, type, str(user_agent) + ', ' + str(version)])
-                self.move_file(file)
+            abusix = file.open().read()
+            type = re.findall('Feedback-Type:[\s]*([^\r\n]*)', abusix)[0]
+            user_agent = re.findall('User-Agent:[\s]*([^\n]*)', abusix)[0]
+            ip = re.findall('Source-IP:[\s]*([^\n]*)', abusix)[0]
+            self.date = dateutil.parser.parse(re.findall('Received-Date:[\s]*([^\n]*)', abusix)[0])
+            version = re.findall('Version:[\s]*([^\n]*)', abusix)[0]
+            entry = self.prepare_entry(ip = ip, source = self.__class__.__name__, \
+                                    timestamp = self.date, raw = str(user_agent) + ', ' + str(version))
+            self.put_entry(entry)
+            file.close()
+            self.move_file(file)

@@ -10,13 +10,16 @@ from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from ip_update import IPUpdate
 
-class Shadowserver(IPUpdate):
+class Shadowserver(AbstractModule):
     """
     Super class used for all shadowserver reports: the subclass has only to define 
     - a unique name 
     - a directory to watch
     - a line parser whitch return a table : [ip, date, infection, rest of the line]
     """
+    
+    # This date is only used to move the file
+    date = datetime.date.today()
     
     __metaclass__ = ABCMeta    
     @abstractmethod
@@ -31,24 +34,17 @@ class Shadowserver(IPUpdate):
         """
         Set the type to 2 
         """
-        IPUpdate.__init__(self)
-        self.module_type = 2
+        AbstractModule.__init__(self)
 
     def parse(self):
         """ Parse the list
         """
         self.ips = []
         for file in self.files:
-            if not os.path.isdir(file):
-                reader = csv.reader(open(file), delimiter=',')
-                reader.next()
-                for row in reader:
-                    self.ips.append(self.parse_line(row))
-                self.move_file(file)
-    
-    def move_file(self, file):
-        """
-        Move the file without changing the name 
-        """
-        new_filename = os.path.join(self.directory, config.get('fetch_files','old_dir'), os.path.basename(file))
-        os.rename(file, new_filename)
+            reader = csv.reader(open(file), delimiter=',')
+            reader.next()
+            for row in reader:
+                value = self.parse_line(row)
+                entry = self.prepare_entry(ip = value[0], date = value[1], infection = value[2], raw = value[3], source = self.__class__.__name__)
+                self.put_entry(entry)
+            self.move_file(file)

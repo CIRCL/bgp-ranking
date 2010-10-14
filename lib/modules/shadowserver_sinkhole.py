@@ -7,7 +7,7 @@ class ShadowserverSinkhole(Shadowserver):
     directory = 'shadowserver/sinkhole/'
     
     def __init__(self, raw_dir):
-        IPUpdate.__init__(self)
+        Shadowserver.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
 
     def parse_line(self, line):

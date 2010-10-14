@@ -12,12 +12,11 @@ import dateutil.parser
 from ip_update import IPUpdate
 import feedparser
 
-class Atlas(IPUpdate):
+class Atlas(AbstractModule):
     directory = 'atlas/'
     
     def __init__(self, raw_dir):
-        IPUpdate.__init__(self)
-        self.module_type = 2
+        AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
 
     def parse(self):
@@ -25,13 +24,13 @@ class Atlas(IPUpdate):
         """
         self.ips = []
         for file in self.files:
-            if not os.path.isdir(file):
-                rss = feedparser.parse(file)
-                self.date = rss['feed']['updated']
-                values = self.extract_from_xml(rss)
-                for value in values:
-                    self.ips.append(value)
-                self.move_file(file)
+            rss = feedparser.parse(file)
+            self.date = rss['feed']['updated']
+            values = self.extract_from_xml(rss)
+            for value in values:
+                entry = self.prepare_entry(ip = value[0], date = value[1], infection = value[2], raw = value[3], source = self.__class__.__name__)
+                self.put_entry(entry)
+            self.move_file(file)
 
 
     def parse_entry(self,  entry):

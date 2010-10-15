@@ -9,7 +9,7 @@ import csv
 
 from datetime import datetime
 import dateutil.parser
-from ip_update import IPUpdate
+from modules.abstract_module import AbstractModule
 import feedparser
 
 class Atlas(AbstractModule):

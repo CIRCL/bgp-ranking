@@ -8,7 +8,7 @@ import csv
 from abc import ABCMeta, abstractmethod
 
 from datetime import datetime
-from ip_update import IPUpdate
+from modules.abstract_module import AbstractModule
 
 class Shadowserver(AbstractModule):
     """

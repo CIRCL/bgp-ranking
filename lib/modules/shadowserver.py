@@ -7,7 +7,7 @@ import glob
 import csv
 from abc import ABCMeta, abstractmethod
 
-from datetime import datetime
+import datetime
 from modules.abstract_module import AbstractModule
 
 class Shadowserver(AbstractModule):

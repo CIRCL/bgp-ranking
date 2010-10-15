@@ -7,7 +7,7 @@ import os
 import glob
 import csv
 
-from datetime import datetime
+import datetime
 import dateutil.parser
 from modules.abstract_module import AbstractModule
 import feedparser

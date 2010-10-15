@@ -112,7 +112,8 @@ while 1:
     nb_of_asns = ASNs.query.count()
     r_session.close()
     # compute the interval
-    all_intervals = intervals_ranking(nb_of_asns, int(config.get('ranking','interval'))).reverse()
+    all_intervals = intervals_ranking(nb_of_asns, int(config.get('ranking','interval')))
+    all_intervals.reverse()
     pids = []
     # Start them all!!!
     while len(all_intervals) > 0:

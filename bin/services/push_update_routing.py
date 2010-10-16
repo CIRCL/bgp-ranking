@@ -95,11 +95,11 @@ while 1:
             pids.append(service_start(servicename = pushing_process_service, param = file))
         while len(pids) == int(config.get('routing','processes_push')):
             # Wait until all the processes are finished
-            pids = update_running_pids(pids)
             time.sleep(sleep_timer_short)
+            pids = update_running_pids(pids)
     while len(pids) > 0:
-        pids = update_running_pids(pids)
         time.sleep(sleep_timer_short)
+        pids = update_running_pids(pids)
     syslog.syslog(syslog.LOG_INFO, 'Pushing all routes done')
     # Remove the binary and the plain text files
     os.unlink(output.name)
@@ -113,7 +113,7 @@ while 1:
     r_session.close()
     # compute the interval
     all_intervals = intervals_ranking(nb_of_asns, int(config.get('ranking','interval')))
-    all_intervals.reverse()
+    #all_intervals.reverse()
     pids = []
     # Start them all!!!
     while len(all_intervals) > 0:
@@ -122,11 +122,11 @@ while 1:
             pids.append(service_start(servicename = ranking_process_service, param = str(interval[0]) + ' ' + str(interval[1])))
         while len(pids) == int(config.get('ranking','processes')):
             # Wait until all the processes are finished
-            pids = update_running_pids(pids)
             time.sleep(sleep_timer_short)
+            pids = update_running_pids(pids)
     while len(pids) > 0:
-        pids = update_running_pids(pids)
         time.sleep(sleep_timer_short)
+        pids = update_running_pids(pids)
     # Flush the old database to reduce the RAM usage
     routing_db.flushdb()
     syslog.syslog(syslog.LOG_INFO, 'Ranking computed')

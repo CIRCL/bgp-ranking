@@ -16,10 +16,6 @@ each files to push the information into redis. And wait that each process is fin
 2. It manages a pool of processes computing the ranking.
 Using the number of processes defined in the config file, the interval assigned
 to each process is computed. 
-FIXME: run the process on smaller intervalls and loop: the firsts ASNs 
-of the database take a lot more time than the last one to compute. 
-
-
 """
 
 import os 
@@ -64,42 +60,48 @@ def intervals_ranking(nb_of_asns, interval):
     first = 0 
     intervals = []
     while first < nb_of_asns:
-        intervals.append([first, first + interval])
+        intervals.append(str(first) + ' ' + str(first + interval))
         first += interval + 1
     return intervals
 
 pushing_process_service = os.path.join(services_dir, "pushing_process")
 ranking_process_service = os.path.join(services_dir, "ranking_process")
 
+def run_splitted_processing(max_simultaneous_processes, process_name, process_args):
+    pids = []
+    while len(process_args) > 0:
+        while len(process_args) > 0 and len(pids) < max_simultaneous_processes):
+            arg = process_args.pop()
+            pids.append(service_start(servicename = process_name, param = arg))
+        while len(pids) == max_simultaneous_processes:
+            time.sleep(sleep_timer_short)
+            pids = update_running_pids(pids)
+    while len(pids) > 0:
+        # Wait until all the processes are finished
+        time.sleep(sleep_timer_short)
+        pids = update_running_pids(pids)
+
 while 1:
     if not os.path.exists(filename):
         # wait for a new file
         time.sleep(sleep_timer)
         continue
+    syslog.syslog(syslog.LOG_INFO, 'Start converting binary bview file in plain text...')
     # create the plain text dump from the binary dump 
     output = open(dir + '/bview', 'wr')
     p_bgp = Popen([bgpdump , filename], stdout=PIPE)
     for line in p_bgp.stdout:
         output.write(line)
     output.close()
+    syslog.syslog(syslog.LOG_INFO, 'Convertion finished, start splitting...')
     # Split the plain text file 
     fs = FilesSplitter(output.name, int(config.get('routing','number_of_splits')))
     splitted_files = fs.fplit()
+    syslog.syslog(syslog.LOG_INFO, 'Splitting finished.')
     # Flush the old database and launch the population of the new database
     routing_db.flushdb()
-    pids = []
-    # FIXME: make a function with this loop and the loop of the ranking
-    while len(splitted_files) > 0:
-        while len(splitted_files) > 0 and len(pids) < int(config.get('routing','processes_push')):
-            file = splitted_files.pop()
-            pids.append(service_start(servicename = pushing_process_service, param = file))
-        while len(pids) == int(config.get('routing','processes_push')):
-            # Wait until all the processes are finished
-            time.sleep(sleep_timer_short)
-            pids = update_running_pids(pids)
-    while len(pids) > 0:
-        time.sleep(sleep_timer_short)
-        pids = update_running_pids(pids)
+    syslog.syslog(syslog.LOG_INFO, 'Start pushing all routes...')
+    run_splitted_processing(int(config.get('routing','processes_push'), pushing_process_service, splitted_files)
     syslog.syslog(syslog.LOG_INFO, 'Pushing all routes done')
     # Remove the binary and the plain text files
     os.unlink(output.name)
@@ -111,22 +113,9 @@ while 1:
     r_session = RankingSession()
     nb_of_asns = ASNs.query.count()
     r_session.close()
-    # compute the interval
+    # compute the intervals
     all_intervals = intervals_ranking(nb_of_asns, int(config.get('ranking','interval')))
-    #all_intervals.reverse()
-    pids = []
-    # Start them all!!!
-    while len(all_intervals) > 0:
-        while len(all_intervals) > 0 and len(pids) < int(config.get('ranking','processes')):
-            interval = all_intervals.pop()
-            pids.append(service_start(servicename = ranking_process_service, param = str(interval[0]) + ' ' + str(interval[1])))
-        while len(pids) == int(config.get('ranking','processes')):
-            # Wait until all the processes are finished
-            time.sleep(sleep_timer_short)
-            pids = update_running_pids(pids)
-    while len(pids) > 0:
-        time.sleep(sleep_timer_short)
-        pids = update_running_pids(pids)
+    run_splitted_processing(int(config.get('ranking','processes')), ranking_process_service, all_intervals)
     # Flush the old database to reduce the RAM usage
     routing_db.flushdb()
     syslog.syslog(syslog.LOG_INFO, 'Ranking computed')

@@ -70,7 +70,7 @@ ranking_process_service = os.path.join(services_dir, "ranking_process")
 def run_splitted_processing(max_simultaneous_processes, process_name, process_args):
     pids = []
     while len(process_args) > 0:
-        while len(process_args) > 0 and len(pids) < max_simultaneous_processes):
+        while len(process_args) > 0 and len(pids) < max_simultaneous_processes:
             arg = process_args.pop()
             pids.append(service_start(servicename = process_name, param = arg))
         while len(pids) == max_simultaneous_processes:
@@ -101,7 +101,7 @@ while 1:
     # Flush the old database and launch the population of the new database
     routing_db.flushdb()
     syslog.syslog(syslog.LOG_INFO, 'Start pushing all routes...')
-    run_splitted_processing(int(config.get('routing','processes_push'), pushing_process_service, splitted_files)
+    run_splitted_processing(int(config.get('routing','processes_push')), pushing_process_service, splitted_files)
     syslog.syslog(syslog.LOG_INFO, 'Pushing all routes done')
     # Remove the binary and the plain text files
     os.unlink(output.name)

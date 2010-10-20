@@ -65,7 +65,8 @@ class InputReader():
             try:
                 # Check and normalize the IP 
                 ip_temp = IPy.IP(ip)
-                if ip_temp.iptype() != 'PUBLIC':
+                # FIXME: the second part of the is is dur to a bug in IPy: 223/8 is not reserved anymore.
+                if ip_temp.iptype() != 'PUBLIC' and ip_temp not in IPy.IP('223/8'):
                     syslog.syslog(syslog.LOG_ERR, str(ip_temp) + ' is not a PUBLIC IP Address but is ' + ip_temp.iptype())
                     continue
                 ip = str(ip_temp)

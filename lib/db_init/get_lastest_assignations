@@ -2,4 +2,5 @@ We use the assignations provided by the whois package of debian
 
 A versionned version of the package is available on github: http://github.com/weppos/whois-debian
 
-
+http://github.com/weppos/whois-debian/raw/master/src/ip6_del_list
+http://github.com/weppos/whois-debian/raw/master/src/ip_del_list

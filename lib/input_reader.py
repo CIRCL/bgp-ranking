@@ -91,10 +91,11 @@ class InputReader():
             except:
                 syslog.syslog(syslog.LOG_ERR, 'Impossible to insert the IP ' + ip + ', try again later.')
                 self.mysql_error(uid, ip, src, timestamp, infection, raw, times)
+                time.sleep(sleep_timer)
                 
-        self.r_session = RankingSession()
-        self.r_session.commit()
-        self.r_session.close()
+        r_session = RankingSession()
+        r_session.commit()
+        r_session.close()
         return to_return
 
     def disconnect(self):

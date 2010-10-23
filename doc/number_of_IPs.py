@@ -4,6 +4,21 @@
 Very small script used to computer the number of IPs announced by a particular ASN 
 """
 
+import os
+import sys
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.optionxform = str
+config.read("../etc/bgp-ranking.conf")
+root_dir = config.get('directories','root')
+sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+
+import redis
+import IPy
+routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
+
+
+
 def usage():
     print "./number_of_IPs.py <ASN>"
     exit (1)
@@ -37,5 +52,6 @@ def ip_count(asn):
 
 ipv4, ipv6 = ip_count(asn)
 
-print(asn + " announce " + ipv4 + "IPv4")
-print(asn + " announce " + ipv6 + "IPv6")
+print(asn + " announce " + str(ipv4) + " IPv4")
+print(asn + " announce " + str(ipv6) + " IPv6")
+

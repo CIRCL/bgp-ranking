@@ -29,7 +29,6 @@ from db_models.ranking import *
 import time
 
 
-
 service = os.path.join(services_dir, "get_range_ris_entries")
 pids = []
 

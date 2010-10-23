@@ -14,6 +14,9 @@ syslog.openlog('BGP_Ranking_Input', syslog.LOG_PID, syslog.LOG_USER)
 temp_reris_db = int(config.get('modules_global','temp_db'))
 list_ips = config.get('modules_global','uid_list')
 
+# Used if there is a temporaty problem inserting new entries in the DB
+sleep_timer = int(config.get('sleep_timers','short'))
+
 class InputReader():
     key_ip = ':ip'
     key_src = ':source'

@@ -29,7 +29,7 @@ if __name__ == "__main__":
     connection = None
 
 voting_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname, pool_size = 50, pool_recycle=3600, max_overflow=30 )
-VotingSession = scoped_session(sessionmaker(bind=voting_engine))
+VotingSession = scoped_session(sessionmaker(autoflush=True, transactional=False, bind=voting_engine))
 voting_metadata = ThreadLocalMetaData()
 voting_metadata.bind = voting_engine
 import datetime

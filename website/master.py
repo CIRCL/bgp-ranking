@@ -109,7 +109,7 @@ if __name__ == "__main__":
     website = Master()
     
     def handle_error():
-        website.reload()
+        website = Master()
         cherrypy.response.status = 500
         cherrypy.response.body = ["<html><body>Sorry, an error occured</body></html>"]
     

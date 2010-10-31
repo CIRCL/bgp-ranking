@@ -743,7 +743,7 @@ From the AS (Command & Control Server)
 
 
 \begin_inset Graphics
-	filename atob.dia
+	filename diverses/atob.dia
 	scale 40
 
 \end_inset
@@ -766,7 +766,7 @@ To the AS (Phishing, keylogger)
 
 
 \begin_inset Graphics
-	filename btoa.dia
+	filename diverses/btoa.dia
 	scale 40
 
 \end_inset
@@ -902,7 +902,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename basics/highlevel.dia
+	filename diverses/highlevel.dia
 	lyxscale 50
 	scale 19
 	scaleBeforeRotation

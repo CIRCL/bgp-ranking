@@ -755,7 +755,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename botnet.dia
-	scale 50
+	scale 40
 
 \end_inset
 
@@ -1398,9 +1398,9 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename basics/highlevel.dia
+	filename highlevel.dia
 	lyxscale 50
-	scale 40
+	scale 35
 	scaleBeforeRotation
 	rotateOrigin center
 
@@ -6281,7 +6281,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename uml-diagramms/RIS Fetching.png
+	filename RIS Fetching.png
 	lyxscale 50
 
 \end_inset
@@ -6344,7 +6344,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename uml-diagramms/Whois Fetching.png
+	filename Whois Fetching.png
 	lyxscale 50
 	scale 65
 

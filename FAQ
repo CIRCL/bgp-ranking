@@ -21,14 +21,13 @@ What is the directory structure?
  |  |  +- some helpers (for the initscripts and the manipulation of the ips) used very often in the project
  |  +- modules/
  |  |  +- all the modules to parse the differents raw files
- |  +- tests/
- |  |  +- some tests for the modules
  |  +- whois_client/
  |  |  +- whois fetcher and connector for the whois client
  |  +- whois_parser/
  |  |  +- parsers to extract particular informations of the whois response
- |  +- fetch_asns.py : push the whois responses in the database
- |  +- ip_update.py : push the ip in the database 
+ |  +- fetch_RIS.py : push the RIS whois responses in the database
+ |  +- fetch_Whois.py : push the whois responses in the database
+ |  +- input_reader.py : pop the new entries from redis and push it in MySQL
  +- var/
  |  +- raw_data/
  |  |  +- source_name/ : name of the source of the file

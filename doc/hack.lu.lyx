@@ -734,10 +734,14 @@ Blackholing
 From the AS (Command & Control Server)
 \end_layout
 
-\begin_deeper
 \begin_layout Standard
 
 \size large
+\begin_inset space \hspace{}
+\length 3cm
+\end_inset
+
+
 \begin_inset Graphics
 	filename atob.dia
 	scale 40
@@ -747,17 +751,20 @@ From the AS (Command & Control Server)
 
 \end_layout
 
-\end_deeper
 \begin_layout Itemize
 
 \size large
 To the AS (Phishing, keylogger)
 \end_layout
 
-\begin_deeper
 \begin_layout Standard
 
 \size large
+\begin_inset space \hspace{}
+\length 3cm
+\end_inset
+
+
 \begin_inset Graphics
 	filename btoa.dia
 	scale 40
@@ -767,7 +774,6 @@ To the AS (Phishing, keylogger)
 
 \end_layout
 
-\end_deeper
 \end_deeper
 \begin_layout BeginFrame
 Information
@@ -930,8 +936,208 @@ High level
 
 \end_layout
 
+\begin_layout Subsection
+Differents parts of the program
+\end_layout
+
 \begin_layout BeginFrame
-Modules
+Input
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename whole_system/01_Input.dia
+	lyxscale 40
+	scale 20
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Input of new information
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Modules push the information into redis
+\end_layout
+
+\begin_layout Itemize
+A 
+\begin_inset Quotes eld
+\end_inset
+
+reader
+\begin_inset Quotes erd
+\end_inset
+
+ push them into MySQL
+\end_layout
+
+\begin_layout BeginFrame
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+RIS Whois fetching
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename whole_system/02_RIS_Whois.dia
+	lyxscale 40
+	scale 20
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+RIS Whois fetching
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout BeginFrame
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Whois Fetching
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename whole_system/03_Whois.dia
+	lyxscale 40
+	scale 20
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Whois Fetching
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Ranking
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename whole_system/04_Ranking.dia
+	lyxscale 20
+	scale 20
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Ranking
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Modules - Input API
 \end_layout
 
 \begin_layout Itemize
@@ -1840,11 +2046,11 @@ TOR(onto) :)
 \end_layout
 
 \begin_layout Itemize
-Contains the 100 IPs found the most in the daily list
+Contains the 100 IPs found the most often in the daily list
 \end_layout
 
 \begin_layout Itemize
-Note: the same IP found more than one time in a dataset, is skipped
+Note: the same IP found more than one time in a dataset is skipped
 \end_layout
 
 \begin_layout BeginFrame
@@ -2752,7 +2958,7 @@ MAXIM - Peer 1 Dedicated Hosting
 \end_layout
 
 \begin_layout Itemize
-Nothing in common
+Seems different but all the AS are also in BGP Ranking
 \end_layout
 
 \begin_layout Itemize
@@ -2780,7 +2986,13 @@ Conclusion
 \begin_layout Itemize
 
 \size large
-Completely different algorithm
+Some differences in the algorithm
+\end_layout
+
+\begin_layout Itemize
+
+\size large
+Usage of different sources
 \end_layout
 
 \begin_layout Itemize

@@ -31,7 +31,7 @@ first = int(interval[0])
 last = int(interval[1])
 
 r_session = RankingSession()
-asns = ASNs.query.all()[first:last]
+asns = r_session.query(ASNs.asn).all()[first:last]
 syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + str(len(asns)) + ' ASNs: ' + str(first) + ' ' + str(last))
 for asn in asns:    
     r = Ranking(asn.asn)

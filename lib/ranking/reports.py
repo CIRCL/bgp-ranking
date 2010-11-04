@@ -18,7 +18,6 @@ if __name__ == "__main__":
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 from db_models.ranking import *
-from db_models.voting import *
 
 
 items = config.items('modules_to_parse')
@@ -34,11 +33,11 @@ class Reports():
             self.impacts[item[0]] = int(item[1])
     
     def get_sources(self):
-        v_session = VotingSession()
+        r_session = RankingSession()
         self.sources = []
         for s in Sources.query.all():
             self.sources.append(s.source)
-        v_session.close()
+        r_session.close()
     
     def filter_query_source(self, query, limit):
         entries = query.count()
@@ -64,7 +63,7 @@ class Reports():
 
     #FIXME: query on IPv6
     def best_of_day(self, limit = 50, source = None):
-        v_session = VotingSession()
+        r_session = RankingSession()
         query = None
         histo = {}
         s = self.existing_source(source)
@@ -89,17 +88,17 @@ class Reports():
         for t, h in histo.items():
             self.histories.append(h)
         self.histories.sort(key=lambda x:x[2], reverse=True )
-        v_session.close()
+        r_session.close()
     
     def asn_histo_query(self, asn, source = None):
-        v_session = VotingSession()
+        r_session = RankingSession()
         query = None
         s = self.existing_source(source)
         if s is not None:
             query = History.query.filter(and_(History.source == s, History.asn == int(asn))).order_by(desc(History.timestamp))
         if query is None: 
             query = History.query.filter(History.asn == int(asn)).order_by(desc(History.timestamp))
-        v_session.close()
+        r_session.close()
         return query
 
     def prepare_graphe_js(self,  asn, source = None):
@@ -132,9 +131,9 @@ class Reports():
     
     def existing_source(self, source = None):
         if source is not None and len(source) > 0:
-            v_session = VotingSession()
+            r_session = RankingSession()
             to_return = Sources.query.get(unicode(source))
-            v_session.close()
+            r_session.close()
             return to_return
         return None
 

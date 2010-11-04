@@ -7,6 +7,5 @@ cd ${BGP_RANKING_ROOT}/lib/db_init/
 
 $PYTHON init_assignations_redis.py
 $PYTHON init_ranking.py
-$PYTHON init_voting.py
 
 cd $OLD_PWD

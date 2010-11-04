@@ -104,4 +104,47 @@ class ASNsDescriptions(Entity):
                 self.asn, self.owner, self.ips_block)
 
 
+class Users(Entity):
+    """ 
+    Users
+    """
+    login = Field(UnicodeText, required=True)
+    password = Field(UnicodeText, required=True)
+    using_options(metadata=ranking_metadata, session=RankingSession, tablename='Users')
+    votes = OneToMany('Votes')
+
+    def __repr__(self):
+        return 'Login: "%s"\t Password: "%s"' % (self.login, self.password)
+
+
+class Votes(Entity):
+    """ 
+    Votes
+    """
+    vote = Field(Integer, required=True)
+    commentary = Field(UnicodeText, required=True)
+    asn = Field(Integer, required=True)
+    user = ManyToOne('Users')
+    histories = ManyToMany('History')
+    using_options(metadata=ranking_metadata, session=RankingSession, tablename='Votes')
+
+class Sources(Entity):
+    source = Field(Unicode(50), primary_key=True)
+    histories = OneToMany('History')
+    using_options(metadata=ranking_metadata, session=RankingSession, tablename='Sources')
+    
+
+class History(Entity):
+    """ 
+    History of the rankings
+    """
+    asn = Field(Integer)
+    timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow)
+    rankv4 = Field(Float(precision=30), required=True)
+    rankv6 = Field(Float(precision=30), required=True)
+    votes = ManyToMany('Votes')
+    source = ManyToOne('Sources')
+    using_options(metadata=ranking_metadata, session=RankingSession, tablename='History')
+
+
 setup_all()

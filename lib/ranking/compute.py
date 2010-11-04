@@ -19,7 +19,6 @@ sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 from whois_parser.bgp_parsers import *
 
 from db_models.ranking import *
-from db_models.voting import *
 from sqlalchemy import and_
 
 import time
@@ -115,6 +114,6 @@ class Ranking():
             history = History(asn=int(self.asn), rankv4=self.rank_by_source[key][0], rankv6=self.rank_by_source[key][1], vote = votes, source = s)
         if self.old_entry:
             history.timestamp = self.date
-        v_session = VotingSession()
-        v_session.commit()
-        v_session.close()
+        r_session = RankingSession()
+        r_session.commit()
+        r_session.close()

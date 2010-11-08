@@ -9,6 +9,8 @@ config.read("../../etc/bgp-ranking.conf")
 import sys
 import os
 sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
+# If the server does not respond, wait a bit before trying again
+sleep_timer = int(config.get('sleep_timers','short'))
 
 from socket import *
 
@@ -126,6 +128,7 @@ class WhoisFetcher(object):
             prec = temp 
         if len(self.text) == 0:
             syslog.syslog(syslog.LOG_ERR, "error (no response) with query: " + query + " on server " + self.server)
+            time.sleep(sleep_timer)
         else:
             part = self.whois_part.get(self.server, None)
             if part:

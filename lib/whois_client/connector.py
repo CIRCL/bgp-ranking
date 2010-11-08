@@ -5,6 +5,7 @@ from whois_fetcher_redis import *
 import errno
 
 
+import time
 import os 
 import sys
 import ConfigParser
@@ -106,4 +107,5 @@ class Connector(object):
                         self.__disconnect()
             except IOError as text:
                 syslog.syslog(syslog.LOG_ERR, "IOError on " + self.server + ': ' + str(text))
+                time.sleep(process_sleep)
                 self.__disconnect()

@@ -57,22 +57,26 @@ class FetchRIS():
                     riswhois_origin=unicode('None') )
             current.asn = self.default_asn_desc
         else:
-            current_asn = ASNs.query.get(unicode(ris_whois.origin))
-            if not current_asn:
-                # create a new ASN entry if it does not already exists
-                current_asn = ASNs(asn=unicode(ris_whois.origin))
-            if not ris_whois.description:
-                # Sometimes, the descr field of the RIS Whois entry is empty
-                ris_whois.description = "This ASN has no description"
-            asn_desc = ASNsDescriptions.query.filter_by(asn=current_asn, ips_block=unicode(ris_whois.route),\
-                                                        owner=ris_whois.description.decode("iso-8859-1"),\
-                                                        riswhois_origin=unicode(ris_origin)).first()
-            if not asn_desc:
-                # Create a new ASNsDescriptions entry if there is anything new in the RIS Whois entry
-                asn_desc = ASNsDescriptions(asn=current_asn, ips_block=unicode(ris_whois.route), \
-                                            owner=ris_whois.description.decode("iso-8859-1"), \
-                                            riswhois_origin=unicode(ris_origin))
-            current.asn = asn_desc
+            try:
+                current_asn = ASNs.query.get(unicode(ris_whois.origin))
+                if not current_asn:
+                    # create a new ASN entry if it does not already exists
+                    current_asn = ASNs(asn=unicode(ris_whois.origin))
+                if not ris_whois.description:
+                    # Sometimes, the descr field of the RIS Whois entry is empty
+                    ris_whois.description = "This ASN has no description"
+                asn_desc = ASNsDescriptions.query.filter_by(asn=current_asn, ips_block=unicode(ris_whois.route),\
+                                                            owner=ris_whois.description.decode("iso-8859-1"),\
+                                                            riswhois_origin=unicode(ris_origin)).first()
+                if not asn_desc:
+                    # Create a new ASNsDescriptions entry if there is anything new in the RIS Whois entry
+                    asn_desc = ASNsDescriptions(asn=current_asn, ips_block=unicode(ris_whois.route), \
+                                                owner=ris_whois.description.decode("iso-8859-1"), \
+                                                riswhois_origin=unicode(ris_origin))
+                current.asn = asn_desc
+            except:
+                syslog.syslog(syslog.LOG_ERR, 'Impossible to insert the ASN ' + ris_whois.origin + ', try again later.')
+                time.sleep(sleep_timer)
 
 
     def get_ris(self, limit_first, limit_last):

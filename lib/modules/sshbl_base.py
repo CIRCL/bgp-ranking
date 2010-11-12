@@ -2,14 +2,14 @@
 import re
 import os
 import datetime 
-from datetime import datetime
+from datetime import datetime, date
 from modules.abstract_module import AbstractModule
 
 
 class SshblBase(AbstractModule):
     # Dshield doesn't give a date for his TopIPs list. So we assume that 
     # the list is updated every days
-    date = datetime.date.today()
+    date = date.today()
     directory = 'sshbl/base/'
     
     def __init__(self, raw_dir):

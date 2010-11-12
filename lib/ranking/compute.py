@@ -83,7 +83,9 @@ class Ranking():
         # weight['source'] = [ipv4, ipv6]
         self.weight = {}
         for desc in descs:
-            ips += IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, and_(IPsDescriptions.timestamp <= self.date, IPsDescriptions.timestamp >= self.date - datetime.timedelta(days=1)))).all()
+            ips += IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, \
+                    and_(   IPsDescriptions.timestamp < self.date + datetime.timedelta(days=1), \
+                            IPsDescriptions.timestamp > self.date - datetime.timedelta(days=1)))).all()
             """
             SELECT * FROM `IPsDescriptions` WHERE `IPsDescriptions`.asn_id = desc AND `IPsDescriptions`.timestamp <= date AND `IPsDescriptions`.timestamp >= date - datetime.timedelta(days=1)
             """

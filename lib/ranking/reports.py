@@ -68,13 +68,18 @@ class Reports():
         histo = {}
         s = self.existing_source(source)
         if s is not None:
-            query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
+            query = History.query.filter(and_(History.source == s, \
+                    and_(History.rankv4 > 0.0, 
+                        and_(   History.timestamp < self.date + datetime.timedelta(days=1), \
+                                History.timestamp > self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
             histo = self.filter_query_source(query, limit)
             global_query = False
         if query is None:
             histo = {}
             for s in Sources.query.all():
-                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, and_(History.timestamp <= self.date, History.timestamp >= self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
+                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, \
+                        and_(   History.timestamp < self.date + datetime.timedelta(days=1), \
+                                History.timestamp > self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
                 h_temp = self.filter_query_source(query, limit)
                 if len(histo) == 0:
                     histo = h_temp
@@ -115,7 +120,9 @@ class Reports():
                 if date != prec_date:
                     #FIXME: legacy code, to support the first version of the database: the source was not saved
                     if history.source_source is not None:
-                        tmptable.append([str(history.timestamp.date()), float(history.rankv4) * float(self.impacts[str(history.source_source)]) + 1.0 , float(history.rankv6)* float(self.impacts[str(history.source_source)]) + 1.0] )
+                        tmptable.append([str(history.timestamp.date()), \
+                        float(history.rankv4) * float(self.impacts[str(history.source_source)]) + 1.0 , \
+                        float(history.rankv6)* float(self.impacts[str(history.source_source)]) + 1.0] )
                     else:
                         tmptable.append([str(history.timestamp.date()), float(history.rankv4) + 1.0 , float(history.rankv6) + 1.0] )
             dates = []
@@ -139,9 +146,14 @@ class Reports():
 
     def ip_desc_query(self, asn_id, source, date):
         if source is not None and len(source) > 0:
-            query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), and_(IPsDescriptions.asn == asn_id, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1)))))
+            query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), \
+                    and_(IPsDescriptions.asn == asn_id, \
+                    and_(   IPsDescriptions.timestamp < date + datetime.timedelta(days=1), \
+                            IPsDescriptions.timestamp > date - datetime.timedelta(days=1)))))
         else: 
-            query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_id, and_(IPsDescriptions.timestamp <= date, IPsDescriptions.timestamp >= date - datetime.timedelta(days=1))))
+            query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_id, \
+                    and_(   IPsDescriptions.timestamp < date + datetime.timedelta(days=1), \
+                            IPsDescriptions.timestamp > date - datetime.timedelta(days=1))))
         return query
 
     def get_asn_descs(self, asn, source = None):

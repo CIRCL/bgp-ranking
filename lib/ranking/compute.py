@@ -84,8 +84,8 @@ class Ranking():
         self.weight = {}
         for desc in descs:
             ips += IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, \
-                    and_(   IPsDescriptions.timestamp < self.date + datetime.timedelta(days=1), \
-                            IPsDescriptions.timestamp > self.date - datetime.timedelta(days=1)))).all()
+                    and_(   IPsDescriptions.list_date < self.date + datetime.timedelta(days=1), \
+                            IPsDescriptions.list_date > self.date - datetime.timedelta(days=1)))).all()
             """
             SELECT * FROM `IPsDescriptions` WHERE `IPsDescriptions`.asn_id = desc AND `IPsDescriptions`.timestamp <= date AND `IPsDescriptions`.timestamp >= date - datetime.timedelta(days=1)
             """

@@ -148,12 +148,12 @@ class Reports():
         if source is not None and len(source) > 0:
             query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), \
                     and_(IPsDescriptions.asn == asn_id, \
-                    and_(   IPsDescriptions.timestamp < date + datetime.timedelta(days=1), \
-                            IPsDescriptions.timestamp > date - datetime.timedelta(days=1)))))
+                    and_(   IPsDescriptions.list_date < date + datetime.timedelta(days=1), \
+                            IPsDescriptions.list_date > date - datetime.timedelta(days=1)))))
         else: 
             query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_id, \
-                    and_(   IPsDescriptions.timestamp < date + datetime.timedelta(days=1), \
-                            IPsDescriptions.timestamp > date - datetime.timedelta(days=1))))
+                    and_(   IPsDescriptions.list_date < date + datetime.timedelta(days=1), \
+                            IPsDescriptions.list_date > date - datetime.timedelta(days=1))))
         return query
 
     def get_asn_descs(self, asn, source = None):

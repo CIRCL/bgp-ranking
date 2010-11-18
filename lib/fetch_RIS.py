@@ -8,6 +8,7 @@ syslog.openlog('BGP_Ranking_Fetching_RIS', syslog.LOG_PID, syslog.LOG_USER)
 
 import redis
 import time
+sleep_timer = int(config.get('sleep_timers','short'))
 
 # Temporary redis database, used to push ris and whois requests
 temp_reris_db = int(config.get('redis','temp_reris_db'))

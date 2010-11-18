@@ -40,7 +40,12 @@ filename = os.path.join(args[0], str(datetime.date.today()))
 old_directory = os.path.join(args[0], old_dir)
 
 while 1:
-    urllib.urlretrieve(args[1], temp_filename)
+    time.sleep(sleep_timer)
+    try:
+        urllib.urlretrieve(args[1], temp_filename)
+    except:
+        syslog.syslog(syslog.LOG_ERR, 'Unable to fetch ' + args[1])
+        continue
     drop_file = False
     """
     Check is the file already exists, if the same file is found, 
@@ -59,4 +64,3 @@ while 1:
     else:
         os.rename(temp_filename, filename)
         syslog.syslog(syslog.LOG_INFO, 'New file on ' + args[1])
-    time.sleep(sleep_timer)

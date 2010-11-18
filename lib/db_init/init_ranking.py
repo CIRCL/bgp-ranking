@@ -28,8 +28,9 @@ ranking_metadata.create_all()
 ASNs(asn=unicode('-1'))
 
 r_session = RankingSession()
-r_session.execute("create index i_whois on IPsDescriptions (whois(50));")
-r_session.execute("create index i_ipdesc_time_ans on IPsDescriptions (asn_id, timestamp);")
+#r_session.execute("create index i_whois on IPsDescriptions (whois(50));")
+#r_session.execute("create index i_ipdesc_time_ans on IPsDescriptions (asn_id, timestamp);")
+r_session.execute("create index i_ipdesc_date_ans on IPsDescriptions (asn_id, list_date);")
 
 # Creation of the admin user, with default password
 Users(login=unicode('admin'), password=unicode('admin'))

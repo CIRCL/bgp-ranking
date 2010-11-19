@@ -112,7 +112,14 @@ class Ranking():
         for key in self.rank_by_source:
             s = Sources.query.get(unicode(key))
             if s is None:
-                s = Sources(source = unicode(key))
+                try:
+                    s = Sources(source = unicode(key))
+                    r_session = RankingSession()
+                    r_session.commit()
+                    r_session.close()
+                except:
+                   time.sleep(int(config.get('sleep_timers','short')))
+                   continue
             history = History(asn=int(self.asn), rankv4=self.rank_by_source[key][0], rankv6=self.rank_by_source[key][1], vote = votes, source = s)
         if self.old_entry:
             history.timestamp = self.date

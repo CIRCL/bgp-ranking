@@ -49,8 +49,9 @@ class MasterControler():
                     self.report.prepare_graphe_js(asn)
                     # as_graph_infos : [ipv4, ipv6, dates, first_date, last_date]
                     as_graph_infos = self.report.graph_infos
-                    g.add_line([as_graph_infos[0], as_graph_infos[2]], asn + ' IPv4', as_graph_infos[3], as_graph_infos[4] )
-                    g.add_line([as_graph_infos[1], as_graph_infos[2]], asn + ' IPv6', as_graph_infos[3], as_graph_infos[4] )
+                    if as_graph_infos is not None:
+                        g.add_line([as_graph_infos[0], as_graph_infos[2]], asn + ' IPv4', as_graph_infos[3], as_graph_infos[4] )
+                        g.add_line([as_graph_infos[1], as_graph_infos[2]], asn + ' IPv6', as_graph_infos[3], as_graph_infos[4] )
                     title += asn + ' '
             if len(g.lines) > 0:
                 g.set_title(title)

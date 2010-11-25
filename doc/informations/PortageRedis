@@ -1,0 +1,58 @@
+This document will describe the redis architecture that will replace the mysql db
+
+IPsDescriptions, set:
+	Key: <IP>:<DAY>:<SOURCE>
+	  day (YYYY-MM-DD)
+	  source (one of the sources of the list)
+		Values: timestamps 
+
+	Other entries:
+		key: <IP>:<DAY>:<SOURCE>:<timestamp>:infection
+			value: string, infection
+		key: <IP>:<DAY>:<SOURCE>:<timestamp>:raw
+			value: string, raw (whole line of the logfile, if possible)
+		key: <IP>:<DAY>:<SOURCE>:<timestamp>:whois
+			value: string, whois entry
+		key: <IP>:<DAY>:<SOURCE>:<timestamp>:whois_address
+			value: string, URL whois server
+		key: <IP>:<DAY>:<SOURCE>:<timestamp>:<asn>
+			value: string, timestamp
+			when the key is set, the entry is completely imported
+
+ASNsDescriptions, set:
+	Key: <ASN>
+		Values timestamps
+
+	Other entries:
+		key: <ASN>:<timestamp>:origin
+			value: string, subnet
+		key: <ASN>:<timestamp>:description
+			value: string, description
+
+Sources, list
+
+Are this lists really usefull (except to know the amount of ips/asns in the db, and it would be a bit overkill) ? 
+	IPs, list
+	ASNs, list
+
+Indexes:
+	asn-day-sources, set:
+		Key: <ASN>:<DAY>:<SOURCE>
+			Values: IPs
+	
+	infections? 
+
+History, set:
+	Key: History:<ASN>:<DAY>:<SOURCE>
+		Values: Timestamps
+
+	
+	Other entries:
+		key: History:<ASN>:<DAY>:<SOURCE>:<timestamp>:rankv4
+		key: History:<ASN>:<DAY>:<SOURCE>:<timestamp>:rankv6
+			
+=============================
+
+When a new entry is added in redis, we put a key like 
+ <IP>:<DAY>:<SOURCE>:<timestamp>:
+

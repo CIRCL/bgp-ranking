@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
-Push the entries he finds in redis in the MySQL database
+Push the RIS entries in redis
 """
 
 import os 
@@ -15,19 +15,19 @@ sleep_timer = int(config.get('sleep_timers','short'))
 
 import syslog
 syslog.openlog('BGP_Ranking_DB_Input', syslog.LOG_PID, syslog.LOG_USER)
-from input_reader import InputReader
+from insert_RIS import InsertRIS
 import time
 
 def usage():
-    print "db_input.py"
+    print "ris.py"
     exit (1)
 
-reader = InputReader()
-reader.connect()
+insertor = InsertRIS()
+insertor.connect()
 
 while 1:
-    if reader.insert():
-        syslog.syslog(syslog.LOG_INFO, 'New entries inserted in Redis.')
+    if insertor.get_ris():
+        syslog.syslog(syslog.LOG_INFO, 'New RIS entries inserted in Redis.')
     time.sleep(sleep_timer)
 
-reader.disconnect()
+insertor.disconnect()

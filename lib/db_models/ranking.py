@@ -5,35 +5,36 @@ Definition of the databases containing the raw information.
 """
 
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy import create_engine
 from sqlalchemy.schema import ThreadLocalMetaData
+from db_manager import *
 from elixir import *
+import datetime 
+
+from sqlalchemy import create_engine
 
 import os
-precdir = os.path.realpath(os.curdir)
-os.chdir(os.path.dirname(__file__))
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.optionxform = str
 config.read("../../etc/bgp-ranking.conf")
 login = config.get('mysql','login')
 password = config.get('mysql','password')
 host = config.get('mysql','hostname')
-dbname = config.get('mysql','dbname_ranking')
-os.chdir(precdir)
+db_name = config.get('mysql','dbname_ranking')
+
 
 if __name__ == "__main__":
     engine = create_engine( 'mysql://' + login + ':' + password + '@' + host, pool_size = 50, pool_recycle=3600, max_overflow=30 )
     connection = engine.connect()
-    connection.execute('CREATE DATABASE IF NOT EXISTS ' + dbname)
+    db_exists = connection.execute("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '" + db_name + "';")
+    if db_exists.rowcount == 0 :
+        connection.execute('CREATE DATABASE IF NOT EXISTS "%s"' % db_name)
     connection = None
 
 
-ranking_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + dbname, pool_size = 50, pool_recycle=3600, max_overflow=30 )
-RankingSession = scoped_session(sessionmaker(bind=ranking_engine))
+db_engine = create_engine( 'mysql://' + login + ':' + password + '@' + host + '/' + db_name, pool_size = 50, pool_recycle=3600, max_overflow=30 )
+RankingSession = scoped_session(sessionmaker(bind=db_engine))
 ranking_metadata = ThreadLocalMetaData()
-ranking_metadata.bind = ranking_engine
-import datetime 
+ranking_metadata.bind = db_engine
 
 INET6_ADDRSTRLEN = 46
 
@@ -49,12 +50,24 @@ class IPs(Entity):
         return 'IP: "%s"' % (self.ip)
 
 
+class DailyIPsIndex(Entity):
+    """
+    Table with only one row, a timestamp. This table is used to index the daily tables of IPsDescriptions
+    """
+    day = Field(DateTime(timezone=True), primary_key=True)
+    ips = OneToMany('IPsDescriptions')
+    using_options(metadata=ranking_metadata, session=RankingSession, tablename='DailyIPsIndex')
+    
+    
+
 class IPsDescriptions(Entity):
     """ 
     Table which contains a description of the IPs
     and a link to the ASNs Descriptions 
     """
-    list_name = Field(UnicodeText, required=True)
+    
+    daily_index = ManyToOne('DailyIPsIndex')
+    list_name = ManyToOne('Sources')
     timestamp = Field(DateTime(timezone=True), default=datetime.datetime.utcnow)
     list_date = Field(DateTime(timezone=True), required=True)
     times = Field(Integer, default=1)
@@ -64,7 +77,7 @@ class IPsDescriptions(Entity):
     whois_address = Field(UnicodeText)
     ip = ManyToOne('IPs')
     asn = ManyToOne('ASNsDescriptions')
-    using_options(metadata=ranking_metadata, session=RankingSession, tablename='IPsDescriptions')
+    using_options(metadata=ranking_metadata, session=RankingSession, tablename=self.table)
   
     def __repr__(self):
         to_return = '[%s] List: "%s" \t %s present %s time(s)' % (self.list_date, self.list_name,\
@@ -131,6 +144,7 @@ class Votes(Entity):
 class Sources(Entity):
     source = Field(Unicode(50), primary_key=True)
     histories = OneToMany('History')
+    ips = OneToMany('IPsDescriptions')
     using_options(metadata=ranking_metadata, session=RankingSession, tablename='Sources')
     
 

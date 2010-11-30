@@ -19,20 +19,20 @@ from helpers.initscript import *
 import signal
 
 def usage():
-    print "start_db_input.py (start|stop)"
+    print "start_ris.py (start|stop)"
     exit (1)
 
 
 if len(sys.argv) < 2:
     usage()
-service = os.path.join(services_dir, "db_input")
+service = os.path.join(services_dir, "ris")
 
 if sys.argv[1] == "start":
     print("Starting insertion...")
     syslog.syslog(syslog.LOG_INFO, "Starting insertion...")
     print(service+" to start...")
     syslog.syslog(syslog.LOG_INFO, service+" to start...")
-    service_start_multiple(servicename = service, number = number = int(config.get('processes','input')))
+    service_start_multiple(servicename = service, number = int(config.get('processes','whois_fetch')))
 
 elif sys.argv[1] == "stop":
     print("Stopping sorting...")

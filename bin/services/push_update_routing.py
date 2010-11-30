@@ -101,7 +101,7 @@ while 1:
     # Flush the old database and launch the population of the new database
     routing_db.flushdb()
     syslog.syslog(syslog.LOG_INFO, 'Start pushing all routes...')
-    run_splitted_processing(int(config.get('routing','processes_push')), pushing_process_service, splitted_files)
+    run_splitted_processing(int(config.get('processes','routing_push')), pushing_process_service, splitted_files)
     syslog.syslog(syslog.LOG_INFO, 'Pushing all routes done')
     # Remove the binary and the plain text files
     os.unlink(output.name)
@@ -115,7 +115,7 @@ while 1:
     r_session.close()
     # compute the intervals
     all_intervals = intervals_ranking(nb_of_asns, int(config.get('ranking','interval')))
-    run_splitted_processing(int(config.get('ranking','processes')), ranking_process_service, all_intervals)
+    run_splitted_processing(int(config.get('processes','ranking')), ranking_process_service, all_intervals)
     # Flush the old database to reduce the RAM usage
     routing_db.flushdb()
     syslog.syslog(syslog.LOG_INFO, 'Ranking computed')

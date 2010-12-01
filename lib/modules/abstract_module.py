@@ -27,12 +27,12 @@ class AbstractModule():
     You have to define a function parse which extract the entries from the dataset and use 
     the function put_entry to put them in redis. 
     """
-    key_ip = ':ip'
-    key_src = ':source'
-    key_tstamp = ':timestamp'
-    key_infection = ':infection'
-    key_raw = ':raw'
-    key_times = ':times'
+    key_ip = config.get('input_keys','ip')
+    key_src = config.get('input_keys','src')
+    key_tstamp = config.get('input_keys','tstamp')
+    key_infection = config.get('input_keys','infection')
+    key_raw = config.get('input_keys','raw')
+    key_times = config.get('input_keys','times')
     
     def __init__(self):
         self.temp_db = redis.Redis(db=temp_reris_db)
@@ -56,7 +56,7 @@ class AbstractModule():
         entry = {}
         entry[self.key_ip] = ip
         entry[self.key_src] = source
-        entry[self.key_tstamp] = timestamp
+        entry[self.key_tstamp] = timestamp.isoformat()
         entry[self.key_infection] = infection
         entry[self.key_raw] = raw
         entry[self.key_times] = times

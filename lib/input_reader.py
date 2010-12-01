@@ -9,6 +9,13 @@ import IPy
 import syslog
 syslog.openlog('BGP_Ranking_Input', syslog.LOG_PID, syslog.LOG_USER)
 
+import os 
+import sys
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../bgp-ranking.conf")
+root_dir = config.get('directories','root')
+
 # Temporary redis database
 temp_reris_db = int(config.get('modules_global','temp_db'))
 list_ips = config.get('modules_global','uid_list')
@@ -46,9 +53,6 @@ class InputReader():
         self.temp_db.delete(uid + self.key_ip, uid + self.key_src, uid + self.key_tstamp, uid + self.key_infection, uid + self.key_raw, uid + self.key_times)
         return uid, ip, src, timestamp, infection, raw, times
 
-    def insert_ip_descr(self):
-        
-
     def insert(self):
         to_return = False
         while self.temp_db.scard(list_ips) > 0:
@@ -74,9 +78,9 @@ class InputReader():
                 continue
             
             unique_timestamp = datetime.datetime.utcnow().isoformat()
-            index_ips = '%s:%s'% timestamp.date().isoformat(), src
-            ip_information = '%s:%s'% ip, index_ips
-            ip_details = '%s:%s'% ip_information, unique_timestamp
+            index_ips = '{date}:{source}'.format(date=timestamp.date().isoformat(), source=src)
+            ip_information = '{ip}:{index}'.format(ip=ip, index=index_ips)
+            ip_details = '{infos}:{timestamp}'.format(infos=ip_information, timestamp=unique_timestamp)
             
             self.global_db.sadd(ip_information, unique_timestamp)
             self.global_db.sadd(index_ips, ip)
@@ -86,7 +90,7 @@ class InputReader():
                 self.global_db.set(ip_details + key_infection, infection)
             if raw is not None:
                 self.global_db.set(ip_details + key_raw, raw)
-            is times is not None:
+            if times is not None:
                 self.global_db.set(ip_details + key_times, times)
             
             self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)

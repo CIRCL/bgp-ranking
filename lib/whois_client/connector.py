@@ -16,11 +16,11 @@ root_dir = config.get('directories','root')
 process_sleep = int(config.get('sleep_timers','short'))
 
 # Temporary redis database, used to push ris and whois requests
-temp_reris_db = int(config.get('redis','temp_reris_db'))
+temp_reris_db = int(config.get('redis','temp_db'))
 # Cache redis database, used to set ris responses
-ris_cache_reris_db = int(config.get('redis','ris_cache_reris_db'))
+ris_cache_reris_db = int(config.get('redis','ris_cache_db'))
 # Cache redis database, used to set whois responses
-whois_cache_reris_db = int(config.get('redis','whois_cache_reris_db'))
+whois_cache_reris_db = int(config.get('redis','whois_cache_db'))
 
 import syslog
 syslog.openlog('BGP_Ranking_Connectors', syslog.LOG_PID, syslog.LOG_USER)

@@ -36,7 +36,7 @@ if sys.argv[1] == "start":
     for option in whois_service_options:
         print(option + " to start...")
         syslog.syslog(syslog.LOG_INFO, option + " to start...")
-        service_start_multiple(servicename = service, param = option, number = int(config.get('whois_servers','fetching_processes')))
+        service_start_multiple(servicename = service, param = option, number = int(config.get('processes','whois_fetch')))
 
 elif sys.argv[1] == "stop":
     print("Stopping sorting...")

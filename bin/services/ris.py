@@ -23,11 +23,8 @@ def usage():
     exit (1)
 
 insertor = InsertRIS()
-insertor.connect()
 
 while 1:
     if insertor.get_ris():
         syslog.syslog(syslog.LOG_INFO, 'New RIS entries inserted in Redis.')
     time.sleep(sleep_timer)
-
-insertor.disconnect()

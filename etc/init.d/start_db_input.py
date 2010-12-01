@@ -32,11 +32,11 @@ if sys.argv[1] == "start":
     syslog.syslog(syslog.LOG_INFO, "Starting insertion...")
     print(service+" to start...")
     syslog.syslog(syslog.LOG_INFO, service+" to start...")
-    service_start_multiple(servicename = service, number = number = int(config.get('processes','input')))
+    service_start_multiple(servicename = service, number = int(config.get('processes','input')))
 
 elif sys.argv[1] == "stop":
-    print("Stopping sorting...")
-    syslog.syslog(syslog.LOG_INFO, "Stopping sorting...")
+    print("Stopping insertion...")
+    syslog.syslog(syslog.LOG_INFO, "Stopping insertion...")
     pids = pidof(processname=service)
     if pids:
         print(service+" to be stopped...")

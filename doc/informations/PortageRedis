@@ -46,8 +46,10 @@ Are this lists really usefull (except to know the amount of ips/asns in the db, 
 Indexes:
 ********************
     day-sources, set: => used to knom the IPs of a particular day, before the ASN is known. 
-        Key: <DAY>:<SOURCE>
+        Key: <DAY>:<SOURCE>:ips
             Values: IPs
+        Key: <DAY>:<SOURCE>:asns
+            Values: ASNs
 ********************
 ********************
     asn-day-sources, set: => used to compute the ranking. and to display the IPs in the web interface. day-sources should be enough... but will take too much time

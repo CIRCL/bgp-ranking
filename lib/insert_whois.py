@@ -1,26 +1,35 @@
 # -*- coding: utf-8 -*-
 
-from db_models.ranking import *
-from whois_parser.whois_parsers import *
-
 import syslog
 syslog.openlog('BGP_Ranking_Fetching_Whois', syslog.LOG_PID, syslog.LOG_USER)
 
 import redis
 import time
+import os 
+import sys
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../bgp-ranking.conf")
+root_dir = config.get('directories','root') 
+sleep_timer = int(config.get('sleep_timers','short'))
 
 # Temporary redis database, used to push ris and whois requests
-temp_reris_db = int(config.get('redis','temp_reris_db'))
+temp_reris_db = int(config.get('redis','temp_db'))
 # Cache redis database, used to set whois responses
-whois_cache_reris_db = int(config.get('redis','whois_cache_reris_db'))
+whois_cache_reris_db = int(config.get('redis','whois_cache_db'))
+# Global redis database, used to save all the information
+global_db = config.get('redis','global_db')
 
-class FetchWhois():
+class InsertWhois():
     """
     Set the whois information to ASNsDescriptions wich do not already have one.
     
     Take a look at doc/uml-diagramms/Whois\ Fetching.png to see a diagramm.
     """
-    max_loop = 3
+    max_consecutive_errors = 10
+    
+    key_whois = config.get('input_keys','whois')
+    key_whois_server = config.get('input_keys','whois_server')
     
 
     def __init__(self):
@@ -29,49 +38,33 @@ class FetchWhois():
         """
         self.cache_db_whois = redis.Redis(db=whois_cache_reris_db)
         self.temp_db = redis.Redis(db=temp_reris_db)
+        self.global_db = redis.Redis(db=global_db)
 
-    def __commit(self):
+    def get_whois(self):
         """
-        Commit the pending modifications in the database 
+        Get the Whois information on a particular interval and put it into redis
         """
-        r_session = RankingSession()
-        r_session.commit()
-        r_session.close()
-
-
-    def get_whois(self, limit_first, limit_last):
-        """
-        Get the whois information on a particular interval and put it into the MySQL database
-        """
-        self.ips_descriptions = IPsDescriptions.query.filter(IPsDescriptions.whois==None)[limit_first:limit_last]
-        for ip_description in self.ips_descriptions:
-            # push in a set of queries all the new requests
-            if not self.cache_db_whois.exists(ip_description.ip.ip):
-                self.temp_db.sadd(config.get('redis','key_temp_whois'),  ip_description.ip.ip)
-        while len(self.ips_descriptions) > 0:
-            """ 
-            Put the whois entries found in redis in the MySQL database. 
-            
-            Loop at most three times: this way the process is not blocked 
-            if a whois server takes a lot of time to answer.
-            It it not a problem: if all the entries are not found, 
-            the same process (or an other one) will try again later. 
-            """
-            deferred = []
-            for description in self.ips_descriptions:
-                entry = self.cache_db_whois.get(description.ip.ip)
-                if not entry:
-                    # entry not found, try again
-                    deferred.append(description)
-                else:
-                    # entry found. The first line is the whois server which answered
-                    splitted = entry.partition('\n')
-                    description.whois_address = unicode(splitted[0])
-                    description.whois = unicode(splitted[2], errors="ignore")
-            self.ips_descriptions = deferred
-            time.sleep(int(config.get('sleep_timers','short')))
-            syslog.syslog(syslog.LOG_DEBUG, 'Whois to fetch: ' + str(len(self.ips_descriptions)))
-            self.max_loop -=1
-            if self.max_loop <= 0:
-                break
-        self.__commit()
+        key_no_asn = config.get('input_keys','no_whois')
+        description = self.global_db.spop(key_no_whois)
+        errors = 0 
+        to_return = False
+        
+        while description is not None:
+            ip, date, source, timestamp = re.findall("(?:([^:]*):)(?:([^:]*):)(?:([^:]*):)(.*)", description)[0]
+            entry = self.cache_db_whois.get(ip)
+            if entry is None:
+                errors += 1
+                self.global_db.sadd(key_no_whois, description)
+                if errors >= self.max_consecutive_errors:
+                    break
+            else:
+                errors = 0
+                splitted = entry.partition('\n')
+                whois_server = splitted[0]
+                whois = splitted[2]
+                self.global_db.set(entry + self.key_whois_server, whois_server)
+                self.global_db.set(entry + self.key_whois, whois)
+                to_return = True
+            description = self.global_db.spop(key_no_asn)
+        syslog.syslog(syslog.LOG_DEBUG, 'Whois to fetch: ' + str(self.global_db.scard(key_no_whois)))
+        return to_return

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
-Push the RIS entries in redis
+Push the Whois entries in redis
 """
 
 import os 
@@ -14,17 +14,17 @@ sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 sleep_timer = int(config.get('sleep_timers','short'))
 
 import syslog
-syslog.openlog('BGP_Ranking_RIS_Whois_Insert', syslog.LOG_PID, syslog.LOG_USER)
-from insert_ris import InsertRIS
+syslog.openlog('BGP_Ranking_Whois_Insert', syslog.LOG_PID, syslog.LOG_USER)
+from insert_Whois import InsertWhois
 import time
 
 def usage():
-    print "ris.py"
+    print "whois.py"
     exit (1)
 
-insertor = InsertRIS()
+insertor = InsertWhois()
 
 while 1:
-    if insertor.get_ris():
-        syslog.syslog(syslog.LOG_INFO, 'New RIS entries inserted in Redis.')
+    if insertor.get_whois():
+        syslog.syslog(syslog.LOG_INFO, 'New Whois entries inserted in Redis.')
     time.sleep(sleep_timer)

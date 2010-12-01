@@ -6,6 +6,8 @@ import syslog
 import datetime
 syslog.openlog('BGP_Ranking_Fetching_RIS', syslog.LOG_PID, syslog.LOG_USER)
 
+import re
+
 import redis
 import time
 import os 
@@ -15,8 +17,6 @@ config = ConfigParser.RawConfigParser()
 config.read("../bgp-ranking.conf")
 root_dir = config.get('directories','root') 
 sleep_timer = int(config.get('sleep_timers','short'))
-
-import re
 
 # Temporary redis database, used to push ris and whois requests
 temp_reris_db = int(config.get('redis','temp_db'))
@@ -91,14 +91,16 @@ class InsertRIS():
                 errors += 1
                 self.global_db.sadd(key_no_asn, description)
                 if errors >= self.max_consecutive_errors:
-                    time.sleep(int(config.get('sleep_timers','short')))
-                    errors = 0
+                    break
             else:
                 errors = 0
                 asn = self.__update_db_ris(description, entry)
+                index_day_asns  = '{date}:{source}:{key}'.format(date=timestamp.date().isoformat(), source=src, key=config.get('redis','index_asns'))
                 index_asns = '{asn}:{date}:{source}'.format(asn = asn, date=timestamp.date().isoformat(), source=src)
+                # FIXME: should I first test if the data is already present before inserting ? 
+                self.global_db.sadd(index_day_asns, asn)
                 self.global_db.sadd(index_asns, ip)
                 to_return = True
-            syslog.syslog(syslog.LOG_DEBUG, 'RIS Whois to fetch: ' + str(self.global_db.scard(key_no_asn)))
             description = self.global_db.spop(key_no_asn)
+        syslog.syslog(syslog.LOG_DEBUG, 'RIS Whois to fetch: ' + str(self.global_db.scard(key_no_asn)))
         return to_return

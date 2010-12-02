@@ -78,10 +78,12 @@ class InputReader():
                 continue
             
             unique_timestamp = datetime.datetime.utcnow().isoformat()
+            index_day_src   = '{date}:{key}'.format(date=timestamp.date().isoformat(), key=config.get('redis','index_sources'))
             index_day_ips   = '{date}:{source}:{key}'.format(date=timestamp.date().isoformat(), source=src, key=config.get('redis','index_ips'))
             ip_information  = '{ip}:{date}:{source}'            .format(ip=ip, date=timestamp.date().isoformat(), source=src)
             ip_details      = '{ip}:{date}:{source}:{timestamp}'.format(ip=ip, date=timestamp.date().isoformat(), source=src, timestamp=unique_timestamp)
             
+            self.global_db.sadd(index_day_src, src)
             self.global_db.sadd(ip_information, unique_timestamp)
             self.global_db.sadd(index_day_ips, ip)
             self.global_db.sadd(self.key_no_asn, ip_details)

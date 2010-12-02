@@ -22,7 +22,7 @@ import redis
 from whois_client.whois_fetcher_redis import get_server_by_query
 import time
 
-temp_db = redis.Redis(db=int(config.get('redis','temp_reris_db')))
+temp_db = redis.Redis(db=int(config.get('redis','temp_reris')))
 key = config.get('redis','key_temp_whois')
 r = redis.Redis(db=config.get('redis','whois_assignations'))
 while 1:

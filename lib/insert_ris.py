@@ -19,11 +19,11 @@ root_dir = config.get('directories','root')
 sleep_timer = int(config.get('sleep_timers','short'))
 
 # Temporary redis database, used to push ris and whois requests
-temp_reris_db = int(config.get('redis','temp_db'))
+temp_reris_db = int(config.get('redis','temp'))
 # Cache redis database, used to set ris responses
-ris_cache_reris_db = int(config.get('redis','ris_cache_db'))
+ris_cache_reris_db = int(config.get('redis','cache_ris'))
 # Global redis database, used to save all the information
-global_db = config.get('redis','global_db')
+global_db = config.get('redis','global')
 
 class InsertRIS():
     """
@@ -79,7 +79,7 @@ class InsertRIS():
         """
         Get the RIS whois information on a particular interval and put it into redis
         """
-        key_no_asn = config.get('input_keys','no_asn')
+        key_no_asn = config.get('redis','no_asn')
         description = self.global_db.spop(key_no_asn)
         errors = 0 
         to_return = False

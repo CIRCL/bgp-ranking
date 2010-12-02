@@ -19,7 +19,7 @@ from db_models.ranking import *
 
 import redis
 
-routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
+routing_db = redis.Redis(db=config.get('redis','routing_redis'))
 
 items = config.items('modules_to_parse')
 

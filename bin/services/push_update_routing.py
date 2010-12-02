@@ -42,7 +42,7 @@ def usage():
     exit (1)
 
 import redis
-routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
+routing_db = redis.Redis(db=config.get('redis','routing_redis'))
 
 filename = sys.argv[1]
 dir = os.path.dirname(filename)

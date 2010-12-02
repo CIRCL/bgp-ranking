@@ -17,9 +17,9 @@ config.read("../bgp-ranking.conf")
 root_dir = config.get('directories','root')
 
 # Temporary redis database
-temp_reris_db = int(config.get('modules_global','temp_db'))
+temp_reris_db = int(config.get('modules_global','temp'))
 list_ips = config.get('modules_global','uid_list')
-global_db = config.get('redis','global_db')
+global_db = config.get('redis','global')
 
 # Used if there is a temporaty problem inserting new entries in the DB
 sleep_timer = int(config.get('sleep_timers','short'))

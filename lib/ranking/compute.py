@@ -25,7 +25,7 @@ import time
 import redis
 import IPy
 
-routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
+routing_db = redis.Redis(db=config.get('redis','routing_redis'))
 
 class MetaRanking():
     def list_dates(self, first_date, last_date):
@@ -48,9 +48,6 @@ class Ranking():
     
     def rank_and_save(self, date = datetime.date.today()):
         self.date = date
-        self.old_entry = False
-        if self.date > datetime.date.today():
-            self.old_entry = True
         self.ip_count()
         self.make_index()
         self.rank()

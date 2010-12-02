@@ -12,7 +12,7 @@ config.read("../../etc/bgp-ranking.conf")
 #sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 # Temporary redis database
-temp_reris_db = int(config.get('modules_global','temp_db'))
+temp_reris_db = int(config.get('modules_global','temp'))
 uid_var = config.get('modules_global','uid_var')
 list_ips = config.get('modules_global','uid_list')
 

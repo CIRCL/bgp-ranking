@@ -34,6 +34,10 @@ class InsertRIS():
     default_asn_desc = None
     max_consecutive_errors = 10
     
+    separator = config.get('input_keys','separator')
+    
+    module_global = config.get('modules_global','default_asn')
+    
     key_asn = config.get('input_keys','asn')
     key_owner = config.get('input_keys','owner')
     key_ips_block = config.get('input_keys','ips_block')
@@ -47,16 +51,19 @@ class InsertRIS():
         self.global_db = redis.Redis(db=global_db)
         default_asn_members = self.global_db.smembers(config.get('default','asn'))
         if len(default_asn_members) == 0 :
-            self.default_asn_key = '-1:' + self.add_asn_entry('-1', "Default AS, none found using RIS Whois.", "0.0.0.0/0")
+            self.default_asn_key = self.add_asn_entry(\
+                                    config.get('modules_global','default_asn'), \
+                                    config.get('modules_global','default_asn_descr'), \
+                                    config.get('modules_global','default_asn_route'))
         else:
-            self.default_asn_key = '{asn}:{tstamp}'.format(asn=config.get('default','asn'), tstamp=default_asn_members.pop())
+            self.default_asn_key = '{asn}{sep}{tstamp}'.format(asn=config.get('modules_global','default_asn'), sep = self.separator, tstamp=default_asn_members.pop())
 
     def add_asn_entry(self, asn, owner, ips_block):
         timestamp = datetime.datetime.utcnow().isoformat()
-        key = "{asn}:{timestamp}".format(asn=asn, timestamp=timestamp)
         self.global_db.sadd(asn, timestamp)
-        self.global_db.set(key + self.key_owner, owner)
-        self.global_db.set(key + self.key_ips_block, ips_block)
+        key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=timestamp)
+        self.global_db.set("{key}{sep}{owner}".format(key, self.separator, self.key_owner), owner)
+        self.global_db.set("{key}{sep}{ips_block}".format(key, self.separator, self.key_ips_block), ips_block)
         return key
 
     def __update_db_ris(self, current,  data):
@@ -68,11 +75,11 @@ class InsertRIS():
         riswhois = splitted[2]
         ris_whois = Whois(riswhois,  ris_origin)
         if not ris_whois.origin:
-            self.global_db.set(current + self.key_asn, self.default_asn_key)
+            self.global_db.set("{ip_info}{sep}{key}".format(current, self.separator, self.key_asn), self.default_asn_key)
             return '-1'
         else:
             asn_key = self.add_asn_entry(ris_whois.origin, ris_whois.description, ris_whois.route)
-            self.global_db.set(current + self.key_asn, asn_key)
+            self.global_db.set("{ip_info}{sep}{key}".format(current, self.separator, self.key_asn), asn_key)
             return ris_whois.origin
 
     def get_ris(self):
@@ -85,7 +92,7 @@ class InsertRIS():
         to_return = False
         
         while description is not None:
-            ip, date, source, timestamp = re.findall("(?:([^:]*):)(?:([^:]*):)(?:([^:]*):)(.*)", description)[0]
+            ip, date, source, timestamp = description.split('_')
             entry = self.cache_db_ris.get(ip)
             if entry is None:
                 errors += 1
@@ -95,9 +102,8 @@ class InsertRIS():
             else:
                 errors = 0
                 asn = self.__update_db_ris(description, entry)
-                index_day_asns  = '{date}:{source}:{key}'.format(date=timestamp.date().isoformat(), source=src, key=config.get('redis','index_asns'))
-                index_asns = '{asn}:{date}:{source}'.format(asn = asn, date=timestamp.date().isoformat(), source=src)
-                # FIXME: should I first test if the data is already present before inserting ? 
+                index_day_asns  =      '{date}{sep}{source}{sep}{key}'.format(sep = separator, date=timestamp.date().isoformat(), source=src, key=config.get('redis','index_asns'))
+                index_asns = '{asn}{sep}{date}{sep}{source}'.format(sep = separator, asn = asn, date=timestamp.date().isoformat(), source=src)
                 self.global_db.sadd(index_day_asns, asn)
                 self.global_db.sadd(index_asns, ip)
                 to_return = True

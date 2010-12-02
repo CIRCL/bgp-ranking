@@ -45,7 +45,7 @@ Are this lists really usefull (except to know the amount of ips/asns in the db, 
 
 Indexes:
 ********************
-    day-sources, set: => used to knom the IPs of a particular day, before the ASN is known. 
+    day-sources-ips/asns, set: => used to knom the IPs of a particular day, before the ASN is known. 
         Key: <DAY>:<SOURCE>:ips
             Values: IPs
         Key: <DAY>:<SOURCE>:asns
@@ -56,16 +56,22 @@ Indexes:
         Key: <ASN>:<DAY>:<SOURCE>
             Values: IPs
 ********************
+********************
+    day-sources
+        Key: <DAY>:sources
+            Values: Sources
+********************
     
     infections? 
 
 ********************
+Other DB
 History, set:
-    Key: History:<ASN>:<DAY>:<SOURCE>
+    Key: <ASN>:<DAY>:<SOURCE>
         Values: Timestamps
     Other entries:
-        key: History:<ASN>:<DAY>:<SOURCE>:<timestamp>:rankv4
-        key: History:<ASN>:<DAY>:<SOURCE>:<timestamp>:rankv6
+        key: <ASN>:<DAY>:<SOURCE>:<timestamp>:rankv4
+        key: <ASN>:<DAY>:<SOURCE>:<timestamp>:rankv6
 ********************
 
 =============================

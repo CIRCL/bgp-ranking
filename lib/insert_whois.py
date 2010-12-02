@@ -28,6 +28,8 @@ class InsertWhois():
     """
     max_consecutive_errors = 10
     
+    separator = config.get('input_keys','separator')
+    
     key_whois = config.get('input_keys','whois')
     key_whois_server = config.get('input_keys','whois_server')
     
@@ -50,7 +52,7 @@ class InsertWhois():
         to_return = False
         
         while description is not None:
-            ip, date, source, timestamp = re.findall("(?:([^:]*):)(?:([^:]*):)(?:([^:]*):)(.*)", description)[0]
+            ip, date, source, timestamp = description.split('_')
             entry = self.cache_db_whois.get(ip)
             if entry is None:
                 errors += 1
@@ -62,8 +64,8 @@ class InsertWhois():
                 splitted = entry.partition('\n')
                 whois_server = splitted[0]
                 whois = splitted[2]
-                self.global_db.set(entry + self.key_whois_server, whois_server)
-                self.global_db.set(entry + self.key_whois, whois)
+                self.global_db.set("{entry}{sep}{whois_server}".format(entry, self.separator, self.key_whois_server), whois_server)
+                self.global_db.set("{entry}{sep}{whois}".format(entry, self.separator, self.key_whois), whois)
                 to_return = True
             description = self.global_db.spop(key_no_asn)
         syslog.syslog(syslog.LOG_DEBUG, 'Whois to fetch: ' + str(self.global_db.scard(key_no_whois)))

@@ -2,8 +2,6 @@
 
 """
 Quick and durty code computing reports based on the information found in the database. 
-
-FIXME: rewrite it!
 """
 
 
@@ -18,14 +16,13 @@ sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 from whois_parser.bgp_parsers import *
 
-from db_models.ranking import *
-from sqlalchemy import and_
-
 import time
 import redis
 import IPy
 
 routing_db = redis.Redis(db=config.get('redis','routing_redis'))
+global_db = redis.Redis(db=config.get('redis','global'))
+history_db = redis.Redis(db=config.get('redis','history'))
 
 class MetaRanking():
     def list_dates(self, first_date, last_date):
@@ -44,10 +41,12 @@ class MetaRanking():
 class Ranking():
     
     def __init__(self, asn):
-        self.asn = asn 
+        self.asn = asn
+        self.separator = config.get('input_keys','separator')
     
     def rank_and_save(self, date = datetime.date.today()):
         self.date = date
+        self.sources = global_db.smembers('{date}{sep}{key}'.format(date.isoformat(), self.separator, config.get('redis','index_sources')))
         self.ip_count()
         self.make_index()
         self.rank()
@@ -75,25 +74,18 @@ class Ranking():
             self.ipv6 = int(self.ipv6)
 
     def make_index(self):
-        descs = ASNsDescriptions.query.filter_by(asn=ASNs.query.filter_by(asn=self.asn).first()).all()
-        ips = []
-        # weight['source'] = [ipv4, ipv6]
-        self.weight = {}
-        for desc in descs:
-            ips += IPsDescriptions.query.filter(and_(IPsDescriptions.asn == desc, \
-                    and_(   IPsDescriptions.list_date < self.date + datetime.timedelta(days=1), \
-                            IPsDescriptions.list_date > self.date - datetime.timedelta(days=1)))).all()
-            """
-            SELECT * FROM `IPsDescriptions` WHERE `IPsDescriptions`.asn_id = desc AND `IPsDescriptions`.timestamp <= date AND `IPsDescriptions`.timestamp >= date - datetime.timedelta(days=1)
-            """
-        for i in ips:
-            ip = IPy.IP(i.ip_ip)
-            if self.weight.get(str(i.list_name), None) is None:
-                self.weight[str(i.list_name)] = [0.0, 0.0]
-            if ip.version() == 6:
-                self.weight[str(i.list_name)][1] += 1.0
-            else :
-                self.weight[str(i.list_name)][0] += 1.0
+        asn_sources = {}
+        for source in self.sources:
+            asn_sources[source] = global_db.smembers('{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, \
+                                        asn = self.asn, date = self.date.isoformat(), source = source)
+
+        for source, ips in asn_sources.iteritems():
+            for i in ips:
+                ip = IPy.IP(i)
+                if ip.version() == 6:
+                    self.weight[str(source)][1] += 1.0
+                else :
+                    self.weight[str(source)][0] += 1.0
 
     def rank(self):
         self.rank_by_source = {}
@@ -105,21 +97,13 @@ class Ranking():
                 self.rank_by_source[key][1] = (float(self.weight[key][1])/self.ipv6)
     
     def make_history(self):
-        votes = Votes.query.filter_by(asn=int(self.asn)).all()
+        history_db.
         for key in self.rank_by_source:
-            s = Sources.query.get(unicode(key))
-            if s is None:
-                try:
-                    s = Sources(source = unicode(key))
-                    r_session = RankingSession()
-                    r_session.commit()
-                    r_session.close()
-                except:
-                   time.sleep(int(config.get('sleep_timers','short')))
-                   continue
-            history = History(asn=int(self.asn), rankv4=self.rank_by_source[key][0], rankv6=self.rank_by_source[key][1], vote = votes, source = s)
-        if self.old_entry:
-            history.timestamp = self.date
-        r_session = RankingSession()
-        r_session.commit()
-        r_session.close()
+            if self.rank_by_source[key][0] > 0.0:
+                history_db.sadd('{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, \
+                                                asn = self.asn, date = self.date.isoformat(), source = key, \
+                                                v4 = config.get('input_keys','rankv4')), self.rank_by_source[key][0])
+            if self.rank_by_source[key][1] > 0.0:
+                history_db.sadd('{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, \
+                                                asn = self.asn, date = self.date.isoformat(), source = key, \
+                                                v6 = config.get('input_keys','rankv6')), self.rank_by_source[key][1])

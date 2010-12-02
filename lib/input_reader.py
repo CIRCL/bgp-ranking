@@ -25,6 +25,8 @@ global_db = config.get('redis','global')
 sleep_timer = int(config.get('sleep_timers','short'))
 
 class InputReader():
+    separator = config.get('input_keys','separator')
+    
     key_ip = config.get('input_keys','ip')
     key_src = config.get('input_keys','src')
     key_tstamp = config.get('input_keys','tstamp')
@@ -40,16 +42,16 @@ class InputReader():
 
     def get_all_information(self):
         uid = str(self.temp_db.spop(list_ips))
-        ip = self.temp_db.get(uid + self.key_ip)
-        src = self.temp_db.get(uid + self.key_src)
-        timestamp = self.temp_db.get(uid + self.key_tstamp)
+        ip =        self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_ip))
+        src =       self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_src))
+        timestamp = self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_tstamp))
         if timestamp is None:
             timestamp = datetime.datetime.utcnow()
         else:
             timestamp = dateutil.parser.parse(timestamp)
-        infection = self.temp_db.get(uid + self.key_infection)
-        raw = self.temp_db.get(uid + self.key_raw)
-        times = self.temp_db.get(uid + self.key_times)
+        infection = self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_infection))
+        raw =       self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_raw))
+        times =     self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_times))
         self.temp_db.delete(uid + self.key_ip, uid + self.key_src, uid + self.key_tstamp, uid + self.key_infection, uid + self.key_raw, uid + self.key_times)
         return uid, ip, src, timestamp, infection, raw, times
 
@@ -66,22 +68,24 @@ class InputReader():
                 continue
             try:
                 # Check and normalize the IP 
-                ip_temp = IPy.IP(ip)
+                ip_bin = IPy.IP(ip)
                 # FIXME: the second part of the 'if' is due to a "bug" in the version of IPy 
                 #           provided by default in debian: 223/8 is not reserved anymore.
-                if ip_temp.iptype() != 'PUBLIC' and ip_temp not in IPy.IP('223/8'):
-                    syslog.syslog(syslog.LOG_ERR, str(ip_temp) + ' is not a PUBLIC IP Address but is ' + ip_temp.iptype())
+                if ip_bin.iptype() != 'PUBLIC' and ip_bin not in IPy.IP('223/8'):
+                    syslog.syslog(syslog.LOG_ERR, str(ip_bin) + ' is not a PUBLIC IP Address but is ' + ip_bin.iptype())
                     continue
-                ip = str(ip_temp)
+                ip = ip_bin.strCompressed()
             except:
                 syslog.syslog(syslog.LOG_ERR, 'This IP: ' + ip + ' in invalid.')
                 continue
             
             unique_timestamp = datetime.datetime.utcnow().isoformat()
-            index_day_src   = '{date}:{key}'.format(date=timestamp.date().isoformat(), key=config.get('redis','index_sources'))
-            index_day_ips   = '{date}:{source}:{key}'.format(date=timestamp.date().isoformat(), source=src, key=config.get('redis','index_ips'))
-            ip_information  = '{ip}:{date}:{source}'            .format(ip=ip, date=timestamp.date().isoformat(), source=src)
-            ip_details      = '{ip}:{date}:{source}:{timestamp}'.format(ip=ip, date=timestamp.date().isoformat(), source=src, timestamp=unique_timestamp)
+            index_day_src   = '{date}{sep}{key}'.format(sep = self.separator, date=timestamp.date().isoformat(), key=config.get('redis','index_sources'))
+            index_day_ips   = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=timestamp.date().isoformat(), source=src, key=config.get('redis','index_ips'))
+            ip_information  = '{ip}{sep}{date}{sep}{source}' \
+                                    .format(sep = self.separator, version = ip_bin.version(), ip=ip, date=timestamp.date().isoformat(), source=src)
+            ip_details      = '{ip}{sep}{date}{sep}{source}{sep}{timestamp}' \
+                                    .format(sep = self.separator, version = ip_bin.version(), ip=ip, date=timestamp.date().isoformat(), source=src, timestamp=unique_timestamp)
             
             self.global_db.sadd(index_day_src, src)
             self.global_db.sadd(ip_information, unique_timestamp)
@@ -89,11 +93,11 @@ class InputReader():
             self.global_db.sadd(self.key_no_asn, ip_details)
             
             if infection is not None:
-                self.global_db.set(ip_details + key_infection, infection)
+                self.global_db.set('{ip}{sep}{key}'.format(ip_details, self.separator, self.key_infection),infection)
             if raw is not None:
-                self.global_db.set(ip_details + key_raw, raw)
+                self.global_db.set('{ip}{sep}{key}'.format(ip_details, self.separator, self.key_raw), raw)
             if times is not None:
-                self.global_db.set(ip_details + key_times, times)
+                self.global_db.set('{ip}{sep}{key}'.format(ip_details, self.separator, self.key_times), times)
             
             self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
         return to_return

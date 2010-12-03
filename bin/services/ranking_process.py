@@ -15,28 +15,21 @@ root_dir =  config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 from ranking.compute import *
 
-from db_models.ranking import *
-
 import redis
 
 routing_db = redis.Redis(db=config.get('redis','routing_redis'))
 
-items = config.items('modules_to_parse')
-
 import syslog
 syslog.openlog('Compute_Ranking_Process', syslog.LOG_PID, syslog.LOG_USER)
 
-interval = sys.argv[1].split()
-first = int(interval[0])
-last = int(interval[1])
+i = 0 
 
-r_session = RankingSession()
-asns = r_session.query(ASNs.asn).all()[first:last]
-syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + str(len(asns)) + ' ASNs: ' + str(first) + ' ' + str(last))
-for asn in asns:    
-    r = Ranking(asn.asn)
-    r.rank_and_save()
-r_session.close()
-syslog.syslog(syslog.LOG_INFO, 'Computing rank of ' + str(first) + ' ' + str(last) + ' is done.')
-
-
+syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(routing_db.scard(config.get('redis','to_rank'))))
+r = Ranking()
+while history_db.exists(config.get('redis','to_rank')):
+    key = history_db.spop(config.get('redis','to_rank'))
+    r.rank_using_key(key)
+    i +=1 
+    if i >= 1000:
+        syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(routing_db.scard(config.get('redis','to_rank'))))
+        i = 0

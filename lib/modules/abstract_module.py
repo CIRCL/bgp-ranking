@@ -12,7 +12,7 @@ config.read("../../etc/bgp-ranking.conf")
 #sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 # Temporary redis database
-temp_reris_db = int(config.get('modules_global','temp'))
+temp_reris_db = int(config.get('modules_global','temp_db'))
 uid_var = config.get('modules_global','uid_var')
 list_ips = config.get('modules_global','uid_list')
 
@@ -34,6 +34,8 @@ class AbstractModule():
     key_raw = config.get('input_keys','raw')
     key_times = config.get('input_keys','times')
     
+    separator = config.get('input_keys','separator')
+    
     def __init__(self):
         self.temp_db = redis.Redis(db=temp_reris_db)
     
@@ -42,7 +44,7 @@ class AbstractModule():
         # the format of "entry" is : { ':ip' : ip , ':timestamp' : timestamp ... }
         for key, value in entry.iteritems():
             if value is not None:
-                self.temp_db.set(str(uid) + key, value)
+                self.temp_db.set('{uid}{sep}{key}'.format(uid = str(uid),sep = self.separator, key = key), value)
         self.temp_db.sadd(list_ips, uid)
 
     def __glob_only_files(self):

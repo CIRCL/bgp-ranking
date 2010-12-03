@@ -43,6 +43,10 @@ def usage():
 
 import redis
 routing_db = redis.Redis(db=config.get('redis','routing_redis'))
+global_db = redis.Redis(db=config.get('redis','global'))
+history_db = redis.Redis(db=config.get('redis','history'))
+
+import datetime
 
 filename = sys.argv[1]
 dir = os.path.dirname(filename)
@@ -82,7 +86,7 @@ def run_splitted_processing(max_simultaneous_processes, process_name, process_ar
         pids = update_running_pids(pids)
 
 while 1:
-    if not os.path.exists(filename):
+    if not os.path.exists(filename) or history_db.exists(config.get('redis','to_rank')):
         # wait for a new file
         time.sleep(sleep_timer)
         continue
@@ -107,15 +111,19 @@ while 1:
     os.unlink(output.name)
     os.unlink(filename)
     
-    # start computing
-    syslog.syslog(syslog.LOG_INFO, 'Start compute ranking')
-    # get the number of ASNs in the database
-    r_session = RankingSession()
-    nb_of_asns = ASNs.query.count()
-    r_session.close()
-    # compute the intervals
-    all_intervals = intervals_ranking(nb_of_asns, int(config.get('ranking','interval')))
-    run_splitted_processing(int(config.get('processes','ranking')), ranking_process_service, all_intervals)
-    # Flush the old database to reduce the RAM usage
+    
+    sources = global_db.smembers('{date}{sep}{key}'.format(date.isoformat(), self.separator, config.get('redis','index_sources')))
+
+    for source in sources:
+        asns = global_db.smembers('{date}{sep}{source}'.format(date.isoformat(), self.separator, source))
+        for asn in asns:
+            history_db.sadd(config.get('redis','to_rank'), \
+                            '{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, asn = asn, date = date.isoformat(), source = source))
+    
+    service_start_multiple(ranking_process_service, int(config.get('processes','ranking'))
+    
+    while history_db.exists(config.get('redis','to_rank')):
+        # wait for a new file
+        time.sleep(sleep_timer_short)
+    rmpid(ranking_process_service)
     routing_db.flushdb()
-    syslog.syslog(syslog.LOG_INFO, 'Ranking computed')

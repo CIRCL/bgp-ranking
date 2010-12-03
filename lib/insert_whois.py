@@ -52,7 +52,7 @@ class InsertWhois():
         to_return = False
         
         while description is not None:
-            ip, date, source, timestamp = description.split('_')
+            ip, date, source, timestamp = description.split(self.separator)
             entry = self.cache_db_whois.get(ip)
             if entry is None:
                 errors += 1

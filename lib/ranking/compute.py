@@ -20,35 +20,28 @@ import time
 import redis
 import IPy
 
+import datetime
+
 routing_db = redis.Redis(db=config.get('redis','routing_redis'))
 global_db = redis.Redis(db=config.get('redis','global'))
 history_db = redis.Redis(db=config.get('redis','history'))
 
-class MetaRanking():
-    def list_dates(self, first_date, last_date):
-        list = []
-        number_of_days = (last_date + datetime.timedelta(days=1) - first_date).days
-        for day in range(number_of_days):
-            list += first_date + datetime.timedelta(days=day)
-        return list
-    
-    def make_ranking_all_asns_interval(self, first_date, last_date = datetime.date.today()):
-        dates = list_dates(first_date, last_date)
-        for date in dates:
-            make_ranking_all_asns(date)
-
-
 class Ranking():
+    separator = config.get('input_keys','separator')
     
-    def __init__(self, asn):
-        self.asn = asn
-        self.separator = config.get('input_keys','separator')
-    
-    def rank_and_save(self, date = datetime.date.today()):
+    def rank_and_save(self, asn, date = datetime.date.today()):
         self.date = date
+        self.asn = asn
         self.sources = global_db.smembers('{date}{sep}{key}'.format(date.isoformat(), self.separator, config.get('redis','index_sources')))
         self.ip_count()
         self.make_index()
+        self.rank()
+        self.make_history()
+
+    def rank_using_key(self, key):
+        self.asn, self.date, source = key.split(self.separator)
+        self.ip_count()
+        self.make_index_source(source)
         self.rank()
         self.make_history()
 
@@ -76,16 +69,17 @@ class Ranking():
     def make_index(self):
         asn_sources = {}
         for source in self.sources:
-            asn_sources[source] = global_db.smembers('{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, \
-                                        asn = self.asn, date = self.date.isoformat(), source = source)
+            self.make_index_source(source)
 
-        for source, ips in asn_sources.iteritems():
-            for i in ips:
-                ip = IPy.IP(i)
-                if ip.version() == 6:
-                    self.weight[str(source)][1] += 1.0
-                else :
-                    self.weight[str(source)][0] += 1.0
+    def make_index_source(self, source):
+        ips = global_db.smembers('{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, \
+                                        asn = self.asn, date = self.date.isoformat(), source = source)
+        for i in ips:
+            ip = IPy.IP(i)
+            if ip.version() == 6:
+                self.weight[str(source)][1] += 1.0
+            else :
+                self.weight[str(source)][0] += 1.0
 
     def rank(self):
         self.rank_by_source = {}
@@ -97,7 +91,6 @@ class Ranking():
                 self.rank_by_source[key][1] = (float(self.weight[key][1])/self.ipv6)
     
     def make_history(self):
-        history_db.
         for key in self.rank_by_source:
             if self.rank_by_source[key][0] > 0.0:
                 history_db.sadd('{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, \

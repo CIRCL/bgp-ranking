@@ -17,7 +17,7 @@ config.read("../bgp-ranking.conf")
 root_dir = config.get('directories','root')
 
 # Temporary redis database
-temp_reris_db = int(config.get('modules_global','temp'))
+temp_reris_db = int(config.get('modules_global','temp_db'))
 list_ips = config.get('modules_global','uid_list')
 global_db = config.get('redis','global')
 
@@ -34,7 +34,7 @@ class InputReader():
     key_raw = config.get('input_keys','raw')
     key_times = config.get('input_keys','times')
     
-    key_no_asn = config.get('input_keys','no_asn')
+    key_no_asn = config.get('redis','no_asn')
 
     def connect(self):
         self.temp_db = redis.Redis(db=temp_reris_db)
@@ -42,17 +42,24 @@ class InputReader():
 
     def get_all_information(self):
         uid = str(self.temp_db.spop(list_ips))
-        ip =        self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_ip))
-        src =       self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_src))
-        timestamp = self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_tstamp))
+        ip_key =        '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_ip)
+        src_key =       '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_src)
+        timestamp_key = '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_tstamp)
+        infection_key = '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_infection)
+        raw_key =       '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_raw)
+        times_key =     '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_times)
+        
+        ip =        self.temp_db.get(ip_key)
+        src =       self.temp_db.get(src_key)
+        timestamp = self.temp_db.get(timestamp_key)
         if timestamp is None:
             timestamp = datetime.datetime.utcnow()
         else:
             timestamp = dateutil.parser.parse(timestamp)
-        infection = self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_infection))
-        raw =       self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_raw))
-        times =     self.temp_db.get('{uid}{sep}{key}'.format(uid, self.separator, self.key_times))
-        self.temp_db.delete(uid + self.key_ip, uid + self.key_src, uid + self.key_tstamp, uid + self.key_infection, uid + self.key_raw, uid + self.key_times)
+        infection = self.temp_db.get(infection_key)
+        raw =       self.temp_db.get(raw_key)
+        times =     self.temp_db.get(times_key)
+        self.temp_db.delete(ip_key, src_key, timestamp_key, infection_key, raw_key, times_key)
         return uid, ip, src, timestamp, infection, raw, times
 
     def insert(self):
@@ -80,8 +87,8 @@ class InputReader():
                 continue
             
             unique_timestamp = datetime.datetime.utcnow().isoformat()
-            index_day_src   = '{date}{sep}{key}'.format(sep = self.separator, date=timestamp.date().isoformat(), key=config.get('redis','index_sources'))
-            index_day_ips   = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=timestamp.date().isoformat(), source=src, key=config.get('redis','index_ips'))
+            index_day_src   = '{date}{sep}{key}'.format(sep = self.separator, date=timestamp.date().isoformat(), key=config.get('input_keys','index_sources'))
+            index_day_ips   = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=timestamp.date().isoformat(), source=src, key=config.get('input_keys','index_ips'))
             ip_information  = '{ip}{sep}{date}{sep}{source}' \
                                     .format(sep = self.separator, version = ip_bin.version(), ip=ip, date=timestamp.date().isoformat(), source=src)
             ip_details      = '{ip}{sep}{date}{sep}{source}{sep}{timestamp}' \

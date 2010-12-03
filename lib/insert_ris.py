@@ -49,7 +49,7 @@ class InsertRIS():
         self.cache_db_ris = redis.Redis(db=ris_cache_reris_db)
         self.temp_db = redis.Redis(db=temp_reris_db)
         self.global_db = redis.Redis(db=global_db)
-        default_asn_members = self.global_db.smembers(config.get('default','asn'))
+        default_asn_members = self.global_db.smembers(config.get('modules_global','default_asn'))
         if len(default_asn_members) == 0 :
             self.default_asn_key = self.add_asn_entry(\
                                     config.get('modules_global','default_asn'), \
@@ -62,8 +62,8 @@ class InsertRIS():
         timestamp = datetime.datetime.utcnow().isoformat()
         self.global_db.sadd(asn, timestamp)
         key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=timestamp)
-        self.global_db.set("{key}{sep}{owner}".format(key, self.separator, self.key_owner), owner)
-        self.global_db.set("{key}{sep}{ips_block}".format(key, self.separator, self.key_ips_block), ips_block)
+        self.global_db.set("{key}{sep}{owner}".format(key = key, sep = self.separator, owner = self.key_owner), owner)
+        self.global_db.set("{key}{sep}{ips_block}".format(key = key, sep = self.separator, ips_block = self.key_ips_block), ips_block)
         return key
 
     def __update_db_ris(self, current,  data):
@@ -75,11 +75,11 @@ class InsertRIS():
         riswhois = splitted[2]
         ris_whois = Whois(riswhois,  ris_origin)
         if not ris_whois.origin:
-            self.global_db.set("{ip_info}{sep}{key}".format(current, self.separator, self.key_asn), self.default_asn_key)
+            self.global_db.set("{ip_info}{sep}{key}".format(ip_info = current, sep = self.separator, key = self.key_asn), self.default_asn_key)
             return '-1'
         else:
             asn_key = self.add_asn_entry(ris_whois.origin, ris_whois.description, ris_whois.route)
-            self.global_db.set("{ip_info}{sep}{key}".format(current, self.separator, self.key_asn), asn_key)
+            self.global_db.set("{ip_info}{sep}{key}".format(ip_info = current, sep = self.separator, key = self.key_asn), asn_key)
             return ris_whois.origin
 
     def get_ris(self):
@@ -92,7 +92,7 @@ class InsertRIS():
         to_return = False
         
         while description is not None:
-            ip, date, source, timestamp = description.split('_')
+            ip, date, source, timestamp = description.split(self.separator)
             entry = self.cache_db_ris.get(ip)
             if entry is None:
                 errors += 1
@@ -102,8 +102,8 @@ class InsertRIS():
             else:
                 errors = 0
                 asn = self.__update_db_ris(description, entry)
-                index_day_asns  =      '{date}{sep}{source}{sep}{key}'.format(sep = separator, date=timestamp.date().isoformat(), source=src, key=config.get('redis','index_asns'))
-                index_asns = '{asn}{sep}{date}{sep}{source}'.format(sep = separator, asn = asn, date=timestamp.date().isoformat(), source=src)
+                index_day_asns  =      '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=datetime.date.today().isoformat(), source=source, key=config.get('input_keys','index_asns'))
+                index_asns = '{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, asn = asn, date=datetime.date.today().isoformat(), source=source)
                 self.global_db.sadd(index_day_asns, asn)
                 self.global_db.sadd(index_asns, ip)
                 to_return = True

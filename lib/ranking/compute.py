@@ -32,7 +32,7 @@ class Ranking():
     def rank_and_save(self, asn, date = datetime.date.today()):
         self.date = date
         self.asn = asn
-        self.sources = global_db.smembers('{date}{sep}{key}'.format(date.isoformat(), self.separator, config.get('redis','index_sources')))
+        self.sources = global_db.smembers('{date}{sep}{key}'.format(date = date.isoformat(), sep = self.separator, key = config.get('redis','index_sources')))
         self.ip_count()
         self.make_index()
         self.rank()

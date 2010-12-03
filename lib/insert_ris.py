@@ -102,7 +102,7 @@ class InsertRIS():
             else:
                 errors = 0
                 asn = self.__update_db_ris(description, entry)
-                index_day_asns  =      '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=datetime.date.today().isoformat(), source=source, key=config.get('input_keys','index_asns'))
+                index_day_asns = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=datetime.date.today().isoformat(), source=source, key=config.get('input_keys','index_asns'))
                 index_asns = '{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, asn = asn, date=datetime.date.today().isoformat(), source=source)
                 self.global_db.sadd(index_day_asns, asn)
                 self.global_db.sadd(index_asns, ip)

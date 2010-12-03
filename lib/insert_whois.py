@@ -64,8 +64,9 @@ class InsertWhois():
                 splitted = entry.partition('\n')
                 whois_server = splitted[0]
                 whois = splitted[2]
-                self.global_db.set("{entry}{sep}{whois_server}".format(entry, self.separator, self.key_whois_server), whois_server)
-                self.global_db.set("{entry}{sep}{whois}".format(entry, self.separator, self.key_whois), whois)
+                # FIXME: add TTL ? 
+                self.global_db.set("{entry}{sep}{whois_server}".format(entry = entry,sep = self.separator, whois_server = self.key_whois_server), whois_server)
+                self.global_db.set("{entry}{sep}{whois}".format(entry = entry,sep = self.separator, whois = self.key_whois), whois)
                 to_return = True
             description = self.global_db.spop(key_no_asn)
         syslog.syslog(syslog.LOG_DEBUG, 'Whois to fetch: ' + str(self.global_db.scard(key_no_whois)))

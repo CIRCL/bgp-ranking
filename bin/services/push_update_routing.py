@@ -112,10 +112,10 @@ while 1:
     os.unlink(filename)
     
     
-    sources = global_db.smembers('{date}{sep}{key}'.format(date.isoformat(), self.separator, config.get('redis','index_sources')))
+    sources = global_db.smembers('{date}{sep}{key}'.format(date = date.isoformat(), sep = self.separator, key = config.get('redis','index_sources')))
 
     for source in sources:
-        asns = global_db.smembers('{date}{sep}{source}'.format(date.isoformat(), self.separator, source))
+        asns = global_db.smembers('{date}{sep}{source}'.format(date = date.isoformat(), sep = self.separator, source = source))
         for asn in asns:
             history_db.sadd(config.get('redis','to_rank'), \
                             '{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, asn = asn, date = date.isoformat(), source = source))

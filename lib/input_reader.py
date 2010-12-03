@@ -100,11 +100,11 @@ class InputReader():
             self.global_db.sadd(self.key_no_asn, ip_details)
             
             if infection is not None:
-                self.global_db.set('{ip}{sep}{key}'.format(ip_details, self.separator, self.key_infection),infection)
+                self.global_db.set('{ip}{sep}{key}'.format(ip = ip_details, sep = self.separator, key = self.key_infection),infection)
             if raw is not None:
-                self.global_db.set('{ip}{sep}{key}'.format(ip_details, self.separator, self.key_raw), raw)
+                self.global_db.set('{ip}{sep}{key}'.format(ip = ip_details, sep = self.separator, key = self.key_raw), raw)
             if times is not None:
-                self.global_db.set('{ip}{sep}{key}'.format(ip_details, self.separator, self.key_times), times)
+                self.global_db.set('{ip}{sep}{key}'.format(ip = ip_details, sep = self.separator, key = self.key_times), times)
             
             self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
         return to_return

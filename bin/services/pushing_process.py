@@ -20,7 +20,7 @@ root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 import redis
-routing_db = redis.Redis(db=config.get('redis','routing_redis'))
+routing_db = redis.Redis(db=config.get('redis','routing'))
 
 from whois_parser.bgp_parsers import *
 import syslog

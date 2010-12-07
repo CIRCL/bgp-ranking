@@ -34,7 +34,6 @@ import syslog
 syslog.openlog('Push_n_Rank', syslog.LOG_PID, syslog.LOG_USER)
 import time
 
-from db_models.ranking import *
 from helpers.initscript import *
 
 def usage():
@@ -42,7 +41,7 @@ def usage():
     exit (1)
 
 import redis
-routing_db = redis.Redis(db=config.get('redis','routing_redis'))
+routing_db = redis.Redis(db=config.get('redis','routing'))
 global_db = redis.Redis(db=config.get('redis','global'))
 history_db = redis.Redis(db=config.get('redis','history'))
 
@@ -86,6 +85,7 @@ def run_splitted_processing(max_simultaneous_processes, process_name, process_ar
         pids = update_running_pids(pids)
 
 while 1:
+    """
     if not os.path.exists(filename) or history_db.exists(config.get('redis','to_rank')):
         # wait for a new file
         time.sleep(sleep_timer)
@@ -110,20 +110,21 @@ while 1:
     # Remove the binary and the plain text files
     os.unlink(output.name)
     os.unlink(filename)
+    """ 
     
-    
-    sources = global_db.smembers('{date}{sep}{key}'.format(date = date.isoformat(), sep = self.separator, key = config.get('redis','index_sources')))
+    date = datetime.date.today().isoformat()
+    separator = config.get('input_keys','separator')
+    sources = global_db.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
+
+    service_start_multiple(ranking_process_service, int(config.get('processes','ranking')))
 
     for source in sources:
-        asns = global_db.smembers('{date}{sep}{source}'.format(date = date.isoformat(), sep = self.separator, source = source))
+        asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, key = config.get('input_keys','index_asns')))
         for asn in asns:
-            history_db.sadd(config.get('redis','to_rank'), \
-                            '{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, asn = asn, date = date.isoformat(), source = source))
+            history_db.sadd(config.get('redis','to_rank'), '{asn}{sep}{date}{sep}{source}'.format(sep = separator, asn = asn, date = date, source = source))
     
-    service_start_multiple(ranking_process_service, int(config.get('processes','ranking'))
-    
-    while history_db.exists(config.get('redis','to_rank')):
+    while history_db.scard(config.get('redis','to_rank')) > 0:
         # wait for a new file
         time.sleep(sleep_timer_short)
     rmpid(ranking_process_service)
-    routing_db.flushdb()
+    #routing_db.flushdb()

@@ -22,15 +22,18 @@ import IPy
 
 import datetime
 
-routing_db = redis.Redis(db=config.get('redis','routing_redis'))
+routing_db = redis.Redis(db=config.get('redis','routing'))
 global_db = redis.Redis(db=config.get('redis','global'))
 history_db = redis.Redis(db=config.get('redis','history'))
 
 class Ranking():
     separator = config.get('input_keys','separator')
     
+    def __init__(self):
+        self.weight = {}
+    
     def rank_and_save(self, asn, date = datetime.date.today()):
-        self.date = date
+        self.date = date.isoformat()
         self.asn = asn
         self.sources = global_db.smembers('{date}{sep}{key}'.format(date = date.isoformat(), sep = self.separator, key = config.get('redis','index_sources')))
         self.ip_count()
@@ -39,11 +42,12 @@ class Ranking():
         self.make_history()
 
     def rank_using_key(self, key):
-        self.asn, self.date, source = key.split(self.separator)
-        self.ip_count()
-        self.make_index_source(source)
-        self.rank()
-        self.make_history()
+        if key is not None:
+            self.asn, self.date, source = key.split(self.separator)
+            self.ip_count()
+            self.make_index_source(source)
+            self.rank()
+            self.make_history()
 
     def ip_count(self):
         keyv4 = str(self.asn) + ':v4'
@@ -73,7 +77,8 @@ class Ranking():
 
     def make_index_source(self, source):
         ips = global_db.smembers('{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, \
-                                        asn = self.asn, date = self.date.isoformat(), source = source)
+                                        asn = self.asn, date = self.date, source = source))
+        self.weight[str(source)] = [0.0,0.0]
         for i in ips:
             ip = IPy.IP(i)
             if ip.version() == 6:
@@ -94,9 +99,9 @@ class Ranking():
         for key in self.rank_by_source:
             if self.rank_by_source[key][0] > 0.0:
                 history_db.sadd('{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, \
-                                                asn = self.asn, date = self.date.isoformat(), source = key, \
+                                                asn = self.asn, date = self.date, source = key, \
                                                 v4 = config.get('input_keys','rankv4')), self.rank_by_source[key][0])
             if self.rank_by_source[key][1] > 0.0:
                 history_db.sadd('{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, \
-                                                asn = self.asn, date = self.date.isoformat(), source = key, \
+                                                asn = self.asn, date = self.date, source = key, \
                                                 v6 = config.get('input_keys','rankv6')), self.rank_by_source[key][1])

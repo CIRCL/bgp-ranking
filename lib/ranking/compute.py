@@ -54,7 +54,7 @@ class Ranking():
         keyv6 = str(self.asn) + ':v6'
         self.ipv4 = routing_db.get(keyv4)
         self.ipv6 = routing_db.get(keyv6)
-        if self.ipv4 is None:
+        if self.ipv4 is None or self.ipv6 is None:
             blocks = routing_db.smembers(self.asn)
             self.ipv4 = 0
             self.ipv6 = 0

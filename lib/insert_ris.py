@@ -98,6 +98,7 @@ class InsertRIS():
                 errors += 1
                 self.global_db.sadd(key_no_asn, description)
                 if errors >= self.max_consecutive_errors:
+                    self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
                     break
             else:
                 errors = 0
@@ -108,5 +109,5 @@ class InsertRIS():
                 self.global_db.sadd(index_asns, ip)
                 to_return = True
             description = self.global_db.spop(key_no_asn)
-        syslog.syslog(syslog.LOG_DEBUG, 'RIS Whois to fetch: ' + str(self.global_db.scard(key_no_asn)))
+            syslog.syslog(syslog.LOG_DEBUG, 'RIS Whois to fetch: ' + str(self.global_db.scard(key_no_asn)))
         return to_return

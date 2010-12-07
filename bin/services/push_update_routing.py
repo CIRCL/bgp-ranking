@@ -85,7 +85,6 @@ def run_splitted_processing(max_simultaneous_processes, process_name, process_ar
         pids = update_running_pids(pids)
 
 while 1:
-    """
     if not os.path.exists(filename) or history_db.exists(config.get('redis','to_rank')):
         # wait for a new file
         time.sleep(sleep_timer)
@@ -110,7 +109,6 @@ while 1:
     # Remove the binary and the plain text files
     os.unlink(output.name)
     os.unlink(filename)
-    """ 
     
     date = datetime.date.today().isoformat()
     separator = config.get('input_keys','separator')
@@ -127,4 +125,4 @@ while 1:
         # wait for a new file
         time.sleep(sleep_timer_short)
     rmpid(ranking_process_service)
-    #routing_db.flushdb()
+    routing_db.flushdb()

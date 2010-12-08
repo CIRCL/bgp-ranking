@@ -19,7 +19,7 @@ raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
 import signal
 from helpers.initscript import *
 
-service = os.path.join(services_dir, "get_whois_entries")
+service = os.path.join(services_dir, "whois")
 
 def usage():
     print "start_get_whois_queries.py (start|stop)"

@@ -17,7 +17,6 @@ from socket import *
 import IPy
 import re
 import time
-from elixir import *
 import redis
 
 import errno

@@ -25,7 +25,6 @@ import syslog
 syslog.openlog('BGP_Ranking_Get_Whois_Entries', syslog.LOG_PID, syslog.LOG_USER)
 
 from helpers.initscript import *
-from db_models.ranking import *
 import time
 
 

@@ -17,8 +17,14 @@ class MasterControler():
         self.graph_last_date = datetime.date.today()
         self.graph_first_date = datetime.date.today() - datetime.timedelta(days=30)
 
-    def prepare_index(self):
+    def prepare_index(self, source):
         self.report.build_reports()
+        rank = self.report.get_daily_rank(source)
+        self.histories = []
+        for r in rank:
+            self.histories.append(r[0], r[1])
+        
+        
     
     def get_sources(self):
         self.sources = self.report.sources

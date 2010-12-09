@@ -43,7 +43,6 @@
         </thead>
         #for $history in $histories
         <tr>
-            <td>$history[0]</td>
             #if $source is not None
                 <td><a href="/asn_details?source=${source};asn=${history[1]}">${history[1]}</a></td>
             #else

@@ -43,7 +43,7 @@ class Ranking():
 
     def rank_using_key(self, key):
         if key is not None:
-            self.asn, self.date, source = key.split(self.separator)
+            self.asn, self.timestamp, self.date, source = key.split(self.separator)
             self.ip_count()
             self.make_index_source(source)
             self.rank()
@@ -76,11 +76,12 @@ class Ranking():
             self.make_index_source(source)
 
     def make_index_source(self, source):
-        ips = global_db.smembers('{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, \
-                                        asn = self.asn, date = self.date, source = source))
+        ips = global_db.smembers('{asn}{sep}{timestamp}{sep}{date}{sep}{source}'.format(sep = self.separator, \
+                                        asn = self.asn, timestamp = self.timestamp, date = self.date, source = source))
         self.weight[str(source)] = [0.0,0.0]
         for i in ips:
-            ip = IPy.IP(i)
+            ip_extract, timestamp, date, source = i.split(self.separator)
+            ip = IPy.IP(ip_extract)
             if ip.version() == 6:
                 self.weight[str(source)][1] += 1.0
             else :
@@ -101,9 +102,9 @@ class Ranking():
                 history_db.zadd('{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, \
                                                 asn = self.asn, date = self.date, source = key, \
                                                 v4 = config.get('input_keys','rankv4')), datetime.datetime.now().hour, self.rank_by_source[key][0])
-                history_db.sadd('{asn}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = self.asn, source = key, v4 = config.get('input_keys','rankv4'), self.date)
+                history_db.sadd('{asn}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = self.asn, source = key, v4 = config.get('input_keys','rankv4')), self.date)
             if self.rank_by_source[key][1] > 0.0:
                 history_db.zadd('{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, \
                                                 asn = self.asn, date = self.date, source = key, \
                                                 v6 = config.get('input_keys','rankv6')), datetime.datetime.now().hour, self.rank_by_source[key][1])
-                history_db.sadd('{asn}{sep}{source}{sep}{v6}'.format(sep = self.separator, asn = self.asn, source = key, v6 = config.get('input_keys','rankv6'), self.date)
+                history_db.sadd('{asn}{sep}{source}{sep}{v6}'.format(sep = self.separator, asn = self.asn, source = key, v6 = config.get('input_keys','rankv6')), self.date)

@@ -9,7 +9,8 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.read("../../etc/bgp-ranking.conf")
+config.optionxform = str
+config.read("../etc/bgp-ranking.conf")
 root_dir = config.get('directories','root')
 
 import datetime
@@ -23,7 +24,7 @@ class Reports():
     
     def __init__(self, date = datetime.date.today(), ip_version = 4):
         self.date = date.isoformat()
-        self.sources = global_db.smembers('{date}{sep}{key}'.format(date = self.date, sep = self.separator, key = config.get('redis','index_sources')))
+        self.sources = global_db.smembers('{date}{sep}{key}'.format(date = self.date, sep = self.separator, key = config.get('input_keys','index_sources')))
         if ip_version is 4:
             self.ip_key = config.get('input_keys','rankv4')
         elif ip_version is 6:
@@ -47,11 +48,12 @@ class Reports():
             zset_key = source
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = zset_key, sep = self.separator, ip_key = self.ip_key)
         # drop the old stuff
-        history_db.del(histo_key)
+        history_db.delete(histo_key)
         asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date, sep = self.separator, source = source, key = config.get('input_keys','index_asns')))
         for asn in asns:
             rank = self.get_daily_rank(asn, source)
-            history_db.zincrby(histo_key, rank * float(self.impacts[str(source)]) + config.get('ranking','min'), asn)
+            if len(rank) > 0:
+                history_db.zincrby(histo_key, rank * float(self.impacts[str(source)]) + config.get('ranking','min'), asn)
     
     def format_report(self, source = None, limit = 50):
         if source is None:
@@ -94,9 +96,9 @@ class Reports():
             nb_of_ips = 0 
             for source in sources:
                 nb_of_ips += global_db.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
-            if nb_of_ips > 0
-                owner = global_db.get('{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, config.get('input_keys','owner'))
-                ip_block = global_db.get('{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, config.get('input_keys','ips_block'))
+            if nb_of_ips > 0:
+                owner = global_db.get('{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, owner = config.get('input_keys','owner')))
+                ip_block = global_db.get('{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, ip_block = config.get('input_keys','ips_block')))
                 asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips])
         return asn_descs_to_print
 

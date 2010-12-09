@@ -97,15 +97,15 @@ class InputReader():
             # FIXME: not used actually but who knows...
             self.global_db.sadd(index_day_ips, '{ip}{sep}{timestamp}'.format(sep = self.separator, ip = ip, timestamp = unique_timestamp))
             
-            ip_details = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
-            self.global_db.set('{ip}{key}'.format(ip = ip_details, key = self.key_list_tstamp), timestamp.datetime().isoformat())
+            ip_details_keys = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
+            self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_list_tstamp), timestamp.isoformat())
             
             if infection is not None:
-                self.global_db.set('{ip}{key}'.format(ip = ip_details, key = self.key_infection), infection)
+                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_infection), infection)
             if raw is not None:
-                self.global_db.set('{ip}{key}'.format(ip = ip_details, key = self.key_raw), raw)
+                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_raw), raw)
             if times is not None:
-                self.global_db.set('{ip}{key}'.format(ip = ip_details, key = self.key_times), times)
+                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_times), times)
             
             self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
             self.global_db.sadd(config.get('redis','no_asn'), ip_details)

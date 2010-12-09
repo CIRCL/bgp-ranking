@@ -60,7 +60,7 @@ class InsertRIS():
 
     def add_asn_entry(self, asn, owner, ips_block):
         key = None
-        asn_timestamps = global_db.smembers(asn)
+        asn_timestamps = self.global_db.smembers(asn)
         for asn_timestamp in asn_timestamps:
             temp_key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=asn_timestamp)
             if self.global_db.get("{key}{sep}{owner}".format(key = temp_key, sep = self.separator, owner = self.key_owner)) is owner and \
@@ -98,7 +98,7 @@ class InsertRIS():
         description = self.global_db.spop(key_no_asn)
         errors = 0 
         to_return = False
-        
+        i = 0 
         while description is not None:
             ip, timestamp, date, source = description.split(self.separator)
             entry = self.cache_db_ris.get(ip)
@@ -109,6 +109,7 @@ class InsertRIS():
                     self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
                     break
             else:
+                i += 1
                 errors = 0
                 asn = self.__update_db_ris(description, entry)
                 index_day_asns = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=datetime.date.today().isoformat(), source=source, \
@@ -117,6 +118,8 @@ class InsertRIS():
                 self.global_db.sadd(index_day_asns, asn)
                 self.global_db.sadd(index_as_ips, description)
                 to_return = True
-            syslog.syslog(syslog.LOG_DEBUG, 'RIS Whois to fetch: ' + str(self.global_db.scard(key_no_asn)))
+            if i >= 100:
+                syslog.syslog(syslog.LOG_DEBUG, 'RIS Whois to fetch: ' + str(self.global_db.scard(key_no_asn)))
+                i = 0 
             description = self.global_db.spop(key_no_asn)
         return to_return

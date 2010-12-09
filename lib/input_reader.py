@@ -29,12 +29,11 @@ class InputReader():
     
     key_ip = config.get('input_keys','ip')
     key_src = config.get('input_keys','src')
+    key_list_tstamp = config.get('input_keys','list_tstamp')
     key_tstamp = config.get('input_keys','tstamp')
     key_infection = config.get('input_keys','infection')
     key_raw = config.get('input_keys','raw')
     key_times = config.get('input_keys','times')
-    
-    key_no_asn = config.get('redis','no_asn')
 
     def connect(self):
         self.temp_db = redis.Redis(db=temp_reris_db)
@@ -87,24 +86,27 @@ class InputReader():
                 continue
             
             unique_timestamp = datetime.datetime.utcnow().isoformat()
-            index_day_src   = '{date}{sep}{key}'.format(sep = self.separator, date=timestamp.date().isoformat(), key=config.get('input_keys','index_sources'))
-            index_day_ips   = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=timestamp.date().isoformat(), source=src, key=config.get('input_keys','index_ips'))
-            ip_information  = '{ip}{sep}{date}{sep}{source}' \
-                                    .format(sep = self.separator, version = ip_bin.version(), ip=ip, date=timestamp.date().isoformat(), source=src)
-            ip_details      = '{ip}{sep}{date}{sep}{source}{sep}{timestamp}' \
-                                    .format(sep = self.separator, version = ip_bin.version(), ip=ip, date=timestamp.date().isoformat(), source=src, timestamp=unique_timestamp)
+            date = timestamp.date().isoformat()
+            index_day_src   = '{date}{sep}{key}'.format(sep = self.separator, date=date, key=config.get('input_keys','index_sources'))
+            index_day_ips   = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=date, source=src, key=config.get('input_keys','index_ips'))
+            ip_information  = '{ip}{sep}{date}{sep}{source}' .format(sep = self.separator, ip=ip, date=date, source=src)
+            ip_details      = '{ip}{sep}{timestamp}{sep}{date}{sep}{source}'.format(sep = self.separator, ip=ip, date=date, source=src, timestamp=unique_timestamp)
             
             self.global_db.sadd(index_day_src, src)
             self.global_db.sadd(ip_information, unique_timestamp)
-            self.global_db.sadd(index_day_ips, ip)
-            self.global_db.sadd(self.key_no_asn, ip_details)
+            # FIXME: not used actually but who knows...
+            self.global_db.sadd(index_day_ips, '{ip}{sep}{timestamp}'.format(sep = self.separator, ip = ip, timestamp = unique_timestamp))
+            
+            ip_details = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
+            self.global_db.set('{ip}{key}'.format(ip = ip_details, key = self.key_list_tstamp), timestamp.datetime().isoformat())
             
             if infection is not None:
-                self.global_db.set('{ip}{sep}{key}'.format(ip = ip_details, sep = self.separator, key = self.key_infection),infection)
+                self.global_db.set('{ip}{key}'.format(ip = ip_details, key = self.key_infection), infection)
             if raw is not None:
-                self.global_db.set('{ip}{sep}{key}'.format(ip = ip_details, sep = self.separator, key = self.key_raw), raw)
+                self.global_db.set('{ip}{key}'.format(ip = ip_details, key = self.key_raw), raw)
             if times is not None:
-                self.global_db.set('{ip}{sep}{key}'.format(ip = ip_details, sep = self.separator, key = self.key_times), times)
+                self.global_db.set('{ip}{key}'.format(ip = ip_details, key = self.key_times), times)
             
             self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
+            self.global_db.sadd(config.get('redis','no_asn'), ip_details)
         return to_return

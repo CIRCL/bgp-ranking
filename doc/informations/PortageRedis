@@ -17,9 +17,11 @@ IPsDescriptions, set:
             value: string, whois entry
         key: <IP>:<DAY>:<SOURCE>:<timestamp>:whois_address
             value: string, URL whois server
-        key: <IP>:<DAY>:<SOURCE>:<timestamp>:<asn>
-            value: string, timestamp
+        key: <IP>:<DAY>:<SOURCE>:<timestamp>:asn
+            value: string, <asn>|<timestamp>
             when the key is set, the entry is completely imported
+        key: <IP>:<DAY>:<SOURCE>:<timestamp>:list_timestamp
+            value: string, the exact timestamp provided by the list
 ********************
 
 ********************

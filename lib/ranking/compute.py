@@ -98,10 +98,12 @@ class Ranking():
     def make_history(self):
         for key in self.rank_by_source:
             if self.rank_by_source[key][0] > 0.0:
-                history_db.sadd('{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, \
+                history_db.zadd('{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, \
                                                 asn = self.asn, date = self.date, source = key, \
-                                                v4 = config.get('input_keys','rankv4')), self.rank_by_source[key][0])
+                                                v4 = config.get('input_keys','rankv4')), datetime.datetime.now().hour, self.rank_by_source[key][0])
+                history_db.sadd('{asn}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = self.asn, source = key, v4 = config.get('input_keys','rankv4'), self.date)
             if self.rank_by_source[key][1] > 0.0:
-                history_db.sadd('{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, \
+                history_db.zadd('{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, \
                                                 asn = self.asn, date = self.date, source = key, \
-                                                v6 = config.get('input_keys','rankv6')), self.rank_by_source[key][1])
+                                                v6 = config.get('input_keys','rankv6')), datetime.datetime.now().hour, self.rank_by_source[key][1])
+                history_db.sadd('{asn}{sep}{source}{sep}{v6}'.format(sep = self.separator, asn = self.asn, source = key, v6 = config.get('input_keys','rankv6'), self.date)

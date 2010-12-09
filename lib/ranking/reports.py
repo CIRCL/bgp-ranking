@@ -3,194 +3,111 @@
 """
 Quick and durty code generating reports based on the information found in the database. 
 
-FIXME: rewrite it!
 """
 
+import os 
+import sys
+import ConfigParser
+config = ConfigParser.RawConfigParser()
+config.read("../../etc/bgp-ranking.conf")
+root_dir = config.get('directories','root')
 
-if __name__ == "__main__":
-    import os 
-    import sys
-    import ConfigParser
-    config = ConfigParser.RawConfigParser()
-    config.optionxform = str
-    config.read("../../etc/bgp-ranking.conf")
-    root_dir = config.get('directories','root')
-    sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+import datetime
+import redis
 
-from db_models.ranking import *
-
-
-items = config.items('modules_to_parse')
-
-from sqlalchemy import and_, desc
+global_db = redis.Redis(db=config.get('redis','global'))
+history_db = redis.Redis(db=config.get('redis','history'))
 
 class Reports():
+    separator = config.get('input_keys','separator')
     
-    def __init__(self, date = datetime.datetime.utcnow()):
-        self.date = date
+    def __init__(self, date = datetime.date.today(), ip_version = 4):
+        self.date = date.isoformat()
+        self.sources = global_db.smembers('{date}{sep}{key}'.format(date = self.date, sep = self.separator, key = config.get('redis','index_sources')))
+        if ip_version is 4:
+            self.ip_key = config.get('input_keys','rankv4')
+        elif ip_version is 6:
+            self.ip_key = config.get('input_keys','rankv6')
         self.impacts = {}
+        items = config.items('modules_to_parse')
         for item in items:
             self.impacts[item[0]] = int(item[1])
     
-    def get_sources(self):
-        r_session = RankingSession()
-        self.sources = []
-        for s in Sources.query.all():
-            self.sources.append(s.source)
-        r_session.close()
-    
-    def filter_query_source(self, query, limit):
-        entries = query.count()
-        histories_by_asn = {}
-        first = 0 
-        last = limit
-        while limit > 0:
-            select = query[first:last]
-            for s in select:
-                if histories_by_asn.get(s.asn, None) is None:
-                    if s.source_source is not None:
-                        histories_by_asn[s.asn] = [s.timestamp, s.asn, s.rankv4 * float(self.impacts[str(s.source_source)]) + 1.0]
-                    else:
-                        histories_by_asn[s.asn] = [s.timestamp, s.asn, s.rankv4 + 1.0]
-                    limit -= 1
-                    if limit <= 0:
-                        break
-            first = last
-            last = last + limit
-            if first > entries:
-                break
-        return histories_by_asn
+    def global_report(self):
+        for source in self.sources:
+            self.source_report(source, config.get('input_keys','histo_global'))
 
-    #FIXME: query on IPv6
-    def best_of_day(self, limit = 50, source = None):
-        r_session = RankingSession()
-        query = None
-        histo = {}
-        s = self.existing_source(source)
-        if s is not None:
-            query = History.query.filter(and_(History.source == s, \
-                    and_(History.rankv4 > 0.0, 
-                        and_(   History.timestamp < self.date + datetime.timedelta(days=1), \
-                                History.timestamp > self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
-            histo = self.filter_query_source(query, limit)
-            global_query = False
-        if query is None:
-            histo = {}
-            for s in Sources.query.all():
-                query = History.query.filter(and_(History.source == s, and_(History.rankv4 > 0.0, \
-                        and_(   History.timestamp < self.date + datetime.timedelta(days=1), \
-                                History.timestamp > self.date - datetime.timedelta(days=1))))).order_by(desc(History.rankv4), desc(History.timestamp))
-                h_temp = self.filter_query_source(query, limit)
-                if len(histo) == 0:
-                    histo = h_temp
-                else:
-                    for t, h in h_temp.items():
-                        if histo.get(h[1], None) is None:
-                            histo[h[1]] = h
-                        else:
-                            histo[h[1]][2] += h[2] - 1 
-        self.histories = []
-        for t, h in histo.items():
-            self.histories.append(h)
-        self.histories.sort(key=lambda x:x[2], reverse=True )
-        r_session.close()
+    def get_daily_rank(self, asn, source, date = None):
+        if date is None:
+            date = self.date
+        # Get only the latest rank for a day
+        return history_db.zrevrange('{asn}{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep = self.separator, asn = asn, date = date, source = source, ip_key = self.ip_key), 0, 0) 
+        
+    def source_report(self, source, zset_key = None):
+        if zset_key is None:
+            zset_key = source
+        histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = zset_key, sep = self.separator, ip_key = self.ip_key)
+        asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date, sep = self.separator, source = source, key = config.get('input_keys','index_asns')))
+        for asn in asns:
+            rank = self.get_daily_rank(asn, source)
+            history_db.zincrby(histo_key, rank * float(self.impacts[str(source)]) + config.get('ranking','min'), asn)
     
-    def asn_histo_query(self, asn, source = None):
-        r_session = RankingSession()
-        query = None
-        s = self.existing_source(source)
-        if s is not None:
-            query = History.query.filter(and_(History.source == s, History.asn == int(asn))).order_by(desc(History.timestamp))
-        if query is None: 
-            query = History.query.filter(History.asn == int(asn)).order_by(desc(History.timestamp))
-        r_session.close()
-        return query
+    def format_report(self, source = None, limit = 50):
+        if source is None:
+            source = config.get('input_keys','histo_global')
+        histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
+        self.sorted_asns = history_db.zrevrange(histo_key, 0, limit, True)
 
-    def prepare_graphe_js(self,  asn, source = None):
-        query = self.asn_histo_query(asn, source)
-        histories = query.all()
-        if histories is not None and len(histories) > 0:
-            first_date = histories[-1].timestamp.date()
-            last_date = histories[0].timestamp.date()
-            date = None
-            tmptable = []
-            for history in histories:
-                prec_date = date
-                date = history.timestamp.date()
-                if date != prec_date:
-                    #FIXME: legacy code, to support the first version of the database: the source was not saved
-                    if history.source_source is not None:
-                        tmptable.append([str(history.timestamp.date()), \
-                        float(history.rankv4) * float(self.impacts[str(history.source_source)]) + 1.0 , \
-                        float(history.rankv6)* float(self.impacts[str(history.source_source)]) + 1.0] )
+    def prepare_graphe_js(self, asn, sources = None):
+        if sources is None:
+            sources = self.sources
+        ranks_by_days = {}
+        for source in sources:
+            asn_days = history_db.smembers('{asn}{sep}{source}{sep}{key}'.format(sep = self.separator, asn = self.asn, source = source, key = self.ip_key))
+            if asn_days is not None:
+                for asn_day in asn_days:
+                    if ranks_by_days.get(asn_day, None) is None:
+                        ranks_by_days[asn_day] = int(self.get_daily_rank(asn, source, asn_day))
                     else:
-                        tmptable.append([str(history.timestamp.date()), float(history.rankv4) + 1.0 , float(history.rankv6) + 1.0] )
-            dates = []
-            ipv4 = []
-            ipv6 = []
-            for t in reversed(tmptable):
-                dates.append(t[0])
-                ipv4.append(t[1])
-                ipv6.append(t[2])
-            self.graph_infos = [ipv4, ipv6, dates, first_date, last_date]
+                        ranks_by_days[asn_day] += int(self.get_daily_rank(asn, source, asn_day))
+
+        if len(ranks_by_days) > 0:
+            self.graph_infos = ranks_by_days
         else:
             self.graph_infos = None
-    
-    def existing_source(self, source = None):
-        if source is not None and len(source) > 0:
-            r_session = RankingSession()
-            to_return = Sources.query.get(unicode(source))
-            r_session.close()
-            return to_return
-        return None
 
-    def ip_desc_query(self, asn_id, source, date):
-        if source is not None and len(source) > 0:
-            query = IPsDescriptions.query.filter(and_(IPsDescriptions.list_name == unicode(source), \
-                    and_(IPsDescriptions.asn == asn_id, \
-                    and_(   IPsDescriptions.list_date < date + datetime.timedelta(days=1), \
-                            IPsDescriptions.list_date > date - datetime.timedelta(days=1)))))
-        else: 
-            query = IPsDescriptions.query.filter(and_(IPsDescriptions.asn == asn_id, \
-                    and_(   IPsDescriptions.list_date < date + datetime.timedelta(days=1), \
-                            IPsDescriptions.list_date > date - datetime.timedelta(days=1))))
-        return query
+    def get_asn_descs(self, asn, sources = None):
+        if sources is None:
+            sources = self.sources
+        asn_timestamps = global_db.smembers(asn)
+        self.asn_descs_to_print = []
+        for asn_timestamp in asn_timestamps:
+            asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(asn = asn, sep = self.separator, timestamp = asn_timestamp)
+            nb_of_ips = 0 
+            for source in sources:
+                nb_of_ips += global_db.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
+            if nb_of_ips > 0
+                owner = global_db.get('{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, config.get('input_keys','owner'))
+                ip_block = global_db.get('{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, config.get('input_keys','ips_block'))
+                self.asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips])
 
-    def get_asn_descs(self, asn, source = None):
-        r_session = RankingSession()
-        asn_db = ASNs.query.filter(ASNs.asn == int(asn)).first()
-        if asn_db is not None:
-            asn_descs = ASNsDescriptions.query.filter(ASNsDescriptions.asn == asn_db).all()
-        else:
-            asn_descs = None
-        self.asn_descs_to_print = None
-        self.graph_infos = None
-        if asn_descs is not None and len(asn_descs) > 0:
-            self.prepare_graphe_js(asn, source)
-            self.asn_descs_to_print = []
-            for desc in asn_descs:
-                last_histo = self.asn_histo_query(asn, source).first()
-                if last_histo is not None:
-                    query = self.ip_desc_query(desc, source, last_histo.timestamp)
-                    nb_of_ips = query.count()
-                    if nb_of_ips > 0:
-                        self.asn_descs_to_print.append([desc.id, desc.timestamp, desc.owner, desc.ips_block, nb_of_ips])
-        r_session.close()
 
-    def get_ips_descs(self, asn_desc_id, source = None):
-        r_session = RankingSession()
-        asn_desc = ASNsDescriptions.query.filter(ASNsDescriptions.id == int(asn_desc_id)).first()
-        ip_descs = None
-        if asn_desc is not None:
-            last_histo = self.asn_histo_query(asn_desc.asn_asn,source).first()
-            if last_histo is not None:
-                query = self.ip_desc_query(asn_desc, source, last_histo.timestamp)
-                ip_descs = query.all()
-            r_session.close()
-        else:
-            ip_descs = None
-        self.ip_descs_to_print = None
-        if ip_descs is not None:
-            self.ip_descs_to_print = []
-            for desc in ip_descs:
-                self.ip_descs_to_print.append([desc.timestamp, desc.ip_ip, desc.list_name, desc.infection, desc.raw_informations, desc.whois])
+    def get_ips_descs(self, asn_timestamp, sources = None):
+        if sources is None:
+            sources = self.sources
+        key_list_tstamp = config.get('input_keys','list_tstamp')
+        key_infection = config.get('input_keys','infection')
+        key_raw = config.get('input_keys','raw')
+        key_whois = config.get('input_keys','whois')
+
+        self.ip_descs_to_print = []
+        asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(asn = asn, sep = self.separator, timestamp = asn_timestamp)
+        for source in sources:
+            ips = global_db.smembers('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
+            for ip_details in ips:
+                ip = ip_details.split(self.separator)[0]
+                timestamp = self.global_db.get('{ip}{key}'.format(ip = ip_details, key = self.key_list_tstamp))
+                infection = self.global_db.get('{ip}{key}'.format(ip = ip_details, key = self.key_infection))
+                raw_informations = self.global_db.get('{ip}{key}'.format(ip = ip_details, key = self.key_raw))
+                whois = self.global_db.get('{ip}{key}'.format(ip = ip_details, key = self.key_whois))
+                self.ip_descs_to_print.append([timestamp, ip, source, infection, raw_informations, whois])

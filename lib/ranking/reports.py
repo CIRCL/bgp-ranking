@@ -33,20 +33,21 @@ class Reports():
         for item in items:
             self.impacts[item[0]] = int(item[1])
     
+    def build_reports(self):
+        self.global_report()
+        for source in self.sources:
+            self.source_report(source)
+    
     def global_report(self):
         for source in self.sources:
             self.source_report(source, config.get('input_keys','histo_global'))
 
-    def get_daily_rank(self, asn, source, date = None):
-        if date is None:
-            date = self.date
-        # Get only the latest rank for a day
-        return history_db.zrevrange('{asn}{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep = self.separator, asn = asn, date = date, source = source, ip_key = self.ip_key), 0, 0) 
-        
     def source_report(self, source, zset_key = None):
         if zset_key is None:
             zset_key = source
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = zset_key, sep = self.separator, ip_key = self.ip_key)
+        # drop the old stuff
+        history_db.del(histo_key)
         asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date, sep = self.separator, source = source, key = config.get('input_keys','index_asns')))
         for asn in asns:
             rank = self.get_daily_rank(asn, source)
@@ -57,6 +58,14 @@ class Reports():
             source = config.get('input_keys','histo_global')
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
         self.sorted_asns = history_db.zrevrange(histo_key, 0, limit, True)
+
+    def get_daily_rank(self, asn, source = None, date = None):
+        if source is None:
+            source = config.get('input_keys','histo_global')
+        if date is None:
+            date = self.date
+        # Get only the latest rank for a day
+        return history_db.zrevrange('{asn}{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep = self.separator, asn = asn, date = date, source = source, ip_key = self.ip_key), 0, 0) 
 
     def prepare_graphe_js(self, asn, sources = None):
         if sources is None:
@@ -70,17 +79,16 @@ class Reports():
                         ranks_by_days[asn_day] = int(self.get_daily_rank(asn, source, asn_day))
                     else:
                         ranks_by_days[asn_day] += int(self.get_daily_rank(asn, source, asn_day))
-
+        graph_infos = None
         if len(ranks_by_days) > 0:
-            self.graph_infos = ranks_by_days
-        else:
-            self.graph_infos = None
+            graph_infos = ranks_by_days
+        return graph_infos
 
     def get_asn_descs(self, asn, sources = None):
         if sources is None:
             sources = self.sources
         asn_timestamps = global_db.smembers(asn)
-        self.asn_descs_to_print = []
+        asn_descs_to_print = []
         for asn_timestamp in asn_timestamps:
             asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(asn = asn, sep = self.separator, timestamp = asn_timestamp)
             nb_of_ips = 0 
@@ -89,7 +97,8 @@ class Reports():
             if nb_of_ips > 0
                 owner = global_db.get('{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, config.get('input_keys','owner'))
                 ip_block = global_db.get('{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, config.get('input_keys','ips_block'))
-                self.asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips])
+                asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips])
+        return asn_descs_to_print
 
 
     def get_ips_descs(self, asn_timestamp, sources = None):

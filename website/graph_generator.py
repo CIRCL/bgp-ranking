@@ -45,13 +45,10 @@ window.onload = function ()
     
     def line_values(self, line):
         list = []
-        values = line[0]
-        dates = line[1]
-        i = 0
         for label in self.labels:
-            if label in dates:
-                list.append(values[i])
-                i +=1
+            rank = line.get(label, None)
+            if rank is not None:
+                list.append(rank)
             else:
                 list.append(self.empty)
         return list

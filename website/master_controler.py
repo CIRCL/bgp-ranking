@@ -12,29 +12,29 @@ from graph_generator import GraphGenerator
 
 class MasterControler():
 
-    def __init__(self, date = datetime.datetime.utcnow()):
-        self.report = Reports(date)
+    def __init__(self):
+        self.report = Reports()
+        self.graph_last_date = datetime.date.today()
+        self.graph_first_date = datetime.date.today() - datetime.timedelta(days=30)
 
-    def prepare_index(self, source = None, limit = 50):
-        self.report.best_of_day(limit, source)
-        self.histories = self.report.histories
+    def prepare_index(self):
+        self.report.build_reports()
     
     def get_sources(self):
-        self.report.get_sources()
         self.sources = self.report.sources
     
     def get_as_infos(self, asn = None, source = None):
-        self.asn = int(asn)
-        self.report.get_asn_descs(self.asn, source)
-        self.as_infos = self.report.asn_descs_to_print
-        if self.as_infos is not None:
-            as_graph_infos = self.report.graph_infos
-            if as_graph_infos is not None:
-                self.make_graph(as_graph_infos)
+        if asn is not None:
+            self.asn = int(asn)
+            self.as_infos = self.report.get_asn_descs(self.asn, source)
+            if self.as_infos is not None:
+                as_graph_infos = self.report.prepare_graphe_js(self.asn, source)
+                if as_graph_infos is not None:
+                    self.make_graph(as_graph_infos)
     
-    def get_ip_infos(self, asn_desc = None, source = None):
-        self.report.get_ips_descs(asn_desc, source)
-        self.ip_infos = self.report.ip_descs_to_print
+    def get_ip_infos(self, asn_tstamp = None, source = None):
+        if asn_tstamp is not None:
+            self.ip_infos = self.report.get_ips_descs(asn_tstamp, source)
     
     def comparator(self, asns = None):
         js_name = config.get('web','canvas_comparator_name')
@@ -50,8 +50,7 @@ class MasterControler():
                     # as_graph_infos : [ipv4, ipv6, dates, first_date, last_date]
                     as_graph_infos = self.report.graph_infos
                     if as_graph_infos is not None:
-                        g.add_line([as_graph_infos[0], as_graph_infos[2]], asn + ' IPv4', as_graph_infos[3], as_graph_infos[4] )
-                        g.add_line([as_graph_infos[1], as_graph_infos[2]], asn + ' IPv6', as_graph_infos[3], as_graph_infos[4] )
+                        g.add_line(as_graph_infos, asn + self.report.ip_key, self.graph_first_date, self.graph_last_date)
                     title += asn + ' '
             if len(g.lines) > 0:
                 g.set_title(title)
@@ -64,8 +63,7 @@ class MasterControler():
     def make_graph(self, infos):
         js_name = config.get('web','canvas_asn_name')
         g = GraphGenerator(js_name)
-        g.add_line([infos[0], infos[2]], 'IPv4', infos[3], infos[4] )
-        g.add_line([infos[1], infos[2]], 'IPv6', infos[3], infos[4] )
+        g.add_line(infos, self.report.ip_key, self.graph_first_date, self.graph_last_date )
         g.set_title(self.asn)
         g.make_js()
         self.js = g.js

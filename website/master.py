@@ -57,16 +57,15 @@ class Master(object):
             asn = asn.lstrip('AS')
             if asn.isdigit():
                 self.template.asn = asn
-                self.controler.get_as_infos(asn, source)
-                if self.controler.as_infos is not None: 
-                    self.template.asn_descs = self.controler.as_infos
+                as_infos = self.controler.get_as_infos(asn, source)
+                if as_infos is not None: 
+                    self.template.asn_descs = as_infos
                     if len(self.template.asn_descs) is not None:
                         self.template.javascript = self.controler.js
                         self.template.js_name = self.controler.js_name
-                        if ip_details is not None and ip_details.isdigit():
+                        if ip_details is not None:
                             self.template.ip_details = ip_details
-                            self.controler.get_ip_infos(ip_details, source)
-                            self.template.ip_descs = self.controler.ip_infos
+                            self.template.ip_descs = self.controler.get_ip_infos(asn, ip_details, source)
                     else:
                         self.template.error = "No data for " + asn + " on " + source
                 else:

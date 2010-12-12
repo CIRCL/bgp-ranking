@@ -16,31 +16,33 @@ class MasterControler():
         self.report = Reports()
         self.graph_last_date = datetime.date.today()
         self.graph_first_date = datetime.date.today() - datetime.timedelta(days=30)
+        self.report.build_reports()
 
     def prepare_index(self, source):
-        self.report.build_reports()
-        rank = self.report.get_daily_rank(source)
+        rank = self.report.format_report(source)
         self.histories = []
         for r in rank:
-            self.histories.append(r[0], r[1])
-        
-        
-    
+            asn = r[0].split(config.get('input_keys','separator'))[0]
+            self.histories.append([asn, r[1]])
+
     def get_sources(self):
         self.sources = self.report.sources
     
     def get_as_infos(self, asn = None, source = None):
         if asn is not None:
             self.asn = int(asn)
-            self.as_infos = self.report.get_asn_descs(self.asn, source)
-            if self.as_infos is not None:
+            as_infos = self.report.get_asn_descs(self.asn, source)
+            if as_infos is not None:
                 as_graph_infos = self.report.prepare_graphe_js(self.asn, source)
                 if as_graph_infos is not None:
                     self.make_graph(as_graph_infos)
+        return as_infos
     
-    def get_ip_infos(self, asn_tstamp = None, source = None):
-        if asn_tstamp is not None:
-            self.ip_infos = self.report.get_ips_descs(asn_tstamp, source)
+    def get_ip_infos(self, asn = None, asn_tstamp = None, source = None):
+        if asn is not None and asn_tstamp is not None:
+            print asn 
+            print asn_tstamp
+            return self.report.get_ips_descs(asn, asn_tstamp, source)
     
     def comparator(self, asns = None):
         js_name = config.get('web','canvas_comparator_name')
@@ -52,11 +54,10 @@ class MasterControler():
             title = ''
             for asn in splitted_asns:
                 if asn.isdigit():
-                    self.report.prepare_graphe_js(asn)
                     # as_graph_infos : [ipv4, ipv6, dates, first_date, last_date]
-                    as_graph_infos = self.report.graph_infos
+                    as_graph_infos = self.report.prepare_graphe_js(asn)
                     if as_graph_infos is not None:
-                        g.add_line(as_graph_infos, asn + self.report.ip_key, self.graph_first_date, self.graph_last_date)
+                        g.add_line(as_graph_infos, str(asn + self.report.ip_key), self.graph_first_date, self.graph_last_date)
                     title += asn + ' '
             if len(g.lines) > 0:
                 g.set_title(title)

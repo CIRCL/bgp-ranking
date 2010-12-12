@@ -118,7 +118,7 @@ class InsertRIS():
                 self.global_db.sadd(index_day_asns, asn)
                 self.global_db.sadd(index_as_ips, description)
                 to_return = True
-            if i >= 100:
+            if i >= 1000:
                 syslog.syslog(syslog.LOG_DEBUG, 'RIS Whois to fetch: ' + str(self.global_db.scard(key_no_asn)))
                 i = 0 
             description = self.global_db.spop(key_no_asn)

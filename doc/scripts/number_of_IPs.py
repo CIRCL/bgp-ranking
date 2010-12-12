@@ -9,13 +9,13 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.optionxform = str
-config.read("../etc/bgp-ranking.conf")
+config.read("../../etc/bgp-ranking.conf")
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 import redis
 import IPy
-routing_db = redis.Redis(db=config.get('redis','routing_redis_db'))
+routing_db = redis.Redis(db=config.get('redis','routing'))
 
 
 

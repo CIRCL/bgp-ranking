@@ -112,4 +112,4 @@ class InputReader():
                 
                 self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
                 self.global_db.sadd(config.get('redis','no_asn'), ip_details)
-            return to_return
+        return to_return

@@ -124,7 +124,6 @@ class Reports():
         asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(asn = asn, sep = self.separator, timestamp = asn_timestamp)
         for source in sources:
             ips = global_db.smembers('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
-            print ips
             for ip_details in ips:
                 ip = ip_details.split(self.separator)[0]
                 timestamp = global_db.get('{ip}{key}'.format(ip = ip_details, key = key_list_tstamp))

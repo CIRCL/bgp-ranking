@@ -76,7 +76,7 @@ class Reports():
         if sources is None:
             sources = self.sources
         else:
-            sources = [source]
+            sources = [sources]
         ranks_by_days = {}
         for source in sources:
             asn_days = history_db.smembers('{asn}{sep}{source}{sep}{key}'.format(sep = self.separator, asn = asn, source = source, key = self.ip_key))
@@ -95,7 +95,7 @@ class Reports():
         if sources is None:
             sources = self.sources
         else:
-            sources = [source]
+            sources = [sources]
         asn_timestamps = global_db.smembers(asn)
         asn_descs_to_print = []
         for asn_timestamp in asn_timestamps:
@@ -114,7 +114,7 @@ class Reports():
         if sources is None:
             sources = self.sources
         else:
-            sources = [source]
+            sources = [sources]
         key_list_tstamp = config.get('input_keys','list_tstamp')
         key_infection = config.get('input_keys','infection')
         key_raw = config.get('input_keys','raw')

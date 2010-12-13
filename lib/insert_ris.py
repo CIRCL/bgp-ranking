@@ -66,6 +66,7 @@ class InsertRIS():
             if self.global_db.get("{key}{sep}{owner}".format(key = temp_key, sep = self.separator, owner = self.key_owner)) == owner and \
                 self.global_db.get("{key}{sep}{ips_block}".format(key = temp_key, sep = self.separator, ips_block = self.key_ips_block)) == ips_block:
                 key = temp_key
+                break
         if key is None:
             timestamp = datetime.datetime.utcnow().isoformat()
             self.global_db.sadd(asn, timestamp)

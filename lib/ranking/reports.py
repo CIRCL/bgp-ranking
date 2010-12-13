@@ -26,9 +26,9 @@ class Reports():
         self.date = date.isoformat()
         self.date = "2010-12-09"
         self.sources = global_db.smembers('{date}{sep}{key}'.format(date = self.date, sep = self.separator, key = config.get('input_keys','index_sources')))
-        if ip_version is 4:
+        if ip_version == 4:
             self.ip_key = config.get('input_keys','rankv4')
-        elif ip_version is 6:
+        elif ip_version == 6:
             self.ip_key = config.get('input_keys','rankv6')
         self.impacts = {}
         items = config.items('modules_to_parse')

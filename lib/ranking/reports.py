@@ -55,7 +55,8 @@ class Reports():
             rank = self.get_daily_rank(asn, source)
             if len(rank) > 0:
                 rank = rank[0]
-                history_db.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)] + float(config.get('ranking','min')))
+                history_db.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
+            
     
     def format_report(self, source = None, limit = 50):
         if source is None:
@@ -80,9 +81,9 @@ class Reports():
             if asn_days is not None:
                 for asn_day in asn_days:
                     if ranks_by_days.get(asn_day, None) is None:
-                        ranks_by_days[asn_day] = int(self.get_daily_rank(asn, source, asn_day)[0])
+                        ranks_by_days[asn_day] = float(self.get_daily_rank(asn, source, asn_day)[0])
                     else:
-                        ranks_by_days[asn_day] += int(self.get_daily_rank(asn, source, asn_day)[0])
+                        ranks_by_days[asn_day] += float(self.get_daily_rank(asn, source, asn_day)[0])
         graph_infos = None
         if len(ranks_by_days) > 0:
             graph_infos = ranks_by_days

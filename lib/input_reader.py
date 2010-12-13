@@ -93,20 +93,23 @@ class InputReader():
             ip_details      = '{ip}{sep}{timestamp}{sep}{date}{sep}{source}'.format(sep = self.separator, ip=ip, date=date, source=src, timestamp=unique_timestamp)
             
             self.global_db.sadd(index_day_src, src)
-            self.global_db.sadd(ip_information, unique_timestamp)
-            # FIXME: not used actually but who knows...
-            self.global_db.sadd(index_day_ips, '{ip}{sep}{timestamp}'.format(sep = self.separator, ip = ip, timestamp = unique_timestamp))
             
-            ip_details_keys = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
-            self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_list_tstamp), timestamp.isoformat())
-            
-            if infection is not None:
-                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_infection), infection)
-            if raw is not None:
-                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_raw), raw)
-            if times is not None:
-                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_times), times)
-            
-            self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
-            self.global_db.sadd(config.get('redis','no_asn'), ip_details)
-        return to_return
+            #FIXME: ugly way to insert only one time a particular IP, from a particular source each day
+            if self.global_db.scard(ip_information) == 0:
+                self.global_db.sadd(ip_information, unique_timestamp)
+                # FIXME: not used actually but who knows...
+                self.global_db.sadd(index_day_ips, '{ip}{sep}{timestamp}'.format(sep = self.separator, ip = ip, timestamp = unique_timestamp))
+                
+                ip_details_keys = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
+                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_list_tstamp), timestamp.isoformat())
+                
+                if infection is not None:
+                    self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_infection), infection)
+                if raw is not None:
+                    self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_raw), raw)
+                if times is not None:
+                    self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_times), times)
+                
+                self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
+                self.global_db.sadd(config.get('redis','no_asn'), ip_details)
+            return to_return

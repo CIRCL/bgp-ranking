@@ -126,7 +126,7 @@ class Reports():
             ips = global_db.smembers('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
             for ip_details in ips:
                 ip = ip_details.split(self.separator)[0]
-                timestamp = global_db.get('{ip}{key}'.format(ip = ip_details, key = key_list_tstamp))
+                timestamp = ip_details.split(self.separator)[1]
                 infection = global_db.get('{ip}{key}'.format(ip = ip_details, key = key_infection))
                 raw_informations = global_db.get('{ip}{key}'.format(ip = ip_details, key = key_raw))
                 whois = global_db.get('{ip}{key}'.format(ip = ip_details, key = key_whois))

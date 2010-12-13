@@ -36,7 +36,6 @@
     <table id="hor-minimalist-a">
         <thead>
             <tr>
-                <th scope="col" >Timestamp</th>
                 <th scope="col" >ASN</th>
                 <th scope="col" >Rank</th>
             </tr>
@@ -44,11 +43,11 @@
         #for $history in $histories
         <tr>
             #if $source is not None
-                <td><a href="/asn_details?source=${source};asn=${history[1]}">${history[1]}</a></td>
+                <td><a href="/asn_details?source=${source};asn=${history[0]}">${history[0]}</a></td>
             #else
-                <td><a href="/asn_details?asn=${history[1]}">${history[1]}</a></td>
+                <td><a href="/asn_details?asn=${history[0]}">${history[0]}</a></td>
             #end if
-            <td>$history[2]</td>
+            <td>$history[1]</td>
         </tr>
         #end for
     </table>

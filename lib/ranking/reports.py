@@ -75,6 +75,8 @@ class Reports():
     def prepare_graphe_js(self, asn, sources = None):
         if sources is None:
             sources = self.sources
+        else:
+            sources = [source]
         ranks_by_days = {}
         for source in sources:
             asn_days = history_db.smembers('{asn}{sep}{source}{sep}{key}'.format(sep = self.separator, asn = asn, source = source, key = self.ip_key))
@@ -92,6 +94,8 @@ class Reports():
     def get_asn_descs(self, asn, sources = None):
         if sources is None:
             sources = self.sources
+        else:
+            sources = [source]
         asn_timestamps = global_db.smembers(asn)
         asn_descs_to_print = []
         for asn_timestamp in asn_timestamps:
@@ -109,6 +113,8 @@ class Reports():
     def get_ips_descs(self, asn, asn_timestamp, sources = None):
         if sources is None:
             sources = self.sources
+        else:
+            sources = [source]
         key_list_tstamp = config.get('input_keys','list_tstamp')
         key_infection = config.get('input_keys','infection')
         key_raw = config.get('input_keys','raw')

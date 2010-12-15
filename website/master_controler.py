@@ -22,8 +22,7 @@ class MasterControler():
         rank = self.report.format_report(source)
         self.histories = []
         for r in rank:
-            asn = r[0].split(config.get('input_keys','separator'))[0]
-            self.histories.append([asn, r[1]])
+            self.histories.append([r[0], r[1] + 1])
 
     def get_sources(self):
         self.sources = self.report.sources

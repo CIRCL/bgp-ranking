@@ -56,7 +56,6 @@ class Reports():
             if len(rank) > 0:
                 rank = rank[0]
                 history_db.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
-            
     
     def format_report(self, source = None, limit = 50):
         if source is None:
@@ -125,8 +124,7 @@ class Reports():
         for source in sources:
             ips = global_db.smembers('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
             for ip_details in ips:
-                ip = ip_details.split(self.separator)[0]
-                timestamp = ip_details.split(self.separator)[1]
+                ip, timestamp = ip_details.split(self.separator)
                 infection = global_db.get('{ip}{key}'.format(ip = ip_details, key = key_infection))
                 raw_informations = global_db.get('{ip}{key}'.format(ip = ip_details, key = key_raw))
                 whois = global_db.get('{ip}{key}'.format(ip = ip_details, key = key_whois))

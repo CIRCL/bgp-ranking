@@ -52,7 +52,7 @@ class InputReader():
         src =       self.temp_db.get(src_key)
         timestamp = self.temp_db.get(timestamp_key)
         if timestamp is None:
-            timestamp = datetime.datetime.utcnow()
+            timestamp = datetime.date.today()
         else:
             timestamp = dateutil.parser.parse(timestamp)
         infection = self.temp_db.get(infection_key)
@@ -85,31 +85,26 @@ class InputReader():
                 syslog.syslog(syslog.LOG_ERR, 'This IP: ' + ip + ' in invalid.')
                 continue
             
-            unique_timestamp = datetime.datetime.utcnow().isoformat()
+            iso_timestamp = timestamp.isoformat()
             date = timestamp.date().isoformat()
             index_day_src   = '{date}{sep}{key}'.format(sep = self.separator, date=date, key=config.get('input_keys','index_sources'))
-            index_day_ips   = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=date, source=src, key=config.get('input_keys','index_ips'))
-            ip_information  = '{ip}{sep}{date}{sep}{source}' .format(sep = self.separator, ip=ip, date=date, source=src)
-            ip_details      = '{ip}{sep}{timestamp}{sep}{date}{sep}{source}'.format(sep = self.separator, ip=ip, date=date, source=src, timestamp=unique_timestamp)
+            index_day_ips   = '{temp}{sep}{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=date, \
+                                                                temp = config.get('input_keys','temp')
+                                                                source=src, key=config.get('input_keys','index_ips'))
+            ip_details      = '{ip}{sep}{timestamp}'.format(sep = self.separator, ip = ip, timestamp = iso_timestamp)
             
             self.global_db.sadd(index_day_src, src)
+            self.global_db.sadd(index_day_ips, ip_details)
             
-            #FIXME: ugly way to insert only one time a particular IP, from a particular source each day
-            if self.global_db.scard(ip_information) == 0:
-                self.global_db.sadd(ip_information, unique_timestamp)
-                # FIXME: not used actually but who knows...
-                self.global_db.sadd(index_day_ips, '{ip}{sep}{timestamp}'.format(sep = self.separator, ip = ip, timestamp = unique_timestamp))
-                
-                ip_details_keys = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
-                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_list_tstamp), timestamp.isoformat())
-                
-                if infection is not None:
-                    self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_infection), infection)
-                if raw is not None:
-                    self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_raw), raw)
-                if times is not None:
-                    self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_times), times)
-                
-                self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
-                self.global_db.sadd(config.get('redis','no_asn'), ip_details)
+            ip_details_keys = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
+            
+            if infection is not None:
+                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_infection), infection)
+            if raw is not None:
+                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_raw), raw)
+            if times is not None:
+                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_times), times)
+            
+            self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
+            self.global_db.sadd(config.get('redis','no_asn'), index_day_ips)
         return to_return

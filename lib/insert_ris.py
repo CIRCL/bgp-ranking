@@ -131,6 +131,6 @@ class InsertRIS():
                     self.global_db.sadd(index_as_ips, ip_details)
                     to_return = True
                 if i >= 1000:
-                    syslog.syslog(syslog.LOG_DEBUG, str(self.global_db.scard(ip_set)) + 'RIS Whois to insert on ' + ip_set)
+                    syslog.syslog(syslog.LOG_DEBUG, str(self.global_db.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
                     i = 0
         return to_return

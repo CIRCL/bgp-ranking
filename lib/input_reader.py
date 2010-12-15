@@ -89,7 +89,7 @@ class InputReader():
             date = timestamp.date().isoformat()
             index_day_src   = '{date}{sep}{key}'.format(sep = self.separator, date=date, key=config.get('input_keys','index_sources'))
             index_day_ips   = '{temp}{sep}{date}{sep}{source}{sep}{key}'.format(sep = self.separator, date=date, \
-                                                                temp = config.get('input_keys','temp')
+                                                                temp = config.get('input_keys','temp') \
                                                                 source=src, key=config.get('input_keys','index_ips'))
             ip_details      = '{ip}{sep}{timestamp}'.format(sep = self.separator, ip = ip, timestamp = iso_timestamp)
             

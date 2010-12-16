@@ -27,7 +27,7 @@ syslog.openlog('Compute_Ranking_Process', syslog.LOG_PID, syslog.LOG_USER)
 i = 0 
 
 time.sleep(sleep_timer)
-syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(number = routing_db.scard(config.get('redis','to_rank'))))
+syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(number = history_db.scard(config.get('redis','to_rank'))))
 r = Ranking()
 while history_db.scard(config.get('redis','to_rank')) > 0 :
     key = history_db.spop(config.get('redis','to_rank'))
@@ -35,5 +35,5 @@ while history_db.scard(config.get('redis','to_rank')) > 0 :
         r.rank_using_key(key)
         i +=1 
         if i >= 1000:
-            syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(number = routing_db.scard(config.get('redis','to_rank'))))
+            syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(number = history_db.scard(config.get('redis','to_rank'))))
             i = 0

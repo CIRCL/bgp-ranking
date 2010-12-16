@@ -61,11 +61,20 @@ class InsertRIS():
     def add_asn_entry(self, asn, owner, ips_block):
         key = None
         asn_timestamps = self.global_db.smembers(asn)
+        key_list = []
         for asn_timestamp in asn_timestamps:
             temp_key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=asn_timestamp)
-            if self.global_db.get("{key}{sep}{ips_block}".format(key = temp_key, sep = self.separator, ips_block = self.key_ips_block)) == ips_block and self.global_db.get("{key}{sep}{owner}".format(key = temp_key, sep = self.separator, owner = self.key_owner)) == owner:
-                key = temp_key
-                break
+            key_list.append("{key}{sep}{ips_block}".format(key = temp_key, sep = self.separator, ips_block = self.key_ips_block))
+        ips_blocks = self.global_db.mget(key_list)
+        i = 0 
+        for block in ips_blocks
+            if block == ips_block:
+                asn, timestamp, b = key_list[i]
+                temp_key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=timestamp)
+                if self.global_db.get("{key}{sep}{owner}".format(key = temp_key, sep = self.separator, owner = self.key_owner)) == owner:
+                    key = temp_key
+                    break
+            i += 1
         if key is None:
             timestamp = datetime.datetime.utcnow().isoformat()
             self.global_db.sadd(asn, timestamp)

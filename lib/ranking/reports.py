@@ -52,10 +52,11 @@ class Reports():
         asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date, sep = self.separator, source = source, key = config.get('input_keys','index_asns')))
         for asn in asns:
             asn = asn.split(self.separator)[0]
-            rank = self.get_daily_rank(asn, source)
-            if len(rank) > 0:
-                rank = rank[0]
-                history_db.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
+            if asn != config.get('modules_global','default_asn'):
+                rank = self.get_daily_rank(asn, source)
+                if len(rank) > 0:
+                    rank = rank[0]
+                    history_db.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
     
     def format_report(self, source = None, limit = 50):
         if source is None:

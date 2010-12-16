@@ -80,7 +80,7 @@ class Ranking():
                                         asn = self.asn, timestamp = self.timestamp, date = self.date, source = source))
         self.weight[str(source)] = [0.0,0.0]
         for i in ips:
-            ip_extract, timestamp, date, source = i.split(self.separator)
+            ip_extract, timestamp = i.split(self.separator)
             ip = IPy.IP(ip_extract)
             if ip.version() == 6:
                 self.weight[str(source)][1] += 1.0

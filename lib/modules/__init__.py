@@ -6,4 +6,5 @@ from shadowserver_report import ShadowserverReport
 from shadowserver_report2 import ShadowserverReport2 
 from shadowserver_sinkhole import ShadowserverSinkhole 
 from sshbl_base import  SshblBase
+from zeustracker_ddos import ZeustrackerDdos
 from zeustracker_ipblocklist import ZeustrackerIpBlockList

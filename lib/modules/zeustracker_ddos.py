@@ -22,8 +22,11 @@ class ZeustrackerDdos(AbstractModule):
         for file in self.files:
             blocklist = open(file)
             for line in blocklist:
-                date, ip, origin, asn, asn_descr = line.split(' | ')
-                if len(ip) == 0:
+                splitted = line.split(' | ')
+                if len(splitted) > 0:
+                    ip = splitted[1]
+                    date = splitted[0]
+                else:
                     continue
                 date = dateutil.parser.parse(date)
                 entry = self.prepare_entry(ip = ip, source = self.__class__.__name__, timestamp = date)

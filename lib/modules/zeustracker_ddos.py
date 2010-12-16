@@ -27,7 +27,6 @@ class ZeustrackerDdos(AbstractModule):
                     continue
                 date = dateutil.parser.parse(date)
                 entry = self.prepare_entry(ip = ip, source = self.__class__.__name__, timestamp = date)
-                print entry
-                #self.put_entry(entry)
+                self.put_entry(entry)
             blocklist.close()
-            #self.move_file(file)
+            self.move_file(file)

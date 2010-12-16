@@ -65,7 +65,9 @@ class InsertRIS():
         for asn_timestamp in asn_timestamps:
             temp_key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=asn_timestamp)
             key_list.append("{key}{sep}{ips_block}".format(key = temp_key, sep = self.separator, ips_block = self.key_ips_block))
-        ips_blocks = self.global_db.mget(key_list)
+        ips_blocks = []
+        if len(key_list) != 0:
+            ips_blocks = self.global_db.mget(key_list)
         i = 0 
         for block in ips_blocks:
             if block == ips_block:

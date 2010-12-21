@@ -22,7 +22,7 @@ syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_USER)
 
 def service_start_multiple(servicename, number, param = None):
     i = 0 
-    print('Starting ' + str(number) + ' times ' + servicename)
+    #print('Starting ' + str(number) + ' times ' + servicename)
     syslog.syslog(syslog.LOG_INFO, 'Starting ' + str(number) + ' times ' + servicename)
     while i < number:
         proc = service_start(servicename, param)

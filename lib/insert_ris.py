@@ -135,13 +135,13 @@ class InsertRIS():
                     errors = 0
                     asn = self.__update_db_ris(entry)
                     index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
-                                                    date=timestamp.date().isoformat(), source=source, \
+                                                    date=timestamp, source=source, \
                                                     key=config.get('input_keys','index_asns_details'))
                     index_day_asns = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
-                                                    date=timestamp.date().isoformat(), source=source, \
+                                                    date=timestamp, source=source, \
                                                     key=config.get('input_keys','index_asns'))
                     index_as_ips = '{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, asn = asn,\
-                                                    date=timestamp.date().isoformat(), source=source)
+                                                    date=timestamp, source=source)
                     self.global_db.sadd(index_day_asns_details, asn)
                     self.global_db.sadd(index_day_asns, asn.split(self.separator)[0])
                     self.global_db.sadd(index_as_ips, ip_details)

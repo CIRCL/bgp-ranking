@@ -55,7 +55,7 @@ class Reports():
             if asn != config.get('modules_global','default_asn'):
                 rank = self.get_daily_rank(asn, source)
                 if rank is not None:
-                    history_db.zadd(histo_key, asn, float(rank) * self.impacts[str(source)])
+                    history_db.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
     
     def format_report(self, source = None, limit = 50):
         if source is None:

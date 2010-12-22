@@ -82,7 +82,7 @@ class Reports():
         keys = []
         for date in dates:
             keys.append('{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = asn, \
-                        date = date, source = key, v4 = config.get('input_keys','rankv4')))
+                        date = date, source = source, v4 = config.get('input_keys','rankv4')))
         
         ranks = history_db.get(keys)
         ranks_by_days = {}

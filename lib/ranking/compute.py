@@ -31,6 +31,7 @@ class Ranking():
     
     def __init__(self):
         self.weight = {}
+        self.date = None
     
     #def rank_and_save(self, asn, date = datetime.date.today()):
         #self.date = date.isoformat()
@@ -42,6 +43,8 @@ class Ranking():
         #self.make_history()
         
     def update_asn_list(self):
+        if self.date is None:
+            self.date = datetime.date.today().isoformat()
         index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
                             date=self.date, source=source, \
                             key=config.get('input_keys','index_asns_details'))

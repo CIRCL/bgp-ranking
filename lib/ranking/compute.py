@@ -58,8 +58,8 @@ class Ranking():
         if key is not None:
             self.asn, self.date, source = key.split(self.separator)
             for detail in self.asn_details[source]:
-                if self.asn in detail:
-                    a, self.timestamp, c, d = detail.split(self.separator)
+                asn, self.timestamp = detail.split(self.separator)
+                if self.asn == asn:
                     self.ip_count()
                     self.make_index_source(source)
                     self.rank()

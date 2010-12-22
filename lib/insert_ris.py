@@ -51,8 +51,9 @@ class InsertRIS():
         """        
         self.cache_db_ris = redis.Redis(db=ris_cache_reris_db)
         self.temp_db = redis.Redis(db=temp_reris_db)
-        self.global_db = redis.Redis(port = 6380, db=global_db)
-        default_asn_members = self.global_db.smembers(config.get('modules_global','default_asn'))
+        self.global_db = redis.Redis(db=global_db)
+        self.global_db_slave = redis.Redis(port = 6380, db=global_db)
+        default_asn_members = self.global_db_slave.smembers(config.get('modules_global','default_asn'))
         if len(default_asn_members) == 0 :
             self.default_asn_key = self.add_asn_entry(\
                                     config.get('modules_global','default_asn'), \
@@ -63,20 +64,20 @@ class InsertRIS():
 
     def add_asn_entry(self, asn, owner, ips_block):
         key = None
-        asn_timestamps = self.global_db.smembers(asn)
+        asn_timestamps = self.global_db_slave.smembers(asn)
         key_list = []
         for asn_timestamp in asn_timestamps:
             temp_key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=asn_timestamp)
             key_list.append("{key}{sep}{ips_block}".format(key = temp_key, sep = self.separator, ips_block = self.key_ips_block))
         ips_blocks = []
         if len(key_list) != 0:
-            ips_blocks = self.global_db.mget(key_list)
+            ips_blocks = self.global_db_slave.mget(key_list)
         i = 0 
         for block in ips_blocks:
             if block == ips_block:
                 asn, timestamp, b = key_list[i].split(self.separator)
                 temp_key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=timestamp)
-                if self.global_db.get("{key}{sep}{owner}".format(key = temp_key, sep = self.separator, owner = self.key_owner)) == owner:
+                if self.global_db_slave.get("{key}{sep}{owner}".format(key = temp_key, sep = self.separator, owner = self.key_owner)) == owner:
                     key = temp_key
                     break
             i += 1
@@ -113,13 +114,13 @@ class InsertRIS():
         to_return = False
         i = 0 
         while True:
-            sets = self.global_db.smembers(key_no_asn)
+            sets = self.global_db_slave.smembers(key_no_asn)
             if len(sets) == 0:
                 break
             to_return = True
             for ip_set in sets:
                 errors = 0 
-                ip_set_card = self.global_db.scard(ip_set)
+                ip_set_card = self.global_db_slave.scard(ip_set)
                 if ip_set_card == 0:
                     self.global_db.srem(key_no_asn, ip_set)
                     continue
@@ -151,6 +152,6 @@ class InsertRIS():
                         self.global_db.sadd(index_day_asns, asn.split(self.separator)[0])
                         self.global_db.sadd(index_as_ips, ip_details)
                         to_return = True
-                syslog.syslog(syslog.LOG_DEBUG, str(self.global_db.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
+                syslog.syslog(syslog.LOG_DEBUG, str(self.global_db_slave.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
             time.sleep(sleep_timer)
         return to_return

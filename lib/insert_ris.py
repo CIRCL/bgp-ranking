@@ -118,39 +118,41 @@ class InsertRIS():
                 break
             to_return = True
             for ip_set in sets:
-                if self.global_db.scard(ip_set) == 0:
+                ip_set_card = self.global_db.scard(ip_set)
+                if ip_set_card == 0:
                     self.global_db.srem(key_no_asn, ip_set)
                     continue
-                temp, date, source, key = ip_set.split(self.separator)
-                ip_details = self.global_db.spop(ip_set)
-                if ip_details is None:
-                    continue
-                ip, timestamp = ip_details.split(self.separator)
-                entry = self.cache_db_ris.get(ip)
-                if entry is None:
-                    errors += 1
-                    self.global_db.sadd(ip_set, ip_details)
-                    if errors >= self.max_consecutive_errors:
-                        self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
-                        break
-                else:
-                    i += 1
-                    errors = 0
-                    asn = self.__update_db_ris(entry)
-                    date = dateutil.parser.parse(timestamp).date().isoformat()
-                    index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
-                                                    date=date, source=source, \
-                                                    key=config.get('input_keys','index_asns_details'))
-                    index_day_asns = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
-                                                    date=date, source=source, \
-                                                    key=config.get('input_keys','index_asns'))
-                    index_as_ips = '{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, asn = asn,\
-                                                    date=date, source=source)
-                    self.global_db.sadd(index_day_asns_details, asn)
-                    self.global_db.sadd(index_day_asns, asn.split(self.separator)[0])
-                    self.global_db.sadd(index_as_ips, ip_details)
-                    to_return = True
-                if i >= 1000:
-                    syslog.syslog(syslog.LOG_DEBUG, str(self.global_db.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
-                    i = 0
+                for i in range(ip_set_card):
+                    temp, date, source, key = ip_set.split(self.separator)
+                    ip_details = self.global_db.spop(ip_set)
+                    if ip_details is None:
+                        continue
+                    ip, timestamp = ip_details.split(self.separator)
+                    entry = self.cache_db_ris.get(ip)
+                    if entry is None:
+                        errors += 1
+                        self.global_db.sadd(ip_set, ip_details)
+                        if errors >= self.max_consecutive_errors:
+                            self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
+                            break
+                    else:
+                        i += 1
+                        errors = 0
+                        asn = self.__update_db_ris(entry)
+                        date = dateutil.parser.parse(timestamp).date().isoformat()
+                        index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
+                                                        date=date, source=source, \
+                                                        key=config.get('input_keys','index_asns_details'))
+                        index_day_asns = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
+                                                        date=date, source=source, \
+                                                        key=config.get('input_keys','index_asns'))
+                        index_as_ips = '{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, asn = asn,\
+                                                        date=date, source=source)
+                        self.global_db.sadd(index_day_asns_details, asn)
+                        self.global_db.sadd(index_day_asns, asn.split(self.separator)[0])
+                        self.global_db.sadd(index_as_ips, ip_details)
+                        to_return = True
+                    if i >= 1000:
+                        syslog.syslog(syslog.LOG_DEBUG, str(self.global_db.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
+                        i = 0
         return to_return

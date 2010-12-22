@@ -18,6 +18,9 @@ config.read("../bgp-ranking.conf")
 root_dir = config.get('directories','root') 
 sleep_timer = int(config.get('sleep_timers','short'))
 
+import dateutil.parser
+
+
 # Temporary redis database, used to push ris and whois requests
 temp_reris_db = int(config.get('redis','temp'))
 # Cache redis database, used to set ris responses
@@ -134,14 +137,15 @@ class InsertRIS():
                     i += 1
                     errors = 0
                     asn = self.__update_db_ris(entry)
+                    date = dateutil.parser.parse(timestamp).date().isoformat()
                     index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
-                                                    date=timestamp, source=source, \
+                                                    date=date, source=source, \
                                                     key=config.get('input_keys','index_asns_details'))
                     index_day_asns = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
-                                                    date=timestamp, source=source, \
+                                                    date=date, source=source, \
                                                     key=config.get('input_keys','index_asns'))
                     index_as_ips = '{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, asn = asn,\
-                                                    date=timestamp, source=source)
+                                                    date=date, source=source)
                     self.global_db.sadd(index_day_asns_details, asn)
                     self.global_db.sadd(index_day_asns, asn.split(self.separator)[0])
                     self.global_db.sadd(index_as_ips, ip_details)

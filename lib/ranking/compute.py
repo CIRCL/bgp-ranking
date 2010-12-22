@@ -124,11 +124,19 @@ class Ranking():
                 history_db.set('{asn}{sep}{timestamp}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, \
                                     asn = self.asn, timestamp = self.timestamp, date = self.date, source = key, \
                                     v4 = config.get('input_keys','rankv4')), self.rank_by_source[key][0])
-                temp_rank = float(history_db.get(asn_key_v4)) + self.rank_by_source[key][0]
+                temp_rank = history_db.get(asn_key_v4)
+                if temp_rank is not None:
+                    temp_rank = float(temp_rank) + self.rank_by_source[key][0]
+                else:
+                    temp_rank = self.rank_by_source[key][0]
                 history_db.set(asn_key_v4, temp_rank)
             if self.rank_by_source[key][1] > 0.0:
                 history_db.set('{asn}{sep}{timestamp}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, \
                                                 asn = self.asn, timestamp = self.timestamp, date = self.date, source = key, \
                                                 v6 = config.get('input_keys','rankv6')), self.rank_by_source[key][1])
-                temp_rank = float(history_db.get(asn_key_v6)) + self.rank_by_source[key][1]
+                temp_rank = history_db.get(asn_key_v6)
+                if temp_rank is not None:
+                    temp_rank = float(temp_rank) + self.rank_by_source[key][1]
+                else:
+                    temp_rank = self.rank_by_source[key][1]
                 history_db.set(asn_key_v6, temp_rank)

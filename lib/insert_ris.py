@@ -137,7 +137,6 @@ class InsertRIS():
                             self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
                             break
                     else:
-                        i += 1
                         errors = 0
                         asn = self.__update_db_ris(entry)
                         date = dateutil.parser.parse(timestamp).date().isoformat()
@@ -153,7 +152,5 @@ class InsertRIS():
                         self.global_db.sadd(index_day_asns, asn.split(self.separator)[0])
                         self.global_db.sadd(index_as_ips, ip_details)
                         to_return = True
-                    if i >= 10000:
-                        syslog.syslog(syslog.LOG_DEBUG, str(self.global_db.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
-                        i = 0
+                syslog.syslog(syslog.LOG_DEBUG, str(self.global_db.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
         return to_return

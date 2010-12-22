@@ -35,7 +35,7 @@ class InsertRIS():
     Take a look at doc/uml-diagramms/RIS\ Fetching.png to see a diagramm.
     """
     default_asn_desc = None
-    max_consecutive_errors = 10
+    max_consecutive_errors = 5
     
     separator = config.get('input_keys','separator')
     
@@ -135,7 +135,6 @@ class InsertRIS():
                         self.global_db.sadd(ip_set, ip_details)
                         if errors >= self.max_consecutive_errors:
                             self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
-                            break
                     else:
                         errors = 0
                         asn = self.__update_db_ris(entry)
@@ -153,4 +152,5 @@ class InsertRIS():
                         self.global_db.sadd(index_as_ips, ip_details)
                         to_return = True
                 syslog.syslog(syslog.LOG_DEBUG, str(self.global_db.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
+            time.sleep(sleep_timer)
         return to_return

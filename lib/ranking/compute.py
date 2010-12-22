@@ -45,15 +45,18 @@ class Ranking():
     def update_asn_list(self):
         if self.date is None:
             self.date = datetime.date.today().isoformat()
-        index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
+        sources = global_db.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
+        self.asn_details = {}
+        for source in sources:
+            index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
                             date=self.date, source=source, \
                             key=config.get('input_keys','index_asns_details'))
-        self.asn_details = self.global_db.smembers(index_day_asns_details)
+            self.asn_details[source] = self.global_db.smembers(index_day_asns_details)
 
     def rank_using_key(self, key):
         if key is not None:
             self.asn, self.date, source = key.split(self.separator)
-            for detail in self.asn_details:
+            for detail in self.asn_details[source]:
                 if self.asn in detail:
                     a, self.timestamp, c, d = detail.split(self.separator)
                     self.ip_count()

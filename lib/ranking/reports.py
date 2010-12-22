@@ -37,9 +37,16 @@ class Reports():
     def build_reports(self):
         self.global_report()
         for source in self.sources:
+            histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
+            # drop the old stuff
+            history_db.delete(histo_key)
             self.source_report(source)
     
     def global_report(self):
+        histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = config.get('input_keys','histo_global'), \
+                        sep = self.separator, ip_key = self.ip_key)
+        # drop the old stuff
+        history_db.delete(histo_key)
         for source in self.sources:
             self.source_report(source, config.get('input_keys','histo_global'))
 
@@ -47,8 +54,6 @@ class Reports():
         if zset_key is None:
             zset_key = source
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = zset_key, sep = self.separator, ip_key = self.ip_key)
-        # drop the old stuff
-        history_db.delete(histo_key)
         asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date, sep = self.separator, \
                                     source = source, key = config.get('input_keys','index_asns')))
         for asn in asns:

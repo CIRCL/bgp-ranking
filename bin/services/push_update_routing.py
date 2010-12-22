@@ -43,7 +43,9 @@ def usage():
 import redis
 routing_db = redis.Redis(db=config.get('redis','routing'))
 global_db = redis.Redis(db=config.get('redis','global'))
+global_db_slave = redis.Redis(port = 6380, db=config.get('redis','global'))
 history_db = redis.Redis(db=config.get('redis','history'))
+history_db_slave = redis.Redis(port = 6380, db=config.get('redis','history'))
 
 import datetime
 
@@ -85,7 +87,7 @@ def run_splitted_processing(max_simultaneous_processes, process_name, process_ar
         pids = update_running_pids(pids)
 
 while 1:
-    if not os.path.exists(filename) or history_db.exists(config.get('redis','to_rank')):
+    if not os.path.exists(filename) or history_db_slave.exists(config.get('redis','to_rank')):
         # wait for a new file
         time.sleep(sleep_timer)
         continue
@@ -112,16 +114,16 @@ while 1:
     
     date = datetime.date.today().isoformat()
     separator = config.get('input_keys','separator')
-    sources = global_db.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
+    sources = global_db_slave.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
 
     service_start_multiple(ranking_process_service, int(config.get('processes','ranking')))
 
     for source in sources:
-        asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, key = config.get('input_keys','index_asns')))
+        asns = global_db_slave.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, key = config.get('input_keys','index_asns')))
         for asn in asns:
             history_db.sadd(config.get('redis','to_rank'), '{asn}{sep}{date}{sep}{source}'.format(sep = separator, asn = asn, date = date, source = source))
     
-    while history_db.scard(config.get('redis','to_rank')) > 0:
+    while history_db_slave.scard(config.get('redis','to_rank')) > 0:
         # wait for a new file
         time.sleep(sleep_timer_short)
     rmpid(ranking_process_service)

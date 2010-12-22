@@ -37,6 +37,7 @@ class InputReader():
 
     def connect(self):
         self.temp_db = redis.Redis(db=temp_reris_db)
+        self.temp_db_slave = redis.Redis(port = 6380, db=temp_reris_db)
         self.global_db = redis.Redis(db=global_db)
 
     def get_all_information(self):
@@ -48,22 +49,22 @@ class InputReader():
         raw_key =       '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_raw)
         times_key =     '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_times)
         
-        ip =        self.temp_db.get(ip_key)
-        src =       self.temp_db.get(src_key)
-        timestamp = self.temp_db.get(timestamp_key)
+        ip =        self.temp_db_slave.get(ip_key)
+        src =       self.temp_db_slave.get(src_key)
+        timestamp = self.temp_db_slave.get(timestamp_key)
         if timestamp is None:
             timestamp = datetime.date.today()
         else:
             timestamp = dateutil.parser.parse(timestamp)
-        infection = self.temp_db.get(infection_key)
-        raw =       self.temp_db.get(raw_key)
-        times =     self.temp_db.get(times_key)
+        infection = self.temp_db_slave.get(infection_key)
+        raw =       self.temp_db_slave.get(raw_key)
+        times =     self.temp_db_slave.get(times_key)
         self.temp_db.delete(ip_key, src_key, timestamp_key, infection_key, raw_key, times_key)
         return uid, ip, src, timestamp, infection, raw, times
 
     def insert(self):
         to_return = False
-        while self.temp_db.scard(list_ips) > 0:
+        while self.temp_db_slave.scard(list_ips) > 0:
             to_return = True
             uid, ip, src, timestamp, infection, raw, times = self.get_all_information()
             if ip is None:

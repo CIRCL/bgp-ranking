@@ -48,7 +48,7 @@ class Connector(object):
         self.temp_db = redis.Redis(db=temp_reris_db)
         self.server = server
         if self.server == 'riswhois.ripe.net':
-            self.cache_db = redis.Redis(db=ris_cache_reris_db)
+            self.cache_db = redis.Redis(port = 6381, db=ris_cache_reris_db)
             self.key = config.get('redis','key_temp_ris')
         else:
             self.key = self.server

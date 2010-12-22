@@ -153,7 +153,7 @@ class InsertRIS():
                         self.global_db.sadd(index_day_asns, asn.split(self.separator)[0])
                         self.global_db.sadd(index_as_ips, ip_details)
                         to_return = True
-                    if i >= 1000:
+                    if i >= 10000:
                         syslog.syslog(syslog.LOG_DEBUG, str(self.global_db.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
                         i = 0
         return to_return

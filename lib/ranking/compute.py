@@ -52,7 +52,7 @@ class Ranking():
             index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
                                         date=self.date, source=source, \
                                         key=config.get('input_keys','index_asns_details'))
-            self.asn_details[source] = self.global_db.smembers(index_day_asns_details)
+            self.asn_details[source] = global_db.smembers(index_day_asns_details)
 
     def rank_using_key(self, key):
         if key is not None:

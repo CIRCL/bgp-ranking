@@ -40,14 +40,23 @@ class Ranking():
         #self.make_index()
         #self.rank()
         #self.make_history()
+        
+    def update_asn_list(self):
+        index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
+                            date=self.date, source=source, \
+                            key=config.get('input_keys','index_asns_details'))
+        self.asn_details = self.global_db.smembers(index_day_asns_details)
 
     def rank_using_key(self, key):
         if key is not None:
-            self.asn, self.timestamp, self.date, source = key.split(self.separator)
-            self.ip_count()
-            self.make_index_source(source)
-            self.rank()
-            self.make_history()
+            self.asn, self.date, source = key.split(self.separator)
+            for detail in self.asn_details:
+                if self.asn in detail:
+                    a, self.timestamp, c, d = detail.split(self.separator)
+                    self.ip_count()
+                    self.make_index_source(source)
+                    self.rank()
+                    self.make_history()
 
     def ip_count(self):
         keyv4 = str(self.asn) + ':v4'

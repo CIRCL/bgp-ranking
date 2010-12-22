@@ -29,11 +29,13 @@ i = 0
 time.sleep(sleep_timer)
 syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(number = history_db.scard(config.get('redis','to_rank'))))
 r = Ranking()
+r.update_asn_list()
 while history_db.scard(config.get('redis','to_rank')) > 0 :
     key = history_db.spop(config.get('redis','to_rank'))
     if key is not None:
         r.rank_using_key(key)
         i +=1 
         if i >= 1000:
+            r.update_asn_list()
             syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(number = history_db.scard(config.get('redis','to_rank'))))
             i = 0

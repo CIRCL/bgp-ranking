@@ -71,27 +71,38 @@ class Reports():
         return history_db.get('{asn}{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep = self.separator, \
                                         asn = asn, date = date, source = source, ip_key = self.ip_key))
 
-    def prepare_graphe_js(self, asn, first_date, last_date, source = None):
-        if source is None:
-            source = config.get('input_keys','histo_global')
+    def prepare_graphe_js(self, asn, first_date, last_date, sources = None):
+        if sources is None:
+            sources = self.sources
+        else:
+            sources = [sources]
         dates = []
         current = first_date
         while current <= last_date:
             dates.append(current.strftime("%Y-%m-%d"))
             current += datetime.timedelta(days=1)
-        keys = []
-        for date in dates:
-            keys.append('{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = asn, \
-                        date = date, source = source, v4 = config.get('input_keys','rankv4')))
-        
-        ranks = history_db.mget(keys)
+        keys = {}
+        ranks = {}
+        for source in sources:
+            keys[source] = []
+            for date in dates:
+                keys[source].append('{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = asn, \
+                            date = date, source = source, v4 = config.get('input_keys','rankv4')))
+            ranks[source] = history_db.mget(keys[source])
+
         ranks_by_days = {}
-        i = 0 
-        for rank in ranks:
-            if rank is not None:
-                asn_day = dates[i]
-                ranks_by_days[asn_day] = float(rank) + 1
-            i += 1 
+        for source in sources:
+            i = 0 
+            for rank in ranks[source]:
+                if rank is not None:
+                    asn_day = dates[i]
+                    if ranks_by_days.get(asn_day, None) is None:
+                        ranks_by_days[asn_day] = float(rank)
+                    else:
+                        ranks_by_days[asn_day] += float(rank)
+                i += 1 
+        for ranks in ranks_by_days:
+            ranks_by_days[ranks] += 1 
         if len(ranks_by_days) > 0:
             return ranks_by_days
         else:

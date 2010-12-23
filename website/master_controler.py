@@ -54,7 +54,7 @@ class MasterControler():
             for asn in splitted_asns:
                 if asn.isdigit():
                     # as_graph_infos : [ipv4, ipv6, dates, first_date, last_date]
-                    as_graph_infos = self.report.prepare_graphe_js(asn)
+                    as_graph_infos = self.report.prepare_graphe_js(self.graph_first_date, self.graph_last_date, asn)
                     if as_graph_infos is not None:
                         g.add_line(as_graph_infos, str(asn + self.report.ip_key), self.graph_first_date, self.graph_last_date)
                     title += asn + ' '

@@ -48,13 +48,11 @@ class Connector(object):
         self.temp_db = redis.Redis(db=temp_reris_db)
         self.server = server
         if self.server == 'riswhois.ripe.net':
-            self.cache_db = redis.Redis(db=ris_cache_reris_db)
-            self.cache_db_slave = redis.Redis(port = 6380, db=ris_cache_reris_db)
+            self.cache_db = redis.Redis(port = 6382, db=ris_cache_reris_db)
             self.key = config.get('redis','key_temp_ris')
         else:
             self.key = self.server
-            self.cache_db = redis.Redis(db=whois_cache_reris_db)
-            self.cache_db_slave = redis.Redis(port = 6380, db=whois_cache_reris_db)
+            self.cache_db = redis.Redis(port = 6382, db=whois_cache_reris_db)
         if self.server in self.support_keepalive:
             self.keepalive = True
         if self.server in local_whois:
@@ -97,7 +95,7 @@ class Connector(object):
                     whois = config.get('whois_servers','non_routed_message')
                     self.cache_db.set(entry, self.server + '\n' + unicode(whois,  errors="replace"))
                     self.cache_db.expire(entry, cache_ttl)
-                elif self.cache_db_slave.get(entry) is None:
+                elif self.cache_db.get(entry) is None:
                     if not self.connected:
                         self.__connect()
 #                    syslog.syslog(syslog.LOG_DEBUG, self.server + ", query : " + str(entry))

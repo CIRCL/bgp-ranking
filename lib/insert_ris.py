@@ -49,7 +49,7 @@ class InsertRIS():
         """
         Initialize the two connectors to the redis server 
         """        
-        self.cache_db_ris = redis.Redis(db=ris_cache_reris_db)
+        self.cache_db_ris = redis.Redis(port = 6382, db=ris_cache_reris_db)
         self.temp_db = redis.Redis(db=temp_reris_db)
         self.global_db = redis.Redis(db=global_db)
         self.global_db_slave = redis.Redis(port = 6381, db=global_db)

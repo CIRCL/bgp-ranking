@@ -93,20 +93,19 @@ class InputReader():
                                                                 key=config.get('input_keys','index_ips'))
             ip_details      = '{ip}{sep}{timestamp}'.format(sep = self.separator, ip = ip, timestamp = iso_timestamp)
             
-            if self.global_db.sismember(index_day_ips, ip_details) is False:
-                to_return = True
-                self.global_db.sadd(index_day_src, src)
-                self.global_db.sadd(index_day_ips, ip_details)
-                
-                ip_details_keys = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
-                
-                if infection is not None:
-                    self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_infection), infection)
-                if raw is not None:
-                    self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_raw), raw)
-                if times is not None:
-                    self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_times), times)
-                
-                self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
-                self.global_db.sadd(config.get('redis','no_asn'), index_day_ips)
+            to_return = True
+            self.global_db.sadd(index_day_src, src)
+            self.global_db.sadd(index_day_ips, ip_details)
+            
+            ip_details_keys = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
+            
+            if infection is not None:
+                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_infection), infection)
+            if raw is not None:
+                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_raw), raw)
+            if times is not None:
+                self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_times), times)
+            
+            self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
+            self.global_db.sadd(config.get('redis','no_asn'), index_day_ips)
         return to_return

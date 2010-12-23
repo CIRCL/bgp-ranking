@@ -121,6 +121,8 @@ class Ranking():
             history_db.delete(asn_key_v4, asn_key_v6)
         for key in self.rank_by_source:
             if self.rank_by_source[key][0] > 0.0:
+                asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = self.asn, \
+                        date = self.date, source = key, v4 = config.get('input_keys','rankv4'))
                 history_db.set('{asn}{sep}{timestamp}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, \
                                     asn = self.asn, timestamp = self.timestamp, date = self.date, source = key, \
                                     v4 = config.get('input_keys','rankv4')), self.rank_by_source[key][0])
@@ -131,6 +133,8 @@ class Ranking():
                     temp_rank = self.rank_by_source[key][0]
                 history_db.set(asn_key_v4, temp_rank)
             if self.rank_by_source[key][1] > 0.0:
+                asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, asn = self.asn, \
+                        date = self.date, source = key, v6 = config.get('input_keys','rankv6'))
                 history_db.set('{asn}{sep}{timestamp}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, \
                                                 asn = self.asn, timestamp = self.timestamp, date = self.date, source = key, \
                                                 v6 = config.get('input_keys','rankv6')), self.rank_by_source[key][1])

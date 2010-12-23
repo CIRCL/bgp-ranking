@@ -148,10 +148,11 @@ class InsertRIS():
                                                         key=config.get('input_keys','index_asns'))
                         index_as_ips = '{asn}{sep}{date}{sep}{source}'.format(sep = self.separator, asn = asn,\
                                                         date=date, source=source)
-                        self.global_db.sadd(index_day_asns_details, asn)
-                        self.global_db.sadd(index_day_asns, asn.split(self.separator)[0])
-                        self.global_db.sadd(index_as_ips, ip_details)
-                        to_return = True
+                        if self.global_db.sismember(index_as_ips, ip_details) is False:
+                            self.global_db.sadd(index_day_asns_details, asn)
+                            self.global_db.sadd(index_day_asns, asn.split(self.separator)[0])
+                            self.global_db.sadd(index_as_ips, ip_details)
+                            to_return = True
                 syslog.syslog(syslog.LOG_DEBUG, str(self.global_db_slave.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
             time.sleep(sleep_timer)
         return to_return

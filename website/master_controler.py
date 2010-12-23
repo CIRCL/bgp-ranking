@@ -39,8 +39,6 @@ class MasterControler():
     
     def get_ip_infos(self, asn = None, asn_tstamp = None, source = None):
         if asn is not None and asn_tstamp is not None:
-            print asn 
-            print asn_tstamp
             return self.report.get_ips_descs(asn, asn_tstamp, source)
     
     def comparator(self, asns = None):

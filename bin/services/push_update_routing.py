@@ -43,9 +43,9 @@ def usage():
 import redis
 routing_db = redis.Redis(db=config.get('redis','routing'))
 global_db = redis.Redis(db=config.get('redis','global'))
-global_db_slave = redis.Redis(port = 6380, db=config.get('redis','global'))
+global_db_slave = redis.Redis(port = config.get('redis','port_slave_1'), db=config.get('redis','global'))
 history_db = redis.Redis(db=config.get('redis','history'))
-history_db_slave = redis.Redis(port = 6380, db=config.get('redis','history'))
+history_db_slave = redis.Redis(port = config.get('redis','port_slave_1'), db=config.get('redis','history'))
 
 import datetime
 

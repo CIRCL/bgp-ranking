@@ -37,7 +37,7 @@ class InputReader():
 
     def connect(self):
         self.temp_db = redis.Redis(db=temp_reris_db)
-        self.temp_db_slave = redis.Redis(port = 6380, db=temp_reris_db)
+        self.temp_db_slave = redis.Redis(port = config.get('redis','port_slave_1'), db=temp_reris_db)
         self.global_db = redis.Redis(db=global_db)
 
     def get_all_information(self):

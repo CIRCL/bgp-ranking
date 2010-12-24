@@ -7,5 +7,5 @@ from modules.abuse_ch import AbuseCh
 
 class SpyeyetrackerIpBlockList(AbuseCh):
     directory = 'spyeye/ddos/'
-    class_name = self.__class__.__name__
+    class_name = __class__.__name__
     list_type = 2

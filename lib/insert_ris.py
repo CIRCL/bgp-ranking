@@ -128,7 +128,7 @@ class InsertRIS():
                     temp, date, source, key = ip_set.split(self.separator)
                     ip_details = self.global_db.spop(ip_set)
                     if ip_details is None:
-                        continue
+                        break
                     ip, timestamp = ip_details.split(self.separator)
                     entry = self.cache_db_ris.get(ip)
                     if entry is None:

@@ -22,10 +22,10 @@ class AbuseCh(AbstractModule):
             blocklist = open(file)
             for line in blocklist:
                 if self.list_type == 1:
-                    ip = self.line_blocklist()
+                    ip = self.line_blocklist(line)
                     date = self.date
                 elif self.list_type == 2:
-                    ip, date = self.line_ddos()
+                    ip, date = self.line_ddos(line)
                 if ip is None:
                     continue
                 entry = self.prepare_entry(ip = ip, source = self.class_name, timestamp = date)
@@ -33,7 +33,7 @@ class AbuseCh(AbstractModule):
             blocklist.close()
             self.move_file(file)
 
-    def line_ddos(self):
+    def line_ddos(self, line):
         splitted = line.split(' | ')
         if len(splitted) > 0:
             ip = splitted[1]
@@ -42,7 +42,7 @@ class AbuseCh(AbstractModule):
         else:
             return None, None
  
-    def line_blocklist(self):
+    def line_blocklist(self, line):
         ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})',line)
         if len(ip) > 0:
             return ip[0]

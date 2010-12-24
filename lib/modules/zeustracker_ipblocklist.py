@@ -7,5 +7,8 @@ from modules.abuse_ch import AbuseCh
 
 class ZeustrackerIpBlockList(AbuseCh):
     directory = 'zeus/ipblocklist/'
-    class_name = __class__.__name__
     list_type = 1
+
+    def __init__(self, raw_dir):
+        AbuseCh.__init__(self)
+        self.class_name = self.__class__.__name__

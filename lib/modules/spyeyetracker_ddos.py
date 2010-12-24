@@ -6,6 +6,6 @@ import datetime
 from modules.abuse_ch import AbuseCh
 
 class SpyeyetrackerIpBlockList(AbuseCh):
-    directory = 'spyeye/ipblocklist/'
+    directory = 'spyeye/ddos/'
     class_name = self.__class__.__name__
-    list_type = 1
+    list_type = 2

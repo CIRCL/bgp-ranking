@@ -10,5 +10,5 @@ class ZeustrackerDdos(AbuseCh):
     list_type = 2
 
     def __init__(self, raw_dir):
-        AbuseCh.__init__(self)
+        AbuseCh.__init__(self, raw_dir)
         self.class_name = self.__class__.__name__

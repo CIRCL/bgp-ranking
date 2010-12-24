@@ -38,7 +38,7 @@ class InsertWhois():
         """
         Initialize the two connectors to the redis server 
         """
-        self.cache_db_whois = redis.Redis(port = config.get('redis','port_cache'), db=whois_cache_reris_db)
+        self.cache_db_whois = redis.Redis(port = int(config.get('redis','port_cache')), db=whois_cache_reris_db)
         self.temp_db = redis.Redis(db=temp_reris_db)
         self.global_db = redis.Redis(db=global_db)
 

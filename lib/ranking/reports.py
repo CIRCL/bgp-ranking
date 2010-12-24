@@ -17,9 +17,9 @@ import datetime
 import redis
 
 global_db = redis.Redis(db=config.get('redis','global'))
-global_db_slave = redis.Redis(port = config.get('redis','port_slave_1'), db=config.get('redis','global'))
+global_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=config.get('redis','global'))
 history_db = redis.Redis(db=config.get('redis','history'))
-history_db_slave = redis.Redis(port = config.get('redis','port_slave_1'), db=config.get('redis','history'))
+history_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=config.get('redis','history'))
 
 class Reports():
     separator = config.get('input_keys','separator')

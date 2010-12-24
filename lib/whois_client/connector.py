@@ -48,11 +48,11 @@ class Connector(object):
         self.temp_db = redis.Redis(db=temp_reris_db)
         self.server = server
         if self.server == 'riswhois.ripe.net':
-            self.cache_db = redis.Redis(port = config.get('redis','port_cache'), db=ris_cache_reris_db)
+            self.cache_db = redis.Redis(port = int(config.get('redis','port_cache')), db=ris_cache_reris_db)
             self.key = config.get('redis','key_temp_ris')
         else:
             self.key = self.server
-            self.cache_db = redis.Redis(port = config.get('redis','port_cache'), db=whois_cache_reris_db)
+            self.cache_db = redis.Redis(port = int(config.get('redis','port_cache')), db=whois_cache_reris_db)
         if self.server in self.support_keepalive:
             self.keepalive = True
         if self.server in local_whois:

@@ -93,8 +93,70 @@ A key looks like this:
 <ip>|<timestamp>|{infection,times,raw} 
 And the value is the one given by the module. 
 
+# Second state
+
+At this point, the information from the modules are in the database, we have insert the other information (RIS and Whois).
+
+# Ris
+Using the keys generated in the First state and no_asn, we try to get the RIS entries from db1. 
+
+Then we will create new ASN objects with this format: 
+<asn>|<timestamp>|ip_block -> 0.0.0.0/0
+<asn>|<timestamp>|description -> Description
+
+and we add to a set called 
+	<asn>
+a new value <timestamp>
+
+We do not want more than one occurrence of each block and we ensure it by checking if the block and the description is already there. 
+Hint: mget on each <asn>|<timestamp>|ip_block of an ASN and if the block is found, comparing with the description. 
 
 
+Note: if the ASN has been set to -1 (the IP is invalid, has no information on the RIS Whois server), we use a default AS object. 
+
+We have to create three more indexes after we know the ASN of an IP: 
+	<date>|<source>|index_asns_details -> set of <asn>|<timestamp>
+		used to compute the ranking
+		will be used to display the ranking by subnet
+	<date>|<source>|index_asns -> set of <asn>
+		used to find the list of ASNs to rank
+		used to display the ranking by ASN
+	<asn>|<timestamp>|<date>|<source> -> set of <ip>|<timestamp> 
+		used to ensure the same IP is not already there 
+		used to display the list of IPs in the interface
+
+
+When it is finished, the integrity of the database in complete.
+
+# Whois 
+
+The whois part is desactivated by default. The idea is simple: an user ask for a whois entry in the web interface, the IP is put in the set 'whois' of db0, fetched and put in db2. 
+From db2, it is copied and put in db5 as value of 
+	<ip>|<timestamp>|whois
 
 
 *** Database 6 ***
+
+# Ranking
+
+The ranking can only be computed when the routing db (3) in fully populated. When it is finished, a new index is created: 
+	to_rank -> set of <asn>|<timestamp>|<date>|<source>
+
+By using this index, we compute a rank for each ASN found today, by source. 
+The ranking generate some entries : 
+    <asn>|<date>|<source>|{rankv4,rankv6} -> sum of all the rank of 'their' <asn>|<timestamp>|<date>|<source>
+        The entry is created only of the rank is > 0 
+Each rank for each <asn>|<timestamp>|<date>|<source> is also saved but not used actually. It wll be usefull to generate a report for a ranking by subnet.
+
+Only one 'version' of the rank is saved for a particular day. 
+
+# Reports
+
+To display the reports on the website, we will need one key for each source and a "global" key for the global report. They have this format: 
+    <source>|{rankv4,rankv6} -> ordered set (on the rank, of course) of <asn>|<date>|<source>|{rankv4,rankv6}
+    The list of sources is found by using <day>|sources
+    The list of ASNs is found by using <date>|<source>|index_asns 
+
+It is possible to change the day and get the report of an other one very easily :) 
+
+

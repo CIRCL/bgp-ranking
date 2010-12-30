@@ -72,6 +72,9 @@ class InputReader():
             if src is None:
                 syslog.syslog(syslog.LOG_ERR, ip + ' without source, invalid')
                 continue
+            if timestamp.date() < datetime.date.today() and int(config.get('modules_global','allow_old_entries')) == 0:
+                syslog.syslog(syslog.LOG_ERR, 'The timestamp (' + timestamp.isoformat() + ') of ' + ip + ' is old, entry not imported')
+                continue
             try:
                 # Check and normalize the IP 
                 ip_bin = IPy.IP(ip)

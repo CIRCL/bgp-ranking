@@ -4,4 +4,7 @@ BGP_RANKING_ROOT="${PREFIX}/bgp-ranking"
 PYTHON="/usr/bin/python"
 #NICE="nice -n15 ionice -n2 -c7"
 NICE=""
+
+
 REDIS_ROOT="${PREFIX}/redis/src"
+REDIS_CONFIG="${BGP_RANKING_ROOT}/etc/"

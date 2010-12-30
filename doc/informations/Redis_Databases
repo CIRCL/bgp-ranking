@@ -158,5 +158,3 @@ To display the reports on the website, we will need one key for each source and 
     The list of ASNs is found by using <date>|<source>|index_asns 
 
 It is possible to change the day and get the report of an other one very easily :) 
-
-

@@ -39,3 +39,20 @@ What is the directory structure?
  |  |  +- pid files of the unning processes 
  |  +- log/
  |  |  +- log files
+
+
+
+Why do we need many redis servers ? Is it not overkill ? Redis can handle a lot of query/sec. 
+
+tl;dr: if you do not use the daily dataset of dshield, one redis server is enough. Set all the redis ports to 6379 in the config file. 
+And comment the line with DshieldDaily! 
+
+
+Detailled answer: 
+It depends. If you use the whole system with all the sources, not. At all. Or you will see redis die.
+
+The system is massively multiprocessed, with massively I meen around 40/50 processes when it is busy. Each of this processes interract more or less with redis. Some of them write stuff but the most "redis-intensif" work is reading information from the databases.
+That is why there is two slave databases which only handle this part. 
+The master server handle all the write processes. 
+
+The second master redis server contains the temporary (RIS) Whois entries, it is quite intensive but a single server doing only this is enough. It is gread to have this second server because many information are added/removed from the server and the other master server was quite busy to replicate the entries on the slaves. 

@@ -28,6 +28,7 @@ What is the directory structure?
  |  +- fetch_RIS.py : push the RIS whois responses in the database
  |  +- fetch_Whois.py : push the whois responses in the database
  |  +- input_reader.py : pop the new entries from redis and push it in MySQL
+ +- scripts/ : bunch of scripts used to start the system
  +- var/
  |  +- raw_data/
  |  |  +- source_name/ : name of the source of the file

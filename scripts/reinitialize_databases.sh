@@ -2,7 +2,7 @@
 
 source common.source.sh
 
-${REDIS_ROOT}/redis-cli flushall
+${REDIS_ROOT}/redis-cli -n 4 flushdb
 
 ./init_databases.sh
 

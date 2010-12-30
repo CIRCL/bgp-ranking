@@ -119,7 +119,7 @@ while 1:
     service_start_multiple(ranking_process_service, int(config.get('processes','ranking')))
 
     for source in sources:
-        asns = global_db_slave.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, key = config.get('input_keys','index_asns')))
+        asns = global_db_slave.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, key = config.get('input_keys','index_asns_details')))
         for asn in asns:
             history_db.sadd(config.get('redis','to_rank'), '{asn}{sep}{date}{sep}{source}'.format(sep = separator, asn = asn, date = date, source = source))
     

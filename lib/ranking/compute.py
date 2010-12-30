@@ -42,28 +42,25 @@ class Ranking():
         #self.rank()
         #self.make_history()
         
-    def update_asn_list(self):
-        if self.date is None:
-            self.date = datetime.date.today().isoformat()
-        sources = global_db.smembers('{date}{sep}{key}'.format(date = self.date, sep = self.separator, \
-                                        key = config.get('input_keys','index_sources')))
-        self.asn_details = {}
-        for source in sources:
-            index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
-                                        date=self.date, source=source, \
-                                        key=config.get('input_keys','index_asns_details'))
-            self.asn_details[source] = global_db.smembers(index_day_asns_details)
+    #def update_asn_list(self):
+        #if self.date is None:
+            #self.date = datetime.date.today().isoformat()
+        #sources = global_db.smembers('{date}{sep}{key}'.format(date = self.date, sep = self.separator, \
+                                        #key = config.get('input_keys','index_sources')))
+        #self.asn_details = {}
+        #for source in sources:
+            #index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
+                                        #date=self.date, source=source, \
+                                        #key=config.get('input_keys','index_asns_details'))
+            #self.asn_details[source] = global_db.smembers(index_day_asns_details)
 
     def rank_using_key(self, key):
         if key is not None:
-            self.asn, self.date, source = key.split(self.separator)
-            for detail in self.asn_details[source]:
-                asn, self.timestamp = detail.split(self.separator)
-                if self.asn == asn:
-                    self.ip_count()
-                    self.make_index_source(source)
-                    self.rank()
-                    self.make_history()
+            self.asn, self.timestamp, self.date, source = key.split(self.separator)
+            self.ip_count()
+            self.make_index_source(source)
+            self.rank()
+            self.make_history()
 
     def ip_count(self):
         keyv4 = str(self.asn) + ':v4'

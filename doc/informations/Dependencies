@@ -1,12 +1,10 @@
 Ubuntu: 
 	redis -> git clone git://github.com/antirez/redis.git
-	python-ipy -> depots
+	python-ipy
 	redis-py -> git clone http://github.com/andymccurdy/redis-py.git
 	python-dateutil
-	python-elixir
-	python-mysqldb
 	python-feedparser
-	libbgpdump -> http://www.ris.ripe.net/source/libbgpdump-1.4.99.12.tar.gz
+	libbgpdump -> http://www.ris.ripe.net/source/libbgpdump-1.4.99.13.tar.gz
 		zlib1g-dev 
 		libbz2-dev
     

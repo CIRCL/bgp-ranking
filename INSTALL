@@ -1,4 +1,4 @@
-This file should give you the easiest way to install the system on your awn server. 
+This file should give you the easiest way to install the system on your own server. 
 
 If you encour any problem, please just send me a mail or open a bug on github. 
 
@@ -10,7 +10,7 @@ docs/informations/Dependencies
 
 This file gives you a list of packages to install if you are using ubuntu.
 
-I am not absolutely all the packages are available on debian.
+I am not absolutely sure that all the packages are available on debian.
 
 ####################################
 
@@ -30,14 +30,12 @@ Elsewhere, the code on github is more stable:
 ########## Configuration ###########
 
 The default configuration works on a quadcore with 8 Gb RAM. 
-If you don't have this power available, you *really* should take a look
-at the configuration file: 
+If you don't have this power available, you *really* should take a look at the configuration file: 
 - etc/bgp-ranking.conf
 
 And modify each line with "processes". 
 
-Note: Usually, you can put a value like <number of cores>+1 but if you have 
-only one core, "1" is safer.
+Note: Usually, you can put a value like <number of cores>+1 but if you have only one core, "1" is safer.
 
 An other thing to change is the "root" path in directories -> root. 
 It is the root directory where you clone the project. 
@@ -47,12 +45,10 @@ It is the root directory where you clone the project.
 
 ####### Starting the system ########
 
-There is sole scripts available in scripts/. 
+There is some scripts available in scripts/. 
 
-Before starting the system, edit the file scripts/common.source.sh 
-accordingly to your system. 
+Before starting the system, edit the file scripts/common.source.sh accordingly to your system. 
 
-When it is done, start first init_databases.sh, then start_services.sh 
-and finally start_ranking.sh. 
+When it is done, start first start_redis.sh, init_databases.sh, start_services.sh and finally start_ranking.sh. 
 
 ####################################

@@ -33,9 +33,9 @@ while 1:
         continue
     server = get_server_by_query(block, r)
 #    syslog.syslog(syslog.LOG_DEBUG, block + ' goto ' + server.whois )
-    if not server:
+    #if not server:
         # FIXME: ugly. Is it used? or was it only for MySQL which did sth bad?
-        syslog.syslog(syslog.LOG_ERR, "error, no server found for this block : " + block)
-        temp_db.sadd(key, block)
-        continue
+        #syslog.syslog(syslog.LOG_ERR, "error, no server found for this block : " + block)
+        #temp_db.sadd(key, block)
+        #continue
     temp_db.sadd(server,  block)

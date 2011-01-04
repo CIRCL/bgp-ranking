@@ -49,17 +49,14 @@ class InputReader():
         raw_key =       '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_raw)
         times_key =     '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_times)
         
-        ip =        self.temp_db_slave.get(ip_key)
-        src =       self.temp_db_slave.get(src_key)
-        timestamp = self.temp_db_slave.get(timestamp_key)
+        table_keys = [ip_key, src_key, timestamp_key, infection_key, raw_key, times_key]
+        
+        ip, src, timestamp, infection, raw, times = self.temp_db_slave.mget(table_keys)
         if timestamp is None:
             timestamp = datetime.date.today()
         else:
             timestamp = dateutil.parser.parse(timestamp)
-        infection = self.temp_db_slave.get(infection_key)
-        raw =       self.temp_db_slave.get(raw_key)
-        times =     self.temp_db_slave.get(times_key)
-        self.temp_db.delete(ip_key, src_key, timestamp_key, infection_key, raw_key, times_key)
+        self.temp_db.delete(*table_keys)
         return uid, ip, src, timestamp, infection, raw, times
 
     def insert(self):
@@ -73,7 +70,7 @@ class InputReader():
                 syslog.syslog(syslog.LOG_ERR, ip + ' without source, invalid')
                 continue
             if timestamp.date() < datetime.date.today() and int(config.get('modules_global','allow_old_entries')) == 0:
-                syslog.syslog(syslog.LOG_ERR, 'The timestamp (' + timestamp.isoformat() + ') of ' + ip + ' is old, entry not imported')
+                #syslog.syslog(syslog.LOG_ERR, 'The timestamp (' + timestamp.isoformat() + ') of ' + ip + ' is old, entry not imported')
                 continue
             try:
                 # Check and normalize the IP 

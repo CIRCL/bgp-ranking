@@ -42,9 +42,11 @@ class AbstractModule():
     def put_entry(self, entry):
         uid = self.temp_db.incr(uid_var)
         # the format of "entry" is : { ':ip' : ip , ':timestamp' : timestamp ... }
+        to_set = {}
         for key, value in entry.iteritems():
             if value is not None:
-                self.temp_db.set('{uid}{sep}{key}'.format(uid = str(uid),sep = self.separator, key = key), value)
+                to_set['{uid}{sep}{key}'.format(uid = str(uid),sep = self.separator, key = key)] = value
+        self.temp_db.mset(to_set)
         self.temp_db.sadd(list_ips, uid)
 
     def __glob_only_files(self):

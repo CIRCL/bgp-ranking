@@ -17,7 +17,7 @@ If the key does not exists (the last command returns 0), there is no entries to 
 ris: a set of IPs. We want to know the RIS information for all the IPs in the set.
 Note: the set may contains IPs that are already cached, it is not a problem: they will be automatically dropped by the fetching process. 
 
-To know the number of RIS entries to fetch : redis-cli -n 0 ris
+To know the number of RIS entries to fetch : redis-cli -n 0 scard ris
 
 whois: same as ris but for the Whois information
 
@@ -43,7 +43,7 @@ All the keys like <integer>|<string> can be dropped, they will never be inserted
 This databases are completely volatile, db1 is a cache for the RIS Whois entries and db2 for Whois entries, they are cached 24 hours. 
 The keys are IPs and the values are (RIS) Whois entries.
 
-The two databases runs on a proper redis instance. 
+The two databases runs on their own redis instance. 
 
 
 *** Database 3 ***

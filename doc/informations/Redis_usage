@@ -1,0 +1,58 @@
+**** Environment ****
+
+Redis 2.2 (unstable)
+redis-py 2.2.2 (unstable)
+
+Debian: 
+    64bit
+    2Go RAM
+    Intel(R) Core(TM)2 Duo CPU T5870  @ 2.00GHz
+
+Gentoo: 
+    64bit
+    4Go RAM 
+    Intel(R) Core(TM)2 Duo CPU T9300  @ 2.50GHz
+
+Ubuntu: 
+    32bit
+    8Go RAM
+    Intel(R) Xeon(R) CPU 5150  @ 2.66GHz (QuadCore)
+
+
+**** Context ****
+
+BGP-Ranking, many processes (~50), see in doc/presentations if you want more information. Tested on Ubuntu and a little bit on gentoo
+    Problem: All the processes are doing a lot of queries at the same time on the same database which just die. 
+    Idea: We have only one redis process, the rest of the project is multiprocessed, why not redis ? 
+
+Small project, monoprocess (for now), use many zsets and do *a lot* of queries. Tested on Debian and a little bit on gentoo
+    Problem: there is X Milions lines to parse, 50 lines/second is not enough 
+    Idea: Using cProfile, I was able to see that around 60% of the time, the process was opening a connection to redis, sending the command, receving and parsing the response. It is not possible to do UDP but using transactions should automatically reduce the amount of connection to redis...
+
+**** Multiples redis instances ****
+
+There is two possibilities: 
+- a completly self alone instance: instead of having all the data in a single instance, it is splitted between two (or more).
+    it is used for the databases containing only volatile information which are not saved.
+    In our system there is only one self alone instance and it contains the (RIS) Whois entries
+- a slave: contains all the keys of the master, used in read only mode (it is not a cluster, the changes in the slave are not pushed back in the master)
+    it is used to get information from the redis server without slowing down the master which revieve the write commands
+    In our system almost all the read commands are passed to the two slaves (and all the write commands to the master)
+
+**** Transations - Single query ****
+
+mget, mset, delete, setex: all this query allow you to do many queries at the same time, in a single connection. 
+
+Note: The transations will be implemented in a near future to the BGP Ranking system 
+
+transactions - pipelining (for redis-py): 
+p = redis.pipeline(False)
+p.command
+p.command
+p.command
+...
+p.execute()
+
+False means "not in transactional mode" aka "I do not care what the commands returns" and it is faster
+
+Note: a pipeline is transactional mode is faster (the default) than no pipeline at all but if you have a pipeline with only write commands, you do not care what the commands return

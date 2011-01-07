@@ -1,0 +1,9 @@
+Trivial:
+- use redis transactions to improve the speed of the whole system
+
+Almost trivial:
+- use python-whois as an external dep instead of the bundled version (http://gitorious.org/python-whois)
+- improve the import of the config file (see python-whois for a solution)
+
+Not trivial:
+- do not create a new key for each subnet in the ranking 

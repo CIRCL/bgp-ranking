@@ -32,7 +32,7 @@ Small project, monoprocess (for now), use many zsets and do *a lot* of queries. 
 **** Multiples redis instances ****
 
 There is two possibilities: 
-- a completly self alone instance: instead of having all the data in a single instance, it is splitted between two (or more).
+- a completly standalone instance: instead of having all the data in a single instance, it is splitted between two (or more).
     it is used for the databases containing only volatile information which are not saved.
     In our system there is only one self alone instance and it contains the (RIS) Whois entries
 - a slave: contains all the keys of the master, used in read only mode (it is not a cluster, the changes in the slave are not pushed back in the master)

@@ -110,14 +110,19 @@ class Ranking():
                 self.rank_by_source[key][1] = (float(self.weight[key][1])/self.ipv6)
     
     def make_history(self):
+        # FIXME pipeline
         for key in self.rank_by_source:
             asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = self.asn, \
                         date = self.date, source = key, v4 = config.get('input_keys','rankv4'))
             asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, asn = self.asn, \
                         date = self.date, source = key, v6 = config.get('input_keys','rankv6'))
             history_db.delete(asn_key_v4, asn_key_v6)
+        # FIXME pipeline
         for key in self.rank_by_source:
             if self.rank_by_source[key][0] > 0.0:
+                # FIXME TODO push all the '{asn}{sep}{timestamp}{sep}{date}{sep}{source}{sep}{v4}'
+                # in a zset : '{asn}{sep}{date}{sep}{source}{sep}{v4}{sep}{details}' with score = rank and value = timestamp
+                # TODO is it possible ????? => it should : I can get the score by using the timestamp (zscore) (for make_index_source)
                 asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = self.asn, \
                         date = self.date, source = key, v4 = config.get('input_keys','rankv4'))
                 history_db.set('{asn}{sep}{timestamp}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, \

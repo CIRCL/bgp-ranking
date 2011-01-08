@@ -117,7 +117,8 @@ while 1:
     sources = global_db_slave.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
 
     service_start_multiple(ranking_process_service, int(config.get('processes','ranking')))
-
+    
+    #FIXME pipeline
     for source in sources:
         asns = global_db_slave.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, key = config.get('input_keys','index_asns_details')))
         for asn in asns:

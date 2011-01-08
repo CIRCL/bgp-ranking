@@ -83,10 +83,13 @@ class InsertRIS():
             i += 1
         if key is None:
             timestamp = datetime.datetime.utcnow().isoformat()
-            self.global_db.sadd(asn, timestamp)
             key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=timestamp)
-            self.global_db.set("{key}{sep}{owner}".format(key = key, sep = self.separator, owner = self.key_owner), owner)
-            self.global_db.set("{key}{sep}{ips_block}".format(key = key, sep = self.separator, ips_block = self.key_ips_block), ips_block)
+            to_set = {  "{key}{sep}{owner}"     .format(key = key, sep = self.separator, owner = self.key_owner)        : owner, 
+                        "{key}{sep}{ips_block}" .format(key = key, sep = self.separator, ips_block = self.key_ips_block): ips_block}
+            pipeline = self.global_db.pipeline(False)
+            pipeline.sadd(asn, timestamp)
+            pipeline.mset(to_set)
+            pipeline.execute()
         return key
 
     def __update_db_ris(self, data):

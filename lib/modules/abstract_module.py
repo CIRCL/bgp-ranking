@@ -46,8 +46,10 @@ class AbstractModule():
         for key, value in entry.iteritems():
             if value is not None:
                 to_set['{uid}{sep}{key}'.format(uid = str(uid),sep = self.separator, key = key)] = value
-        self.temp_db.mset(to_set)
-        self.temp_db.sadd(list_ips, uid)
+        pipeline = self.temp_db.pipeline(False)
+        pipeline.mset(to_set)
+        pipeline.sadd(list_ips, uid)
+        pipeline.execute()
 
     def __glob_only_files(self):
         allfiles = glob.glob( self.directory + '/*')

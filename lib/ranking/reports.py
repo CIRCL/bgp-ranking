@@ -38,6 +38,7 @@ class Reports():
     
     def build_reports(self):
         self.global_report()
+        # FIXME pipeline ? 
         for source in self.sources:
             histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
             # drop the old stuff
@@ -58,6 +59,7 @@ class Reports():
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = zset_key, sep = self.separator, ip_key = self.ip_key)
         asns = global_db_slave.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date, sep = self.separator, \
                                     source = source, key = config.get('input_keys','index_asns')))
+        # FIXME pipeline
         for asn in asns:
             if asn != config.get('modules_global','default_asn'):
                 rank = self.get_daily_rank(asn, source)
@@ -69,7 +71,8 @@ class Reports():
             source = config.get('input_keys','histo_global')
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
         return history_db.zrevrange(histo_key, 0, limit, True)
-
+    
+    #FIXME pipeline the function ? 
     def get_daily_rank(self, asn, source = None, date = None):
         if source is None:
             source = config.get('input_keys','histo_global')
@@ -90,6 +93,7 @@ class Reports():
             current += datetime.timedelta(days=1)
         keys = {}
         ranks = {}
+        #FIXME pipeline
         for source in sources:
             keys[source] = []
             for date in dates:
@@ -122,6 +126,7 @@ class Reports():
             sources = [sources]
         asn_timestamps = global_db_slave.smembers(asn)
         asn_descs_to_print = []
+        #FIXME pipeline
         for asn_timestamp in asn_timestamps:
             asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(asn = asn, sep = self.separator, timestamp = asn_timestamp)
             nb_of_ips = 0 
@@ -149,6 +154,7 @@ class Reports():
 
         ip_descs_to_print = []
         asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(asn = asn, sep = self.separator, timestamp = asn_timestamp)
+        # FIXME pipeline
         for source in sources:
             ips = global_db_slave.smembers('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
                                         asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))

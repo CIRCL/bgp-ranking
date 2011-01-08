@@ -64,7 +64,7 @@ class InsertWhois():
                 splitted = entry.partition('\n')
                 whois_server = splitted[0]
                 whois = splitted[2]
-                # FIXME: add TTL ? 
+                # FIXME: msetex ? (mset + expire
                 self.global_db.set("{entry}{sep}{whois_server}".format(entry = entry,sep = self.separator, whois_server = self.key_whois_server), whois_server)
                 self.global_db.set("{entry}{sep}{whois}".format(entry = entry,sep = self.separator, whois = self.key_whois), whois)
                 to_return = True

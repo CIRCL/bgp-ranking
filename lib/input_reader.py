@@ -56,6 +56,7 @@ class InputReader():
             timestamp = datetime.date.today()
         else:
             timestamp = dateutil.parser.parse(timestamp)
+        # FIXME pipeline -> every X loop
         self.temp_db.delete(*table_keys)
         return uid, ip, src, timestamp, infection, raw, times
 
@@ -94,6 +95,7 @@ class InputReader():
             ip_details      = '{ip}{sep}{timestamp}'.format(sep = self.separator, ip = ip, timestamp = iso_timestamp)
             
             to_return = True
+            # FIXME pipeline -> every X loop
             self.global_db.sadd(index_day_src, src)
             self.global_db.sadd(index_day_ips, ip_details)
             
@@ -105,7 +107,7 @@ class InputReader():
                 self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_raw), raw)
             if times is not None:
                 self.global_db.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_times), times)
-            
+            # FIXME pipeline -> every X loop
             self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
             self.global_db.sadd(config.get('redis','no_asn'), index_day_ips)
         return to_return

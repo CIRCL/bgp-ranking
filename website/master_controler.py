@@ -13,9 +13,9 @@ from graph_generator import GraphGenerator
 class MasterControler():
 
     def __init__(self):
-        self.report = Reports()
         self.graph_last_date = datetime.date.today()
         self.graph_first_date = datetime.date.today() - datetime.timedelta(days=30)
+        self.report = Reports(self.graph_last_date)
         self.report.build_reports()
 
     def prepare_index(self, source):

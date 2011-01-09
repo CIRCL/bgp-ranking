@@ -24,7 +24,7 @@ history_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), d
 class Reports():
     separator = config.get('input_keys','separator')
     
-    def __init__(self, date = datetime.date.today(), ip_version = 4):
+    def __init__(self, date, ip_version = 4):
         self.date = date.isoformat()
         self.sources = global_db_slave.smembers('{date}{sep}{key}'.format(date = self.date, sep = self.separator, key = config.get('input_keys','index_sources')))
         if ip_version == 4:

@@ -86,6 +86,18 @@ def run_splitted_processing(max_simultaneous_processes, process_name, process_ar
         time.sleep(sleep_timer_short)
         pids = update_running_pids(pids)
 
+def compute_yesterday_ranking():
+    # if the bview file has been generated at midnight, it is better to compute the ranking of "yesterday"
+    hours = sorted(config.get('routing','update_hours').split())
+    first_hour = hours[0]
+    raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
+    ts_file = os.path.join(raw_data, config.get('routing','bviewtimesamp'))
+    if os.path.exists(ts_file):
+        ts = open(ts_file, 'r').read().split()
+        if int(ts[1]) == int(first_hour):
+            return True
+    return False
+
 while 1:
     if not os.path.exists(filename) or history_db_slave.exists(config.get('redis','to_rank')):
         # wait for a new file
@@ -112,7 +124,10 @@ while 1:
     os.unlink(output.name)
     os.unlink(filename)
     
-    date = datetime.date.today().isoformat()
+    if compute_yesterday_ranking():
+        date = (datetime.date.today() - datetime.timedelta(1)).isoformat()
+    else
+        date = datetime.date.today().isoformat()
     separator = config.get('input_keys','separator')
     sources = global_db_slave.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
 

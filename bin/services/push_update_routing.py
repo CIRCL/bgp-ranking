@@ -93,7 +93,9 @@ def compute_yesterday_ranking():
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
     ts_file = os.path.join(raw_data, config.get('routing','bviewtimesamp'))
     if os.path.exists(ts_file):
-        ts = open(ts_file, 'r').read().split()
+        ts = open(ts_file, 'r').read()
+        history_db.set(config.get('ranking','latest_ranking'), ts)
+        ts = ts.split()
         if int(ts[1]) == int(first_hour):
             return True
     return False

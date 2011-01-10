@@ -24,7 +24,22 @@ history_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), d
 class Reports():
     separator = config.get('input_keys','separator')
     
+    def display_graphs_yesterday():
+        """
+        Until the ranking of the current day being computed, there is nothing to display...
+        """
+        hours = sorted(config.get('routing','update_hours').split())
+        first_hour = hours[0]
+        timestamp = history_db.get(config.get('ranking','latest_ranking'))
+        if timestamp is not None:
+            timestamp = timestamp.split()
+            if int(timestamp[1]) == int(first_hour):
+                return True
+        return False
+    
     def __init__(self, date, ip_version = 4):
+        if display_graphs_yesterday():
+            date = date - datetime.timedelta(1)
         self.date = date.isoformat()
         self.sources = global_db_slave.smembers('{date}{sep}{key}'.format(date = self.date, sep = self.separator, key = config.get('input_keys','index_sources')))
         if ip_version == 4:

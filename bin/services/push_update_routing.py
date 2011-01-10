@@ -126,7 +126,7 @@ while 1:
     
     if compute_yesterday_ranking():
         date = (datetime.date.today() - datetime.timedelta(1)).isoformat()
-    else
+    else:
         date = datetime.date.today().isoformat()
     separator = config.get('input_keys','separator')
     sources = global_db_slave.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))

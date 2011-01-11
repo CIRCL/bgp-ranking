@@ -24,7 +24,7 @@ history_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), d
 class Reports():
     separator = config.get('input_keys','separator')
     
-    def display_graphs_yesterday():
+    def display_graphs_yesterday(self):
         """
         Until the ranking of the current day being computed, there is nothing to display...
         """

@@ -38,7 +38,7 @@ class Reports():
         return False
     
     def __init__(self, date, ip_version = 4):
-        if display_graphs_yesterday():
+        if self.display_graphs_yesterday():
             date = date - datetime.timedelta(1)
         self.date = date.isoformat()
         self.sources = global_db_slave.smembers('{date}{sep}{key}'.format(date = self.date, sep = self.separator, key = config.get('input_keys','index_sources')))

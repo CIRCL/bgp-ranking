@@ -40,7 +40,7 @@ class Master(object):
         self.template.sources = self.controler.sources
         self.template.source = source
     
-    def reset_if_empty(self, to_check = None):
+    def reset_if_empty(to_check = None):
         if to_check is not None and len(to_check) == 0:
             return None
         return to_check

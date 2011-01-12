@@ -32,6 +32,7 @@ class Master(object):
         self.controler = MasterControler()
     
     def init_template(self, source = None):
+        source = self.reset_if_empty(source)
         self.template.rgraph_dir = rgraph_dir
         self.template.rgraph_scripts = rgraph_scripts
         self.template.css_file = css_file
@@ -39,8 +40,15 @@ class Master(object):
         self.template.sources = self.controler.sources
         self.template.source = source
     
+    def reset_if_empty(to_check = None):
+        if to_check is not None and len(to_check) == 0:
+            return None
+        return to_check
+    
     def asns(self, source = None, asn = None):
-        if asn is not None and len(asn) > 0:
+        source = self.reset_if_empty(source)
+        asn = self.reset_if_empty(asn)
+        if asn is not None:
             return self.asn_details(source, asn)
         self.template = Template(file = os.path.join(website_root, templates, 'index_asn.tmpl'))
         self.init_template(source)
@@ -50,22 +58,25 @@ class Master(object):
     asns.exposed = True
     
     def asn_details(self, source = None, asn = None, ip_details = None):
+        asn = self.reset_if_empty(asn)
+        source = self.reset_if_empty(source)
+        ip_details = self.reset_if_empty(ip_details)
         self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
         self.init_template(source)
         self.controler.js = self.controler.js_name = None
-        if asn is not None and len(asn) > 0:
+        if asn is not None:
             asn = asn.lstrip('AS')
             if asn.isdigit():
                 self.template.asn = asn
                 as_infos = self.controler.get_as_infos(asn, source)
                 if as_infos is not None: 
                     self.template.asn_descs = as_infos
-                    if len(self.template.asn_descs) is not None:
-                        self.template.javascript = self.controler.js
-                        self.template.js_name = self.controler.js_name
-                        if ip_details is not None:
-                            self.template.ip_details = ip_details
-                            self.template.ip_descs = self.controler.get_ip_infos(asn, ip_details, source)
+                    #if len(self.template.asn_descs) is not None:
+                    self.template.javascript = self.controler.js
+                    self.template.js_name = self.controler.js_name
+                    if ip_details is not None:
+                        self.template.ip_details = ip_details
+                        self.template.ip_descs = self.controler.get_ip_infos(asn, ip_details, source)
                     else:
                         self.template.error = "No data for " + asn + " on " + source
                 else:
@@ -80,6 +91,8 @@ class Master(object):
     asn_details.exposed = True
     
     def comparator(self, source = None, asns = None):
+        asns = self.reset_if_empty(asns)
+        source = self.reset_if_empty(source)
         self.template = Template(file = os.path.join(website_root, templates, 'comparator.tmpl'))
         self.init_template(source)
         self.template.asns = asns

@@ -41,7 +41,7 @@ class Master(object):
         self.template.source = source
     
     def reset_if_empty(self, to_check = None):
-        if to_check is not None and len(to_check) == 0:
+        if to_check is not None or len(to_check) == 0:
             return None
         return to_check
     

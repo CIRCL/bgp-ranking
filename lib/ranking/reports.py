@@ -33,7 +33,8 @@ class Reports():
         timestamp = history_db.get(config.get('ranking','latest_ranking'))
         if timestamp is not None:
             timestamp = timestamp.split()
-            if int(timestamp[1]) == int(first_hour):
+            today = datetime.date.today()
+            if int(timestamp[1]) == int(first_hour) or timestamp[0] != today.strftime("%Y%m%d"):
                 return True
         return False
     

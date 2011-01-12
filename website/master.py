@@ -77,8 +77,8 @@ class Master(object):
                     if ip_details is not None:
                         self.template.ip_details = ip_details
                         self.template.ip_descs = self.controler.get_ip_infos(asn, ip_details, source)
-                    else:
-                        self.template.error = "No data for " + asn + " on " + source
+                    #else:
+                        #self.template.error = "No data for " + asn + " on " + source
                 else:
                     self.template.error = asn + " not found in the database."
             else: 

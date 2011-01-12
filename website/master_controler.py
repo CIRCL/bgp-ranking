@@ -33,8 +33,7 @@ class MasterControler():
             as_infos = self.report.get_asn_descs(self.asn, source)
             if as_infos is not None:
                 as_graph_infos = self.report.prepare_graphe_js(self.asn, self.graph_first_date, self.graph_last_date, source)
-                if as_graph_infos is not None:
-                    self.make_graph(as_graph_infos)
+                self.make_graph(as_graph_infos)
         return as_infos
     
     def get_ip_infos(self, asn = None, asn_tstamp = None, source = None):

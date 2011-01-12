@@ -71,14 +71,11 @@ class Master(object):
                 as_infos = self.controler.get_as_infos(asn, source)
                 if as_infos is not None: 
                     self.template.asn_descs = as_infos
-                    #if len(self.template.asn_descs) is not None:
                     self.template.javascript = self.controler.js
                     self.template.js_name = self.controler.js_name
                     if ip_details is not None:
                         self.template.ip_details = ip_details
                         self.template.ip_descs = self.controler.get_ip_infos(asn, ip_details, source)
-                    #else:
-                        #self.template.error = "No data for " + asn + " on " + source
                 else:
                     self.template.error = asn + " not found in the database."
             else: 

@@ -130,11 +130,8 @@ class Reports():
                 i += 1 
         for ranks in ranks_by_days:
             ranks_by_days[ranks] += 1 
-        if len(ranks_by_days) > 0:
-            return ranks_by_days
-        else:
-            return None
-
+        return ranks_by_days
+        
     def get_asn_descs(self, asn, sources = None):
         if sources is None:
             sources = self.sources

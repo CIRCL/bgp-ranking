@@ -31,9 +31,8 @@ class MasterControler():
         if asn is not None:
             self.asn = int(asn)
             as_infos = self.report.get_asn_descs(self.asn, source)
-            if as_infos is not None:
-                as_graph_infos = self.report.prepare_graphe_js(self.asn, self.graph_first_date, self.graph_last_date, source)
-                self.make_graph(as_graph_infos)
+            as_graph_infos = self.report.prepare_graphe_js(self.asn, self.graph_first_date, self.graph_last_date, source)
+            self.make_graph(as_graph_infos)
         return as_infos
     
     def get_ip_infos(self, asn = None, asn_tstamp = None, source = None):
@@ -50,10 +49,8 @@ class MasterControler():
             title = ''
             for asn in splitted_asns:
                 if asn.isdigit():
-                    # as_graph_infos : [ipv4, ipv6, dates, first_date, last_date]
                     as_graph_infos = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date)
-                    if as_graph_infos is not None:
-                        g.add_line(as_graph_infos, str(asn + self.report.ip_key), self.graph_first_date, self.graph_last_date)
+                    g.add_line(as_graph_infos, str(asn + self.report.ip_key), self.graph_first_date, self.graph_last_date)
                     title += asn + ' '
             if len(g.lines) > 0:
                 g.set_title(title)

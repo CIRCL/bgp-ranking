@@ -28,11 +28,14 @@ syslog.openlog('Push_BGP_Routing', syslog.LOG_PID, syslog.LOG_USER)
 
 file = open(sys.argv[1])
 entry = ''
+pipeline = routing_db.pipeline()
+i = 0 
 for line in file:
     if not line:
         # EOF, quit
         break
     if line == '\n':
+        i += 1 
         # End of block, extracting the information
         parsed = BGP(entry,  'RIPE')
         if parsed.asn is not None:
@@ -40,11 +43,16 @@ for line in file:
             block = parsed.prefix
             if block is not None:
                 #FIXME pipeline
-                routing_db.sadd(asn, block)
+                pipeline.sadd(asn, block)
 #                routing_db.sadd(block, asn)
             entry = ''
+        if i >= 10000:
+            pipeline.execute()
+            pipeline = routing_db.pipeline()
+            i = 0 
     else :
         # append the line to the current block.
         entry += line
+pipeline.execute()
 syslog.syslog(syslog.LOG_INFO, sys.argv[1] + ' done')
 os.unlink(sys.argv[1])

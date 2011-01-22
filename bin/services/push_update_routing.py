@@ -140,10 +140,10 @@ while 1:
                                             key = config.get('input_keys','index_asns_details')))
         for asn in asns:
             global_asn = asn.split(self.separator)[0]
-            asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = global_asn, \
-                            date = self.date, source = self.source, v4 = config.get('input_keys','rankv4'))
-            asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, asn = global_asn, \
-                            date = self.date, source = self.source, v6 = config.get('input_keys','rankv6'))
+            asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = separator, asn = global_asn, \
+                            date = date, source = source, v4 = config.get('input_keys','rankv4'))
+            asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = separator, asn = global_asn, \
+                            date = date, source = source, v6 = config.get('input_keys','rankv6'))
             to_delete.append(asn_key_v4)
             to_delete.append(asn_key_v6)
 

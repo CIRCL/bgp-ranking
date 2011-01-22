@@ -93,7 +93,7 @@ class Ranking():
             if ip.version() == 6:
                 self.weight[1] += 1.0
             else :
-                self.weigh[0] += 1.0
+                self.weight[0] += 1.0
 
     def rank(self):
         self.rank_by_source = [0.0, 0.0]
@@ -106,19 +106,19 @@ class Ranking():
         # FIXME pipeline?
         if self.rank_by_source[0] > 0.0:
             asn_key_v4_details = '{asn}{sep}{date}{sep}{source}{sep}{v4}{sep}{details}'.format(sep = self.separator, asn = self.asn, \
-                                    date = self.date, source = key, v4 = config.get('input_keys','rankv4'), \
+                                    date = self.date, source = self.source, v4 = config.get('input_keys','rankv4'), \
                                     details = config.get('input_keys','daily_asns_details'))
 
-            history_db.zadd(asn_key_v4_details, self.timestamp, self.rank_by_source[key][0])
+            history_db.zadd(asn_key_v4_details, self.timestamp, self.rank_by_source[0])
             
             asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = self.asn, \
-                            date = self.date, source = key, v4 = config.get('input_keys','rankv4'))
+            date = self.date, source = self.source, v4 = config.get('input_keys','rankv4'))
 
             temp_rank = history_db.get(asn_key_v4)
             if temp_rank is not None:
                 temp_rank = float(temp_rank) + self.rank_by_source[0]
             else:
-                temp_rank = self.rank_by_source[key][0]
+                temp_rank = self.rank_by_source[0]
             history_db.set(asn_key_v4, temp_rank)
 
         if self.rank_by_source[1] > 0.0:
@@ -126,7 +126,7 @@ class Ranking():
                                     date = self.date, source = self.source, v6 = config.get('input_keys','rankv6'), \
                                     details = config.get('input_keys','daily_asns_details'))
 
-            history_db.zadd(asn_key_v6_details, self.timestamp, self.rank_by_source[key][1])
+            history_db.zadd(asn_key_v6_details, self.timestamp, self.rank_by_source[1])
 
             asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, asn = self.asn, \
                             date = self.date, source = self.source, v6 = config.get('input_keys','rankv6'))
@@ -135,5 +135,5 @@ class Ranking():
             if temp_rank is not None:
                 temp_rank = float(temp_rank) + self.rank_by_source[1]
             else:
-                temp_rank = self.rank_by_source[key][1]
+                temp_rank = self.rank_by_source[1]
             history_db.set(asn_key_v6, temp_rank)

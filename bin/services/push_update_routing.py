@@ -139,7 +139,7 @@ while 1:
         asns = global_db_slave.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, \
                                             key = config.get('input_keys','index_asns_details')))
         for asn in asns:
-            global_asn = asn.split(self.separator)[0]
+            global_asn = asn.split(separator)[0]
             asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = separator, asn = global_asn, \
                             date = date, source = source, v4 = config.get('input_keys','rankv4'))
             asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = separator, asn = global_asn, \

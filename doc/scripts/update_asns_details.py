@@ -11,20 +11,14 @@ def update_day(day):
     sources = r_global.smembers('{day}|sources'.format(day = day))
     if len(sources) > 0 :
         asns_details = {}
-        print sources
         for source in sources:
             asns_details[source] = r_global.smembers('{day}|{source}|asns_details'.format(day = day, source = source))
-        print asns_details.keys()
         to_drop = []
         pipeline = r_history.pipeline()
         for source, details in asns_details.iteritems():
-            print source
-            print details
-            exit(1)
             for detail in details:
                 asn, timestamp = detail.split('|')
                 current = '{detail}|{day}|{source}|rankv4'.format(detail = detail, day = day, source = source)
-                #print current
                 rank = r_history.get(current)
                 if rank is not None:
                     to_drop.append(current)

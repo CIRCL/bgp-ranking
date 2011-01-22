@@ -56,9 +56,9 @@ class Ranking():
 
     def rank_using_key(self, key):
         if key is not None:
-            self.asn, self.timestamp, self.date, source = key.split(self.separator)
+            self.asn, self.timestamp, self.date, self.source = key.split(self.separator)
             self.ip_count()
-            self.make_index_source(source)
+            self.make_index_source()
             self.rank()
             self.make_history()
 
@@ -83,68 +83,57 @@ class Ranking():
             self.ipv4 = int(self.ipv4)
             self.ipv6 = int(self.ipv6)
 
-    def make_index(self):
-        asn_sources = {}
-        for source in self.sources:
-            self.make_index_source(source)
-
-    def make_index_source(self, source):
+    def make_index_source(self):
         ips = global_db.smembers('{asn}{sep}{timestamp}{sep}{date}{sep}{source}'.format(sep = self.separator, \
-                                        asn = self.asn, timestamp = self.timestamp, date = self.date, source = source))
-        self.weight[str(source)] = [0.0,0.0]
+                                        asn = self.asn, timestamp = self.timestamp, date = self.date, source = self.source))
+        self.weight = [0.0,0.0]
         for i in ips:
             ip_extract, timestamp = i.split(self.separator)
             ip = IPy.IP(ip_extract)
             if ip.version() == 6:
-                self.weight[str(source)][1] += 1.0
+                self.weight[1] += 1.0
             else :
-                self.weight[str(source)][0] += 1.0
+                self.weigh[0] += 1.0
 
     def rank(self):
-        self.rank_by_source = {}
-        for key in self.weight:
-            self.rank_by_source[key] = [0.0, 0.0]
-            if self.ipv4 > 0 :
-                self.rank_by_source[key][0] = (float(self.weight[key][0])/self.ipv4)
-            elif self.ipv6 > 0 :
-                self.rank_by_source[key][1] = (float(self.weight[key][1])/self.ipv6)
+        self.rank_by_source = [0.0, 0.0]
+        if self.ipv4 > 0 :
+            self.rank_by_source[0] = (float(self.weight[0])/self.ipv4)
+        elif self.ipv6 > 0 :
+            self.rank_by_source[1] = (float(self.weight[1])/self.ipv6)
     
     def make_history(self):
-        to_delete = []
-        for key in self.rank_by_source:
+        # FIXME pipeline?
+        if self.rank_by_source[0] > 0.0:
+            asn_key_v4_details = '{asn}{sep}{date}{sep}{source}{sep}{v4}{sep}{details}'.format(sep = self.separator, asn = self.asn, \
+                                    date = self.date, source = key, v4 = config.get('input_keys','rankv4'), \
+                                    details = config.get('input_keys','daily_asns_details'))
+
+            history_db.zadd(asn_key_v4_details, self.timestamp, self.rank_by_source[key][0])
+            
             asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = self.asn, \
-                        date = self.date, source = key, v4 = config.get('input_keys','rankv4'))
+                            date = self.date, source = key, v4 = config.get('input_keys','rankv4'))
+
+            temp_rank = history_db.get(asn_key_v4)
+            if temp_rank is not None:
+                temp_rank = float(temp_rank) + self.rank_by_source[0]
+            else:
+                temp_rank = self.rank_by_source[key][0]
+            history_db.set(asn_key_v4, temp_rank)
+
+        if self.rank_by_source[1] > 0.0:
+            asn_key_v6_details = '{asn}{sep}{date}{sep}{source}{sep}{v6}{sep}{details}'.format(sep = self.separator, asn = self.asn, \
+                                    date = self.date, source = self.source, v6 = config.get('input_keys','rankv6'), \
+                                    details = config.get('input_keys','daily_asns_details'))
+
+            history_db.zadd(asn_key_v6_details, self.timestamp, self.rank_by_source[key][1])
+
             asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, asn = self.asn, \
-                        date = self.date, source = key, v6 = config.get('input_keys','rankv6'))
-            to_delete.append(asn_key_v4)
-            to_delete.append(asn_key_v6)
-        history_db.delete(*to_delete)
-        # FIXME pipeline
-        for key in self.rank_by_source:
-            if self.rank_by_source[key][0] > 0.0:
-                # FIXME TODO push all the '{asn}{sep}{timestamp}{sep}{date}{sep}{source}{sep}{v4}'
-                # in a zset : '{asn}{sep}{date}{sep}{source}{sep}{v4}{sep}details' with score = rank and value = timestamp
-                # TODO is it possible ????? => it should : I can get the score by using the timestamp (zscore) (for make_index_source)
-                asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = self.asn, \
-                        date = self.date, source = key, v4 = config.get('input_keys','rankv4'))
-                history_db.set('{asn}{sep}{timestamp}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, \
-                                    asn = self.asn, timestamp = self.timestamp, date = self.date, source = key, \
-                                    v4 = config.get('input_keys','rankv4')), self.rank_by_source[key][0])
-                temp_rank = history_db.get(asn_key_v4)
-                if temp_rank is not None:
-                    temp_rank = float(temp_rank) + self.rank_by_source[key][0]
-                else:
-                    temp_rank = self.rank_by_source[key][0]
-                history_db.set(asn_key_v4, temp_rank)
-            if self.rank_by_source[key][1] > 0.0:
-                asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, asn = self.asn, \
-                        date = self.date, source = key, v6 = config.get('input_keys','rankv6'))
-                history_db.set('{asn}{sep}{timestamp}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, \
-                                                asn = self.asn, timestamp = self.timestamp, date = self.date, source = key, \
-                                                v6 = config.get('input_keys','rankv6')), self.rank_by_source[key][1])
-                temp_rank = history_db.get(asn_key_v6)
-                if temp_rank is not None:
-                    temp_rank = float(temp_rank) + self.rank_by_source[key][1]
-                else:
-                    temp_rank = self.rank_by_source[key][1]
-                history_db.set(asn_key_v6, temp_rank)
+                            date = self.date, source = self.source, v6 = config.get('input_keys','rankv6'))
+
+            temp_rank = history_db.get(asn_key_v6)
+            if temp_rank is not None:
+                temp_rank = float(temp_rank) + self.rank_by_source[1]
+            else:
+                temp_rank = self.rank_by_source[key][1]
+            history_db.set(asn_key_v6, temp_rank)

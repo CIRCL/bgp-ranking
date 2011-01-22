@@ -132,14 +132,27 @@ while 1:
         date = datetime.date.today().isoformat()
     separator = config.get('input_keys','separator')
     sources = global_db_slave.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
+    
+    pipeline = history_db.pipeline()
+    to_delete = []
+    for source in sources:
+        asns = global_db_slave.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, \
+                                            key = config.get('input_keys','index_asns_details')))
+        for asn in asns:
+            global_asn = asn.split(self.separator)[0]
+            asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = global_asn, \
+                            date = self.date, source = self.source, v4 = config.get('input_keys','rankv4'))
+            asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, asn = global_asn, \
+                            date = self.date, source = self.source, v6 = config.get('input_keys','rankv6'))
+            to_delete.append(asn_key_v4)
+            to_delete.append(asn_key_v6)
+
+            pipeline.sadd(config.get('redis','to_rank'), '{asn}{sep}{date}{sep}{source}'.format(sep = separator, asn = asn, date = date, source = source))
+    to_delete = set(to_delete)
+    pipeline.delete(*to_delete)
+    pipeline.execute()
 
     service_start_multiple(ranking_process_service, int(config.get('processes','ranking')))
-    
-    #FIXME pipeline
-    for source in sources:
-        asns = global_db_slave.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, key = config.get('input_keys','index_asns_details')))
-        for asn in asns:
-            history_db.sadd(config.get('redis','to_rank'), '{asn}{sep}{date}{sep}{source}'.format(sep = separator, asn = asn, date = date, source = source))
     
     while history_db_slave.scard(config.get('redis','to_rank')) > 0:
         # wait for a new file

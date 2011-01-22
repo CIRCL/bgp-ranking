@@ -42,7 +42,6 @@ for line in file:
             asn = parsed.asn.split()[-1]
             block = parsed.prefix
             if block is not None:
-                #FIXME pipeline
                 pipeline.sadd(asn, block)
 #                routing_db.sadd(block, asn)
             entry = ''

@@ -51,7 +51,7 @@ class InputReader():
         
         table_keys = [ip_key, src_key, timestamp_key, infection_key, raw_key, times_key]
         
-        ip, src, timestamp, infection, raw, times = self.temp_db_slave.mget(table_keys)
+        ip, src, timestamp, infection, raw, times = self.temp_db.mget(table_keys)
         if timestamp is None:
             timestamp = datetime.date.today()
         else:

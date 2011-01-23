@@ -101,7 +101,7 @@ def compute_yesterday_ranking():
     return False
 
 while 1:
-    if not os.path.exists(filename) or history_db_slave.exists(config.get('redis','to_rank')):
+    if not os.path.exists(filename) or history_db.exists(config.get('redis','to_rank')):
         # wait for a new file
         time.sleep(sleep_timer)
         continue
@@ -131,12 +131,12 @@ while 1:
     else:
         date = datetime.date.today().isoformat()
     separator = config.get('input_keys','separator')
-    sources = global_db_slave.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
+    sources = global_db.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
     
     pipeline = history_db.pipeline()
     to_delete = []
     for source in sources:
-        asns = global_db_slave.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, \
+        asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, \
                                             key = config.get('input_keys','index_asns_details')))
         for asn in asns:
             global_asn = asn.split(separator)[0]
@@ -154,7 +154,7 @@ while 1:
 
     service_start_multiple(ranking_process_service, int(config.get('processes','ranking')))
     
-    while history_db_slave.scard(config.get('redis','to_rank')) > 0:
+    while history_db.scard(config.get('redis','to_rank')) > 0:
         # wait for a new file
         time.sleep(sleep_timer_short)
     rmpid(ranking_process_service)

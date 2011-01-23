@@ -34,7 +34,7 @@ def update_day(day):
         pipeline.execute()
         if len(to_drop) > 0:
             r_history.delete(*to_drop)
-        
+
 
 def make_days(first_date, last_date):
     dates = []
@@ -50,4 +50,32 @@ def convert_all():
     dates = make_days(graph_first_date, graph_last_date)
     for date in dates:
         update_day(date)
-    
+
+def recompute_ranks_day(day):
+    sources = r_global.smembers('{day}|sources'.format(day = day))
+    if len(sources) > 0 :
+        asns = {}
+        for source in sources:
+            asns[source] = r_global.smembers('{day}|{source}|asns'.format(day = day, source = source))
+        pipeline = r_history.pipeline()
+        for source, asn in asns.iteritems():
+            details_zset = r_history.zrange('{asn}|{day}|{source}|rankv4|details'.format(asn = asn, day = day, source = source), 0, -1, withscores = True)
+            asn_rank = 0.0
+            for detail in details_zset:
+                asn_rank += float(detail[1])
+            pipeline.set('{asn}|{day}|{source}|rankv4'.format(asn = asn, day = day, source = source), asn_rank)
+            
+            details_zset = r_history.zrange('{asn}|{day}|{source}|rankv6|details'.format(asn = asn, day = day, source = source), 0, -1, withscores = True)
+            asn_rank = 0.0
+            for detail in details_zset:
+                asn_rank += float(detail[1])
+            pipeline.set('{asn}|{day}|{source}|rankv6'.format(asn = asn, day = day, source = source), asn_rank)
+        pipeline.execute()
+
+
+def recompute_all_ranks():        
+    graph_last_date = datetime.date.today()
+    graph_first_date = datetime.date.today() - datetime.timedelta(days=60)
+    dates = make_days(graph_first_date, graph_last_date)
+    for date in dates:
+        recompute_ranks_day(date)

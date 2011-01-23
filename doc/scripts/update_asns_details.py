@@ -58,18 +58,19 @@ def recompute_ranks_day(day):
         for source in sources:
             asns[source] = r_global.smembers('{day}|{source}|asns'.format(day = day, source = source))
         pipeline = r_history.pipeline()
-        for source, asn in asns.iteritems():
-            details_zset = r_history.zrange('{asn}|{day}|{source}|rankv4|details'.format(asn = asn, day = day, source = source), 0, -1, withscores = True)
-            asn_rank = 0.0
-            for detail in details_zset:
-                asn_rank += float(detail[1])
-            pipeline.set('{asn}|{day}|{source}|rankv4'.format(asn = asn, day = day, source = source), asn_rank)
-            
-            details_zset = r_history.zrange('{asn}|{day}|{source}|rankv6|details'.format(asn = asn, day = day, source = source), 0, -1, withscores = True)
-            asn_rank = 0.0
-            for detail in details_zset:
-                asn_rank += float(detail[1])
-            pipeline.set('{asn}|{day}|{source}|rankv6'.format(asn = asn, day = day, source = source), asn_rank)
+        for source, asns in asns.iteritems():
+            for asn in asns:
+                details_zset = r_history.zrange('{asn}|{day}|{source}|rankv4|details'.format(asn = asn, day = day, source = source), 0, -1, withscores = True)
+                asn_rank = 0.0
+                for detail in details_zset:
+                    asn_rank += float(detail[1])
+                pipeline.set('{asn}|{day}|{source}|rankv4'.format(asn = asn, day = day, source = source), asn_rank)
+                
+                details_zset = r_history.zrange('{asn}|{day}|{source}|rankv6|details'.format(asn = asn, day = day, source = source), 0, -1, withscores = True)
+                asn_rank = 0.0
+                for detail in details_zset:
+                    asn_rank += float(detail[1])
+                pipeline.set('{asn}|{day}|{source}|rankv6'.format(asn = asn, day = day, source = source), asn_rank)
         pipeline.execute()
 
 

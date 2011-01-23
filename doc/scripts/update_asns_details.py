@@ -80,3 +80,11 @@ def recompute_all_ranks():
     dates = make_days(graph_first_date, graph_last_date)
     for date in dates:
         recompute_ranks_day(date)
+
+def delete_useless_old_keys():
+    graph_last_date = datetime.date.today()
+    graph_first_date = datetime.date.today() - datetime.timedelta(days=60)
+    dates = make_days(graph_first_date, graph_last_date)
+    for date in dates:
+        keys = r_history.keys("*|*|" + date + "|*|*")
+        r_history.delete(*keys)

@@ -87,4 +87,5 @@ def delete_useless_old_keys():
     dates = make_days(graph_first_date, graph_last_date)
     for date in dates:
         keys = r_history.keys("*|*|" + date + "|*|*")
-        r_history.delete(*keys)
+        if len(keys) > 0:
+            r_history.delete(*keys)

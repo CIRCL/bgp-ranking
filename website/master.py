@@ -70,6 +70,7 @@ class Master(object):
                 self.template.asn = asn
                 as_infos = self.controler.get_as_infos(asn, source)
                 if as_infos is not None: 
+                    self.template.sources = self.controler.sources
                     self.template.asn_descs = as_infos
                     self.template.javascript = self.controler.js
                     self.template.js_name = self.controler.js_name
@@ -95,6 +96,7 @@ class Master(object):
         self.template.asns = asns
         if self.template.asns is not None:
             self.controler.comparator(self.template.asns)
+            self.template.sources = self.controler.sources
             self.template.js_comparator = self.controler.js
             self.template.js_comparator_name = self.controler.js_name
             if self.template.js_comparator is None:

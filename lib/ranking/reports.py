@@ -98,15 +98,22 @@ class Reports():
                                         asn = asn, date = date, source = source, ip_key = self.ip_key))
 
     def prepare_graphe_js(self, asn, first_date, last_date, sources = None):
-        if sources is None:
-            sources = self.sources
-        else:
-            sources = [sources]
         dates = []
         current = first_date
         while current <= last_date:
             dates.append(current.strftime("%Y-%m-%d"))
             current += datetime.timedelta(days=1)
+        
+        if sources is None:
+            pipeline = global_db_slave.pipeline()
+            for date in dates:
+                pipeline.smembers('{date}{sep}{key}'.format(date = self.date, \
+                                    sep = self.separator, key = config.get('input_keys','index_sources')))
+            lists_sources = pipeline.execute()
+            sources = set(()).union(*lists_sources)
+        else:
+            sources = [sources]
+
         keys = {}
         ranks = {}
         #FIXME pipeline
@@ -130,7 +137,7 @@ class Reports():
                 i += 1 
         for ranks in ranks_by_days:
             ranks_by_days[ranks] += 1 
-        return ranks_by_days
+        return ranks_by_days, sources
         
     def get_asn_descs(self, asn, sources = None):
         if sources is None:

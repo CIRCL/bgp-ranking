@@ -14,7 +14,7 @@ config.read("../../etc/bgp-ranking.conf")
 # Temporary redis database
 temp_reris_db = int(config.get('modules_global','temp_db'))
 uid_var = config.get('modules_global','uid_var')
-list_ips = config.get('modules_global','uid_list')
+uid_list = config.get('modules_global','uid_list')
 
 class AbstractModule():
     """
@@ -48,7 +48,7 @@ class AbstractModule():
                 to_set['{uid}{sep}{key}'.format(uid = str(uid),sep = self.separator, key = key)] = value
         pipeline = self.temp_db.pipeline(False)
         pipeline.mset(to_set)
-        pipeline.sadd(list_ips, uid)
+        pipeline.sadd(uid_list, uid)
         pipeline.execute()
 
     def __glob_only_files(self):

@@ -103,14 +103,16 @@ class Reports():
         while current <= last_date:
             dates.append(current.strftime("%Y-%m-%d"))
             current += datetime.timedelta(days=1)
-        
+
+        pipeline = global_db_slave.pipeline()
+        for date in dates:
+            pipeline.smembers('{date}{sep}{key}'.format(date = self.date, \
+                                sep = self.separator, key = config.get('input_keys','index_sources')))
+        lists_sources = pipeline.execute()
+        to_return_sources = set(()).union(*lists_sources)
+
         if sources is None:
-            pipeline = global_db_slave.pipeline()
-            for date in dates:
-                pipeline.smembers('{date}{sep}{key}'.format(date = self.date, \
-                                    sep = self.separator, key = config.get('input_keys','index_sources')))
-            lists_sources = pipeline.execute()
-            sources = set(()).union(*lists_sources)
+            sources = to_return_sources
         else:
             sources = [sources]
 
@@ -137,7 +139,7 @@ class Reports():
                 i += 1 
         for ranks in ranks_by_days:
             ranks_by_days[ranks] += 1 
-        return ranks_by_days, sources
+        return ranks_by_days, to_return_sources
         
     def get_asn_descs(self, asn, sources = None):
         if sources is None:

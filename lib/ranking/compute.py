@@ -112,7 +112,7 @@ class Ranking():
             history_db.zadd(asn_key_v4_details, self.timestamp, self.rank_by_source[0])
             
             asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = self.asn, \
-            date = self.date, source = self.source, v4 = config.get('input_keys','rankv4'))
+                            date = self.date, source = self.source, v4 = config.get('input_keys','rankv4'))
 
             temp_rank = history_db.get(asn_key_v4)
             if temp_rank is not None:

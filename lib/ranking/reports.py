@@ -16,7 +16,6 @@ root_dir = config.get('directories','root')
 import datetime
 import redis
 
-global_db = redis.Redis(db=config.get('redis','global'))
 global_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=config.get('redis','global'))
 history_db = redis.Redis(db=config.get('redis','history'))
 history_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=config.get('redis','history'))
@@ -42,7 +41,8 @@ class Reports():
         if self.display_graphs_yesterday():
             date = date - datetime.timedelta(1)
         self.date = date.isoformat()
-        self.sources = global_db_slave.smembers('{date}{sep}{key}'.format(date = self.date, sep = self.separator, key = config.get('input_keys','index_sources')))
+        self.sources = global_db_slave.smembers('{date}{sep}{key}'.format(date = self.date, \
+                            sep = self.separator, key = config.get('input_keys','index_sources')))
         if ip_version == 4:
             self.ip_key = config.get('input_keys','rankv4')
         elif ip_version == 6:

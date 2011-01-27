@@ -106,8 +106,8 @@ class Reports():
 
         pipeline = global_db_slave.pipeline()
         for date in dates:
-            pipeline.smembers('{date}{sep}{key}'.format(date = self.date, \
-                                sep = self.separator, key = config.get('input_keys','index_sources')))
+            pipeline.smembers('{date}{sep}{key}'.format(date = date, sep = self.separator, \
+                                key = config.get('input_keys','index_sources')))
         lists_sources = pipeline.execute()
         to_return_sources = set(()).union(*lists_sources)
 

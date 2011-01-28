@@ -1,5 +1,5 @@
-#LyX 1.6.7 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.0.0beta3 created this file. For more info see http://www.lyx.org/
+\lyxformat 410
 \begin_document
 \begin_header
 \textclass beamer
@@ -12,18 +12,25 @@
 % or whatever (possibly just delete it)
 \end_preamble
 \use_default_options false
+\maintain_unincluded_children false
 \language english
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
 \font_default_family sfdefault
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
 
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize 12
 \spacing single
 \use_hyperref true
@@ -43,21 +50,30 @@
 \use_geometry true
 \use_amsmath 2
 \use_esint 0
+\use_mhchem 1
+\use_mathdots 1
 \cite_engine basic
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth 2
 \tocdepth 2
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -154,7 +170,7 @@ ISFATES/DFHI
 Université Paul Verlaine - Metz
 \lang english
  
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -203,7 +219,7 @@ status open
 \end_inset
 
 
-\begin_inset OptArg
+\begin_inset Argument
 status open
 
 \begin_layout Plain Layout
@@ -695,6 +711,7 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
@@ -703,12 +720,6 @@ status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Graphics
-	filename triste.jpg
-	scale 20
-
-\end_inset
-
 
 \end_layout
 
@@ -1357,6 +1368,7 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "100col%"
 special "none"
 height "1in"
@@ -1365,13 +1377,6 @@ status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Graphics
-	filename internet.jpg
-	lyxscale 10
-	scale 10
-
-\end_inset
-
 
 \end_layout
 
@@ -1450,6 +1455,7 @@ Start with overview books.
 \end_layout
 
 \begin_layout Bibliography
+\labelwidthstring References
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "Author1990"
@@ -1517,6 +1523,7 @@ Followed by interesting articles.
 \end_layout
 
 \begin_layout Bibliography
+\labelwidthstring References
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
 key "Someone2002"

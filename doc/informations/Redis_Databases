@@ -146,7 +146,8 @@ By using this index, we compute a rank for each ASN found today, by source.
 The ranking generate some entries : 
     <asn>|<date>|<source>|{rankv4,rankv6} -> sum of all the rank of 'their' <asn>|<timestamp>|<date>|<source>
         The entry is created only of the rank is > 0 
-Each rank for each <asn>|<timestamp>|<date>|<source> is also saved but not used actually. It wll be usefull to generate a report for a ranking by subnet.
+	<asn>|<date>|<source>|{rankv4,rankv6}|details -> a zset. For each entries, the value is the timestamp of the subnet and the score is the rank *of this subnet*
+		This zset is actually not used but it will be usefull to generate a report for a ranking by subnet.
 
 Only one 'version' of the rank is saved for a particular day. 
 

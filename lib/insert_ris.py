@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+"""
+    bgp_ranking.lib.InsertRIS
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Insert the RIS Whois information in the database. 
+
+    :copyright: Copyright 2010-2011 by the BGP Ranking team, see AUTHORS.
+    :license: AGPL3, see LICENSE for details.
+"""
 
 from whois_parser.whois_parsers import *
 

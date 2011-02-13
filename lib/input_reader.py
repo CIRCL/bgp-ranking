@@ -42,6 +42,8 @@ class InputReader():
 
     def get_all_information(self):
         uid = str(self.temp_db.spop(list_ips))
+        if uid is None:
+            return None
         ip_key =        '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_ip)
         src_key =       '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_src)
         timestamp_key = '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_tstamp)
@@ -63,7 +65,10 @@ class InputReader():
     def insert(self):
         to_return = False
         while self.temp_db.scard(list_ips) > 0:
-            uid, ip, src, timestamp, infection, raw, times = self.get_all_information()
+            infos = self.get_all_information()
+            if infos is None:
+                continue
+            uid, ip, src, timestamp, infection, raw, times = infos
             if ip is None:
                 syslog.syslog(syslog.LOG_ERR, 'Entry without IP, invalid')
                 continue

@@ -11,6 +11,7 @@ Contents:
 .. toctree::
 	:maxdepth: 2
 
+	Cheat_sheet_redis
 	Redis_Databases
 
 Indices and tables

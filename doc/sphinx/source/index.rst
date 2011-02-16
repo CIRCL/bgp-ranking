@@ -13,6 +13,9 @@ Contents:
 
 	Cheat_sheet_redis
 	Redis_Databases
+	Modules
+
+	Redis_Usage
 
 Indices and tables
 ==================

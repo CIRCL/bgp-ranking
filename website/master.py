@@ -13,7 +13,7 @@ config.read("../etc/bgp-ranking.conf")
 root_dir =  config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
-config_file = config.get('web','config_file')
+web_config_file = config.get('web','config_file')
 templates = config.get('web','templates')
 website_root = config.get('web','website_root')
 css_file = config.get('web','css_file')
@@ -127,4 +127,4 @@ if __name__ == "__main__":
     _cp_config = {'request.error_response': handle_error}
     
     cherrypy.config.update({'error_page.404': error_page_404})
-    cherrypy.quickstart(website, config = config_file)
+    cherrypy.quickstart(website, config = web_config_file)

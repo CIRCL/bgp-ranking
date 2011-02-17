@@ -9,13 +9,15 @@ Welcome to BGP Ranking's documentation!
 Contents:
 
 .. toctree::
-	:maxdepth: 2
+	:glob:
 
 	Cheat_sheet_redis
 	Redis_Databases
 	Modules
 
 	Redis_Usage
+
+	code/*
 
 Indices and tables
 ==================

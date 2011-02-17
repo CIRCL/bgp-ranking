@@ -8,7 +8,8 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.read("../../etc/bgp-ranking.conf")
+config_file = "/mnt/data/gits/bgp-ranking/etc/bgp-ranking.conf"
+config.read(config_file)
 #sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 # Temporary redis database

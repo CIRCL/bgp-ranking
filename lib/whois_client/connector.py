@@ -10,7 +10,8 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.read("../../etc/bgp-ranking.conf")
+config_file = "/mnt/data/gits/bgp-ranking/etc/bgp-ranking.conf"
+config.read(config_file)
 root_dir = config.get('directories','root')
 # In case there is nothing to fetch, the process will sleep 5 seconds 
 process_sleep = int(config.get('sleep_timers','short'))

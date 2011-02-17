@@ -9,7 +9,8 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.optionxform = str
-config.read("../../etc/bgp-ranking.conf")
+config_file = "/mnt/data/gits/bgp-ranking/etc/bgp-ranking.conf"
+config.read(config_file)
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 

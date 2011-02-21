@@ -41,7 +41,7 @@ class InputReader():
         self.global_db = redis.Redis(db=global_db)
 
     def get_all_information(self):
-        uid = str(self.temp_db.spop(list_ips))
+        uid = self.temp_db.spop(list_ips)
         if uid is None:
             return None
         ip_key =        '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_ip)

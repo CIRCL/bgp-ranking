@@ -17,10 +17,11 @@ import sys, os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('../../../'))
-#sys.path.insert(0, os.path.abspath('../../../bin'))
-#sys.path.insert(0, os.path.abspath('../../../etc'))
-#sys.path.insert(0, os.path.abspath('../../../lib'))
-#sys.path.insert(0, os.path.abspath('../../../website'))
+sys.path.insert(0, os.path.abspath('../../../bin'))
+#sys.path.insert(0, os.path.abspath('../../../bin/services'))
+sys.path.insert(0, os.path.abspath('../../../etc'))
+sys.path.insert(0, os.path.abspath('../../../lib'))
+sys.path.insert(0, os.path.abspath('../../../website'))
 
 # -- General configuration -----------------------------------------------------
 
@@ -45,7 +46,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'BGP Ranking'
-copyright = u'2011, Raphaël Vinot'
+copyright = u'2010-2011, BGP Ranking team'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

@@ -10,5 +10,5 @@ ROOT_PROJECT="/mnt/data/gits/bgp-ranking/"
 VARIABLE="config_file ="
 CONFIG_PATH="\/home\/rvinot\/bgp-ranking\/etc\/bgp-ranking.conf"
 
-find ${ROOT_PROJECT} -name "*.py" -exec sed -i 's/^\('"${VARIABLE}"'\).*$/\1 "'"${CONFIG_PATH}"'"/' {} \;
+find ${ROOT_PROJECT} -name "*.py" -exec sed -i 's/\('"${VARIABLE}"'\).*$/\1 "'"${CONFIG_PATH}"'"/' {} \;
 

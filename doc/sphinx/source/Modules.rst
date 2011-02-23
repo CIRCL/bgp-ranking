@@ -1,0 +1,84 @@
+***********
+RFC Modules
+***********
+
+Introduction
+============
+
+This RFC aims to define the format of the data that the modules will put in 
+the "front-end" redis database.
+
+Basics
+======
+
+First, some details on the input information given to the system. 
+For each new entry, we need at least two information:
+
+ * an IP address
+ * the source of the IP
+
+A third information is very important but if the module does not give it, 
+it will be set to 'today':
+
+ * the timestamp
+
+There is two other fields but they only exist on some particular datasets:
+
+ * the type of the infection
+ * a text containing other fields, separated by semicolons
+
+Unique identifier
+=================
+
+All the entries extractated of all the datasets will be put in the same 
+redis database at the same time (it is the worst case). 
+
+We need a way to identify uniquely the entries and get the information 
+associated to the entries.
+
+It is not possible to use the IP because the same IP can be present at 
+the same time in different datasets and for some sources the same IP is 
+present more than one time, with a different timestamp. 
+
+The solution is to use an integer and to increment it for each new entry. 
+
+Format
+======
+
+For each new entry, all the corresponding information will be put in the 
+redis database. 
+
+The two following information will always be there: 
+
+	::
+
+		<unique_ID>:ip     -> <ip>
+		<unique_ID>:source -> <source>
+
+And if they are given by the dataset:
+
+	::
+	
+		<unique_ID>:timestamp -> <timestamp> (in UTC)
+		<unique_ID>:infection -> <infection>
+		<unique_ID>:raw -> other <informations>
+
+When it is finished, the unique ID will be push into the set called 'uid_list'
+
+Multiprocessing
+===============
+
+Every module can work at the same time. 
+
+The process pushing the new entries into the mysql database will look in the 
+'new_entries' set and pick the new entries if it find something. 
+
+.. warning::
+	The modules have to push first all the other fields **BEFORE** pushing 
+	anything into the set, elsewhere we will have inconsistent entries. 
+
+Interest
+========
+
+The modules can be programmed in python or in any other language... 
+or come directly through the network, from sensors. 

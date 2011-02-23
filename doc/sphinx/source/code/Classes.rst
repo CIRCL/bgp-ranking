@@ -22,7 +22,9 @@ Services
     :undoc-members:
 
 
-.. autodata: bin.services.fetch_bview
+.. automodule:: bin.services.fetch_bview
+    :members:
+    :undoc-members:
 
 .. autodata: bin.services.fetch_raw_files
 

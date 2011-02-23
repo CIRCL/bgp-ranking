@@ -13,7 +13,7 @@ Direct dependencies of BGP Ranking:
     apt-get install python-dateutil python-feedparser python-cherrypy3 python-cheetah python-ipy
 
 
-Dependencies of libbgpdump and redis:
+Dependencies of libbgpdump + gcc (compilation :) ) + unzip (rgraph is zipped):
 
 ::
     
@@ -71,12 +71,12 @@ FYI, I also use this programms:
 
 ::
 
-    apt-get install screen ipython htop most
+    apt-get install screen ipython htop most iotop
 
 Versions from trunk
 ===================
 
-Our test environnement is based on ubuntu 10.10. Except the following programms, we use the
+Our test environnement is based on Ubuntu 10.10. Except the following programms, we use the
 versions of the repositories: 
 
 * Redis : 2.2
@@ -89,7 +89,7 @@ Third-party programms
 =====================
 
 By default, the system will search `libbgdump` and `rgraph` in :path:`bgpranking/thirdparty/`.
-But if you want to change it, fell free to edit :path:`bgpranking/etc/bgp-ranking.conf`
+But if you want to change it, fell free to edit :file:`bgpranking/etc/bgp-ranking.conf`
 
 Compilation and installation libbgpdump
 ---------------------------------------
@@ -181,4 +181,30 @@ Processes:
 ::
     
     htop
+
+Webserver
+=========
+
+Nginx
+-----
+
+::
+    
+    apt-get install nginx
+
+.. put config
+
+Cherrypy
+--------
+
+::
+    
+    python bgp-ranking/website/master.py
+
+
+Your new BGP Ranking instance is now up and running, congratulations!
+
+
+I would be glad to have your feedback!
+
 

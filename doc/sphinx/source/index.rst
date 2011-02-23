@@ -16,6 +16,8 @@ Contents:
 	Modules
 
 	Redis_Usage
+    
+    Installation
 
 	code/*
 

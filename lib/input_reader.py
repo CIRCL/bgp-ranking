@@ -103,8 +103,9 @@ class InputReader():
             to_return = True
             # FIXME pipeline -> every X loop ? 
             pipeline = self.global_db.pipeline()
+            pipeline_slave = self.temp_db_slave.pipeline()
             pipeline.sadd(index_day_src, src)
-            pipeline.sadd(index_day_ips, ip_details)
+            pipeline_slave.sadd(index_day_ips, ip_details)
             
             ip_details_keys = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
             
@@ -117,4 +118,5 @@ class InputReader():
             self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
             pipeline.sadd(config.get('redis','no_asn'), index_day_ips)
             pipeline.execute()
+            pipeline_slave.execute()
         return to_return

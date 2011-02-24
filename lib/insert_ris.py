@@ -62,7 +62,7 @@ class InsertRIS():
         self.cache_db_ris = redis.Redis(port = int(config.get('redis','port_cache')), db=ris_cache_reris_db)
         self.temp_db = redis.Redis(db=temp_reris_db)
         self.global_db = redis.Redis(db=global_db)
-        self.global_db_slave = redis.Redis(port = int(config.get('redis','port_slave_2')), db=global_db)
+        self.temp_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=temp_reris_db)
         default_asn_members = self.global_db.smembers(config.get('modules_global','default_asn'))
         if len(default_asn_members) == 0 :
             self.default_asn_key = self.add_asn_entry(\
@@ -139,7 +139,7 @@ class InsertRIS():
                     continue
                 for i in range(ip_set_card):
                     temp, date, source, key = ip_set.split(self.separator)
-                    ip_details = self.global_db.spop(ip_set)
+                    ip_details = self.temp_db_slave.spop(ip_set)
                     if ip_details is None:
                         break
                     ip, timestamp = ip_details.split(self.separator)

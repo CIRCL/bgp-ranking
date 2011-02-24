@@ -13,7 +13,8 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.read("../bgp-ranking.conf")
+config_file = "/home/rvinot/bgp-ranking/etc/bgp-ranking.conf"
+config.read(config_file)
 root_dir = config.get('directories','root')
 
 # Temporary redis database

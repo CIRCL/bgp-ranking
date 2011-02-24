@@ -63,7 +63,8 @@ if __name__ == "__main__":
     import sys
     import ConfigParser
     config = ConfigParser.SafeConfigParser()
-    config.read("../../etc/bgp-ranking.conf")
+    config_file = "/home/rvinot/bgp-ranking/etc/bgp-ranking.conf"
+    config.read(config_file)
     file = '/home/raphael/bgp-ranking/var/raw_data/bgp/bview'
     fs = FilesSplitter(file, int(config.get('routing','processes_push')))
     print fs.fplit()

@@ -5,7 +5,8 @@
 #if __name__ == "__main__":
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.read("../../etc/bgp-ranking.conf")
+config_file = "/home/rvinot/bgp-ranking/etc/bgp-ranking.conf"
+config.read(config_file)
 import sys
 import os
 sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))

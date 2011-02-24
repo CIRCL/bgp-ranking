@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+"""
+    bgp_ranking.lib.InsertWhois
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Insert the Whois information in the database. 
+
+    :copyright: Copyright 2010-2011 by the BGP Ranking team, see AUTHORS.
+    :license: AGPL3, see LICENSE for details.
+"""
 
 import syslog
 syslog.openlog('BGP_Ranking_Fetching_Whois', syslog.LOG_PID, syslog.LOG_USER)
@@ -9,7 +18,8 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config.read("../bgp-ranking.conf")
+config_file = "/home/rvinot/bgp-ranking/etc/bgp-ranking.conf"
+config.read(config_file)
 root_dir = config.get('directories','root') 
 sleep_timer = int(config.get('sleep_timers','short'))
 

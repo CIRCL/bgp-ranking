@@ -62,7 +62,6 @@ class InsertRIS():
         self.cache_db_ris = redis.Redis(port = int(config.get('redis','port_cache')), db=ris_cache_reris_db)
         self.temp_db = redis.Redis(db=temp_reris_db)
         self.global_db = redis.Redis(db=global_db)
-        self.global_db_slave = redis.Redis(port = int(config.get('redis','port_slave_2')), db=global_db)
         default_asn_members = self.global_db.smembers(config.get('modules_global','default_asn'))
         if len(default_asn_members) == 0 :
             self.default_asn_key = self.add_asn_entry(\

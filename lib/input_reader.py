@@ -38,7 +38,7 @@ class InputReader():
 
     def connect(self):
         self.temp_db = redis.Redis(db=temp_reris_db)
-        self.temp_db_slave = redis.Redis(port = int(config.get('redis','port_cache')), db=temp_reris_db)
+        self.temp_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=temp_reris_db)
         self.global_db = redis.Redis(db=global_db)
 
     def get_all_information(self):
@@ -65,7 +65,6 @@ class InputReader():
 
     def insert(self):
         to_return = False
-        i = 0 
         while self.temp_db.scard(list_ips) > 0:
             infos = self.get_all_information()
             if infos is None:

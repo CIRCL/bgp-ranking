@@ -20,7 +20,7 @@ from ranking.compute import *
 
 import redis
 
-routing_db = redis.Redis(db=config.get('redis','routing'))
+history_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','history'))
 
 import syslog
 syslog.openlog('Compute_Ranking_Process', syslog.LOG_PID, syslog.LOG_USER)
@@ -30,8 +30,6 @@ i = 0
 time.sleep(sleep_timer)
 syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(number = history_db.scard(config.get('redis','to_rank'))))
 r = Ranking()
-#r.update_asn_list()
-# asn|timestamp|date|source => lookup all the ASNs & drop all the ranks of today
 while history_db.scard(config.get('redis','to_rank')) > 0 :
     key = history_db.spop(config.get('redis','to_rank'))
     if key is not None:

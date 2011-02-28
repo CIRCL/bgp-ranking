@@ -18,7 +18,7 @@ config.read(config_file)
 root_dir = config.get('directories','root')
 
 # Temporary redis database
-temp_reris_db = int(config.get('modules_global','temp_db'))
+temp_db = int(config.get('modules_global','temp_db'))
 list_ips = config.get('modules_global','uid_list')
 global_db = config.get('redis','global')
 
@@ -28,18 +28,17 @@ sleep_timer = int(config.get('sleep_timers','short'))
 class InputReader():
     separator = config.get('input_keys','separator')
     
-    key_ip = config.get('input_keys','ip')
-    key_src = config.get('input_keys','src')
+    key_ip          = config.get('input_keys','ip')
+    key_src         = config.get('input_keys','src')
     key_list_tstamp = config.get('input_keys','list_tstamp')
-    key_tstamp = config.get('input_keys','tstamp')
-    key_infection = config.get('input_keys','infection')
-    key_raw = config.get('input_keys','raw')
-    key_times = config.get('input_keys','times')
+    key_tstamp      = config.get('input_keys','tstamp')
+    key_infection   = config.get('input_keys','infection')
+    key_raw         = config.get('input_keys','raw')
+    key_times       = config.get('input_keys','times')
 
     def connect(self):
-        self.temp_db = redis.Redis(db=temp_reris_db)
-        self.temp_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=temp_reris_db)
-        self.global_db = redis.Redis(db=global_db)
+        self.temp_db    = redis.Redis(port = int(config.get('redis','port_cache')) , db=temp_db)
+        self.global_db  = redis.Redis(port = int(config.get('redis','port_master')), db=global_db)
 
     def get_all_information(self):
         uid = self.temp_db.spop(list_ips)
@@ -103,8 +102,9 @@ class InputReader():
             to_return = True
             # FIXME pipeline -> every X loop ? 
             pipeline = self.global_db.pipeline()
+            pipeline_temp_db = self.global_db.pipeline()
             pipeline.sadd(index_day_src, src)
-            pipeline.sadd(index_day_ips, ip_details)
+            pipeline_temp_db.sadd(index_day_ips, ip_details)
             
             ip_details_keys = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
             
@@ -114,7 +114,8 @@ class InputReader():
                 pipeline.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_raw), raw)
             if times is not None:
                 pipeline.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_times), times)
-            self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
-            pipeline.sadd(config.get('redis','no_asn'), index_day_ips)
+            pipeline_temp_db.sadd(config.get('redis','key_temp_ris'), ip)
+            pipeline_temp_db.sadd(config.get('redis','no_asn'), index_day_ips)
             pipeline.execute()
+            pipeline_temp_db.execute()
         return to_return

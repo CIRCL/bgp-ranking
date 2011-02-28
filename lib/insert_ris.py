@@ -59,9 +59,8 @@ class InsertRIS():
         """
         Initialize the two connectors to the redis server 
         """        
-        self.cache_db_ris = redis.Redis(port = int(config.get('redis','port_cache')), db=ris_cache_reris_db)
-        self.temp_db = redis.Redis(db=temp_reris_db)
-        self.global_db = redis.Redis(db=global_db)
+        self.cache_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=ris_cache_reris_db)
+        self.global_db  = redis.Redis(port = int(config.get('redis','port_master')), db=global_db)
         default_asn_members = self.global_db.smembers(config.get('modules_global','default_asn'))
         if len(default_asn_members) == 0 :
             self.default_asn_key = self.add_asn_entry(\
@@ -110,11 +109,9 @@ class InsertRIS():
         riswhois = splitted[2]
         ris_whois = Whois(riswhois,  ris_origin)
         if not ris_whois.origin:
-            #self.global_db.set("{ip_info}{sep}{key}".format(ip_info = description, sep = self.separator, key = self.key_asn), self.default_asn_key)
             return self.default_asn_key
         else:
             asn_key = self.add_asn_entry(ris_whois.origin, ris_whois.description, ris_whois.route)
-            #self.global_db.set("{ip_info}{sep}{key}".format(ip_info = description, sep = self.separator, key = self.key_asn), asn_key)
             return asn_key
 
     def get_ris(self):
@@ -126,28 +123,29 @@ class InsertRIS():
         to_return = False
         i = 0 
         while True:
-            sets = self.global_db.smembers(key_no_asn)
+            sets = self.cache_db.smembers(key_no_asn)
             if len(sets) == 0:
                 break
             to_return = True
             for ip_set in sets:
                 errors = 0 
-                ip_set_card = self.global_db.scard(ip_set)
+                ip_set_card = self.cache_db.scard(ip_set)
                 if ip_set_card == 0:
-                    self.global_db.srem(key_no_asn, ip_set)
+                    self.cache_db.srem(key_no_asn, ip_set)
                     continue
                 for i in range(ip_set_card):
                     temp, date, source, key = ip_set.split(self.separator)
-                    ip_details = self.global_db.spop(ip_set)
+                    ip_details = self.cache_db.spop(ip_set)
                     if ip_details is None:
                         break
                     ip, timestamp = ip_details.split(self.separator)
-                    entry = self.cache_db_ris.get(ip)
+                    entry = self.cache_db.get(ip)
                     if entry is None:
                         errors += 1
-                        self.global_db.sadd(ip_set, ip_details)
+                        self.cache_db.sadd(ip_set, ip_details)
                         if errors >= self.max_consecutive_errors:
-                            self.temp_db.sadd(config.get('redis','key_temp_ris'), ip)
+                            redis.Redis(port = int(config.get('redis','port_cache')), \
+                                        db   = temp_reris_db).sadd(config.get('redis','key_temp_ris'), ip)
                     else:
                         errors = 0
                         asn = self.__update_db_ris(entry)
@@ -165,6 +163,7 @@ class InsertRIS():
                             self.global_db.sadd(index_day_asns, asn.split(self.separator)[0])
                             self.global_db.sadd(index_as_ips, ip_details)
                             to_return = True
-                syslog.syslog(syslog.LOG_DEBUG, str(self.global_db.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
+                    if i%10000 == 0:
+                        syslog.syslog(syslog.LOG_DEBUG, str(self.cache_db.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
             time.sleep(sleep_timer)
         return to_return

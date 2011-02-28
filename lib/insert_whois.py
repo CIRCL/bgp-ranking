@@ -23,8 +23,6 @@ config.read(config_file)
 root_dir = config.get('directories','root') 
 sleep_timer = int(config.get('sleep_timers','short'))
 
-# Temporary redis database, used to push ris and whois requests
-temp_reris_db = int(config.get('redis','temp'))
 # Cache redis database, used to set whois responses
 whois_cache_reris_db = int(config.get('redis','cache_whois'))
 # Global redis database, used to save all the information
@@ -48,25 +46,25 @@ class InsertWhois():
         """
         Initialize the two connectors to the redis server 
         """
-        self.cache_db_whois = redis.Redis(port = int(config.get('redis','port_cache')), db=whois_cache_reris_db)
-        self.temp_db = redis.Redis(db=temp_reris_db)
-        self.global_db = redis.Redis(db=global_db)
+        self.cache_db   = redis.Redis(port = int(config.get('redis','port_cache')), db=whois_cache_reris_db)
+        self.global_db  = redis.Redis(port = int(config.get('redis','port_master')), db=global_db)
 
     def get_whois(self):
         """
         Get the Whois information on a particular interval and put it into redis
         """
-        key_no_asn = config.get('redis','no_whois')
-        description = self.global_db.spop(key_no_whois)
+        key_no_whois = config.get('redis','no_whois')
+        description = self.cache_db.spop(key_no_whois)
         errors = 0 
         to_return = False
         
+        syslog.syslog(syslog.LOG_DEBUG, 'Whois to fetch: ' + str(self.global_db.scard(key_no_whois)))
         while description is not None:
             ip, timestamp = description.split(self.separator)
-            entry = self.cache_db_whois.get(ip)
+            entry = self.cache_db.get(ip)
             if entry is None:
                 errors += 1
-                self.global_db.sadd(key_no_whois, description)
+                self.cache_db.sadd(key_no_whois, description)
                 if errors >= self.max_consecutive_errors:
                     break
             else:
@@ -75,9 +73,11 @@ class InsertWhois():
                 whois_server = splitted[0]
                 whois = splitted[2]
                 # FIXME: msetex ? (mset + expire
-                self.global_db.set("{entry}{sep}{whois_server}".format(entry = entry,sep = self.separator, whois_server = self.key_whois_server), whois_server)
+                self.global_db.set("{entry}{sep}{whois_server}".format(entry = entry, \
+                                    sep = self.separator, whois_server = self.key_whois_server), \
+                                    whois_server)
                 self.global_db.set("{entry}{sep}{whois}".format(entry = entry,sep = self.separator, whois = self.key_whois), whois)
                 to_return = True
-            description = self.global_db.spop(key_no_asn)
+            description = self.cache_db.spop(key_no_whois)
         syslog.syslog(syslog.LOG_DEBUG, 'Whois to fetch: ' + str(self.global_db.scard(key_no_whois)))
         return to_return

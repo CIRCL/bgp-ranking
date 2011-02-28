@@ -42,11 +42,10 @@ def usage():
     exit (1)
 
 import redis
-routing_db = redis.Redis(db=config.get('redis','routing'))
-global_db = redis.Redis(db=config.get('redis','global'))
-global_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=config.get('redis','global'))
-history_db = redis.Redis(db=config.get('redis','history'))
-history_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=config.get('redis','history'))
+routing_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','routing'))
+global_db    = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
+history_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','history'))
+
 
 import datetime
 
@@ -95,7 +94,8 @@ def compute_yesterday_ranking():
     ts_file = os.path.join(raw_data, config.get('routing','bviewtimesamp'))
     if os.path.exists(ts_file):
         ts = open(ts_file, 'r').read()
-        history_db.set(config.get('ranking','latest_ranking'), ts)
+        redis.Redis(port = int(config.get('redis','port_master')),\
+                    db   = config.get('redis','history')).set(config.get('ranking','latest_ranking'), ts)
         ts = ts.split()
         if int(ts[1]) == int(first_hour):
             return True

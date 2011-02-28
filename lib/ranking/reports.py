@@ -17,9 +17,8 @@ root_dir = config.get('directories','root')
 import datetime
 import redis
 
-global_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=config.get('redis','global'))
-history_db = redis.Redis(db=config.get('redis','history'))
-history_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=config.get('redis','history'))
+global_db_slave = redis.Redis(port = int(config.get('redis','port_slave')), db=config.get('redis','global'))
+history_db_slave = redis.Redis(port = int(config.get('redis','port_slave')), db=config.get('redis','history'))
 
 class Reports():
     separator = config.get('input_keys','separator')
@@ -30,7 +29,8 @@ class Reports():
         """
         hours = sorted(config.get('routing','update_hours').split())
         first_hour = hours[0]
-        timestamp = history_db.get(config.get('ranking','latest_ranking'))
+        timestamp = redis.Redis(port = int(config.get('redis','port_master')),\
+                    db   = config.get('redis','history')).get(config.get('ranking','latest_ranking'))
         if timestamp is not None:
             timestamp = timestamp.split()
             today = datetime.date.today()
@@ -59,14 +59,14 @@ class Reports():
         for source in self.sources:
             histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
             # drop the old stuff
-            history_db.delete(histo_key)
+            history_db_slave.delete(histo_key)
             self.source_report(source)
     
     def global_report(self):
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = config.get('input_keys','histo_global'), \
                         sep = self.separator, ip_key = self.ip_key)
         # drop the old stuff
-        history_db.delete(histo_key)
+        history_db_slave.delete(histo_key)
         for source in self.sources:
             self.source_report(source, config.get('input_keys','histo_global'))
 
@@ -81,13 +81,13 @@ class Reports():
             if asn != config.get('modules_global','default_asn'):
                 rank = self.get_daily_rank(asn, source)
                 if rank is not None:
-                    history_db.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
+                    history_db_slave.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
     
     def format_report(self, source = None, limit = 50):
         if source is None:
             source = config.get('input_keys','histo_global')
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
-        return history_db.zrevrange(histo_key, 0, limit, True)
+        return history_db_slave.zrevrange(histo_key, 0, limit, True)
     
     #FIXME pipeline the function ? 
     def get_daily_rank(self, asn, source = None, date = None):
@@ -157,9 +157,10 @@ class Reports():
                 nb_of_ips += global_db_slave.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
                                                 asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
             if nb_of_ips > 0:
-                owner = global_db_slave.get('{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, \
-                                                owner = config.get('input_keys','owner')))
-                ip_block = global_db_slave.get('{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, \
+                owner, ip_block = global_db_slave.mget(\
+                            '{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, \
+                                                owner = config.get('input_keys','owner'))
+                            '{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, \
                                                 ip_block = config.get('input_keys','ips_block')))
                 asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips])
         return asn_descs_to_print
@@ -183,8 +184,9 @@ class Reports():
                                         asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
             for ip_details in ips:
                 ip, timestamp = ip_details.split(self.separator)
-                infection = global_db_slave.get('{ip}{key}'.format(ip = ip_details, key = key_infection))
-                raw_informations = global_db_slave.get('{ip}{key}'.format(ip = ip_details, key = key_raw))
-                whois = global_db_slave.get('{ip}{key}'.format(ip = ip_details, key = key_whois))
+                infection, raw_informations, whois = global_db_slave.mget(\
+                                                '{ip}{key}'.format(ip = ip_details, key = key_infection) \
+                                                '{ip}{key}'.format(ip = ip_details, key = key_raw) \ 
+                                                '{ip}{key}'.format(ip = ip_details, key = key_whois))
                 ip_descs_to_print.append([timestamp, ip, source, infection, raw_informations, whois])
         return ip_descs_to_print

@@ -38,7 +38,7 @@ class AbstractModule():
     separator = config.get('input_keys','separator')
     
     def __init__(self):
-        self.temp_db = redis.Redis(db=temp_reris_db)
+        self.temp_db = redis.Redis(port = int(config.get('redis','port_cache')), db=temp_reris_db)
     
     def put_entry(self, entry):
         uid = self.temp_db.incr(uid_var)

@@ -18,10 +18,10 @@ find ${ROOT_PROJECT} -name "*.py" -exec sed -i 's/\('"${VARIABLE}"'\).*$/\1 "'"$
 # This path should be the root directory of the project
 
 VARIABLE="root ="
-#CONFIG_PATH="${ROOT_PROJECT}"
+#CONFIG_PATH="\/mnt\/data\/gits\/bgp-ranking"
 CONFIG_PATH="\/path\/to\/project\/root\/dir"
 
-find ${ROOT_PROJECT} -name "bgp-ranking.conf" -exec sed -i 's/\('"${VARIABLE}"'\).*$/\1 "'"${CONFIG_PATH}"'"/' {} \;
+find ${ROOT_PROJECT} -name "bgp-ranking.conf" -exec sed -i 's/\('"${VARIABLE}"'\).*$/\1 '"${CONFIG_PATH}"'/' {} \;
 
 
 # This path should contain the clone of the repository of redis
@@ -29,5 +29,5 @@ find ${ROOT_PROJECT} -name "bgp-ranking.conf" -exec sed -i 's/\('"${VARIABLE}"'\
 VARIABLE="PREFIX="
 #CONFIG_PATH="\/home\/raphael"
 CONFIG_PATH="\/path\/to\/project\/prefix"
-find ${ROOT_PROJECT} -name "common.source.sh" -exec sed -i 's/\('"${VARIABLE}"'\).*$/\1 "'"${CONFIG_PATH}"'"/' {} \;
+find ${ROOT_PROJECT} -name "common.source.sh" -exec sed -i 's/\('"${VARIABLE}"'\).*$/\1"'"${CONFIG_PATH}"'"/' {} \;
 

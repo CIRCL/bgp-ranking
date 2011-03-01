@@ -159,7 +159,7 @@ class Reports():
             if nb_of_ips > 0:
                 owner, ip_block = global_db_slave.mget(\
                             '{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, \
-                                                owner = config.get('input_keys','owner'))
+                                                owner = config.get('input_keys','owner')),
                             '{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, \
                                                 ip_block = config.get('input_keys','ips_block')))
                 asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips])

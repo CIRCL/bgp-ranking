@@ -185,8 +185,8 @@ class Reports():
             for ip_details in ips:
                 ip, timestamp = ip_details.split(self.separator)
                 infection, raw_informations, whois = global_db_slave.mget(\
-                                                '{ip}{key}'.format(ip = ip_details, key = key_infection) \
-                                                '{ip}{key}'.format(ip = ip_details, key = key_raw) \ 
+                                                '{ip}{key}'.format(ip = ip_details, key = key_infection), \
+                                                '{ip}{key}'.format(ip = ip_details, key = key_raw), \ 
                                                 '{ip}{key}'.format(ip = ip_details, key = key_whois))
                 ip_descs_to_print.append([timestamp, ip, source, infection, raw_informations, whois])
         return ip_descs_to_print

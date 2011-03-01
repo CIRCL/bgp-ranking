@@ -102,7 +102,7 @@ class InputReader():
             to_return = True
             # FIXME pipeline -> every X loop ? 
             pipeline = self.global_db.pipeline()
-            pipeline_temp_db = self.global_db.pipeline()
+            pipeline_temp_db = self.temp_db.pipeline()
             pipeline.sadd(index_day_src, src)
             pipeline_temp_db.sadd(index_day_ips, ip_details)
             

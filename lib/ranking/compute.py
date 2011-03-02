@@ -64,9 +64,8 @@ class Ranking():
             self.make_history()
 
     def ip_count(self):
-        keyv4 = str(self.asn) + ':v4'
-        keyv6 = str(self.asn) + ':v6'
-        self.ipv4, self.ipv6 = routing_db.mget(keyv4, keyv6)
+        keys = [str(self.asn) + ':v4', str(self.asn) + ':v6']
+        self.ipv4, self.ipv6 = routing_db.mget(keys)
         if self.ipv4 is None or self.ipv6 is None:
             blocks = routing_db.smembers(self.asn)
             self.ipv4 = 0

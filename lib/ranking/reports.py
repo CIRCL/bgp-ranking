@@ -157,11 +157,11 @@ class Reports():
                 nb_of_ips += global_db_slave.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
                                                 asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
             if nb_of_ips > 0:
-                owner, ip_block = global_db_slave.mget(\
-                            '{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, \
-                                                owner = config.get('input_keys','owner')),
-                            '{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, \
-                                                ip_block = config.get('input_keys','ips_block')))
+                keys = ['{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, \
+                                                            owner = config.get('input_keys','owner')),
+                        '{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, \
+                                                            ip_block = config.get('input_keys','ips_block'))]
+                owner, ip_block = global_db_slave.mget(keys)
                 asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips])
         return asn_descs_to_print
 
@@ -184,9 +184,9 @@ class Reports():
                                         asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
             for ip_details in ips:
                 ip, timestamp = ip_details.split(self.separator)
-                infection, raw_informations, whois = global_db_slave.mget(
-                                    '{ip}{key}'.format(ip = ip_details, key = key_infection),
-                                    '{ip}{key}'.format(ip = ip_details, key = key_raw),
-                                    '{ip}{key}'.format(ip = ip_details, key = key_whois))
+                keys = ['{ip}{key}'.format(ip = ip_details, key = key_infection),
+                        '{ip}{key}'.format(ip = ip_details, key = key_raw),
+                        '{ip}{key}'.format(ip = ip_details, key = key_whois)]
+                infection, raw_informations, whois = global_db_slave.mget(keys)
                 ip_descs_to_print.append([timestamp, ip, source, infection, raw_informations, whois])
         return ip_descs_to_print

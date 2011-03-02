@@ -46,7 +46,7 @@ class Connector(object):
         Initialize the two connectors to the redis server, set variables depending on the server
         Initialize a whois fetcher on this server
         """
-        self.temp_db = redis.Redis(db=temp_reris_db)
+        self.temp_db = redis.Redis(port = int(config.get('redis','port_cache')) , db=temp_reris_db)
         self.server = server
         if self.server == 'riswhois.ripe.net':
             self.cache_db = redis.Redis(port = int(config.get('redis','port_cache')), db=ris_cache_reris_db)

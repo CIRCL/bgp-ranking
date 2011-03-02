@@ -60,6 +60,7 @@ class InsertRIS():
         Initialize the two connectors to the redis server 
         """        
         self.cache_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=ris_cache_reris_db)
+        self.cache_db_0 = redis.Redis(port = int(config.get('redis','port_cache')) , db=temp_reris_db)
         self.global_db  = redis.Redis(port = int(config.get('redis','port_master')), db=global_db)
         default_asn_members = self.global_db.smembers(config.get('modules_global','default_asn'))
         if len(default_asn_members) == 0 :
@@ -123,26 +124,26 @@ class InsertRIS():
         to_return = False
         i = 0 
         while True:
-            sets = self.cache_db.smembers(key_no_asn)
+            sets = self.cache_db_0.smembers(key_no_asn)
             if len(sets) == 0:
                 break
             to_return = True
             for ip_set in sets:
                 errors = 0 
-                ip_set_card = self.cache_db.scard(ip_set)
+                ip_set_card = self.cache_db_0.scard(ip_set)
                 if ip_set_card == 0:
-                    self.cache_db.srem(key_no_asn, ip_set)
+                    self.cache_db_0.srem(key_no_asn, ip_set)
                     continue
                 for i in range(ip_set_card):
                     temp, date, source, key = ip_set.split(self.separator)
-                    ip_details = self.cache_db.spop(ip_set)
+                    ip_details = self.cache_db_0.spop(ip_set)
                     if ip_details is None:
                         break
                     ip, timestamp = ip_details.split(self.separator)
                     entry = self.cache_db.get(ip)
                     if entry is None:
                         errors += 1
-                        self.cache_db.sadd(ip_set, ip_details)
+                        self.cache_db_0.sadd(ip_set, ip_details)
                         if errors >= self.max_consecutive_errors:
                             redis.Redis(port = int(config.get('redis','port_cache')), \
                                         db   = temp_reris_db).sadd(config.get('redis','key_temp_ris'), ip)
@@ -164,6 +165,6 @@ class InsertRIS():
                             self.global_db.sadd(index_as_ips, ip_details)
                             to_return = True
                     if i%10000 == 0:
-                        syslog.syslog(syslog.LOG_DEBUG, str(self.cache_db.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
+                        syslog.syslog(syslog.LOG_DEBUG, str(self.cache_db_0.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
             time.sleep(sleep_timer)
         return to_return

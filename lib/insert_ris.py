@@ -145,8 +145,7 @@ class InsertRIS():
                         errors += 1
                         self.cache_db_0.sadd(ip_set, ip_details)
                         if errors >= self.max_consecutive_errors:
-                            redis.Redis(port = int(config.get('redis','port_cache')), \
-                                        db   = temp_reris_db).sadd(config.get('redis','key_temp_ris'), ip)
+                            self.cache_db_0.sadd(config.get('redis','key_temp_ris'), ip)
                     else:
                         errors = 0
                         asn = self.__update_db_ris(entry)

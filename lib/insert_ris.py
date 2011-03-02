@@ -81,6 +81,7 @@ class InsertRIS():
         ips_blocks = []
         if len(key_list) != 0:
             ips_blocks = self.global_db.mget(key_list)
+        i = 0
         for block in ips_blocks:
             if block == ips_block:
                 asn, timestamp, b = key_list[i].split(self.separator)
@@ -88,6 +89,7 @@ class InsertRIS():
                 if self.global_db.get("{key}{sep}{owner}".format(key = temp_key, sep = self.separator, owner = self.key_owner)) == owner:
                     key = temp_key
                     break
+            i =1
         if key is None:
             timestamp = datetime.datetime.utcnow().isoformat()
             key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=timestamp)

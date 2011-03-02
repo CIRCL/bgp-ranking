@@ -81,7 +81,6 @@ class InsertRIS():
         ips_blocks = []
         if len(key_list) != 0:
             ips_blocks = self.global_db.mget(key_list)
-        i = 0 
         for block in ips_blocks:
             if block == ips_block:
                 asn, timestamp, b = key_list[i].split(self.separator)
@@ -89,7 +88,6 @@ class InsertRIS():
                 if self.global_db.get("{key}{sep}{owner}".format(key = temp_key, sep = self.separator, owner = self.key_owner)) == owner:
                     key = temp_key
                     break
-            i += 1
         if key is None:
             timestamp = datetime.datetime.utcnow().isoformat()
             key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=timestamp)
@@ -122,7 +120,6 @@ class InsertRIS():
         key_no_asn = config.get('redis','no_asn')
         errors = 0 
         to_return = False
-        i = 0 
         while True:
             sets = self.cache_db_0.smembers(key_no_asn)
             if len(sets) == 0:
@@ -163,7 +160,7 @@ class InsertRIS():
                             self.global_db.sadd(index_day_asns, asn.split(self.separator)[0])
                             self.global_db.sadd(index_as_ips, ip_details)
                             to_return = True
-                    if i%10000 == 0:
+                    if i%100000 == 0:
                         syslog.syslog(syslog.LOG_DEBUG, str(self.cache_db_0.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
             time.sleep(sleep_timer)
         return to_return

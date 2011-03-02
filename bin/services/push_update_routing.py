@@ -151,7 +151,7 @@ while 1:
             pipeline.sadd(config.get('redis','to_rank'), '{asn}{sep}{date}{sep}{source}'.format(sep = separator, asn = asn, date = date, source = source))
     to_delete = set(to_delete)
     if len(to_delete) > 0:
-        syslog.syslog(syslog.ERROR, 'You *do not* have anything to rank!')
+        syslog.syslog(syslog.LOG_ERR, 'You *do not* have anything to rank!')
         pipeline.delete(*to_delete)
     pipeline.execute()
 

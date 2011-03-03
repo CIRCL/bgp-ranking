@@ -76,7 +76,7 @@ class Ranking():
                     self.ipv6 += ip.len()
                 else :
                     self.ipv4 += ip.len()
-            routing_db.mset({keyv4: self.ipv4, keyv6: self.ipv6})
+            routing_db.mset({keys[0]: self.ipv4, keys[1]: self.ipv6})
         else:
             self.ipv4 = int(self.ipv4)
             self.ipv6 = int(self.ipv6)

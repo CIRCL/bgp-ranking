@@ -8,7 +8,7 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config_file = "/home/rvinot/bgp-ranking/etc/bgp-ranking.conf"
+config_file = "/path/to/bgp-ranking.conf"
 config.read(config_file)
 #sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
@@ -38,7 +38,7 @@ class AbstractModule():
     separator = config.get('input_keys','separator')
     
     def __init__(self):
-        self.temp_db = redis.Redis(db=temp_reris_db)
+        self.temp_db = redis.Redis(port = int(config.get('redis','port_cache')), db=temp_reris_db)
     
     def put_entry(self, entry):
         uid = self.temp_db.incr(uid_var)

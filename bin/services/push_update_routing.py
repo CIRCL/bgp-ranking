@@ -22,7 +22,7 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config_file = "/home/rvinot/bgp-ranking/etc/bgp-ranking.conf"
+config_file = "/path/to/bgp-ranking.conf"
 config.read(config_file)
 root_dir = config.get('directories','root')
 sleep_timer = int(config.get('ranking','bview_check'))
@@ -42,11 +42,10 @@ def usage():
     exit (1)
 
 import redis
-routing_db = redis.Redis(db=config.get('redis','routing'))
-global_db = redis.Redis(db=config.get('redis','global'))
-global_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=config.get('redis','global'))
-history_db = redis.Redis(db=config.get('redis','history'))
-history_db_slave = redis.Redis(port = int(config.get('redis','port_slave_1')), db=config.get('redis','history'))
+routing_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','routing'))
+global_db    = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
+history_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','history'))
+
 
 import datetime
 
@@ -95,7 +94,8 @@ def compute_yesterday_ranking():
     ts_file = os.path.join(raw_data, config.get('routing','bviewtimesamp'))
     if os.path.exists(ts_file):
         ts = open(ts_file, 'r').read()
-        history_db.set(config.get('ranking','latest_ranking'), ts)
+        redis.Redis(port = int(config.get('redis','port_master')),\
+                    db   = config.get('redis','history')).set(config.get('ranking','latest_ranking'), ts)
         ts = ts.split()
         if int(ts[1]) == int(first_hour):
             return True
@@ -150,7 +150,10 @@ while 1:
 
             pipeline.sadd(config.get('redis','to_rank'), '{asn}{sep}{date}{sep}{source}'.format(sep = separator, asn = asn, date = date, source = source))
     to_delete = set(to_delete)
-    pipeline.delete(*to_delete)
+    if len(to_delete) > 0:
+        pipeline.delete(*to_delete)
+    else:
+        syslog.syslog(syslog.LOG_ERR, 'You *do not* have anything to rank!')
     pipeline.execute()
 
     service_start_multiple(ranking_process_service, int(config.get('processes','ranking')))

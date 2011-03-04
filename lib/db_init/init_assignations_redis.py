@@ -17,7 +17,7 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config_file = "/home/rvinot/bgp-ranking/etc/bgp-ranking.conf"
+config_file = "/path/to/bgp-ranking.conf"
 config.read(config_file)
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
@@ -101,7 +101,7 @@ def set_options():
         if port:
             redis.set(url + port_option_suffix, port)
 
-redis = redis.Redis(db=config.get('redis','whois_assignations'))
+redis = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','whois_assignations'))
 redis.flushdb()
 urls = set()
 

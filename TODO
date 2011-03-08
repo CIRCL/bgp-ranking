@@ -16,7 +16,7 @@ Bugfixes
 Improvements
 ============
 
-* API
+* API (telnet like ?) 
     - get the weight of each source
     - get the rank of a subnet/asn (by whatever you want)
 

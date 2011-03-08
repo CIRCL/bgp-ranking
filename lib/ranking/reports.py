@@ -17,8 +17,8 @@ root_dir = config.get('directories','root')
 import datetime
 import redis
 
-global_db_slave = redis.Redis(port = int(config.get('redis','port_slave')), db=config.get('redis','global'))
-history_db_slave = redis.Redis(port = int(config.get('redis','port_slave')), db=config.get('redis','history'))
+global_db_slave = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
+history_db_slave = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','history'))
 
 class Reports():
     separator = config.get('input_keys','separator')

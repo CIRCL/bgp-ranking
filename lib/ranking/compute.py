@@ -10,7 +10,7 @@ import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
 config.optionxform = str
-config_file = "/home/rvinot/bgp-ranking/etc/bgp-ranking.conf"
+config_file = "/path/to/bgp-ranking.conf"
 config.read(config_file)
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
@@ -23,9 +23,9 @@ import IPy
 
 import datetime
 
-routing_db = redis.Redis(db=config.get('redis','routing'))
-global_db = redis.Redis(db=config.get('redis','global'))
-history_db = redis.Redis(db=config.get('redis','history'))
+routing_db = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','routing'))
+global_db  = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
+history_db = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','history'))
 
 class Ranking():
     separator = config.get('input_keys','separator')
@@ -64,10 +64,8 @@ class Ranking():
             self.make_history()
 
     def ip_count(self):
-        keyv4 = str(self.asn) + ':v4'
-        keyv6 = str(self.asn) + ':v6'
-        self.ipv4 = routing_db.get(keyv4)
-        self.ipv6 = routing_db.get(keyv6)
+        keys = [str(self.asn) + ':v4', str(self.asn) + ':v6']
+        self.ipv4, self.ipv6 = routing_db.mget(keys)
         if self.ipv4 is None or self.ipv6 is None:
             blocks = routing_db.smembers(self.asn)
             self.ipv4 = 0
@@ -78,8 +76,7 @@ class Ranking():
                     self.ipv6 += ip.len()
                 else :
                     self.ipv4 += ip.len()
-            routing_db.set(keyv4, self.ipv4)
-            routing_db.set(keyv6, self.ipv6)
+            routing_db.mset({keys[0]: self.ipv4, keys[1]: self.ipv6})
         else:
             self.ipv4 = int(self.ipv4)
             self.ipv6 = int(self.ipv6)

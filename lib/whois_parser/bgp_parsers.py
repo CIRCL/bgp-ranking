@@ -10,7 +10,7 @@ There is only a parser for the information from RIPE NCC
 if __name__ == "__main__":
     import ConfigParser
     config = ConfigParser.RawConfigParser()
-    config_file = plop
+    config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     import sys
     import os

@@ -15,13 +15,13 @@ import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
-config_file = "/home/rvinot/bgp-ranking/etc/bgp-ranking.conf"
+config_file = "/path/to/bgp-ranking.conf"
 config.read(config_file)
 root_dir = config.get('directories','root')
 sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 import redis
-routing_db = redis.Redis(db=config.get('redis','routing'))
+routing_db = redis.Redis(port = int(config.get('redis','port_cache')), db=config.get('redis','routing'))
 
 from whois_parser.bgp_parsers import *
 import syslog
@@ -44,7 +44,6 @@ for line in file:
             block = parsed.prefix
             if block is not None:
                 pipeline.sadd(asn, block)
-#                routing_db.sadd(block, asn)
             entry = ''
         if i >= 10000:
             pipeline.execute()

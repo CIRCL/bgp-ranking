@@ -1,9 +1,35 @@
-Trivial:
-- use redis transactions to improve the speed of the whole system
 
-Almost trivial:
-- use python-whois as an external dep instead of the bundled version (http://gitorious.org/python-whois)
-- improve the import of the config file (see python-whois for a solution)
+.. todolist::
 
-Not trivial:
-- do not create a new key for each subnet in the ranking 
+
+*********
+TODO List
+*********
+
+Bugfixes
+========
+
+* There is actually a problem with the slave database: it takes **to much** time.
+  The proper fix it the move the temporary data from the global database to an other one,
+  not synchronized with the slave.
+
+Improvements
+============
+
+* API (telnet like ?) 
+    - get the weight of each source
+    - get the rank of a subnet/asn (by whatever you want)
+
+Not trivial
+===========
+
+* use python-whois as an external dep instead of the bundled version
+  (http://gitorious.org/python-whois)
+* read the code of Khanku (http://gitorious.org/~khanku/bgp-ranking/predictive-bgp-ranking/)
+  ans find a way to handle this usage of the ranking system in the main trunk
+
+
+Whishlist
+=========
+
+* Module which ping a list of URL known as malicious and insert the IP in the system.

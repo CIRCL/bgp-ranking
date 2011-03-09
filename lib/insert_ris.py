@@ -5,38 +5,37 @@
 
     Insert the RIS Whois information in the database. 
 
-    :copyright: Copyright 2010-2011 by the BGP Ranking team, see AUTHORS.
-    :license: AGPL3, see LICENSE for details.
 """
 
-from whois_parser.whois_parsers import *
+if __name__ == '__main__':
+    from whois_parser.whois_parsers import *
 
-import syslog
-import datetime
-syslog.openlog('BGP_Ranking_Fetching_RIS', syslog.LOG_PID, syslog.LOG_USER)
+    import syslog
+    import datetime
+    syslog.openlog('BGP_Ranking_Fetching_RIS', syslog.LOG_PID, syslog.LOG_USER)
 
-import re
+    import re
 
-import redis
-import time
-import os 
-import sys
-import ConfigParser
-config = ConfigParser.RawConfigParser()
-config_file = "/path/to/bgp-ranking.conf"
-config.read(config_file)
-root_dir = config.get('directories','root') 
-sleep_timer = int(config.get('sleep_timers','short'))
+    import redis
+    import time
+    import os 
+    import sys
+    import ConfigParser
+    config = ConfigParser.RawConfigParser()
+    config_file = "/path/to/bgp-ranking.conf"
+    config.read(config_file)
+    root_dir = config.get('directories','root') 
+    sleep_timer = int(config.get('sleep_timers','short'))
 
-import dateutil.parser
+    import dateutil.parser
 
 
-# Temporary redis database, used to push ris and whois requests
-temp_reris_db = int(config.get('redis','temp'))
-# Cache redis database, used to set ris responses
-ris_cache_reris_db = int(config.get('redis','cache_ris'))
-# Global redis database, used to save all the information
-global_db = config.get('redis','global')
+    # Temporary redis database, used to push ris and whois requests
+    temp_reris_db = int(config.get('redis','temp'))
+    # Cache redis database, used to set ris responses
+    ris_cache_reris_db = int(config.get('redis','cache_ris'))
+    # Global redis database, used to save all the information
+    global_db = config.get('redis','global')
 
 class InsertRIS():
     """
@@ -46,19 +45,18 @@ class InsertRIS():
     """
     default_asn_desc = None
     max_consecutive_errors = 5
-    
-    separator = config.get('input_keys','separator')
-    
-    default_asn = config.get('modules_global','default_asn')
-    
-    key_asn = config.get('input_keys','asn')
-    key_owner = config.get('input_keys','owner')
-    key_ips_block = config.get('input_keys','ips_block')
 
     def __init__(self):
         """
         Initialize the two connectors to the redis server 
         """        
+        self.separator = config.get('input_keys','separator')
+
+        self.default_asn = config.get('modules_global','default_asn')
+
+        self.key_asn = config.get('input_keys','asn')
+        self.key_owner = config.get('input_keys','owner')
+        self.key_ips_block = config.get('input_keys','ips_block')
         self.cache_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=ris_cache_reris_db)
         self.cache_db_0 = redis.Redis(port = int(config.get('redis','port_cache')) , db=temp_reris_db)
         self.global_db  = redis.Redis(port = int(config.get('redis','port_master')), db=global_db)

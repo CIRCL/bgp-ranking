@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    BGP Ranking - Script - Fetch the bview files
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    :file:`bin/services/fetch_bview.py` - Fetch the bview files
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     The service fetch a dump of the routing database from 
     the RIS Whois service provided by RIPE NCC.
@@ -30,10 +30,6 @@
     
     .. note:: 
         When the current day change, this hour is set to None. 
-
-
-    :copyright: Copyright 2010-2011 by the BGP Ranking team, see :file:`AUTHORS`.
-    :licence: AGPL3, see :file:`LICENSE` for details.
 
 """
 

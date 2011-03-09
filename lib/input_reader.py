@@ -1,46 +1,71 @@
+# -*- coding: utf-8 -*-
+"""
+    bgp_ranking.lib.InputReader
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-import time
-import datetime 
-import dateutil.parser
-import redis
+    Insert the new data from the datasets in the database. 
 
-import IPy
+"""
 
-import syslog
-syslog.openlog('BGP_Ranking_Input', syslog.LOG_PID, syslog.LOG_USER)
 
-import os 
-import sys
-import ConfigParser
-config = ConfigParser.RawConfigParser()
-config_file = "/path/to/bgp-ranking.conf"
-config.read(config_file)
-root_dir = config.get('directories','root')
+if __name__ == '__main__':
+    import time
+    import datetime 
+    import dateutil.parser
+    import redis
 
-# Temporary redis database
-temp_db = int(config.get('modules_global','temp_db'))
-list_ips = config.get('modules_global','uid_list')
-global_db = config.get('redis','global')
+    import IPy
 
-# Used if there is a temporaty problem inserting new entries in the DB
-sleep_timer = int(config.get('sleep_timers','short'))
+    import syslog
+    syslog.openlog('BGP_Ranking_Input', syslog.LOG_PID, syslog.LOG_USER)
+
+    import os 
+    import sys
+    import ConfigParser
+    config = ConfigParser.RawConfigParser()
+    config_file = "/path/to/bgp-ranking.conf"
+    config.read(config_file)
+    root_dir = config.get('directories','root')
+
+    # Temporary redis database
+    temp_db = int(config.get('modules_global','temp_db'))
+    list_ips = config.get('modules_global','uid_list')
+    global_db = config.get('redis','global')
+
+    # Used if there is a temporaty problem inserting new entries in the DB
+    sleep_timer = int(config.get('sleep_timers','short'))
 
 class InputReader():
-    separator = config.get('input_keys','separator')
+    """
+        Filter and sort the new entries given by the modules
+    """
     
-    key_ip          = config.get('input_keys','ip')
-    key_src         = config.get('input_keys','src')
-    key_list_tstamp = config.get('input_keys','list_tstamp')
-    key_tstamp      = config.get('input_keys','tstamp')
-    key_infection   = config.get('input_keys','infection')
-    key_raw         = config.get('input_keys','raw')
-    key_times       = config.get('input_keys','times')
+    def __init__(self):
+        """
+            Initialize the keys available 
+        """
+        self.separator = config.get('input_keys','separator')
+
+        self.key_ip          = config.get('input_keys','ip')
+        self.key_src         = config.get('input_keys','src')
+        self.key_list_tstamp = config.get('input_keys','list_tstamp')
+        self.key_tstamp      = config.get('input_keys','tstamp')
+        self.key_infection   = config.get('input_keys','infection')
+        self.key_raw         = config.get('input_keys','raw')
+        self.key_times       = config.get('input_keys','times')
+    
 
     def connect(self):
+        """
+            Connection to the redis instances 
+        """
         self.temp_db    = redis.Redis(port = int(config.get('redis','port_cache')) , db=temp_db)
         self.global_db  = redis.Redis(port = int(config.get('redis','port_master')), db=global_db)
 
     def get_all_information(self):
+        """
+            Extract from the database all the information provided by the modules.
+        """
         uid = self.temp_db.spop(list_ips)
         if uid is None:
             return None
@@ -63,6 +88,9 @@ class InputReader():
         return uid, ip, src, timestamp, infection, raw, times
 
     def insert(self):
+        """
+            Re-insert in the database the data provided by the module in a sorted form.
+        """
         to_return = False
         while self.temp_db.scard(list_ips) > 0:
             infos = self.get_all_information()

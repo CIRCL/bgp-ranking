@@ -5,28 +5,27 @@
 
     Insert the Whois information in the database. 
 
-    :copyright: Copyright 2010-2011 by the BGP Ranking team, see AUTHORS.
-    :license: AGPL3, see LICENSE for details.
 """
 
-import syslog
-syslog.openlog('BGP_Ranking_Fetching_Whois', syslog.LOG_PID, syslog.LOG_USER)
+if __name__ == '__main__':
+    import syslog
+    syslog.openlog('BGP_Ranking_Fetching_Whois', syslog.LOG_PID, syslog.LOG_USER)
 
-import redis
-import time
-import os 
-import sys
-import ConfigParser
-config = ConfigParser.RawConfigParser()
-config_file = "/path/to/bgp-ranking.conf"
-config.read(config_file)
-root_dir = config.get('directories','root') 
-sleep_timer = int(config.get('sleep_timers','short'))
+    import redis
+    import time
+    import os 
+    import sys
+    import ConfigParser
+    config = ConfigParser.RawConfigParser()
+    config_file = "/path/to/bgp-ranking.conf"
+    config.read(config_file)
+    root_dir = config.get('directories','root') 
+    sleep_timer = int(config.get('sleep_timers','short'))
 
-# Cache redis database, used to set whois responses
-whois_cache_reris_db = int(config.get('redis','cache_whois'))
-# Global redis database, used to save all the information
-global_db = config.get('redis','global')
+    # Cache redis database, used to set whois responses
+    whois_cache_reris_db = int(config.get('redis','cache_whois'))
+    # Global redis database, used to save all the information
+    global_db = config.get('redis','global')
 
 class InsertWhois():
     """
@@ -35,17 +34,17 @@ class InsertWhois():
     Take a look at doc/uml-diagramms/Whois\ Fetching.png to see a diagramm.
     """
     max_consecutive_errors = 10
-    
-    separator = config.get('input_keys','separator')
-    
-    key_whois = config.get('input_keys','whois')
-    key_whois_server = config.get('input_keys','whois_server')
-    
 
     def __init__(self):
         """
         Initialize the two connectors to the redis server 
         """
+        
+        self.separator = config.get('input_keys','separator')
+    
+        self.key_whois = config.get('input_keys','whois')
+        self.key_whois_server = config.get('input_keys','whois_server')
+        
         self.cache_db   = redis.Redis(port = int(config.get('redis','port_cache')), db=whois_cache_reris_db)
         self.global_db  = redis.Redis(port = int(config.get('redis','port_master')), db=global_db)
 

@@ -2,13 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-    BGP Ranking - Script - Database Input
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    :file:`bin/services/db_input.py` - Database Input
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Move the new entries from the incoming to the storage database
 
-    :copyright: Copyright 2010-2011 by the BGP Ranking team, see :file:`AUTHORS`.
-    :licence: AGPL3, see :file:`LICENSE` for details.
 """
 
 def usage():

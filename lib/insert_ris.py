@@ -39,16 +39,16 @@ if __name__ == '__main__':
 
 class InsertRIS():
     """
-    Generate a ASNsDescriptions to all IPsDescriptions wich do not already have one.
-    
-    Take a look at doc/uml-diagramms/RIS\ Fetching.png to see a diagramm.
+        Generate a ASNsDescriptions to all IPsDescriptions wich do not already have one.
+        
+        Take a look at doc/uml-diagramms/RIS\ Fetching.png to see a diagramm.
     """
     default_asn_desc = None
     max_consecutive_errors = 5
 
     def __init__(self):
         """
-        Initialize the two connectors to the redis server 
+            Initialize the two connectors to the redis server 
         """        
         self.separator = config.get('input_keys','separator')
 
@@ -70,6 +70,9 @@ class InsertRIS():
             self.default_asn_key = '{asn}{sep}{tstamp}'.format(asn=config.get('modules_global','default_asn'), sep = self.separator, tstamp=default_asn_members.pop())
 
     def add_asn_entry(self, asn, owner, ips_block):
+        """
+            Add a new subnet to the ASNs known by the system, only if the subnet is not already present.
+        """
         key = None
         asn_timestamps = self.global_db.smembers(asn)
         key_list = []
@@ -99,9 +102,9 @@ class InsertRIS():
             pipeline.execute()
         return key
 
-    def __update_db_ris(self, data):
+    def update_db_ris(self, data):
         """ 
-        Update the database with the RIS whois informations and return the corresponding entry
+            Update the database with the RIS whois informations and return the corresponding entry
         """
         splitted = data.partition('\n')
         ris_origin = splitted[0]
@@ -115,7 +118,7 @@ class InsertRIS():
 
     def get_ris(self):
         """
-        Get the RIS whois information on a particular interval and put it into redis
+            Get the RIS whois information on a particular interval and put it into redis
         """
         key_no_asn = config.get('redis','no_asn')
         errors = 0 
@@ -145,7 +148,7 @@ class InsertRIS():
                             self.cache_db_0.sadd(config.get('redis','key_temp_ris'), ip)
                     else:
                         errors = 0
-                        asn = self.__update_db_ris(entry)
+                        asn = self.update_db_ris(entry)
                         date = dateutil.parser.parse(timestamp).date().isoformat()
                         index_day_asns_details = '{date}{sep}{source}{sep}{key}'.format(sep = self.separator, \
                                                         date=date, source=source, \

@@ -3,75 +3,71 @@ Installation
 ************
 
 
-Get the programms you need
-==========================
+Dependencies of BGP Ranking
+===========================
 
-Direct dependencies of BGP Ranking:
+Dependencies available in the ubuntu repositories:
 
-::
+    ::
     
-    $ apt-get install python-dateutil python-feedparser python-cherrypy3 python-cheetah python-ipy
+        $ apt-get install python-dateutil python-feedparser python-cherrypy3 python-cheetah python-ipy
 
 
 Dependencies of libbgpdump + gcc (compilation :) ) + unzip (rgraph is zipped):
 
-::
-    
-    $ apt-get install gcc autoconf zlib1g-dev libbz2-dev unzip
+    ::
+        
+        $ apt-get install gcc autoconf zlib1g-dev libbz2-dev unzip
 
 
-Repository of Redis:
+Repository of Redis. You can safely get the latest stable version:
 
-::
+    ::
 
-    $ git clone git://github.com/antirez/redis.git
+        $ git clone git://github.com/antirez/redis.git
 
-Repository of the Redis client (Python):
+Repository of the Redis client (Python). You can safely get the latest stable version:
 
-::
+    ::
 
-    $ git clone http://github.com/andymccurdy/redis-py.git
+        $ git clone http://github.com/andymccurdy/redis-py.git
 
-Repository of libbgpdump, grab the latest version:
+.. _Repository of libbgpdump: https://bitbucket.org/ripencc/bgpdump/downloads
 
-::
-    $ https://bitbucket.org/ripencc/bgpdump/downloads
+`Repository of libbgpdump`_, grab the latest version.
 
+.. _Website of Rgraph: http://www.rgraph.net/#download 
 
-Grab the latest (stable or unstable) version of Rgraph:
+`Website of Rgraph`_, grab the latest (stable) version.
 
-::
-    
-    $ http://www.rgraph.net/#download 
+.. _gitorious: http://gitorious.org/bgp-ranking/bgp-ranking/archive-tarball/1.0.1
+.. _github: https://github.com/Rafiot/bgp-ranking/tree/1.0.1
 
+BGP Ranking
+===========
 
-You may want the code of BGP Ranking... :)
-
-Stable version:
-
-::
-    
-    http://gitorious.org/bgp-ranking/bgp-ranking/archive-tarball/1.0.1
-    https://github.com/Rafiot/bgp-ranking/tree/1.0.1
-
-More or less stable version:
-
-::
-    
-    https://github.com/Rafiot/bgp-ranking
-
-Unstable version: 
-
-::
-    
-    http://gitorious.org/bgp-ranking
+You can get the latest stable version of the code from `gitorious`_ or 
+from `github`_. Now the latest stable version is 1.0.1. Always ensure you 
+are using the latest stable version.
 
 
-FYI, I also use this programms:
+You can also download a testing from the github repository: 
 
-::
+    ::
+        
+        git clone git://github.com/Rafiot/bgp-ranking.git
 
-    $ apt-get install screen ipython htop most iotop
+And an unstable version from gitorious: 
+
+    ::
+        
+        git clone http://git.gitorious.org/bgp-ranking/bgp-ranking.git
+
+FYI, I also use this programms for the monitoring tasks:
+
+    ::
+        
+        $ apt-get install screen ipython htop most iotop
 
 Versions from trunk
 ===================

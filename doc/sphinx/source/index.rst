@@ -24,6 +24,7 @@ Code Documentation
 
     code/Services
     code/Classes
+    code/Helpers
 
 Indices and tables
 ==================

@@ -13,6 +13,13 @@ Bugfixes
   The proper fix it the move the temporary data from the global database to an other one,
   not synchronized with the slave.
 
+Improvements
+============
+
+* API (telnet like ?) 
+    - get the weight of each source
+    - get the rank of a subnet/asn (by whatever you want)
+
 Not trivial
 ===========
 

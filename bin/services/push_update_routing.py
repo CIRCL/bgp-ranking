@@ -109,9 +109,11 @@ while 1:
     syslog.syslog(syslog.LOG_INFO, 'Start converting binary bview file in plain text...')
     # create the plain text dump from the binary dump 
     output = open(dir + '/bview', 'wr')
-    p_bgp = Popen([bgpdump , filename], stdout=PIPE)
+    nul_f = open(os.devnull, 'w')
+    p_bgp = Popen([bgpdump , filename], stdout=PIPE, stderr = nul_f)
     for line in p_bgp.stdout:
         output.write(line)
+    nul_f.close() 
     output.close()
     syslog.syslog(syslog.LOG_INFO, 'Convertion finished, start splitting...')
     # Split the plain text file 

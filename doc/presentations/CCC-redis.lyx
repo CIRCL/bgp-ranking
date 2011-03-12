@@ -1,0 +1,1240 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass beamer
+\begin_preamble
+\usetheme{CambridgeUS}
+%\usetheme[hideothersubsections,width=2.2cm]{Berkeley}
+% or ...
+
+\setbeamercovered{transparent}
+% or whatever (possibly just delete it)
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_title "BGP AS / ISP Security Ranking"
+\pdf_author "Raphaël Vinot"
+\pdf_subject "BGP AS / ISP Security Ranking"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+This file is a solution template for:
+\end_layout
+
+\begin_layout Plain Layout
+- Talk at a conference/colloquium.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- Talk length is about 20min.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- Style is ornate.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+In principle, this file can be redistributed and/or modified under the terms
+ of the GNU Public License, version 2.
+ However, this file is supposed to be a template to be modified for your
+ own needs.
+ For this reason, if you use this file as a template and not specifically
+ distribute it as part of a another package/program, the author grants the
+ extra permission to freely copy and modify this file as you see fit and
+ even to delete this copyright notice.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+From MySQL to Redis
+\end_layout
+
+\begin_layout Subtitle
+or 
+\begin_inset Quotes eld
+\end_inset
+
+Welcome in the 10s
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Raphaël Vinot
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+- Give the names in the same order as the appear in the paper.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- Use the 
+\backslash
+inst{?} command only if the authors have different affiliations.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Institute
+Chaos Computer Club Trier
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+CCC Trier
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Date
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+- Use the 
+\backslash
+inst command only if there are several affiliations.
+\end_layout
+
+\begin_layout Plain Layout
+- Keep it simple, no one is interested in your street address.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Date
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Masterarbeit, 2010
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+- Either use conference name or its abbreviation.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- Not really informative to the audience, more for people (including yourself)
+ who are reading the slides online
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+Just for fun, 2011
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+If you have a file called "institution-logo-filename.xxx", where xxx is a
+ graphic format that can be processed by latex or pdflatex, resp., then you
+ can add a logo by uncommenting the following:
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+pgfdeclareimage[interpolate=true,width=2.2cm,height=45pt]{institution-logo}{isfat
+es}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+logo{
+\backslash
+pgfuseimage{institution-logo}}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+The following causes the table of contents to be shown at the beginning
+ of every subsection.
+ Delete this, if you do not want it.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+AtBeginSubsection[]{
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+frame<beamer>{ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+frametitle{Content}   
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+tableofcontents[currentsection,currentsubsection] 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+If you wish to uncover everything in a step-wise fashion, uncomment the
+ following command:
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+beamerdefaultoverlayspecification{<+->}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Table of contents
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Structuring a talk is a difficult task and the following structure may not
+ be suitable.
+ Here are some rules that apply for this solution: 
+\end_layout
+
+\begin_layout Plain Layout
+- Exactly two or three sections (other than the summary).
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- At *most* three subsections per section.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- Talk about 30s to 2min per frame.
+ So there should be between about 15 and 30 frames, all told.
+\end_layout
+
+\begin_layout Plain Layout
+- A conference audience is likely to know very little of what you are going
+ to talk about.
+ So *simplify*! 
+\end_layout
+
+\begin_layout Plain Layout
+- In a 20min talk, getting the main ideas across is hard enough.
+ Leave out details, even if it means being less precise than you think necessary.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+- If you omit details that are vital to the proof/implementation, just say
+ so once.
+ Everybody will be happy with that.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Context
+\end_layout
+
+\begin_layout Subsection
+Me, Myself and I 
+\end_layout
+
+\begin_layout BeginFrame
+Me, Myself and I
+\end_layout
+
+\begin_layout Enumerate
+truly 
+\series bold
+hate
+\series default
+ *SQL
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+yes, no objectivity
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+lazy
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+but you knew it
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+like Active Record (elixir in Python)
+\end_layout
+
+\begin_layout Enumerate
+KISS
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+hate write documentation, see 2.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+BGP Ranking
+\end_layout
+
+\begin_layout BeginFrame
+BGP Ranking
+\end_layout
+
+\begin_layout Itemize
+Goal: rank the Autonomous Systems (AS)
+\end_layout
+
+\begin_layout Itemize
+Sources: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+many free and non-free datasets
+\end_layout
+
+\begin_layout Itemize
+some big datasets
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Pause
+
+\end_layout
+
+\begin_layout Itemize
+Requirements: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+fast
+\end_layout
+
+\begin_layout Itemize
+use 
+\begin_inset Quotes eld
+\end_inset
+
+few
+\begin_inset Quotes erd
+\end_inset
+
+ memory 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+32b system, 4Gb max/process
+\end_layout
+
+\begin_layout Itemize
+64b system, 
+\begin_inset Quotes eld
+\end_inset
+
+no limits
+\begin_inset Quotes erd
+\end_inset
+
+ :)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection
+MySQL
+\end_layout
+
+\begin_layout BeginFrame
+Mysql
+\end_layout
+
+\begin_layout Itemize
+uptime: 3 month
+\end_layout
+
+\begin_layout Itemize
+size: 10Gb, ~20 Millions records, biggest table: 17 Millions
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Pause
+
+\end_layout
+
+\begin_layout Itemize
+It works well...
+ 
+\end_layout
+
+\begin_layout Itemize
+...
+ until I found a bug and had to modify an index.
+\end_layout
+
+\begin_layout Itemize
+Consequence: unusable
+\end_layout
+
+\begin_layout Itemize
+Solution: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+add more logic in the usage of MySQL
+\end_layout
+
+\begin_layout Itemize
+Or...
+ change the backend
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Redis
+\end_layout
+
+\begin_layout Subsection
+What is it? 
+\end_layout
+
+\begin_layout BeginFrame
+Redis is...
+\end_layout
+
+\begin_layout Itemize
+Key-value 
+\series bold
+store
+\series default
+ database
+\end_layout
+
+\begin_layout Itemize
+Data in memory and/or on the disk
+\end_layout
+
+\begin_layout Itemize
+License: BSD 
+\end_layout
+
+\begin_layout Itemize
+Usage: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+shared memory
+\end_layout
+
+\begin_layout Itemize
+saving data
+\end_layout
+
+\end_deeper
+\begin_layout BeginFrame
+Types
+\end_layout
+
+\begin_layout Itemize
+strings
+\end_layout
+
+\begin_layout Itemize
+lists
+\end_layout
+
+\begin_layout Itemize
+sets/zsets
+\end_layout
+
+\begin_layout Itemize
+hash
+\end_layout
+
+\begin_layout BeginFrame
+
+\strikeout on
+One
+\strikeout default
+ 
+\strikeout on
+Two
+\strikeout default
+ Three more things...
+\end_layout
+
+\begin_layout Itemize
+Pipeline
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+at least 3x faster
+\end_layout
+
+\begin_layout Itemize
+non-transational mode
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Slave instances
+\end_layout
+
+\begin_layout Itemize
+Soon: disk storage (no more swap)
+\end_layout
+
+\begin_layout Subsection
+Benchmark
+\end_layout
+
+\begin_layout BeginFrame
+Benchmark
+\end_layout
+
+\begin_layout Itemize
+The test was done with 50 simultaneous clients performing 100000 requests.
+ 
+\end_layout
+
+\begin_layout Itemize
+The value SET and GET is a 256 bytes string.
+ 
+\end_layout
+
+\begin_layout Itemize
+The Linux box is running Linux 2.6, it's Xeon X3320 2.5Ghz.
+ 
+\end_layout
+
+\begin_layout Itemize
+Text executed using the loopback interface (127.0.0.1).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Results
+\series default
+: about 110000 SETs per second, about 81000 GETs per second.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+See on the 
+\begin_inset CommandInset href
+LatexCommand href
+name "Official Website"
+target "http://redis.io/topics/benchmarks"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Pause
+
+\end_layout
+
+\begin_layout Itemize
+Well, marketing ? 
+\end_layout
+
+\begin_layout BeginFrame
+Benchmark
+\end_layout
+
+\begin_layout Itemize
+MySQL
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+1 Milion IPs: >4 Hours
+\end_layout
+
+\begin_layout Itemize
+70.000 Ranks computed in >20 min
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Redis: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+1 Milion IPs: 30 min
+\end_layout
+
+\begin_layout Itemize
+70.000 Ranks: 1 min 
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Migration
+\end_layout
+
+\begin_layout Subsection
+Backend
+\end_layout
+
+\begin_layout BeginFrame
+Architecture: MySQL
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /mnt/data/gits/bgp-ranking/doc/informations/Backends/dbschema.png
+	lyxscale 20
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+MySQL Schema
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Architecture: Redis - Instances
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename glob-redis.dia
+	lyxscale 40
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Instances
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Architecture: Redis - Content
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename details-redis.dia
+	lyxscale 40
+	scale 19
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Redis schema - simple
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Access to the information 
+\end_layout
+
+\begin_layout BeginFrame
+Motto
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size huge
+Worst case: 
+\begin_inset Formula $M*0\left(\log\left(n\right)\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+M: Number of queries to get a result
+\end_layout
+
+\begin_layout Standard
+\align center
+n: Number of entries in the database
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+queries
+\end_layout
+
+\begin_layout Itemize
+ram 
+\end_layout
+
+\begin_layout Itemize
+cpu
+\end_layout
+
+\begin_layout BeginFrame
+Good key
+\end_layout
+
+\begin_layout Itemize
+easy to remember
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+order of the fields is important
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+contains information
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+KISS
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+never
+\series default
+ depend directly on the number of entries in the database
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Bad example: ip|YYYY-MM-DD|source
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+contains (at least) 
+\series bold
+all
+\series default
+ the information you need
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+having a bit more is not a big deal 
+\end_layout
+
+\end_deeper
+\begin_layout BeginFrame
+Examples 1
+\end_layout
+
+\begin_layout Enumerate
+YYYY-MM-DD|sources
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+list of available sources
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+YYYY-MM-DD|ListOfTheBadGuys|asns
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+ASNs found in the ListOfTheBadGuys dataset, for the day
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+YYYY-MM-DD|ListOfTheBadGuys|asns_details
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+the same but for the subnets
+\end_layout
+
+\end_deeper
+\begin_layout BeginFrame
+Examples 2
+\end_layout
+
+\begin_layout Enumerate
+asn|timestamp|YYYY-MM-DD|ListOfTheBadGuys
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+IPs associed with the subnet
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+asn|YYYY-MM-DD|ListOfTheBadGuys|v4
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+rank of the AS
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+asn|YYYY-MM-DD|ListOfTheBadGuys|v4|details
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+ranks of all the subnets, in a sorted set :)
+\end_layout
+
+\end_deeper
+\begin_layout Pause
+
+\end_layout
+
+\begin_layout Itemize
+Note: it also works in IPv6, I just don't have any dataset :) 
+\end_layout
+
+\begin_layout BeginFrame
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size giant
+Fragen ?
+\end_layout
+
+\begin_layout BeginFrame
+Bonus: shared memory and multiprocessing
+\end_layout
+
+\begin_layout FrameSubtitle
+Easy way
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename multiprocessing1.dia
+	lyxscale 40
+	scale 26
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Multiprocessing Simple
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout BeginFrame
+Bonus: shared memory and multiprocessing
+\end_layout
+
+\begin_layout FrameSubtitle
+Tricky way
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename multiprocessing2.dia
+	lyxscale 40
+	scale 26
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Multiprocessing tricky
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout EndFrame
+
+\end_layout
+
+\end_body
+\end_document

@@ -75,7 +75,6 @@ def compute_yesterday_ranking():
         if int(ts[1]) == int(first_hour):
             return True
     return False
-    
 
 def usage():
     print "push_update_routing.py filename"

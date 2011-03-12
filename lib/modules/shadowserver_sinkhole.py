@@ -1,9 +1,21 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""
+    Shadowserver Sinkhole
+    ~~~~~~~~~~~~~~~~~~~~~
+
+    Sinkhole list provided by Shadowserver
+"""
 
 from shadowserver import *
 import dateutil.parser
 
 class ShadowserverSinkhole(Shadowserver):
+    """
+        The subclass of Shadowserver which is used to parse the sinkhole
+        reports of Shadowserver
+    """
     directory = 'shadowserver/sinkhole/'
     
     def __init__(self, raw_dir):

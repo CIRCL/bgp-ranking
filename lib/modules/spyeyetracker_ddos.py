@@ -1,4 +1,13 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""
+    Spyeyetracker DDoS
+    ~~~~~~~~~~~~~~~~~~
+
+    Spyeyetracker DDoS list provided by Abuse.ch
+"""
+
 import re
 import os
 import datetime 
@@ -6,6 +15,9 @@ import datetime
 from modules.abuse_ch import AbuseCh
 
 class SpyeyetrackerDdos(AbuseCh):
+    """
+        The subclass of AbuseCh which is used to parse the Spyeyetracker DDoS lists
+    """
     directory = 'spyeye/ddos/'
     list_type = 2
 

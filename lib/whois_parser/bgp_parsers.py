@@ -2,9 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """
-Initialize the BGP parsers. 
+    BGP Parser
+    ~~~~~~~~~~
+    
+    Initialize the BGP parsers. 
 
-There is only a parser for the information from RIPE NCC
+    There is only a parser for the information from RIPE NCC
 """
 
 if __name__ == "__main__":

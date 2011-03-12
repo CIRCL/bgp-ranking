@@ -1,51 +1,60 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import redis
-from whois_fetcher_redis import *
-import errno
+
+"""
+    Connector
+    ~~~~~~~~~
+    
+    Initialize a connection to a whois server
+"""
+
+if __name__ == '__main__':
+    import redis
+    from whois_fetcher_redis import *
+    import errno
 
 
-import time
-import os 
-import sys
-import ConfigParser
-config = ConfigParser.RawConfigParser()
-config_file = "/path/to/bgp-ranking.conf"
-config.read(config_file)
-root_dir = config.get('directories','root')
-# In case there is nothing to fetch, the process will sleep 5 seconds 
-process_sleep = int(config.get('sleep_timers','short'))
+    import time
+    import os 
+    import sys
+    import ConfigParser
+    config = ConfigParser.RawConfigParser()
+    config_file = "/path/to/bgp-ranking.conf"
+    config.read(config_file)
+    root_dir = config.get('directories','root')
+    # In case there is nothing to fetch, the process will sleep 5 seconds 
+    process_sleep = int(config.get('sleep_timers','short'))
 
-# Temporary redis database, used to push ris and whois requests
-temp_reris_db = int(config.get('redis','temp'))
-# Cache redis database, used to set ris responses
-ris_cache_reris_db = int(config.get('redis','cache_ris'))
-# Cache redis database, used to set whois responses
-whois_cache_reris_db = int(config.get('redis','cache_whois'))
+    # Temporary redis database, used to push ris and whois requests
+    temp_reris_db = int(config.get('redis','temp'))
+    # Cache redis database, used to set ris responses
+    ris_cache_reris_db = int(config.get('redis','cache_ris'))
+    # Cache redis database, used to set whois responses
+    whois_cache_reris_db = int(config.get('redis','cache_whois'))
 
-import syslog
-syslog.openlog('BGP_Ranking_Connectors', syslog.LOG_PID, syslog.LOG_USER)
+    import syslog
+    syslog.openlog('BGP_Ranking_Connectors', syslog.LOG_PID, syslog.LOG_USER)
 
-# Set the ttl of the cached entries to 1 day 
-cache_ttl = int(config.get('redis','cache_entries'))
+    # Set the ttl of the cached entries to 1 day 
+    cache_ttl = int(config.get('redis','cache_entries'))
 
-desactivated_servers = config.get('whois_servers','desactivate').split()
-local_whois = config.get('whois_servers','local').split()
-non_routed = config.get('whois_servers', 'non_routed').split()
+    desactivated_servers = config.get('whois_servers','desactivate').split()
+    local_whois = config.get('whois_servers','local').split()
+    non_routed = config.get('whois_servers', 'non_routed').split()
 
 class Connector(object):
     """
-    Make queries to a specific Whois server
+        Query a specific Whois server
     """
-    keepalive = False
-    support_keepalive = config.get('whois_servers', 'support_keepalive').split()
-    support_keepalive += local_whois
     
     def __init__(self, server):
         """
-        Initialize the two connectors to the redis server, set variables depending on the server
-        Initialize a whois fetcher on this server
+            Set variables depending on the server, initialize a whois fetcher on this server
         """
+        self.keepalive = False
+        self.support_keepalive = config.get('whois_servers', 'support_keepalive').split()
+        self.support_keepalive += local_whois
+        
         self.temp_db = redis.Redis(port = int(config.get('redis','port_cache')) , db=temp_reris_db)
         self.server = server
         if self.server == 'riswhois.ripe.net':
@@ -64,21 +73,21 @@ class Connector(object):
     
     def __connect(self):
         """
-        Connect the fetcher
+            Connect the fetcher
         """
         self.fetcher.connect()   
         self.connected = True
 
     def __disconnect(self):
         """
-        Disconnect the fetcher
+            Disconnect the fetcher
         """
         self.fetcher.disconnect()
         self.connected = False
     
     def launch(self):
         """
-        Fetch all the whois entry to the server of this connector 
+            Fetch all the whois entry to the server of this connector 
         """
         while 1:
             try:

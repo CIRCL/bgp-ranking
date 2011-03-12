@@ -1,31 +1,40 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 """
-Quick and durty code generating reports based on the information found in the database. 
-
+    Reports
+    ~~~~~~~
+    
+    Generate reports for a particular day.
 """
 
-import os 
-import sys
-import ConfigParser
-config = ConfigParser.RawConfigParser()
-config.optionxform = str
-config_file = "/path/to/bgp-ranking.conf"
-config.read(config_file)
-root_dir = config.get('directories','root')
+if __name__ == '__main__':
+    import os 
+    import sys
+    import ConfigParser
+    config = ConfigParser.RawConfigParser()
+    config.optionxform = str
+    config_file = "/path/to/bgp-ranking.conf"
+    config.read(config_file)
+    root_dir = config.get('directories','root')
 
-import datetime
-import redis
+    import datetime
+    import redis
 
-global_db_slave = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
-history_db_slave = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','history'))
+    global_db_slave = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
+    history_db_slave = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','history'))
 
 class Reports():
-    separator = config.get('input_keys','separator')
+    """
+        This class is used to generate reports for a day 
+        (you can also choose between IPv4 and IPv6)
+    """
     
     def display_graphs_yesterday(self):
         """
-        Until the ranking of the current day being computed, there is nothing to display...
+            Until the ranking of the current day is computed, there is nothing to display. 
+            
+            That is why we will display the ranking of "yesterday"
         """
         hours = sorted(config.get('routing','update_hours').split())
         first_hour = hours[0]
@@ -39,6 +48,7 @@ class Reports():
         return False
     
     def __init__(self, date, ip_version = 4):
+        self.separator = config.get('input_keys','separator')
         if self.display_graphs_yesterday():
             date = date - datetime.timedelta(1)
         self.date = date.isoformat()
@@ -54,8 +64,10 @@ class Reports():
             self.impacts[item[0]] = float(item[1])
     
     def build_reports(self):
+        """
+            Build all the reports: for all the sources independently and the global one
+        """
         self.global_report()
-        # FIXME pipeline ? 
         for source in self.sources:
             histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
             # drop the old stuff
@@ -63,6 +75,9 @@ class Reports():
             self.source_report(source)
     
     def global_report(self):
+        """
+            Build the global report (add all the results of all the sources)
+        """
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = config.get('input_keys','histo_global'), \
                         sep = self.separator, ip_key = self.ip_key)
         # drop the old stuff
@@ -71,6 +86,9 @@ class Reports():
             self.source_report(source, config.get('input_keys','histo_global'))
 
     def source_report(self, source, zset_key = None):
+        """
+            Build the report of a particular source
+        """
         if zset_key is None:
             zset_key = source
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = zset_key, sep = self.separator, ip_key = self.ip_key)
@@ -84,13 +102,18 @@ class Reports():
                     history_db_slave.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
     
     def format_report(self, source = None, limit = 50):
+        """
+            Format the report to be displayed in the website
+        """
         if source is None:
             source = config.get('input_keys','histo_global')
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
         return history_db_slave.zrevrange(histo_key, 0, limit, True)
     
-    #FIXME pipeline the function ? 
     def get_daily_rank(self, asn, source = None, date = None):
+        """
+            Get the rank of an AS for a particular `source` and `date`
+        """
         if source is None:
             source = config.get('input_keys','histo_global')
         if date is None:
@@ -99,6 +122,9 @@ class Reports():
                                         asn = asn, date = date, source = source, ip_key = self.ip_key))
 
     def prepare_graphe_js(self, asn, first_date, last_date, sources = None):
+        """
+            Prepare the JavaScript graph of an AS between `first_date` and `last_date` for a `source`
+        """
         dates = []
         current = first_date
         while current <= last_date:
@@ -143,6 +169,9 @@ class Reports():
         return ranks_by_days, to_return_sources
         
     def get_asn_descs(self, asn, sources = None):
+        """
+            Get the details of an ASN
+        """
         if sources is None:
             sources = self.sources
         else:
@@ -167,6 +196,9 @@ class Reports():
 
 
     def get_ips_descs(self, asn, asn_timestamp, sources = None):
+        """
+            Get the details of an IP
+        """
         if sources is None:
             sources = self.sources
         else:

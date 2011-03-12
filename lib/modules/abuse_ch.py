@@ -1,4 +1,17 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""
+    Main Class for all the modules of Abuse.ch
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    It provides helpers to the modules parsing the datasets of Abuse.ch
+    
+    .. note::
+        raw_dir might seems useless but it is a parameter because like this,
+        we do not have to import the configuration file in the module.
+"""
+
 import re
 import os
 import datetime 
@@ -6,16 +19,21 @@ import dateutil.parser
 
 from modules.abstract_module import AbstractModule
 
-
 class AbuseCh(AbstractModule):
-    date = datetime.date.today()
+    """
+        Contains all the function needed by the modules for abuse.ch
+    """
+    
     
     def __init__(self, raw_dir):
+        self.date = datetime.date.today()
         AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
  
     def parse(self):
-        """ Parse the list
+        """
+            Parse the list depending on the type (blocklist or ddos)
+            and put the entries into redis
         """
         self.ips = []
         for file in self.files:
@@ -34,6 +52,9 @@ class AbuseCh(AbstractModule):
             self.move_file(file)
 
     def line_ddos(self, line):
+        """
+            Parse a ligne of a ddos file
+        """
         splitted = line.split(' | ')
         if len(splitted) > 0:
             ip = splitted[1]
@@ -43,6 +64,9 @@ class AbuseCh(AbstractModule):
             return None, None
  
     def line_blocklist(self, line):
+        """
+            Parse a ligne of a blocklist file
+        """
         ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})',line)
         if len(ip) > 0:
             return ip[0]

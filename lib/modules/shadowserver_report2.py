@@ -1,9 +1,21 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""
+    Shadowserver Report 2
+    ~~~~~~~~~~~~~~~~~~~~~
+
+    Second type of reports provided by Shadowserver
+"""
 
 from shadowserver import *
 import dateutil.parser
 
 class ShadowserverReport2(Shadowserver):
+    """
+        The subclass of Shadowserver which is used to parse the second
+        type of reports of Shadowserver
+    """
     directory = 'shadowserver/report2/'
     
     def __init__(self, raw_dir):

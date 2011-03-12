@@ -25,6 +25,10 @@ Code Documentation
     code/Services
     code/Classes
     code/Helpers
+    code/Modules
+    code/Ranking
+    code/Whois_Client
+    code/Whois_Parser
 
 Indices and tables
 ==================

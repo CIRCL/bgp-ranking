@@ -1,13 +1,31 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""
+    Amada IPblocklist
+    ~~~~~~~~~~~~~~~~~
+
+    Amada IPblocklist provided by Abuse.ch
+    
+    .. note::
+        the type of the infection is available in the list but 
+        not saved by the module
+        
+        FIXME: save it? 
+"""
+
 import re
 import os
 import datetime 
 
 from modules.abuse_ch import AbuseCh
 
-# FIXME: save the type of infection ? 
+
 
 class AmadaIpBlockList(AbuseCh):
+    """
+        The subclass of AbuseCh which is used to parse the Amada IPblocklist
+    """
     directory = 'amada/ipblocklist/'
     list_type = 1
 

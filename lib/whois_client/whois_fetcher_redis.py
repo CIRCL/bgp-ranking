@@ -1,32 +1,38 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
-#if __name__ == "__main__":
-import ConfigParser
-config = ConfigParser.RawConfigParser()
-config_file = "/path/to/bgp-ranking.conf"
-config.read(config_file)
-import sys
-import os
-sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
-# If the server does not respond, wait a bit before trying again
-sleep_timer = int(config.get('sleep_timers','short'))
-
+"""
+    WhoisFetcher and some helpers
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    Fetch the whois entries from the servers, 
+    the helpers give information on the servers available.
+"""
 from socket import *
 
-import IPy
-import re
-import time
-import redis
+if __name__ == "__main__":
+    import ConfigParser
+    config = ConfigParser.RawConfigParser()
+    config_file = "/path/to/bgp-ranking.conf"
+    config.read(config_file)
+    import sys
+    import os
+    sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
+    # If the server does not respond, wait a bit before trying again
+    sleep_timer = int(config.get('sleep_timers','short'))
 
-import errno
-import syslog
-syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_USER)
+    import IPy
+    import re
+    import time
+    import redis
+
+    import errno
+    import syslogConnector
+    syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_USER)
 
 def get_all_servers_urls():
     """
-    Get the URLs of all the whois servers 
+        Get the URLs of all the whois servers 
     """
     if int(config.get('whois_servers','desactivate_whois')) :
         return ['riswhois.ripe.net']        
@@ -37,7 +43,7 @@ def get_all_servers_urls():
 
 def get_server_by_query(query, r):
     """
-    Find the best server (using redis) for a particular IP.
+        Find the best server (using redis) for a particular IP.
     """
     to_return = None
     ranges = None
@@ -68,7 +74,8 @@ def get_server_by_query(query, r):
     return to_return
 
 class WhoisFetcher(object):
-    """Class to fetch the Whois entry of a particular IP.
+    """
+        Class to fetch the Whois entry of a particular IP.
     """
     
     # Some funny whois implementations.... 
@@ -92,7 +99,7 @@ class WhoisFetcher(object):
     
     def connect(self):
         """
-        TCP connection to one on the whois servers
+            TCP connection to one on the whois servers
         """
         self.s = socket(AF_INET, SOCK_STREAM)
         self.s.connect((self.server,self.port))
@@ -101,13 +108,13 @@ class WhoisFetcher(object):
         
     def disconnect(self):
         """
-        Close the TCP connection 
+            Close the TCP connection 
         """
         self.s.close()
     
     def fetch_whois(self, query, keepalive = False):
         """
-        Fetch the whois informations. Keep the connection alive if needed. 
+            Fetch the whois informations. Keep the connection alive if needed. 
         """
         pre_options = self.pre_options
         if keepalive:
@@ -139,7 +146,7 @@ class WhoisFetcher(object):
 
     def __set_values(self,  server):
         """
-        Set the needed informations concerning the server we want to use
+            Set the needed informations concerning the server we want to use
         """
         r = redis.Redis(db=config.get('redis','whois_assignations'))
         pre_option_suffix = config.get('assignations','pre_option_suffix')

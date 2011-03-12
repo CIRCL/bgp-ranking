@@ -1,4 +1,15 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""
+    Main Class for all the modules of Shadowserver
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    It provides helpers to the modules parsing the datasets of Shadowserver
+    
+    .. note::
+        the only difference between the three modules is the position of the fields...
+"""
 
 import re
 import time
@@ -12,32 +23,28 @@ from modules.abstract_module import AbstractModule
 
 class Shadowserver(AbstractModule):
     """
-    Super class used for all shadowserver reports: the subclass has only to define 
-    - a unique name 
-    - a directory to watch
-    - a line parser whitch return a table : [ip, date, infection, rest of the line]
+        Super class used for all shadowserver reports: the subclass has only to define 
+         - a unique name 
+         - a directory to watch
+         - a line parser which return a table : [ip, date, infection, rest of the line]
     """
-    
-    # This date is only used to move the file
-    date = datetime.date.today()
     
     __metaclass__ = ABCMeta    
     @abstractmethod
     def parse_line(self):
         """
-        Abstract method, parse a line of the csv file. 
-        The only difference between all the sub-classes is the place of the infections type 
+            Abstract method, parse a line of the csv file. 
+            The only difference between all the sub-classes is the place of the infections type 
         """
         pass
     
     def __init__(self):
-        """
-        Set the type to 2 
-        """
+        self.date = datetime.date.today()
         AbstractModule.__init__(self)
 
     def parse(self):
-        """ Parse the list
+        """ 
+            Parse the list
         """
         self.ips = []
         for file in self.files:

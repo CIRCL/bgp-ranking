@@ -1,14 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+    Whois Parsers
+    ~~~~~~~~~~~~~
+    
+    Initialize the Whois parsers.
+
+    It is not really used because the whole whois entry is put in the database. 
+"""
+
 from abstract_parser import AbstractParser
 
-
-"""
-Regex of the Whois entry. 
-
-It is not really used because the whole whois entry is put in the database. 
-"""
 RIS = {
     'route':       'route[6]?:[ ]*([^\n]*)',
     'origin':      'origin:[ ]*AS([^\n]*)',
@@ -29,7 +32,7 @@ Afrinic = {
 class Whois(AbstractParser):
     """
     This class return a dump of the Whois. 
-    Til we have a real implementation of whois in python, 
+    Until we have a real implementation of whois in python, 
     we will use this class to return all the informations
     """
     possible_regex = {

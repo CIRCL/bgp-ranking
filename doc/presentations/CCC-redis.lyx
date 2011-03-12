@@ -597,7 +597,7 @@ MySQL
 \end_layout
 
 \begin_layout BeginFrame
-Mysql
+MySQL
 \end_layout
 
 \begin_layout Itemize
@@ -732,7 +732,7 @@ at least 3x faster
 \end_layout
 
 \begin_layout Itemize
-non-transational mode
+non-transactional mode
 \end_layout
 
 \end_deeper
@@ -811,7 +811,7 @@ MySQL
 
 \begin_deeper
 \begin_layout Itemize
-1 Milion IPs: >4 Hours
+1 Million IPs: >4 Hours
 \end_layout
 
 \begin_layout Itemize
@@ -825,7 +825,7 @@ Redis:
 
 \begin_deeper
 \begin_layout Itemize
-1 Milion IPs: 30 min
+1 Million IPs: 30 min
 \end_layout
 
 \begin_layout Itemize
@@ -1103,7 +1103,7 @@ asn|timestamp|YYYY-MM-DD|ListOfTheBadGuys
 
 \begin_deeper
 \begin_layout Itemize
-IPs associed with the subnet
+IPs associated with the subnet
 \end_layout
 
 \end_deeper

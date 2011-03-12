@@ -5,15 +5,19 @@
 """
 Start the service fetching the raw datasets
 """
+import os 
+import sys
+import ConfigParser
+
+import signal
+
+from helpers.initscript import *
 
 def usage():
     print "start_fetch_raw_files.py (start|stop)"
     exit (1)
 
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
@@ -21,9 +25,6 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     services_dir = os.path.join(root_dir,config.get('directories','services'))
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
-
-    import signal
-    from helpers.initscript import *
 
     service = os.path.join(services_dir, "fetch_raw_files")
 

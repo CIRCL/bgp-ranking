@@ -10,16 +10,16 @@
     There is only a parser for the information from RIPE NCC
 """
 
+import ConfigParser
+import sys
+import os
+from abstract_parser import AbstractParser
+
 if __name__ == "__main__":
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
-    import sys
-    import os
     sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
-
-from abstract_parser import AbstractParser
 
 RIPE_BGP_Dump = {
     'asn'   : 'ASPATH:[\s]*([^\n{]*)', 

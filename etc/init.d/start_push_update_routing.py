@@ -9,15 +9,22 @@ NOTE: it will also compute the ranking
 FIXME: rename the script 
 """
 
+import os 
+import sys
+import ConfigParser
+
+import signal
+
+from helpers.initscript import *
+from helpers.files_splitter import *
+
+
 def usage():
     print "start_push_update_routing.py (start|stop)"
     exit (1)
 
 if __name__ == '__main__':
 
-    import os 
-    import sys
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
@@ -25,11 +32,6 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     services_dir = os.path.join(root_dir,config.get('directories','services'))
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
-
-    import signal
-
-    from helpers.initscript import *
-    from helpers.files_splitter import *
 
     service = os.path.join(services_dir, "push_update_routing")
     option = os.path.join(raw_data, config.get('routing','bviewfile'))

@@ -12,22 +12,24 @@
     announcing this block. Both of them are pushed into the redis database. 
 
 """
+import os 
+import sys
+import ConfigParser
+import redis
+from whois_parser.bgp_parsers import *
+import syslog
 
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
+    
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
-    import redis
+
     routing_db = redis.Redis(port = int(config.get('redis','port_cache')), db=config.get('redis','routing'))
 
-    from whois_parser.bgp_parsers import *
-    import syslog
     syslog.openlog('Push_BGP_Routing', syslog.LOG_PID, syslog.LOG_USER)
 
     file = open(sys.argv[1])

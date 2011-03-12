@@ -9,12 +9,18 @@
     Service which compute the ranking for each subnet/ASN we want to rank.
 """
 
+import os
+import sys
+import IPy
+import ConfigParser
+
+from ranking.compute import *
+
+import redis
+import syslog
+
 if __name__ == '__main__':
     
-    import os
-    import sys
-    import IPy
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
@@ -22,13 +28,10 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     sleep_timer = int(config.get('sleep_timers','short'))
 
-    from ranking.compute import *
-
-    import redis
 
     history_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','history'))
 
-    import syslog
+    
     syslog.openlog('Compute_Ranking_Process', syslog.LOG_PID, syslog.LOG_USER)
 
     i = 0 

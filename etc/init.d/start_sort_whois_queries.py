@@ -6,24 +6,25 @@
 Start processes sorting the queries between whois servers
 """
 
+
+import os 
+import sys
+import ConfigParser
+
+from helpers.initscript import *
+import signal
+
 def usage():
     print "start_sort_whois_queries.py (start|stop)"
     exit (1)
     
 if __name__ == '__main__':
-
-    import os 
-    import sys
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     services_dir = os.path.join(root_dir,config.get('directories','services'))
-
-    from helpers.initscript import *
-    import signal
 
     if int(config.get('whois_servers','desactivate_whois')) :
         print "Impossible to start the whois sorting: it has been desactivated in the config file"

@@ -7,17 +7,18 @@
     
     Initialize a connection to a whois server
 """
+import redis
+from whois_fetcher_redis import *
+import errno
+
+
+import time
+import os 
+import sys
+import ConfigParser
 
 if __name__ == '__main__':
-    import redis
-    from whois_fetcher_redis import *
-    import errno
 
-
-    import time
-    import os 
-    import sys
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)

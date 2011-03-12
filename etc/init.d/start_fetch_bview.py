@@ -6,6 +6,13 @@
 Start the service fetching the dumps of routing information (bview files)
 provided by RIPE NCC
 """
+import os 
+import sys
+import ConfigParser
+
+import signal
+
+from helpers.initscript import *
 
 
 def usage():
@@ -13,19 +20,12 @@ def usage():
     exit (1)
 
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     services_dir = os.path.join(root_dir,config.get('directories','services'))
-
-    import signal
-
-    from helpers.initscript import *
 
     service = os.path.join(services_dir, "fetch_bview")
         

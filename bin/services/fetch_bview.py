@@ -30,21 +30,35 @@
     
     .. note:: 
         When the current day change, this hour is set to None. 
+    
+    To verify if the URL to fetch exists, we use a function provided by the two following links 
+     - http://code.activestate.com/recipes/101276/ and 
+     - http://stackoverflow.com/questions/2486145/python-check-if-url-to-jpg-exists
 
 """
+
+import os 
+import sys
+import ConfigParser
+import syslog
+import datetime 
+import urllib
+import filecmp
+import glob
+import time
+
+import httplib
+from urlparse import urlparse 
+
+
 
 def usage():
     print "fetch_bview.py"
     exit (1)
 
-"""
-To verify if the URL to fetch exists, we use a function provided by the two following links 
-- http://code.activestate.com/recipes/101276/ and 
-- http://stackoverflow.com/questions/2486145/python-check-if-url-to-jpg-exists
-"""
 def checkURL(url): 
     """
-    Check if the URL exists by getting the header of the response.
+        Check if the URL exists by getting the header of the response.
     """
     p = urlparse(url) 
     h = httplib.HTTPConnection(p[1]) 
@@ -56,9 +70,9 @@ def checkURL(url):
 
 def downloadURL(url):
     """
-    Inconditianilly download the URL in a temporary directory.
-    When finished, the file is moved in the real directory. 
-    Like this an other process will not attempt to extract an inclomplete file.
+        Inconditianilly download the URL in a temporary directory.
+        When finished, the file is moved in the real directory. 
+        Like this an other process will not attempt to extract an inclomplete file.
     """
     tmp_dest_file = os.path.join(raw_data, config.get('routing','temp_bviewfile'))
     dest_file = os.path.join(raw_data, config.get('routing','bviewfile'))
@@ -66,6 +80,10 @@ def downloadURL(url):
     os.rename(tmp_dest_file, dest_file)
 
 def already_downloaded(date, hour):
+    """
+        Verify that the date and the hour of the file we try to
+        download is newer than the latest downloaded file.
+    """
     ts_file = os.path.join(raw_data, config.get('routing','bviewtimesamp'))
     if os.path.exists(ts_file):
         ts = open(ts_file, 'r').read().split()
@@ -77,9 +95,6 @@ def already_downloaded(date, hour):
 
 
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
@@ -89,18 +104,7 @@ if __name__ == '__main__':
     sleep_timer = int(config.get('routing','timer'))
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
 
-    import syslog
     syslog.openlog('BGP_Ranking_Fetch_bview', syslog.LOG_PID, syslog.LOG_USER)
-
-    import datetime 
-    import urllib
-    import filecmp
-    import glob
-    import time
-    
-    import httplib
-    from urlparse import urlparse 
-
 
     base_url = config.get('routing','base_url')
     hours = sorted(config.get('routing','update_hours').split())

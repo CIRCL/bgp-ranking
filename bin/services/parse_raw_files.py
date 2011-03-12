@@ -8,15 +8,20 @@
 
     Launch the parsing of a raw file.
 """
+import os 
+import sys
+import ConfigParser
+import syslog
+from modules import *
+import time
+
 
 def usage():
     print "parse_raw_files.py name"
     exit (1)
 
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
+
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
@@ -25,11 +30,7 @@ if __name__ == '__main__':
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
     sleep_timer = int(config.get('sleep_timers','short'))
 
-    import syslog
     syslog.openlog('BGP_Ranking_Get_Whois_Entries', syslog.LOG_PID, syslog.LOG_USER)
-    from modules import *
-    import time
-
 
     if len(sys.argv) < 2:
         usage()

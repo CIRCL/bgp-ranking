@@ -13,15 +13,23 @@
     During the download, the file is put in a temporary directory.
 """
 
+import os 
+import sys
+import ConfigParser
+import syslog
+import datetime 
+import urllib
+import filecmp
+import glob
+import time
+
+
 def usage():
     print "fetch_raw_files.py dir url"
     exit (1)
 
 if __name__ == '__main__':
 
-    import os 
-    import sys
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
@@ -30,15 +38,7 @@ if __name__ == '__main__':
     old_dir = config.get('fetch_files','old_dir')
     sleep_timer = int(config.get('sleep_timers','long'))
 
-    import syslog
     syslog.openlog('BGP_Ranking_Fetch_Raw_Files', syslog.LOG_PID, syslog.LOG_USER)
-
-    import datetime 
-    import urllib
-    import filecmp
-    import glob
-    import time
-
 
     if len(sys.argv) < 2:
         usage()
@@ -58,9 +58,9 @@ if __name__ == '__main__':
             continue
         drop_file = False
         """
-        Check is the file already exists, if the same file is found, 
-        the downloaded file is dropped. Else, it is moved in his final directory. 
-        FIXME: I should not check ALL the file present, or do sth with old files 
+            Check is the file already exists, if the same file is found, 
+            the downloaded file is dropped. Else, it is moved in his final directory. 
+            FIXME: I should not check ALL the file present, or do sth with old files 
         """
         to_check = glob.glob( os.path.join(old_directory, '*') )
         to_check += glob.glob( os.path.join(args[0], '*') )

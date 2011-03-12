@@ -5,6 +5,12 @@
 """
 Start the service inserting the new entries in the Redis database
 """
+import os 
+import sys
+import ConfigParser
+
+from helpers.initscript import *
+import signal
 
 def usage():
     print "start_db_input.py (start|stop)"
@@ -12,19 +18,13 @@ def usage():
 
 
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
+
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     services_dir = os.path.join(root_dir,config.get('directories','services'))
-
-    from helpers.initscript import *
-    import signal
-
 
     if len(sys.argv) < 2:
         usage()

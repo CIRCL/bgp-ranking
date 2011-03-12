@@ -7,19 +7,20 @@
     
     Generate reports for a particular day.
 """
+import os 
+import sys
+import ConfigParser
+
+import datetime
+import redis
 
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
+    
     config = ConfigParser.RawConfigParser()
     config.optionxform = str
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
-
-    import datetime
-    import redis
 
     global_db_slave = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
     history_db_slave = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','history'))

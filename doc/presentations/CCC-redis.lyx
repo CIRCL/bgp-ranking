@@ -972,7 +972,7 @@ Motto
 \series bold
 \size huge
 Worst case: 
-\begin_inset Formula $M*0\left(\log\left(n\right)\right)$
+\begin_inset Formula $M*\mathcal{O}\left(\log\left(n\right)\right)$
 \end_inset
 
 

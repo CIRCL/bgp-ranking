@@ -8,15 +8,20 @@
     Move the new entries from the incoming to the storage database
 """
 
+import os 
+import sys
+import ConfigParser
+import syslog
+from input_reader import InputReader
+import time
+
+
 def usage():
     print "db_input.py"
     exit (1)
 
+
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
-    import syslog
     
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
@@ -26,9 +31,6 @@ if __name__ == '__main__':
     sleep_timer = int(config.get('sleep_timers','short'))
 
     syslog.openlog('BGP_Ranking_DB_Input', syslog.LOG_PID, syslog.LOG_USER)
-
-    from input_reader import InputReader
-    import time
 
     reader = InputReader()
     reader.connect()

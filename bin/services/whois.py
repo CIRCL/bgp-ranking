@@ -8,22 +8,24 @@
     
     Process which push the Whois entries in redis
 """
+import os 
+import sys
+import ConfigParser
+import syslog
+from insert_whois import InsertWhois
+import time
+
 
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
+
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     sleep_timer = int(config.get('sleep_timers','short'))
-
-    import syslog
+    
     syslog.openlog('BGP_Ranking_Whois_Insert', syslog.LOG_PID, syslog.LOG_USER)
-    from insert_Whois import InsertWhois
-    import time
 
     def usage():
         print "whois.py"

@@ -14,11 +14,16 @@
         The original idea is of adulau: http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
 """
+import os 
+import sys
+import ConfigParser
+import subprocess
+
+import syslog
+
 
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
+
     config = ConfigParser.RawConfigParser()
     config.optionxform = str
     config_file = "/path/to/bgp-ranking.conf"
@@ -26,9 +31,6 @@ if __name__ == '__main__':
     root_dir = config.get('directories','root')
     pid_path = os.path.join(root_dir,config.get('directories','pids'))
 
-    import subprocess
-
-    import syslog
     syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_USER)
 
 

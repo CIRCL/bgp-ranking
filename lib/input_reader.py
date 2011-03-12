@@ -7,21 +7,22 @@
 
 """
 
+import time
+import datetime 
+import dateutil.parser
+import redis
+
+import IPy
+
+import syslog
+
+import os 
+import sys
+import ConfigParser
 
 if __name__ == '__main__':
-    import time
-    import datetime 
-    import dateutil.parser
-    import redis
 
-    import IPy
-
-    import syslog
     syslog.openlog('BGP_Ranking_Input', syslog.LOG_PID, syslog.LOG_USER)
-
-    import os 
-    import sys
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)

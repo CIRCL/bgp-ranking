@@ -7,27 +7,30 @@
 
 """
 
-if __name__ == '__main__':
-    from whois_parser.whois_parsers import *
+import re
 
-    import syslog
-    import datetime
+import redis
+import time
+import os 
+import sys
+import ConfigParser
+
+from whois_parser.whois_parsers import *
+
+import syslog
+import datetime
+
+import dateutil.parser
+
+if __name__ == '__main__':
     syslog.openlog('BGP_Ranking_Fetching_RIS', syslog.LOG_PID, syslog.LOG_USER)
 
-    import re
 
-    import redis
-    import time
-    import os 
-    import sys
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root') 
     sleep_timer = int(config.get('sleep_timers','short'))
-
-    import dateutil.parser
 
 
     # Temporary redis database, used to push ris and whois requests

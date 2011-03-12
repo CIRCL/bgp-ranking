@@ -9,25 +9,28 @@
     the helpers give information on the servers available.
 """
 from socket import *
+import sys
+import os
+import ConfigParser
+
+import IPy
+import re
+import time
+import redis
+
+import errno
+import syslog
 
 if __name__ == "__main__":
-    import ConfigParser
+
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
-    import sys
-    import os
+
     sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
     # If the server does not respond, wait a bit before trying again
     sleep_timer = int(config.get('sleep_timers','short'))
-
-    import IPy
-    import re
-    import time
-    import redis
-
-    import errno
-    import syslogConnector
+    
     syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_USER)
 
 def get_all_servers_urls():

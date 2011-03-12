@@ -39,8 +39,8 @@ Not trivial
   (http://gitorious.org/python-whois)
 * read the code of Khanku (http://gitorious.org/~khanku/bgp-ranking/predictive-bgp-ranking/)
   ans find a way to handle this usage of the ranking system in the main trunk
-* Extract interesting informations of the bview file, prepare to do a diff 
-    egrep -w "^$|PREFIX:|ASPATH:"| awk -F' ' '{print $NF}' |  sed 's/^$/XXXXX/' | tr '\n' ' ' | sed 's/XXXXX/\n/g'| sed 's/^ //' | sort | uniq
+* Extract interesting informations of the bview file, prepare to do a diff ::
+    ``egrep -w "^$|PREFIX:|ASPATH:"| awk -F' ' '{print $NF}' |  sed 's/^$/XXXXX/' | tr '\n' ' ' | sed 's/XXXXX/\n/g'| sed 's/^ //' | sort | uniq``
 
 
 Whishlist

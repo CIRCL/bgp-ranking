@@ -27,6 +27,18 @@
         to each process is computed. 
 """
 
+import os 
+import sys
+import ConfigParser
+import syslog
+from subprocess import Popen, PIPE
+from helpers.initscript import *
+from helpers.files_splitter import *
+import time
+from helpers.initscript import *
+import redis
+import datetime
+
 def intervals_ranking(nb_of_asns, interval):
     """
         Compute the size of each intervals based on the number of ASNs found in the database
@@ -81,9 +93,6 @@ def usage():
     exit (1)
 
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
@@ -94,28 +103,15 @@ if __name__ == '__main__':
     services_dir = os.path.join(root_dir,config.get('directories','services'))
     bgpdump = os.path.join(root_dir,config.get('routing','bgpdump'))
 
-    import syslog
+    
     syslog.openlog('Push_n_Rank', syslog.LOG_PID, syslog.LOG_USER)
-    import time
 
-    from helpers.initscript import *
-
-    import redis
     routing_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','routing'))
     global_db    = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
     history_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','history'))
 
-
-    import datetime
-
     filename = sys.argv[1]
     dir = os.path.dirname(filename)
-
-    from subprocess import Popen, PIPE
-
-    from helpers.initscript import *
-    from helpers.files_splitter import *
-
 
     pushing_process_service = os.path.join(services_dir, "pushing_process")
     ranking_process_service = os.path.join(services_dir, "ranking_process")

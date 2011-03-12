@@ -7,26 +7,26 @@
     
     Compute the ranking of a subnet given as parameter
 """
+import os 
+import sys
+import ConfigParser
+from whois_parser.bgp_parsers import *
+
+import time
+import redis
+import IPy
+
+import datetime
 
 if __name__ == '__main__':
-    import os 
-    import sys
-    import ConfigParser
+
     config = ConfigParser.RawConfigParser()
     config.optionxform = str
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
-
-    from whois_parser.bgp_parsers import *
-
-    import time
-    import redis
-    import IPy
-
-    import datetime
-
+    
     routing_db = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','routing'))
     global_db  = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
     history_db = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','history'))

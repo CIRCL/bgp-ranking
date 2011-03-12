@@ -6,16 +6,18 @@
     Insert the Whois information in the database. 
 
 """
+import redis
+import time
+import os 
+import sys
+import ConfigParser
+import syslog
 
 if __name__ == '__main__':
-    import syslog
+
     syslog.openlog('BGP_Ranking_Fetching_Whois', syslog.LOG_PID, syslog.LOG_USER)
 
-    import redis
-    import time
-    import os 
-    import sys
-    import ConfigParser
+
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)

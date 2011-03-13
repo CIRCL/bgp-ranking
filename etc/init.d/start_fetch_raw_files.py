@@ -18,6 +18,7 @@ def usage():
 
 if __name__ == '__main__':
     config = ConfigParser.RawConfigParser()
+    config.optionxform = str
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')

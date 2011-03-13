@@ -12,7 +12,6 @@ import os
 import sys
 import ConfigParser
 import syslog
-from modules import *
 import time
 
 
@@ -27,6 +26,7 @@ if __name__ == '__main__':
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+    from modules import *
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
     sleep_timer = int(config.get('sleep_timers','short'))
 

@@ -32,10 +32,7 @@ import sys
 import ConfigParser
 import syslog
 from subprocess import Popen, PIPE
-from helpers.initscript import *
-from helpers.files_splitter import *
 import time
-from helpers.initscript import *
 import redis
 import datetime
 
@@ -100,6 +97,9 @@ if __name__ == '__main__':
     sleep_timer = int(config.get('ranking','bview_check'))
     sleep_timer_short = int(config.get('sleep_timers','short'))
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+    from helpers.initscript import *
+    from helpers.files_splitter import *
+    from helpers.initscript import *
     services_dir = os.path.join(root_dir,config.get('directories','services'))
     bgpdump = os.path.join(root_dir,config.get('routing','bgpdump'))
 

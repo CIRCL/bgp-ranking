@@ -13,7 +13,6 @@
 import os 
 import sys
 import ConfigParser
-from whois_client.connector import Connector
 
 def usage():
     print "whois_fetching.py server.tld"
@@ -26,6 +25,7 @@ if __name__ == '__main__':
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+    from whois_client.connector import Connector
 
     if len(sys.argv) < 2:
         usage()

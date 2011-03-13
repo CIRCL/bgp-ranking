@@ -17,7 +17,7 @@ import ConfigParser
 import syslog
 
 import redis
-from whois_client.whois_fetcher_redis import get_server_by_query
+
 import time
 
 
@@ -28,6 +28,7 @@ if __name__ == '__main__':
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+    from whois_client.whois_fetcher_redis import get_server_by_query
     sleep_timer = int(config.get('sleep_timers','short'))
 
     syslog.openlog('BGP_Ranking_Sort_Whois_Entries', syslog.LOG_PID, syslog.LOG_USER)

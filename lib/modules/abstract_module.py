@@ -19,17 +19,6 @@ import os
 import sys
 import ConfigParser
 
-if __name__ == '__main__':
-    config = ConfigParser.RawConfigParser()
-    config_file = "/path/to/bgp-ranking.conf"
-    config.read(config_file)
-    #sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
-
-    # Temporary redis database
-    temp_reris_db = int(config.get('modules_global','temp_db'))
-    uid_var = config.get('modules_global','uid_var')
-    uid_list = config.get('modules_global','uid_list')
-
 class AbstractModule():
     """   
     To use this class you have to provide a variable called self.directory which is the directory 
@@ -42,16 +31,21 @@ class AbstractModule():
     """
     
     def __init__(self):
-        self.separator = config.get('input_keys','separator')
+        self.config = ConfigParser.RawConfigParser()
+        config_file = "/path/to/bgp-ranking.conf"
+        self.config.read(config_file)
         
-        self.key_ip = config.get('input_keys','ip')
-        self.key_src = config.get('input_keys','src')
-        self.key_tstamp = config.get('input_keys','tstamp')
-        self.key_infection = config.get('input_keys','infection')
-        self.key_raw = config.get('input_keys','raw')
-        self.key_times = config.get('input_keys','times')
+        self.separator = self.config.get('input_keys','separator')
         
-        self.temp_db = redis.Redis(port = int(config.get('redis','port_cache')), db=temp_reris_db)
+        self.key_ip = self.config.get('input_keys','ip')
+        self.key_src = self.config.get('input_keys','src')
+        self.key_tstamp = self.config.get('input_keys','tstamp')
+        self.key_infection = self.config.get('input_keys','infection')
+        self.key_raw = self.config.get('input_keys','raw')
+        self.key_times = self.config.get('input_keys','times')
+        
+        self.temp_db = redis.Redis(port = int(self.config.get('redis','port_cache')),\
+                            db=int(self.config.get('modules_global','temp_db')))
     
     def put_entry(self, entry):
         """
@@ -64,14 +58,14 @@ class AbstractModule():
                     { ':ip' : ip , ':timestamp' : timestamp ... }
         """
         
-        uid = self.temp_db.incr(uid_var)
+        uid = self.temp_db.incr(self.config.get('modules_global','uid_var'))
         to_set = {}
         for key, value in entry.iteritems():
             if value is not None:
                 to_set['{uid}{sep}{key}'.format(uid = str(uid),sep = self.separator, key = key)] = value
         pipeline = self.temp_db.pipeline(False)
         pipeline.mset(to_set)
-        pipeline.sadd(uid_list, uid)
+        pipeline.sadd(self.config.get('modules_global','uid_list'), uid)
         pipeline.execute()
 
     def glob_only_files(self):

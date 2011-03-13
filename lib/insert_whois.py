@@ -13,22 +13,6 @@ import sys
 import ConfigParser
 import syslog
 
-if __name__ == '__main__':
-
-    syslog.openlog('BGP_Ranking_Fetching_Whois', syslog.LOG_PID, syslog.LOG_USER)
-
-
-    config = ConfigParser.RawConfigParser()
-    config_file = "/path/to/bgp-ranking.conf"
-    config.read(config_file)
-    root_dir = config.get('directories','root') 
-    sleep_timer = int(config.get('sleep_timers','short'))
-
-    # Cache redis database, used to set whois responses
-    whois_cache_reris_db = int(config.get('redis','cache_whois'))
-    # Global redis database, used to save all the information
-    global_db = config.get('redis','global')
-
 class InsertWhois():
     """
     Set the whois information to ASNsDescriptions wich do not already have one.
@@ -41,20 +25,27 @@ class InsertWhois():
         """
         Initialize the two connectors to the redis server 
         """
+        syslog.openlog('BGP_Ranking_Fetching_Whois', syslog.LOG_PID, syslog.LOG_USER)
+
+        self.config= ConfigParser.RawConfigParser()
+        config_file = "/path/to/bgp-ranking.conf"
+        self.config.read(config_file)
         
-        self.separator = config.get('input_keys','separator')
+        self.separator = self.config.get('input_keys','separator')
     
-        self.key_whois = config.get('input_keys','whois')
-        self.key_whois_server = config.get('input_keys','whois_server')
+        self.key_whois = self.config.get('input_keys','whois')
+        self.key_whois_server = self.config.get('input_keys','whois_server')
         
-        self.cache_db   = redis.Redis(port = int(config.get('redis','port_cache')), db=whois_cache_reris_db)
-        self.global_db  = redis.Redis(port = int(config.get('redis','port_master')), db=global_db)
+        self.cache_db   = redis.Redis(port = int(self.config.get('redis','port_cache')),\
+                                        db=int(self.config.get('redis','cache_whois')))
+        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
+                                        db=int(self.config.get('redis','global')))
 
     def get_whois(self):
         """
         Get the Whois information on a particular interval and put it into redis
         """
-        key_no_whois = config.get('redis','no_whois')
+        key_no_whois = self.config.get('redis','no_whois')
         description = self.cache_db.spop(key_no_whois)
         errors = 0 
         to_return = False

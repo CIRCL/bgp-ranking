@@ -94,6 +94,12 @@ class WhoisFetcher(object):
     has_info_message = ['whois.ripe.net', 'whois.afrinic.net',  'whois.lacnic.net']
     # Doesn't support CIDR queries -> we always do queries with ips 
 #    need_an_ip = ['whois.arin.net', 'whois.nic.or.kr']
+
+
+    def __init__(self, server):
+        self.config = init_static()
+        self.__set_values(server)
+        self.s = socket(AF_INET, SOCK_STREAM)
     
     def connect(self):
         """
@@ -165,11 +171,6 @@ class WhoisFetcher(object):
         if self.port == None:
             self.port = self.config.get('assignations','default_whois_port')
         self.port = int(self.port)
-
-    def __init__(self, server):
-        self.__set_values(server)
-        self.config = init_static()
-        self.s = socket(AF_INET, SOCK_STREAM)
     
     def __repr__(self):
         return self.text

@@ -27,9 +27,6 @@ class Ranking():
         self.config.optionxform = str
         config_file = "/path/to/bgp-ranking.conf"
         self.config.read(config_file)
-        root_dir = self.config.get('directories','root')
-        sys.path.append(os.path.join(root_dir,self.config.get('directories','libraries')))
-        from whois_parser.bgp_parsers import *
         
         self.routing_db = redis.Redis(port = int(self.config.get('redis','port_cache')) , db=self.config.get('redis','routing'))
         self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')), db=self.config.get('redis','global'))

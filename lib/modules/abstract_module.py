@@ -112,5 +112,5 @@ class AbstractModule():
         """
         Move /from/some/dir/file to /from/some/dir/old/file
         """
-        new_filename = os.path.join(self.directory, config.get('fetch_files','old_dir'), str(self.date).replace(' ','-'))
+        new_filename = os.path.join(self.directory, self.config.get('fetch_files','old_dir'), str(self.date).replace(' ','-'))
         os.rename(file, new_filename)

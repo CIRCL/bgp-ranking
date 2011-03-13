@@ -95,10 +95,6 @@ class WhoisFetcher(object):
     # Doesn't support CIDR queries -> we always do queries with ips 
 #    need_an_ip = ['whois.arin.net', 'whois.nic.or.kr']
     
-    def __init__(self):
-        self.config = init_static()
-        self.s = socket(AF_INET, SOCK_STREAM)
-    
     def connect(self):
         """
             TCP connection to one on the whois servers
@@ -172,6 +168,8 @@ class WhoisFetcher(object):
 
     def __init__(self, server):
         self.__set_values(server)
+        self.config = init_static()
+        self.s = socket(AF_INET, SOCK_STREAM)
     
     def __repr__(self):
         return self.text

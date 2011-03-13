@@ -12,6 +12,7 @@ import ConfigParser
 
 from helpers.initscript import *
 import signal
+import syslog
 
 def usage():
     print "start_ris.py (start|stop)"

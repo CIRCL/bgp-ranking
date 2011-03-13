@@ -11,6 +11,7 @@ import ConfigParser
 
 from helpers.initscript import *
 import signal
+import syslog
 
 def usage():
     print "start_db_input.py (start|stop)"

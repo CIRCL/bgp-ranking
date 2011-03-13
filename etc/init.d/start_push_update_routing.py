@@ -17,6 +17,7 @@ import signal
 
 from helpers.initscript import *
 from helpers.files_splitter import *
+import syslog
 
 
 def usage():

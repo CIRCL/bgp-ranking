@@ -12,6 +12,7 @@ import ConfigParser
 import signal
 from whois_client.whois_fetcher_redis import get_all_servers_urls
 from helpers.initscript import *
+import syslog
 
 def usage():
     print "start_whois_fetching.py (start|stop)"

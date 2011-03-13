@@ -12,6 +12,7 @@ import ConfigParser
 import signal
 
 from helpers.initscript import *
+import syslog
 
 def usage():
     print "start_fetch_raw_files.py (start|stop)"

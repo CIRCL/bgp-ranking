@@ -13,6 +13,7 @@ import ConfigParser
 
 from helpers.initscript import *
 import signal
+import syslog
 
 def usage():
     print "start_sort_whois_queries.py (start|stop)"

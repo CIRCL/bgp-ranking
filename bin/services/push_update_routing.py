@@ -34,15 +34,6 @@ import syslog
 from subprocess import Popen, PIPE
 import time
 import redis
-<<<<<<< HEAD
-=======
-routing_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','routing'))
-global_db    = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
-history_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','history'))
-history_db_static   = redis.Redis(port = int(config.get('redis','port_master')) , db=config.get('redis','history'))
-
-
->>>>>>> master
 import datetime
 
 def intervals_ranking(nb_of_asns, interval):

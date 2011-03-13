@@ -37,16 +37,14 @@ class Connector(object):
         syslog.openlog('BGP_Ranking_Connectors', syslog.LOG_PID, syslog.LOG_USER)
 
         # Set the ttl of the cached entries to 1 day 
-        cache_ttl = int(self.config.get('redis','cache_entries'))
+        self.cache_ttl = int(self.config.get('redis','cache_entries'))
 
-        desactivated_servers = self.config.get('whois_servers','desactivate').split()
-        local_whois = self.config.get('whois_servers','local').split()
-        non_routed = self.config.get('whois_servers', 'non_routed').split()
+        self.local_whois = self.config.get('whois_servers','local').split()
         
         
         self.keepalive = False
         self.support_keepalive = self.config.get('whois_servers', 'support_keepalive').split()
-        self.support_keepalive += local_whois
+        self.support_keepalive += self.local_whois
         
         self.temp_db = redis.Redis(port = int(self.config.get('redis','port_cache')) , db=int(self.config.get('redis','temp')))
         self.server = server
@@ -58,7 +56,7 @@ class Connector(object):
             self.cache_db = redis.Redis(port = int(self.config.get('redis','port_cache')), db=int(self.config.get('redis','cache_whois')))
         if self.server in self.support_keepalive:
             self.keepalive = True
-        if self.server in local_whois:
+        if self.server in self.local_whois:
             self.fetcher = WhoisFetcher(self.config.get('whois_server', 'hostname'))
         else:
             self.fetcher = WhoisFetcher(self.server)
@@ -90,19 +88,19 @@ class Connector(object):
                     self.__disconnect()
 #                    syslog.syslog(syslog.LOG_DEBUG, "Disconnected of " + self.server)
                     time.sleep(self.process_sleep)
-                elif self.server in desactivated_servers:
+                elif self.server in self.config.get('whois_servers','desactivate').split():
                     whois = self.config.get('whois_servers','desactivate_message')
-                    self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), cache_ttl)
-                elif self.server in non_routed:
+                    self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), self.cache_ttl)
+                elif self.server in self.config.get('whois_servers', 'non_routed').split():
                     whois = self.config.get('whois_servers','non_routed_message')
-                    self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), cache_ttl)
+                    self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), self.cache_ttl)
                 elif self.cache_db.get(entry) is None:
                     if not self.connected:
                         self.__connect()
 #                    syslog.syslog(syslog.LOG_DEBUG, self.server + ", query : " + str(entry))
                     whois = self.fetcher.fetch_whois(entry, self.keepalive)
                     if whois != '':
-                        self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), cache_ttl)
+                        self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), self.cache_ttl)
                     if not self.keepalive:
                         self.__disconnect()
             except IOError as text:

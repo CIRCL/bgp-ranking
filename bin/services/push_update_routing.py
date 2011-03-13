@@ -34,6 +34,15 @@ import syslog
 from subprocess import Popen, PIPE
 import time
 import redis
+<<<<<<< HEAD
+=======
+routing_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','routing'))
+global_db    = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
+history_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','history'))
+history_db_static   = redis.Redis(port = int(config.get('redis','port_master')) , db=config.get('redis','history'))
+
+
+>>>>>>> master
 import datetime
 
 def intervals_ranking(nb_of_asns, interval):
@@ -150,6 +159,7 @@ if __name__ == '__main__':
         sources = global_db.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
         
         pipeline = history_db.pipeline()
+        pipeline_static = history_db_static.pipeline()
         to_delete = []
         for source in sources:
             asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = date, sep = separator, source = source, \
@@ -166,10 +176,11 @@ if __name__ == '__main__':
                 pipeline.sadd(config.get('redis','to_rank'), '{asn}{sep}{date}{sep}{source}'.format(sep = separator, asn = asn, date = date, source = source))
         to_delete = set(to_delete)
         if len(to_delete) > 0:
-            pipeline.delete(*to_delete)
+            pipeline_static.delete(*to_delete)
         else:
             syslog.syslog(syslog.LOG_ERR, 'You *do not* have anything to rank!')
         pipeline.execute()
+        pipeline_static.execute()
 
         service_start_multiple(ranking_process_service, int(config.get('processes','ranking')))
         

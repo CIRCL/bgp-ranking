@@ -21,9 +21,7 @@ import subprocess
 
 import syslog
 
-
-if __name__ == '__main__':
-
+def init_static():
     config = ConfigParser.RawConfigParser()
     config.optionxform = str
     config_file = "/path/to/bgp-ranking.conf"
@@ -32,6 +30,7 @@ if __name__ == '__main__':
     pid_path = os.path.join(root_dir,config.get('directories','pids'))
 
     syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_USER)
+    return config, pid_path
 
 
 def service_start_multiple(servicename, number, param = None):
@@ -51,6 +50,7 @@ def service_start_once(servicename = None, param = None, processname = None):
         Start a services and save his pids.
         Check if it is not already running
     """
+    config, pid_path = init_static()
     processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
     if not os.path.exists(pidpath):
@@ -77,6 +77,7 @@ def writepid (processname = None, proc = None):
     """
         Append the pid to the pids-list of this process
     """
+    config, pid_path = init_static()
     processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
 
@@ -92,6 +93,7 @@ def rmpid (processname = None):
     """
         Delete the pids-file of a process
     """
+    config, pid_path = init_static()
     processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
     if os.path.exists(pidpath):
@@ -104,6 +106,7 @@ def pidof(processname = None):
     """
         Get the pid(s) of a process 
     """
+    config, pid_path = init_static()
     processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
     if processname is not None and os.path.exists(pidpath):
@@ -149,6 +152,7 @@ def init_counter(total_ips):
         Init an ugly array to manage a certain amount of processes
         FIXME: well.. rewrite it
     """
+    config, pid_path = init_static()
     ip_counter = {}
     max_processes = int(config.get('whois_push','max_processes'))
     max_ips_by_process = int(config.get('whois_push','max_ips_by_process'))

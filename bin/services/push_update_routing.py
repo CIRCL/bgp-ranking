@@ -106,9 +106,14 @@ if __name__ == '__main__':
     
     syslog.openlog('Push_n_Rank', syslog.LOG_PID, syslog.LOG_USER)
 
-    routing_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','routing'))
-    global_db    = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','global'))
-    history_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','history'))
+    routing_db          = redis.Redis(port = int(config.get('redis','port_cache')),\
+                                        db = config.get('redis','routing'))
+    global_db           = redis.Redis(port = int(config.get('redis','port_master')),\
+                                        db = config.get('redis','global'))
+    history_db          = redis.Redis(port = int(config.get('redis','port_cache')),\
+                                        db = config.get('redis','history'))
+    history_db_static   = redis.Redis(port = int(config.get('redis','port_master')),\
+                                        db = config.get('redis','history'))
 
     filename = sys.argv[1]
     dir = os.path.dirname(filename)
@@ -124,9 +129,11 @@ if __name__ == '__main__':
         syslog.syslog(syslog.LOG_INFO, 'Start converting binary bview file in plain text...')
         # create the plain text dump from the binary dump 
         output = open(dir + '/bview', 'wr')
-        p_bgp = Popen([bgpdump , filename], stdout=PIPE)
+        nul_f = open(os.devnull, 'w')
+        p_bgp = Popen([bgpdump , filename], stdout=PIPE, stderr = nul_f)
         for line in p_bgp.stdout:
             output.write(line)
+        nul_f.close() 
         output.close()
         syslog.syslog(syslog.LOG_INFO, 'Convertion finished, start splitting...')
         # Split the plain text file 

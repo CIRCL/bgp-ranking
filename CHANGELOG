@@ -1,0 +1,5 @@
+v1.1
+
+* The project is now completely documented using sphinx
+* Automatically reload the ranking on the website after a computation
+* Add the configuration file of nginx with a basic auth on reload

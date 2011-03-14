@@ -18,6 +18,7 @@ General Documentation
     Installation
 
     TODO
+    CHANGELOG
 
 Code Documentation
 ==================

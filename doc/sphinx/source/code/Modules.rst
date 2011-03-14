@@ -94,3 +94,12 @@ The dataset is a flat file.
 
 You can get more information on the sshbl_ website.
 
+
+Malware Domain List
+===================
+
+The dataset is a flat file
+
+.. _Malware Domain List: http://www.malwaredomainlist.com/
+
+More information available on the `Malware Domain List`_ website.

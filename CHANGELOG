@@ -4,6 +4,10 @@ Changelog
 
 v1.1
 
-* The project is now completely documented using sphinx
-* Automatically reload the ranking on the website after a computation
-* Add the configuration file of nginx with a basic auth on reload
+New:
+ * The project is now completely documented using sphinx
+ * Add the configuration file of nginx with a basic auth on reload
+ * Add parser for the list provided by malwaredomainlist.com
+
+Bugfixes:
+ * Automatically reload the ranking on the website after a computation

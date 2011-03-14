@@ -98,8 +98,8 @@ if __name__ == '__main__':
     sleep_timer_short = int(config.get('sleep_timers','short'))
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     from helpers.initscript import *
-    from helpers.files_splitter import *
-    from helpers.initscript import *
+    from helpers.files_splitter import FilesSplitter
+    from ranking.reports import Reports
     services_dir = os.path.join(root_dir,config.get('directories','services'))
     bgpdump = os.path.join(root_dir,config.get('routing','bgpdump'))
 
@@ -187,3 +187,4 @@ if __name__ == '__main__':
             time.sleep(sleep_timer_short)
         rmpid(ranking_process_service)
         routing_db.flushdb()
+        Reports(datetime.date.today()).build_reports()

@@ -111,7 +111,7 @@ class Master(object):
         """
         asns = self.reset_if_empty(asns)
         source = self.reset_if_empty(source)
-        self.template = Template(file = os.path.join(self.website_root, templconfigates, 'comparator.tmpl'))
+        self.template = Template(file = os.path.join(self.website_root, self.templates, 'comparator.tmpl'))
         self.init_template(source)
         self.template.asns = asns
         if self.template.asns is not None:

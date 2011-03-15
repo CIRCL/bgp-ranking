@@ -74,8 +74,8 @@ class Reports():
         for item in items:
             self.impacts[item[0]] = float(item[1])
 
-        self.set_params_report(date)
         self.last_ranking = None
+        self.set_params_report(date)
     
     def build_reports(self):
         """

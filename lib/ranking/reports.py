@@ -20,46 +20,62 @@ class Reports():
         (you can also choose between IPv4 and IPv6)
     """
     
-    def display_graphs_yesterday(self):
+    def get_last_ranking(self):
         """
-            Until the ranking of the current day is computed, there is nothing to display. 
+            Get the timestamp of the ranking
+        """
+        return redis.Redis(port = int(self.config.get('redis','port_master')),\
+                            db   = self.config.get('redis','history')).get(self.config.get('ranking','latest_ranking'))
+    
+    def display_graphs_prec_day(self, date):
+        """
+            Unless the ranking of `date` exists, there is nothing to display. 
             
-            That is why we will display the ranking of "yesterday"
+            That is why we will display the ranking of the precedent day
         """
         hours = sorted(self.config.get('routing','update_hours').split())
         first_hour = hours[0]
-        timestamp = redis.Redis(port = int(self.config.get('redis','port_master')),\
-                    db   = self.config.get('redis','history')).get(self.config.get('ranking','latest_ranking'))
+        timestamp = self.get_last_ranking()
         if timestamp is not None:
             timestamp = timestamp.split()
-            today = datetime.date.today()
-            if int(timestamp[1]) == int(first_hour) or timestamp[0] != today.strftime("%Y%m%d"):
+            if int(timestamp[1]) == int(first_hour) or timestamp[0] != date.strftime("%Y%m%d"):
                 return True
         return False
+    
+    def set_params_report(self, date):
+        """
+            Allow to reload the report displayed on the website.
+        """
+        if self.last_ranking is None or self.last_ranking != self.get_last_ranking():
+            self.last_ranking = self.get_last_ranking()
+            
+            if self.display_graphs_prec_day(date):
+                date = date - datetime.timedelta(1)
+            self.date = date.isoformat()
+            self.sources = self.global_db_slave.smembers('{date}{sep}{key}'.format(date = self.date, \
+                                sep = self.separator, key = self.config.get('input_keys','index_sources')))
     
     def __init__(self, date, ip_version = 4):
         self.config = ConfigParser.RawConfigParser()
         self.config.optionxform = str
         config_file = "/path/to/bgp-ranking.conf"
         self.config.read(config_file)
-
+        self.separator = self.config.get('input_keys','separator')
         self.global_db_slave = redis.Redis(port = int(self.config.get('redis','port_master')), db=self.config.get('redis','global'))
         self.history_db_slave = redis.Redis(port = int(self.config.get('redis','port_master')), db=self.config.get('redis','history'))
         
-        self.separator = self.config.get('input_keys','separator')
-        if self.display_graphs_yesterday():
-            date = date - datetime.timedelta(1)
-        self.date = date.isoformat()
-        self.sources = self.global_db_slave.smembers('{date}{sep}{key}'.format(date = self.date, \
-                            sep = self.separator, key = self.config.get('input_keys','index_sources')))
         if ip_version == 4:
             self.ip_key = self.config.get('input_keys','rankv4')
         elif ip_version == 6:
             self.ip_key = self.config.get('input_keys','rankv6')
+
         self.impacts = {}
         items = self.config.items('modules_to_parse')
         for item in items:
             self.impacts[item[0]] = float(item[1])
+
+        self.set_params_report(date)
+        self.last_ranking = None
     
     def build_reports(self):
         """

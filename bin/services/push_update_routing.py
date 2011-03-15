@@ -187,4 +187,6 @@ if __name__ == '__main__':
             time.sleep(sleep_timer_short)
         rmpid(ranking_process_service)
         routing_db.flushdb()
+        syslog.syslog(syslog.LOG_INFO, 'Updating the reports...')
         Reports(datetime.date.today()).build_reports()
+        syslog.syslog(syslog.LOG_INFO, '...done.')

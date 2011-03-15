@@ -25,15 +25,28 @@ class MasterControler():
         sys.path.append(os.path.join(root_dir,self.config.get('directories','libraries')))
         from ranking.reports import Reports
         
+        self.report = None
+        self.set_params()
+
+    def set_params(self):
+        """
+            Set the params to always display the latest version of the rankings
+        """
         self.graph_last_date = datetime.date.today()
         self.graph_first_date = datetime.date.today() - datetime.timedelta(days=30)
-        self.report = Reports(self.graph_last_date)
-        self.report.build_reports()
+        if self.report is not None:
+            self.report.set_params_report(self.graph_last_date)
+        else:
+            self.report = Reports(self.graph_last_date)
+            # Not absolutely usefull but does not take that much time and ensure 
+            # there is something to display
+            self.report.build_reports()
 
     def prepare_index(self, source):
         """
             Get the data from the model and prepare the ranks to pass to the index
         """
+        self.set_params()
         rank = self.report.format_report(source)
         self.histories = []
         for r in rank:
@@ -50,6 +63,7 @@ class MasterControler():
             Get the data needed to display the page of the details on an AS 
         """
         if asn is not None:
+            self.set_params()
             self.asn = int(asn)
             as_infos = self.report.get_asn_descs(self.asn, source)
             as_graph_infos, self.sources = self.report.prepare_graphe_js(self.asn, self.graph_first_date, self.graph_last_date, source)
@@ -61,6 +75,7 @@ class MasterControler():
             Get the descriptions of the IPs of a subnet
         """
         if asn is not None and asn_tstamp is not None:
+            self.set_params()
             return self.report.get_ips_descs(asn, asn_tstamp, source)
     
     def comparator(self, asns = None):
@@ -68,9 +83,8 @@ class MasterControler():
             Get the data needed to display the page of the comparator
         """
         js_name = self.config.get('web','canvas_comparator_name')
-        if asns is None:
-            pass
-        else:
+        if asns is not None:
+            self.set_params()
             splitted_asns = asns.split()
             g = GraphGenerator(js_name)
             title = ''

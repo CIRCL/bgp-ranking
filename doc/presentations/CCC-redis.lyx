@@ -854,8 +854,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /mnt/data/gits/bgp-ranking/doc/informations/Backends/dbschema.png
-	lyxscale 20
+	filename old_mysql_schema.dia
+	lyxscale 40
 	scale 35
 
 \end_inset

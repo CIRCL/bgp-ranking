@@ -1,4 +1,13 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""
+    DShield daily parser
+    ~~~~~~~~~~~~~~~~~~~~
+
+    Class used to parse the daily files provided by DShield
+"""
+
 import re
 import os
 import dateutil.parser
@@ -7,15 +16,19 @@ from modules.abstract_module import AbstractModule
 
 
 class DshieldDaily(AbstractModule):
-    directory = 'dshield/daily/'
+    """
+        Parser
+    """
 
     def __init__(self, raw_dir):
+        self.directory = 'dshield/daily/'
         AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
 
 
     def parse(self):
-        """ Parse the list
+        """ 
+            Parse the list
         """
         self.ips = []
         for file in self.files:

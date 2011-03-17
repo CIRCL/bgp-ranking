@@ -1,5 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""
+    Connector
+    ~~~~~~~~~
+    
+    Initialize a connection to a whois server
+"""
 import redis
 from whois_fetcher_redis import *
 import errno
@@ -9,76 +16,69 @@ import time
 import os 
 import sys
 import ConfigParser
-config = ConfigParser.RawConfigParser()
-config_file = "/path/to/bgp-ranking.conf"
-config.read(config_file)
-root_dir = config.get('directories','root')
-# In case there is nothing to fetch, the process will sleep 5 seconds 
-process_sleep = int(config.get('sleep_timers','short'))
-
-# Temporary redis database, used to push ris and whois requests
-temp_reris_db = int(config.get('redis','temp'))
-# Cache redis database, used to set ris responses
-ris_cache_reris_db = int(config.get('redis','cache_ris'))
-# Cache redis database, used to set whois responses
-whois_cache_reris_db = int(config.get('redis','cache_whois'))
-
 import syslog
-syslog.openlog('BGP_Ranking_Connectors', syslog.LOG_PID, syslog.LOG_USER)
-
-# Set the ttl of the cached entries to 1 day 
-cache_ttl = int(config.get('redis','cache_entries'))
-
-desactivated_servers = config.get('whois_servers','desactivate').split()
-local_whois = config.get('whois_servers','local').split()
-non_routed = config.get('whois_servers', 'non_routed').split()
 
 class Connector(object):
     """
-    Make queries to a specific Whois server
+        Query a specific Whois server
     """
-    keepalive = False
-    support_keepalive = config.get('whois_servers', 'support_keepalive').split()
-    support_keepalive += local_whois
     
     def __init__(self, server):
         """
-        Initialize the two connectors to the redis server, set variables depending on the server
-        Initialize a whois fetcher on this server
+            Set variables depending on the server, initialize a whois fetcher on this server
         """
-        self.temp_db = redis.Redis(port = int(config.get('redis','port_cache')) , db=temp_reris_db)
+        
+        self.config = ConfigParser.RawConfigParser()
+        config_file = "/path/to/bgp-ranking.conf"
+        self.config.read(config_file)
+        # In case there is nothing to fetch, the process will sleep 5 seconds 
+        self.process_sleep = int(self.config.get('sleep_timers','short'))
+        
+        syslog.openlog('BGP_Ranking_Connectors', syslog.LOG_PID, syslog.LOG_USER)
+
+        # Set the ttl of the cached entries to 1 day 
+        self.cache_ttl = int(self.config.get('redis','cache_entries'))
+
+        self.local_whois = self.config.get('whois_servers','local').split()
+        
+        
+        self.keepalive = False
+        self.support_keepalive = self.config.get('whois_servers', 'support_keepalive').split()
+        self.support_keepalive += self.local_whois
+        
+        self.temp_db = redis.Redis(port = int(self.config.get('redis','port_cache')) , db=int(self.config.get('redis','temp')))
         self.server = server
         if self.server == 'riswhois.ripe.net':
-            self.cache_db = redis.Redis(port = int(config.get('redis','port_cache')), db=ris_cache_reris_db)
-            self.key = config.get('redis','key_temp_ris')
+            self.cache_db = redis.Redis(port = int(self.config.get('redis','port_cache')), db=int(self.config.get('redis','cache_ris')))
+            self.key = self.config.get('redis','key_temp_ris')
         else:
             self.key = self.server
-            self.cache_db = redis.Redis(port = int(config.get('redis','port_cache')), db=whois_cache_reris_db)
+            self.cache_db = redis.Redis(port = int(self.config.get('redis','port_cache')), db=int(self.config.get('redis','cache_whois')))
         if self.server in self.support_keepalive:
             self.keepalive = True
-        if self.server in local_whois:
-            self.fetcher = WhoisFetcher(config.get('whois_server', 'hostname'))
+        if self.server in self.local_whois:
+            self.fetcher = WhoisFetcher(self.config.get('whois_server', 'hostname'))
         else:
             self.fetcher = WhoisFetcher(self.server)
         self.connected = False
     
     def __connect(self):
         """
-        Connect the fetcher
+            Connect the fetcher
         """
         self.fetcher.connect()   
         self.connected = True
 
     def __disconnect(self):
         """
-        Disconnect the fetcher
+            Disconnect the fetcher
         """
         self.fetcher.disconnect()
         self.connected = False
     
     def launch(self):
         """
-        Fetch all the whois entry to the server of this connector 
+            Fetch all the whois entry to the server of this connector 
         """
         while 1:
             try:
@@ -87,23 +87,23 @@ class Connector(object):
                 if not entry:
                     self.__disconnect()
 #                    syslog.syslog(syslog.LOG_DEBUG, "Disconnected of " + self.server)
-                    time.sleep(process_sleep)
-                elif self.server in desactivated_servers:
-                    whois = config.get('whois_servers','desactivate_message')
-                    self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), cache_ttl)
-                elif self.server in non_routed:
-                    whois = config.get('whois_servers','non_routed_message')
-                    self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), cache_ttl)
+                    time.sleep(self.process_sleep)
+                elif self.server in self.config.get('whois_servers','desactivate').split():
+                    whois = self.config.get('whois_servers','desactivate_message')
+                    self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), self.cache_ttl)
+                elif self.server in self.config.get('whois_servers', 'non_routed').split():
+                    whois = self.config.get('whois_servers','non_routed_message')
+                    self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), self.cache_ttl)
                 elif self.cache_db.get(entry) is None:
                     if not self.connected:
                         self.__connect()
 #                    syslog.syslog(syslog.LOG_DEBUG, self.server + ", query : " + str(entry))
                     whois = self.fetcher.fetch_whois(entry, self.keepalive)
                     if whois != '':
-                        self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), cache_ttl)
+                        self.cache_db.setex(entry, self.server + '\n' + unicode(whois,  errors="replace"), self.cache_ttl)
                     if not self.keepalive:
                         self.__disconnect()
             except IOError as text:
                 syslog.syslog(syslog.LOG_ERR, "IOError on " + self.server + ': ' + str(text))
-                time.sleep(process_sleep)
+                time.sleep(self.process_sleep)
                 self.__disconnect()

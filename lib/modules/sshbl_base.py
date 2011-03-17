@@ -1,4 +1,13 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""
+    sshbl parser
+    ~~~~~~~~~~~~~~~~~~~~
+
+    Class used to parse the files provided by sshbl
+"""
+
 import re
 import os
 import datetime 
@@ -7,17 +16,21 @@ from modules.abstract_module import AbstractModule
 
 
 class SshblBase(AbstractModule):
-    # Dshield doesn't give a date for his TopIPs list. So we assume that 
-    # the list is updated every days
-    date = date.today()
-    directory = 'sshbl/base/'
+    """
+        Parser
+    """
     
     def __init__(self, raw_dir):
+        # Dshield doesn't give a date for his TopIPs list. So we assume that 
+        # the list is updated every days
+        self.date = date.today()
+        self.directory = 'sshbl/base/'
         AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
  
     def parse(self):
-        """ Parse the list
+        """ 
+            Parse the list
         """
         self.ips = []
         for file in self.files:

@@ -1,3 +1,14 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""
+    Abstract class of the modules
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    This abstract class should be used by all local modules. Local means that the modules 
+    are running on the same server as the redis databases.
+"""
+
 
 from abc import ABCMeta, abstractmethod
 
@@ -7,52 +18,61 @@ import glob
 import os 
 import sys
 import ConfigParser
-config = ConfigParser.RawConfigParser()
-config_file = "/path/to/bgp-ranking.conf"
-config.read(config_file)
-#sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
-
-# Temporary redis database
-temp_reris_db = int(config.get('modules_global','temp_db'))
-uid_var = config.get('modules_global','uid_var')
-uid_list = config.get('modules_global','uid_list')
 
 class AbstractModule():
-    """
-    This abstract class should be used by all local modules. Local means that the modules 
-    does not send their entries through the network. 
-    
+    """   
     To use this class you have to provide a variable called self.directory which is the directory 
     where the new files are. 
+    
     A variable date is also necessary to move the file when the parsing is done. 
+    
     You have to define a function parse which extract the entries from the dataset and use 
     the function put_entry to put them in redis. 
     """
-    key_ip = config.get('input_keys','ip')
-    key_src = config.get('input_keys','src')
-    key_tstamp = config.get('input_keys','tstamp')
-    key_infection = config.get('input_keys','infection')
-    key_raw = config.get('input_keys','raw')
-    key_times = config.get('input_keys','times')
-    
-    separator = config.get('input_keys','separator')
     
     def __init__(self):
-        self.temp_db = redis.Redis(port = int(config.get('redis','port_cache')), db=temp_reris_db)
+        self.config = ConfigParser.RawConfigParser()
+        config_file = "/path/to/bgp-ranking.conf"
+        self.config.read(config_file)
+        
+        self.separator = self.config.get('input_keys','separator')
+        
+        self.key_ip = self.config.get('input_keys','ip')
+        self.key_src = self.config.get('input_keys','src')
+        self.key_tstamp = self.config.get('input_keys','tstamp')
+        self.key_infection = self.config.get('input_keys','infection')
+        self.key_raw = self.config.get('input_keys','raw')
+        self.key_times = self.config.get('input_keys','times')
+        
+        self.temp_db = redis.Redis(port = int(self.config.get('redis','port_cache')),\
+                            db=int(self.config.get('modules_global','temp_db')))
     
     def put_entry(self, entry):
-        uid = self.temp_db.incr(uid_var)
-        # the format of "entry" is : { ':ip' : ip , ':timestamp' : timestamp ... }
+        """
+            Add the entries in the database
+            
+            entry is a dict:
+            
+                ::
+                    
+                    { ':ip' : ip , ':timestamp' : timestamp ... }
+        """
+        
+        uid = self.temp_db.incr(self.config.get('modules_global','uid_var'))
         to_set = {}
         for key, value in entry.iteritems():
             if value is not None:
                 to_set['{uid}{sep}{key}'.format(uid = str(uid),sep = self.separator, key = key)] = value
         pipeline = self.temp_db.pipeline(False)
         pipeline.mset(to_set)
-        pipeline.sadd(uid_list, uid)
+        pipeline.sadd(self.config.get('modules_global','uid_list'), uid)
         pipeline.execute()
 
-    def __glob_only_files(self):
+    def glob_only_files(self):
+        """
+            Select all the files in self.directory (ie. not the directories) and initalize a variable
+            self.files.
+        """
         allfiles = glob.glob( self.directory + '/*')
         self.files = []
         for file in allfiles:
@@ -60,6 +80,9 @@ class AbstractModule():
                 self.files.append(file)
 
     def prepare_entry(self, ip, source, timestamp = None, infection = None, raw = None, times = None):
+        """
+            Prepare the entry to insert in redis
+        """
         entry = {}
         entry[self.key_ip] = ip
         entry[self.key_src] = source
@@ -81,7 +104,7 @@ class AbstractModule():
         """
         Parse the files and put the information in redis
         """
-        self.__glob_only_files()
+        self.glob_only_files()
         if len(self.files) > 0:
             self.parse()
         
@@ -89,5 +112,5 @@ class AbstractModule():
         """
         Move /from/some/dir/file to /from/some/dir/old/file
         """
-        new_filename = os.path.join(self.directory, config.get('fetch_files','old_dir'), str(self.date).replace(' ','-'))
+        new_filename = os.path.join(self.directory, self.config.get('fetch_files','old_dir'), str(self.date).replace(' ','-'))
         os.rename(file, new_filename)

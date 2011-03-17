@@ -1,19 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
-#if __name__ == "__main__":
-import ConfigParser
-config = ConfigParser.RawConfigParser()
-config_file = "/path/to/bgp-ranking.conf"
-config.read(config_file)
+"""
+    WhoisFetcher and some helpers
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    Fetch the whois entries from the servers, 
+    the helpers give information on the servers available.
+"""
+from socket import *
 import sys
 import os
-sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
-# If the server does not respond, wait a bit before trying again
-sleep_timer = int(config.get('sleep_timers','short'))
-
-from socket import *
+import ConfigParser
 
 import IPy
 import re
@@ -22,12 +20,20 @@ import redis
 
 import errno
 import syslog
-syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_USER)
+
+def init_static():
+    config = ConfigParser.RawConfigParser()
+    config_file = "/path/to/bgp-ranking.conf"
+    config.read(config_file)
+    
+    syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_USER)
+    return config
 
 def get_all_servers_urls():
     """
-    Get the URLs of all the whois servers 
+        Get the URLs of all the whois servers 
     """
+    config = init_static()
     if int(config.get('whois_servers','desactivate_whois')) :
         return ['riswhois.ripe.net']        
     else:
@@ -37,7 +43,7 @@ def get_all_servers_urls():
 
 def get_server_by_query(query, r):
     """
-    Find the best server (using redis) for a particular IP.
+        Find the best server (using redis) for a particular IP.
     """
     to_return = None
     ranges = None
@@ -68,7 +74,8 @@ def get_server_by_query(query, r):
     return to_return
 
 class WhoisFetcher(object):
-    """Class to fetch the Whois entry of a particular IP.
+    """
+        Class to fetch the Whois entry of a particular IP.
     """
     
     # Some funny whois implementations.... 
@@ -87,12 +94,16 @@ class WhoisFetcher(object):
     has_info_message = ['whois.ripe.net', 'whois.afrinic.net',  'whois.lacnic.net']
     # Doesn't support CIDR queries -> we always do queries with ips 
 #    need_an_ip = ['whois.arin.net', 'whois.nic.or.kr']
-    
-    s = socket(AF_INET, SOCK_STREAM)
+
+
+    def __init__(self, server):
+        self.config = init_static()
+        self.__set_values(server)
+        self.s = socket(AF_INET, SOCK_STREAM)
     
     def connect(self):
         """
-        TCP connection to one on the whois servers
+            TCP connection to one on the whois servers
         """
         self.s = socket(AF_INET, SOCK_STREAM)
         self.s.connect((self.server,self.port))
@@ -101,13 +112,13 @@ class WhoisFetcher(object):
         
     def disconnect(self):
         """
-        Close the TCP connection 
+            Close the TCP connection 
         """
         self.s.close()
     
     def fetch_whois(self, query, keepalive = False):
         """
-        Fetch the whois informations. Keep the connection alive if needed. 
+            Fetch the whois informations. Keep the connection alive if needed. 
         """
         pre_options = self.pre_options
         if keepalive:
@@ -128,7 +139,7 @@ class WhoisFetcher(object):
             prec = temp 
         if len(self.text) == 0:
             syslog.syslog(syslog.LOG_ERR, "error (no response) with query: " + query + " on server " + self.server)
-            time.sleep(sleep_timer)
+            time.sleep(int(self.config.get('sleep_timers','short')))
         else:
             part = self.whois_part.get(self.server, None)
             if part:
@@ -139,13 +150,13 @@ class WhoisFetcher(object):
 
     def __set_values(self,  server):
         """
-        Set the needed informations concerning the server we want to use
+            Set the needed informations concerning the server we want to use
         """
-        r = redis.Redis(db=config.get('redis','whois_assignations'))
-        pre_option_suffix = config.get('assignations','pre_option_suffix')
-        post_option_suffix = config.get('assignations','post_option_suffix')
-        keepalive_option_suffix = config.get('assignations','keepalive_option_suffix')
-        port_option_suffix = config.get('assignations','port_option_suffix')
+        r = redis.Redis(db=self.config.get('redis','whois_assignations'))
+        pre_option_suffix = self.config.get('assignations','pre_option_suffix')
+        post_option_suffix = self.config.get('assignations','post_option_suffix')
+        keepalive_option_suffix = self.config.get('assignations','keepalive_option_suffix')
+        port_option_suffix = self.config.get('assignations','port_option_suffix')
         self.server = server
         self.pre_options = r.get(server + pre_option_suffix)
         if self.pre_options == None:
@@ -158,16 +169,14 @@ class WhoisFetcher(object):
             self.keepalive_options = ''
         self.port = r.get(server + port_option_suffix)
         if self.port == None:
-            self.port = config.get('assignations','default_whois_port')
+            self.port = self.config.get('assignations','default_whois_port')
         self.port = int(self.port)
-
-    def __init__(self, server):
-        self.__set_values(server)
     
     def __repr__(self):
         return self.text
 
 if __name__ == "__main__":
+    config = init_static()
     f = WhoisFetcher('whois.arin.net')
     f.connect()
     print(f.fetch_whois('127.0.0.1', True))

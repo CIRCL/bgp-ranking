@@ -1,4 +1,14 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""
+    Abusix
+    ~~~~~~
+    
+    Class used to parse the files in the format Abusix
+    
+"""
+
 import re
 import time
 import datetime
@@ -10,15 +20,19 @@ import dateutil.parser
 
 
 class Abusix(AbstractModule):
-    directory = 'abusix/'
+    """
+        Class used to parse the files provided by the abusix project.
+    """
 
     def __init__(self, raw_dir):
+        self.directory = 'abusix/'
         AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
 
 
     def parse(self):
-        """ Parse the list
+        """ 
+            Parse the list
         """
         self.ips = []
         for file in self.files:

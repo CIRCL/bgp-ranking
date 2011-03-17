@@ -16,7 +16,8 @@ Connection to a database:
 
 If you are already connected to an other db of the same instance: 
 	
-	::	
+	::
+        
 		select <id>
 
 Connection to an instance:
@@ -35,7 +36,12 @@ You can pass all the following command directly in your terminal like this:
 Example: 
 	
 	::
+
 		redis-cli -n 0 get "uid"
+
+.. warning::
+    Please note that on the default installation, the databases 0 to 3 are on the
+    cache instance, which runs on the port 6382.
 
 Database 0 
 ==========
@@ -65,6 +71,23 @@ Get the amount of Whois entries to fetch (deactivated by default):
 	::
 	
 		scard whois
+
+See if there is some old entries without AS: 
+
+	::
+	
+		keys "temp|*"
+
+If they are not from "today", you can drop them: the system has 
+been stopped when it was running and this keys will never be associated 
+with an AS.
+
+Amount of new entries without ASN: 
+	
+	::
+	
+		scard no_asn
+
 
 Databases 1 and 2
 =================
@@ -102,23 +125,6 @@ All the sources of a day:
 	::
 	
 		smembers YYYY-MM-DD|sources
-
-See if there is some old entries without AS: 
-
-	::
-	
-		keys "temp|*"
-
-If they are not from "today", you can drop them: the system has 
-been stopped when it was running and this keys will never be associated 
-with an AS.
-
-Amount of new entries without ASN: 
-	
-	::
-	
-		scard no_asn
-
 
 Get the key of the subnets announced by an AS: 
 

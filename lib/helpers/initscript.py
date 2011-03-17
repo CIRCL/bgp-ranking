@@ -1,27 +1,42 @@
-"""
-Standard functions used by the init scripts
-The original idea is of adulau: http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
-FIXME: More comments needed
 """
+    
+    Initscripts
+    ~~~~~~~~~~~
+    
+    Functions used by the initscripts
+    
+    Standard functions used by the init scripts
+    
+    .. note::
+        The original idea is of adulau: http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
+"""
 import os 
 import sys
 import ConfigParser
-config = ConfigParser.RawConfigParser()
-config.optionxform = str
-config_file = "/path/to/bgp-ranking.conf"
-config.read(config_file)
-root_dir = config.get('directories','root')
-pid_path = os.path.join(root_dir,config.get('directories','pids'))
-
 import subprocess
 
 import syslog
-syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_USER)
+
+def init_static():
+    config = ConfigParser.RawConfigParser()
+    config.optionxform = str
+    config_file = "/path/to/bgp-ranking.conf"
+    config.read(config_file)
+    root_dir = config.get('directories','root')
+    pid_path = os.path.join(root_dir,config.get('directories','pids'))
+
+    syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_USER)
+    return config, pid_path
 
 
 def service_start_multiple(servicename, number, param = None):
+    """
+        Start multiple services using `service_start` and save their pids
+    """
     i = 0 
     #print('Starting ' + str(number) + ' times ' + servicename)
     syslog.syslog(syslog.LOG_INFO, 'Starting ' + str(number) + ' times ' + servicename)
@@ -31,6 +46,11 @@ def service_start_multiple(servicename, number, param = None):
         i += 1 
 
 def service_start_once(servicename = None, param = None, processname = None):
+    """
+        Start a services and save his pids.
+        Check if it is not already running
+    """
+    config, pid_path = init_static()
     processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
     if not os.path.exists(pidpath):
@@ -42,7 +62,7 @@ def service_start_once(servicename = None, param = None, processname = None):
 
 def service_start(servicename = None, param = None):
     """
-    Launch a Process
+        Launch a Process, return his pid
     """
     if servicename is not None :
         service = servicename+".py"
@@ -55,8 +75,9 @@ def service_start(servicename = None, param = None):
 
 def writepid (processname = None, proc = None):
     """
-    Append the pid to the pids-list of this process
+        Append the pid to the pids-list of this process
     """
+    config, pid_path = init_static()
     processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
 
@@ -70,8 +91,9 @@ def writepid (processname = None, proc = None):
 
 def rmpid (processname = None):
     """
-    Delete the pids-file
+        Delete the pids-file of a process
     """
+    config, pid_path = init_static()
     processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
     if os.path.exists(pidpath):
@@ -82,8 +104,9 @@ def rmpid (processname = None):
 
 def pidof(processname = None):
     """
-    Get the pid of a process 
+        Get the pid(s) of a process 
     """
+    config, pid_path = init_static()
     processname = os.path.basename(processname)
     pidpath = os.path.join(pid_path,processname+".pid")
     if processname is not None and os.path.exists(pidpath):
@@ -96,7 +119,7 @@ def pidof(processname = None):
 
 def update_running_pids(old_procs):
     """
-    Update the list of the running process
+        Update the list of the running process and return the list
     """
     new_procs = []
     for proc in old_procs:
@@ -113,7 +136,9 @@ def update_running_pids(old_procs):
     return new_procs
 
 def check_pid(pid):        
-    """ Check For the existence of a unix pid. """
+    """ 
+        Check For the existence of a unix pid.
+    """
     try:
         os.kill(pid, 0)
     except OSError:
@@ -123,6 +148,11 @@ def check_pid(pid):
 
     
 def init_counter(total_ips):
+    """
+        Init an ugly array to manage a certain amount of processes
+        FIXME: well.. rewrite it
+    """
+    config, pid_path = init_static()
     ip_counter = {}
     max_processes = int(config.get('whois_push','max_processes'))
     max_ips_by_process = int(config.get('whois_push','max_ips_by_process'))

@@ -1,4 +1,14 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""
+    Zeustracker IPblocklist
+    ~~~~~~~~~~~~~~~~~~~~~~~
+
+    Zeustracker IPblocklist provided by Abuse.ch
+"""
+
+
 import re
 import os
 import datetime 
@@ -6,6 +16,9 @@ import datetime
 from modules.abuse_ch import AbuseCh
 
 class ZeustrackerIpBlockList(AbuseCh):
+    """
+        The subclass of AbuseCh which is used to parse the Zeustracker IPblocklist
+    """
     directory = 'zeus/ipblocklist/'
     list_type = 1
 

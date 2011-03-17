@@ -44,7 +44,7 @@ def make_days(first_date, last_date):
         current += datetime.timedelta(days=1)
     return dates
 
-def convert_all():        
+def convert_all():
     graph_last_date = datetime.date.today()
     graph_first_date = datetime.date.today() - datetime.timedelta(days=60)
     dates = make_days(graph_first_date, graph_last_date)

@@ -1,7 +1,19 @@
+# -*- coding: utf-8 -*-
+"""
+    Generator of graphs using RGraph
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    RGraph is the library we use to generate the JavaScript graphs.
+"""
+
 from string import Template
 import datetime
 
 class GraphGenerator():
+    """
+        The script to generate is defined here as a template and we
+        insert the data we want to display. 
+    """
     
     empty = 'null'
     
@@ -39,11 +51,17 @@ window.onload = function ()
         self.name = name
 
     def add_line(self, line, key, first_date, last_date):
+        """
+            Add all the data needed to display a line on the graph
+        """
         self.set_labels(first_date, last_date)
         self.lines.append(self.line_values(line))
         self.keys.append(key)
     
     def line_values(self, line):
+        """
+            Prepare the components of a line
+        """
         list = []
         for label in self.labels:
             rank = line.get(label, None)
@@ -54,6 +72,9 @@ window.onload = function ()
         return list
 
     def repr_list(self, list):
+        """
+            Prepare a string representation of the liste RGrah-friendly
+        """
         to_return = '['
         for l in list:
             if len(to_return) > 1:
@@ -64,6 +85,9 @@ window.onload = function ()
     
     # xaxis
     def set_labels(self, first_date, last_date):
+        """
+            Prepare the label, on the X axis
+        """
         if self.first_date is None or self.last_date is None or first_date < self.first_date or last_date > self.last_date:
             self.first_date = first_date
             self.last_date = last_date
@@ -74,10 +98,15 @@ window.onload = function ()
                 current += datetime.timedelta(days=1)
     
     def set_title(self, title):
+        """
+            Set the title of the schema
+        """
         self.title = title
 
-    
     def make_js(self):
+        """
+            Populate the template and build the js
+        """
         form_lines = ''
         tooltips = []
         real_max = 0

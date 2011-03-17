@@ -1,57 +1,70 @@
 # -*- coding: utf-8 -*-
+"""
+    View class of the website
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    The website respects the MVC pattern and this class is the view.
+
+"""
 
 import os
 import cherrypy
 from cherrypy import _cperror
 from Cheetah.Template import Template
-
 import ConfigParser
 import sys
 import IPy
-config = ConfigParser.RawConfigParser()
-config_file = "/path/to/bgp-ranking.conf"
-config.read(config_file)
-root_dir =  config.get('directories','root')
-sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
-
-web_config = config.get('web','config_file')
-templates = config.get('web','templates')
-website_root = os.path.join(root_dir,config.get('web','root_web'))
-css_file = config.get('web','css_file')
-website_images_dir = config.get('web','images')
-
-rgraph_dir = 'RGraph/'
-rgraph_scripts = ['RGraph.common.core.js', 'RGraph.common.zoom.js', 'RGraph.common.resizing.js', 'RGraph.common.context.js', 'RGraph.line.js', 'RGraph.common.tooltips.js']
-
 from master_controler import MasterControler
-
-graphes_dir = os.path.join(root_dir,config.get('web','graphes'))
 
 class Master(object):
     
     def __init__(self):
+        self.config = ConfigParser.RawConfigParser()
+        config_file = "/path/to/bgp-ranking.conf"
+        self.config.read(config_file)
+
+        self.templates = config.get('web','templates')
+        self.website_root = os.path.join(self.config.get('directories','root'),\
+                                            config.get('web','root_web'))
+        self.css_file = config.get('web','css_file')
+        
+        self.rgraph_scripts = [ 'RGraph.common.core.js',\
+                                'RGraph.common.zoom.js', \
+                                'RGraph.common.resizing.js',\
+                                'RGraph.common.context.js',\
+                                'RGraph.line.js',\
+                                'RGraph.common.tooltips.js']
         self.controler = MasterControler()
     
     def init_template(self, source = None):
+        """
+            Initialize the basic components of the template
+        """
         source = self.reset_if_empty(source)
-        self.template.rgraph_dir = rgraph_dir
-        self.template.rgraph_scripts = rgraph_scripts
-        self.template.css_file = css_file
+        self.template.rgraph_dir = config.get('web','rgraph_dir')
+        self.template.rgraph_scripts = self.rgraph_scripts
+        self.template.css_file = self.config.get('web','css_file')
         self.controler.get_sources()
         self.template.sources = self.controler.sources
         self.template.source = source
     
     def reset_if_empty(self, to_check = None):
+        """
+            Ensure the empty paramaters are None before doing anything
+        """
         if to_check is None or len(to_check) == 0:
             return None
         return to_check
     
     def asns(self, source = None, asn = None):
+        """
+            Generate the view of the global ranking
+        """
         source = self.reset_if_empty(source)
         asn = self.reset_if_empty(asn)
         if asn is not None:
             return self.asn_details(source, asn)
-        self.template = Template(file = os.path.join(website_root, templates, 'index_asn.tmpl'))
+        self.template = Template(file = os.path.join(self.website_root, self.templates, 'index_asn.tmpl'))
         self.init_template(source)
         self.controler.prepare_index(source)
         self.template.histories = self.controler.histories
@@ -59,10 +72,13 @@ class Master(object):
     asns.exposed = True
     
     def asn_details(self, source = None, asn = None, ip_details = None):
+        """
+            Generate the view of an ASN 
+        """
         asn = self.reset_if_empty(asn)
         source = self.reset_if_empty(source)
         ip_details = self.reset_if_empty(ip_details)
-        self.template = Template(file = os.path.join(website_root, templates, 'asn_details.tmpl'))
+        self.template = Template(file = os.path.join(self.website_root, self.templates, 'asn_details.tmpl'))
         self.init_template(source)
         self.controler.js = self.controler.js_name = None
         if asn is not None:
@@ -90,9 +106,12 @@ class Master(object):
     asn_details.exposed = True
     
     def comparator(self, source = None, asns = None):
+        """
+            Generate the view comparing a set of ASNs
+        """
         asns = self.reset_if_empty(asns)
         source = self.reset_if_empty(source)
-        self.template = Template(file = os.path.join(website_root, templates, 'comparator.tmpl'))
+        self.template = Template(file = os.path.join(self.website_root, self.templates, 'comparator.tmpl'))
         self.init_template(source)
         self.template.asns = asns
         if self.template.asns is not None:
@@ -106,18 +125,31 @@ class Master(object):
     comparator.exposed = True
 
     def reload(self):
+        """
+            Recompute all the ranks and return on the index
+        """
         self.controler = MasterControler()
         return self.default()
     reload.exposed = True
 
     def default(self):
+        """
+            Load the index
+        """
         return str(self.asns())
     default.exposed = True
 
 def error_page_404(status, message, traceback, version):
+    """
+        Display an error if the page does not exists
+    """
     return "Error %s - This page does not exist." % status
 
 if __name__ == "__main__":
+    config = ConfigParser.RawConfigParser()
+    config_file = "/path/to/bgp-ranking.conf"
+    config.read(config_file)
+    
     website = Master()
     
     def handle_error():
@@ -128,4 +160,4 @@ if __name__ == "__main__":
     _cp_config = {'request.error_response': handle_error}
     
     cherrypy.config.update({'error_page.404': error_page_404})
-    cherrypy.quickstart(website, config = web_config)
+    cherrypy.quickstart(website, config = config.get('web','config_file'))

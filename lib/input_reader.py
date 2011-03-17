@@ -22,7 +22,11 @@ import ConfigParser
 
 class InputReader():
     """
-        Filter and sort the new entries given by the modules
+        Filter and sort the new entries given by the modules.
+        Ensure that:
+        
+        * the entry is valid: has an IP and a source
+        * the entry is not already here
     """
     
     def __init__(self):
@@ -82,7 +86,8 @@ class InputReader():
 
     def insert(self):
         """
-            Re-insert in the database the data provided by the module in a sorted form.
+            Re-insert in the database the data provided by the module and 
+            extracted by :meth:`get_all_information` in a sorted form.
         """
         to_return = False
         while self.temp_db.scard(self.list_ips) > 0:

@@ -53,7 +53,7 @@ class AbstractParser(object):
 
     def __getattr__(self, attr):
         """
-            he first time an attribute is called it will be generated in this function.
+            The first time an attribute is called it will be generated in this function.
             The attribute is then set to be accessed directly by subsequent calls.
         """
         try: 

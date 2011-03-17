@@ -20,12 +20,12 @@ import syslog
 
 class Connector(object):
     """
-        Query a specific Whois server
+        Query a specific Whois server using :class:`WhoisFetcher`
     """
     
     def __init__(self, server):
         """
-            Set variables depending on the server, initialize a whois fetcher on this server
+            Set variables depending on the server, initialize a :class:`WhoisFetcher` on this server
         """
         
         self.config = ConfigParser.RawConfigParser()
@@ -64,21 +64,21 @@ class Connector(object):
     
     def __connect(self):
         """
-            Connect the fetcher
+            Connect the :class:`WhoisFetcher` instance
         """
         self.fetcher.connect()   
         self.connected = True
 
     def __disconnect(self):
         """
-            Disconnect the fetcher
+            Disconnect the :class:`WhoisFetcher` instance
         """
         self.fetcher.disconnect()
         self.connected = False
     
     def launch(self):
         """
-            Fetch all the whois entry to the server of this connector 
+            Fetch all the whois entry assigned to the server of this :class:`Connector`
         """
         while 1:
             try:

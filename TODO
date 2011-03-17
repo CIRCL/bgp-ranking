@@ -44,3 +44,9 @@ New functionalities
     - get the rank of a subnet/asn (by whatever you want)
 
 * Add new functionalities to the website...
+
+Documentation
+=============
+
+* Explain why we use 6Gb or ram and not more: when bgsave is running, a second redis process is created. This process uses around the same amount of 
+  ram than the first one :)

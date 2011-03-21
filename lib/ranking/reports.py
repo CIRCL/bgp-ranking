@@ -122,7 +122,7 @@ class Reports():
                 if zset_key != self.config.get('input_keys','histo_global'):
                     pipeline.sadd(asn, source)
         pipeline.execute()
-    
+
     def format_report(self, source = None, limit = 50):
         """
             Format the report to be displayed in the website
@@ -130,9 +130,12 @@ class Reports():
         if source is None:
             source = self.config.get('input_keys','histo_global')
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
-        report = self.history_db_temp.zrevrange(histo_key, 0, limit, True)
-        for asn, value in report:
-            report[3] = self.history_db_temp.smembers(asn)
+        reports_temp = self.history_db_temp.zrevrange(histo_key, 0, limit, True)
+        pipeline = self.history_db_temp.pipeline()
+        for report_temp in reports_temp:
+            pipeline.smembers(report_temp[0])
+        sources = pipeline.execute()
+        report = [list(x) + [', '.join(y)] for x,y in zip(reports_temp,sources)]
         return report
     
     def get_daily_rank(self, asn, source = None, date = None):

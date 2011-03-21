@@ -50,7 +50,7 @@ class MasterControler():
         rank = self.report.format_report(source)
         self.histories = []
         for r in rank:
-            self.histories.append([r[0], r[1] + 1])
+            self.histories.append([r[0], r[1] + 1], r[2])
 
     def get_sources(self):
         """

@@ -38,6 +38,7 @@
             <tr>
                 <th scope="col" >ASN</th>
                 <th scope="col" >Rank</th>
+                <th scope="col" >Source(s)</th>
             </tr>
         </thead>
         #for $history in $histories
@@ -48,6 +49,7 @@
                 <td><a href="/asn_details?asn=${history[0]}">${history[0]}</a></td>
             #end if
             <td>$history[1]</td>
+            <td>$history[2]</td>
         </tr>
         #end for
     </table>

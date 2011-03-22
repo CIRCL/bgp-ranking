@@ -85,11 +85,10 @@ class Reports():
         """
             Build all the reports: for all the sources independently and the global one
         """
+        self.history_db_temp.flushdb()
         self.global_report()
         for source in self.sources:
             histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
-            # drop the old stuff
-            self.history_db_temp.delete(histo_key)
             self.source_report(source)
     
     def global_report(self):
@@ -98,8 +97,6 @@ class Reports():
         """
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = self.config.get('input_keys','histo_global'), \
                         sep = self.separator, ip_key = self.ip_key)
-        # drop the old stuff
-        self.history_db_temp.delete(histo_key)
         for source in self.sources:
             self.source_report(source, self.config.get('input_keys','histo_global'))
 
@@ -112,7 +109,6 @@ class Reports():
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = zset_key, sep = self.separator, ip_key = self.ip_key)
         asns = self.global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date, sep = self.separator, \
                                     source = source, key = self.config.get('input_keys','index_asns')))
-        # FIXME pipeline
         pipeline = self.history_db_temp.pipeline(transaction=False)
         for asn in asns:
             if asn != self.config.get('modules_global','default_asn'):

@@ -169,13 +169,18 @@ class Reports():
 
         keys = {}
         ranks = {}
-        #FIXME pipeline
+        pipeline = self.history_db.pipeline()
         for source in sources:
             keys[source] = []
             for date in dates:
                 keys[source].append('{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = asn, \
                             date = date, source = source, v4 = self.config.get('input_keys','rankv4')))
-            ranks[source] = self.history_db.mget(keys[source])
+            pipeline.mget(keys[source])
+        histories = pipeline.execute()
+        i = 0 
+        for source in sources:
+            ranks[source] = histories[i]
+            i += 1 
 
         ranks_by_days = {}
         for source in sources:
@@ -206,12 +211,12 @@ class Reports():
         for asn_timestamp in asn_timestamps:
             asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(asn = asn, sep = self.separator, timestamp = asn_timestamp)
             nb_of_ips = 0 
-            pipeline = self.global_db.pipeline()
-            for source in sources:
-                pipeline.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
-                                    asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
             if len(sources) > 0 :
-                nb_of_ips += sum(pipline.execute())
+                pipeline = self.global_db.pipeline()
+                for source in sources:
+                    pipeline.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
+                                        asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
+                nb_of_ips += sum(pipeline.execute())
             if nb_of_ips > 0:
                 keys = ['{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, \
                                                             owner = self.config.get('input_keys','owner')),

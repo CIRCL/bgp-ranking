@@ -72,20 +72,12 @@
                         <th scope="col" >List Name</th>
                     </tr>
                 </thead>
-                $prec = None
                 #for $ip_desc in $ip_descs
-                #if $prec == $ip_desc[1]
-                    <b>
-                #end if
                 <tr>
                     <td>$ip_desc[0]</td>
                     <td>$ip_desc[1]</td>
                     <td>$ip_desc[2]</td>
                 </tr>
-                #if $prec == $ip_desc[1]
-                    </b>
-                #end if
-                $prec = $ip_desc[1]
                 #end for
             </table>
         #end if

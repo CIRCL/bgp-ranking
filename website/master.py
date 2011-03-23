@@ -85,10 +85,11 @@ class Master(object):
             asn = asn.lstrip('AS')
             if asn.isdigit():
                 self.template.asn = asn
-                as_infos = self.controler.get_as_infos(asn, source)
+                as_infos, current_sources = self.controler.get_as_infos(asn, source)
                 if as_infos is not None: 
                     self.template.sources = self.controler.sources
                     self.template.asn_descs = as_infos
+                    self.template.current_sources = current_sources
                     self.template.javascript = self.controler.js
                     self.template.js_name = self.controler.js_name
                     if ip_details is not None:

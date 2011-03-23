@@ -11,7 +11,7 @@
         <div>
             <input type="text" name="asn" value="$asn"/>
             <select name="source">
-                <option value="">Select a particular source</option>
+                <option value="">All the sources</option>
                 #for $s in $sources
                     #if $source == $s
                         <option value="${s}" selected>${s}</option>
@@ -23,6 +23,14 @@
             <input type="submit" value="Submit"/>
         </div>
     </form>
+    This AS ($asn) has been found today in the following lists:
+    <ul>
+    #for $current_source in $current_sources
+        <li>
+            $current_source
+        </li>
+    #end for
+    </ul>
 #end block menu
 
 #block main_content

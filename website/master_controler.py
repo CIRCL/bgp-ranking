@@ -65,10 +65,10 @@ class MasterControler():
         if asn is not None:
             self.set_params()
             self.asn = int(asn)
-            as_infos = self.report.get_asn_descs(self.asn, source)
+            as_infos, current_sources = self.report.get_asn_descs(self.asn, source)
             as_graph_infos, self.sources = self.report.prepare_graphe_js(self.asn, self.graph_first_date, self.graph_last_date, source)
             self.make_graph(as_graph_infos)
-        return as_infos
+        return as_infos, current_sources
     
     def get_ip_infos(self, asn = None, asn_tstamp = None, source = None):
         """

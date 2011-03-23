@@ -202,13 +202,16 @@ class Reports():
             sources = [sources]
         asn_timestamps = self.global_db.smembers(asn)
         asn_descs_to_print = []
-        #FIXME pipeline
+        current_asn_sources = self.history_db_temp.smembers(asn)
         for asn_timestamp in asn_timestamps:
             asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(asn = asn, sep = self.separator, timestamp = asn_timestamp)
             nb_of_ips = 0 
+            pipeline = self.global_db.pipeline()
             for source in sources:
-                nb_of_ips += self.global_db.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
-                                                asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
+                pipeline.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
+                                    asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
+            if len(sources) > 0 :
+                nb_of_ips += sum(pipline.execute())
             if nb_of_ips > 0:
                 keys = ['{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, \
                                                             owner = self.config.get('input_keys','owner')),
@@ -216,7 +219,7 @@ class Reports():
                                                             ip_block = self.config.get('input_keys','ips_block'))]
                 owner, ip_block = self.global_db.mget(keys)
                 asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips])
-        return asn_descs_to_print
+        return asn_descs_to_print, current_asn_sources
 
 
     def get_ips_descs(self, asn, asn_timestamp, sources = None):

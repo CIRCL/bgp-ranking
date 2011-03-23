@@ -70,9 +70,6 @@
                         <th scope="col" >Timestamp</th>
                         <th scope="col" >IP Address</th>
                         <th scope="col" >List Name</th>
-                        <th scope="col" >Infection type</th>
-                        <th scope="col" >Raw Informations</th>
-                        <th scope="col" >Whois entry</th>
                     </tr>
                 </thead>
                 #for $ip_desc in $ip_descs
@@ -80,9 +77,6 @@
                     <td>$ip_desc[0]</td>
                     <td>$ip_desc[1]</td>
                     <td>$ip_desc[2]</td>
-                    <td>$ip_desc[3]</td>
-                    <td>$ip_desc[4]</td>
-                    <td><pre>$ip_desc[5]</pre></td>
                 </tr>
                 #end for
             </table>

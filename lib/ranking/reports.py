@@ -240,17 +240,19 @@ class Reports():
         key_raw = self.config.get('input_keys','raw')
         key_whois = self.config.get('input_keys','whois')
 
-        ip_descs_to_print = []
+        
         asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(asn = asn, sep = self.separator, timestamp = asn_timestamp)
-        # FIXME pipeline
+        pipeline = self.global_db.pipeline()
         for source in sources:
-            ips = self.global_db.smembers('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
+            pipeline.smembers('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
                                         asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
+        ips_by_source = pipeline.execute()
+        ip_descs_to_print = []
+        i = 0
+        for ips in ips_by_source:
+            source = sources[i]
             for ip_details in ips:
                 ip, timestamp = ip_details.split(self.separator)
-                keys = ['{ip}{key}'.format(ip = ip_details, key = key_infection),
-                        '{ip}{key}'.format(ip = ip_details, key = key_raw),
-                        '{ip}{key}'.format(ip = ip_details, key = key_whois)]
-                infection, raw_informations, whois = self.global_db.mget(keys)
-                ip_descs_to_print.append([timestamp, ip, source, infection, raw_informations, whois])
-        return ip_descs_to_print
+                ip_descs_to_print.append([timestamp, ip, source])
+        to_return = sorted(ip_descs_to_print, key=lambda desc: desc[1])
+        return to_return

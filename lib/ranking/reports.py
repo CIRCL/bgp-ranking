@@ -13,6 +13,7 @@ import ConfigParser
 
 import datetime
 import redis
+from IPy import IP
 
 class Reports():
     """
@@ -255,5 +256,5 @@ class Reports():
                 ip, timestamp = ip_details.split(self.separator)
                 ip_descs_to_print.append([timestamp, ip, source])
             i += 1
-        to_return = sorted(ip_descs_to_print, key=lambda desc: desc[1])
+        to_return = sorted(ip_descs_to_print, key=lambda desc: IP(desc[1]).int())
         return to_return

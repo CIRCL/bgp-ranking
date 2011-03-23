@@ -249,10 +249,11 @@ class Reports():
         ips_by_source = pipeline.execute()
         ip_descs_to_print = []
         i = 0
-        for ips in ips_by_source:
-            source = sources[i]
+        for source in sources:
+            ips = ips_by_source[i]
             for ip_details in ips:
                 ip, timestamp = ip_details.split(self.separator)
                 ip_descs_to_print.append([timestamp, ip, source])
+            i += 1
         to_return = sorted(ip_descs_to_print, key=lambda desc: desc[1])
         return to_return

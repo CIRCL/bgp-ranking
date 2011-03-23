@@ -226,7 +226,7 @@ class Reports():
                 owner, ip_block = self.global_db.mget(keys)
                 asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips])
         to_return = sorted(asn_descs_to_print, key=lambda desc: IP(desc[3]).len())
-        return asn_descs_to_print, current_asn_sources
+        return to_return, current_asn_sources
 
 
     def get_ips_descs(self, asn, asn_timestamp, sources = None):

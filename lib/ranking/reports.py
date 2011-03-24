@@ -112,7 +112,7 @@ class Reports():
         asns_details = self.global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date,\
                             sep = self.separator, source = source,\
                             key = self.config.get('input_keys','index_asns_details')))
-        for detail in asns_details
+        for detail in asns_details:
             asn, ts = detail.split(self.separator)
             pipeline.sadd(asn, source)
             pipeline.sadd(detail, source)

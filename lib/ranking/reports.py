@@ -101,12 +101,30 @@ class Reports():
         for source in self.sources:
             self.source_report(source, self.config.get('input_keys','histo_global'))
 
+    def build_asns_by_source(self, source):
+        """
+            Create a bunch of keys to easily find the sources associed to the asn/subnet
+        """
+        if source == self.config.get('input_keys','histo_global'):
+            return
+
+        pipeline = self.history_db_temp.pipeline(transaction=False)
+        asns_details = self.global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date,\
+                            sep = self.separator, source = source,\
+                            key = self.config.get('input_keys','index_asns_details')))
+        for detail in asns_details
+            asn, ts = detail.split(self.separator)
+            pipeline.sadd(asn, source)
+            pipeline.sadd(detail, source)
+        pipeline.execute()
+
     def source_report(self, source, zset_key = None):
         """
             Build the report of a particular source
         """
         if zset_key is None:
             zset_key = source
+        self.build_asns_by_source(source)
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = zset_key, sep = self.separator, ip_key = self.ip_key)
         asns = self.global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date, sep = self.separator, \
                                     source = source, key = self.config.get('input_keys','index_asns')))
@@ -116,8 +134,6 @@ class Reports():
                 rank = self.get_daily_rank(asn, source)
                 if rank is not None:
                     pipeline.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
-                if zset_key != self.config.get('input_keys','histo_global'):
-                    pipeline.sadd(asn, source)
         pipeline.execute()
 
     def format_report(self, source = None, limit = 50):
@@ -209,23 +225,23 @@ class Reports():
         asn_timestamps = self.global_db.smembers(asn)
         asn_descs_to_print = []
         current_asn_sources = self.history_db_temp.smembers(asn)
-        for asn_timestamp in asn_timestamps:
-            asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(asn = asn, sep = self.separator, timestamp = asn_timestamp)
+        for timestamp in asn_timestamps:
+            asn_timestamp = '{asn}{sep}{timestamp}'.format(asn = asn, sep = self.separator, timestamp = timestamp)
+            asn_timestamp_key = '{asn_timestamp}{sep}'.format(sep = self.separator, asn_timestamp = asn_timestamp)
             nb_of_ips = 0 
-            if len(sources) > 0 :
-                pipeline = self.global_db.pipeline()
-                for source in sources:
-                    pipeline.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
-                                        asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
-                nb_of_ips += sum(pipeline.execute())
+            pipeline = self.global_db.pipeline()
+            for source in sources:
+                pipeline.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
+                                    asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
+            nb_of_ips += sum(pipeline.execute())
             if nb_of_ips > 0:
                 keys = ['{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, \
                                                             owner = self.config.get('input_keys','owner')),
                         '{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, \
                                                             ip_block = self.config.get('input_keys','ips_block'))]
                 owner, ip_block = self.global_db.mget(keys)
-                sources = self.history_db_temp.smembers(asn)
-                asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips, ', '.join(sources)])
+                sources_web = self.history_db_temp.smembers(asn_timestamp)
+                asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips, ', '.join(sources_web)])
         to_return = sorted(asn_descs_to_print, key=lambda desc: IP(desc[3]).len())
         return to_return, current_asn_sources
 

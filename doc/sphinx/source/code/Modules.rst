@@ -113,3 +113,12 @@ The dataset is a flat file
 .. _URL Query: http://urlquery.net/
 
 More information available on the `URL Query`_ website.
+
+Blocklist
+=========
+
+The dataset is a flat file
+
+.. _Blocklist.de: http://www.blocklist.de
+
+More information available on the `URL Query`_ website.

@@ -23,7 +23,6 @@ class DshieldTopIPs(AbstractModule):
     def __init__(self, raw_dir):
         # Dshield doesn't give a date for his TopIPs list. So we assume that 
         # the list is updated every days
-        self.date = datetime.date.today()
         self.directory = 'dshield/topips/'
         AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
@@ -32,6 +31,7 @@ class DshieldTopIPs(AbstractModule):
         """ 
             Parse the list
         """
+        self.date = datetime.date.today()
         self.ips = []
         for file in self.files:
             daily = open(file)

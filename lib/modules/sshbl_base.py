@@ -23,7 +23,6 @@ class SshblBase(AbstractModule):
     def __init__(self, raw_dir):
         # Dshield doesn't give a date for his TopIPs list. So we assume that 
         # the list is updated every days
-        self.date = date.today()
         self.directory = 'sshbl/base/'
         AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
@@ -32,6 +31,7 @@ class SshblBase(AbstractModule):
         """ 
             Parse the list
         """
+        self.date = date.today()
         self.ips = []
         for file in self.files:
             daily = open(file)

@@ -222,10 +222,10 @@ class Reports():
             sources = self.sources
         else:
             sources = [sources]
-        asn_timestamps = self.global_db.smembers(asn)
+        timestamps = self.global_db.smembers(asn)
         asn_descs_to_print = []
         current_asn_sources = self.history_db_temp.smembers(asn)
-        for timestamp in asn_timestamps:
+        for timestamp in timestamps:
             asn_timestamp = '{asn}{sep}{timestamp}'.format(asn = asn, sep = self.separator, timestamp = timestamp)
             asn_timestamp_key = '{asn_timestamp}{sep}'.format(sep = self.separator, asn_timestamp = asn_timestamp)
             nb_of_ips = 0 

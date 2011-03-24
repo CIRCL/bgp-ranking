@@ -83,7 +83,7 @@ class InsertRIS():
                     sep = self.separator, owner = self.key_owner)) == owner:
                     key = temp_key
                     break
-            i =1
+            i +=1
         if key is None:
             timestamp = datetime.datetime.utcnow().isoformat()
             key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=timestamp)

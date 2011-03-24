@@ -66,8 +66,7 @@ class Master(object):
             return self.asn_details(source, asn)
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'index_asn.tmpl'))
         self.init_template(source)
-        self.controler.prepare_index(source)
-        self.template.histories = self.controler.histories
+        self.template.histories = self.controler.prepare_index(source)
         return str(self.template)
     asns.exposed = True
     

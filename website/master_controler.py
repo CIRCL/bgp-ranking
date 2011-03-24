@@ -48,26 +48,31 @@ class MasterControler():
         """
         self.set_params()
         rank = self.report.format_report(source)
-        self.histories = []
-        for r in rank:
-            self.histories.append([r[0], r[1] + 1, r[2]])
+        histories = []
+        if rank is not None:
+            for r in rank:
+                histories.append([r[0], r[1] + 1, r[2]])
+        return histories
 
     def get_sources(self):
         """
             Returns all the available sources given by the model
         """
+        # FIXME: it it really usefull ?
         self.sources = self.report.sources
     
     def get_as_infos(self, asn = None, source = None):
         """
             Get the data needed to display the page of the details on an AS 
         """
+        as_infos, current_sources = []
         if asn is not None:
             self.set_params()
-            self.asn = int(asn)
-            as_infos, current_sources = self.report.get_asn_descs(self.asn, source)
-            as_graph_infos, self.sources = self.report.prepare_graphe_js(self.asn, self.graph_first_date, self.graph_last_date, source)
-            self.make_graph(as_graph_infos)
+            as_infos, current_sources = self.report.get_asn_descs(asn, source)
+            if len(as_infos) == 0:
+                return [], []
+            as_graph_infos, self.sources = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date, source)
+            self.make_graph(asn, as_graph_infos)
         return as_infos, current_sources
     
     def get_ip_infos(self, asn = None, asn_tstamp = None, source = None):
@@ -101,14 +106,14 @@ class MasterControler():
             else:
                 self.js = self.js_name = None
     
-    def make_graph(self, infos):
+    def make_graph(self, asn, infos):
         """
             Generate the graph with the data provided by the model
         """
         js_name = self.config.get('web','canvas_asn_name')
         g = GraphGenerator(js_name)
         g.add_line(infos, self.report.ip_key, self.graph_first_date, self.graph_last_date )
-        g.set_title(self.asn)
+        g.set_title(asn)
         g.make_js()
         self.js = g.js
         self.js_name = js_name

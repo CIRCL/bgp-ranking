@@ -143,6 +143,8 @@ class Reports():
         if source is None:
             source = self.config.get('input_keys','histo_global')
         histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
+        if histo_key is None:
+            return None
         reports_temp = self.history_db_temp.zrevrange(histo_key, 0, limit, True)
         pipeline = self.history_db_temp.pipeline()
         for report_temp in reports_temp:
@@ -194,6 +196,9 @@ class Reports():
                             date = date, source = source, v4 = self.config.get('input_keys','rankv4')))
             pipeline.mget(keys[source])
         histories = pipeline.execute()
+        if len(histories) == 0:
+            # Nothing to display, quit
+            return {}, to_return_sources
         i = 0 
         for source in sources:
             ranks[source] = histories[i]
@@ -223,8 +228,11 @@ class Reports():
         else:
             sources = [sources]
         timestamps = self.global_db.smembers(asn)
-        asn_descs_to_print = []
+        if len(timestamps) == 0:
+            # The ASN does not exists in the database
+            return [], []
         current_asn_sources = self.history_db_temp.smembers(asn)
+        asn_descs_to_print = []
         for timestamp in timestamps:
             asn_timestamp = '{asn}{sep}{timestamp}'.format(asn = asn, sep = self.separator, timestamp = timestamp)
             asn_timestamp_key = '{asn_timestamp}{sep}'.format(sep = self.separator, asn_timestamp = asn_timestamp)
@@ -266,6 +274,8 @@ class Reports():
             pipeline.smembers('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
                                         asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
         ips_by_source = pipeline.execute()
+        if len(ips_by_source) == 0:
+            return []
         ip_descs_to_print = []
         i = 0
         for source in sources:

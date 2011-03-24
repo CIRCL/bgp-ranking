@@ -308,14 +308,14 @@ table#</dia:string>
         <dia:point val="50.5,11.5"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="44.285,9.51764;56.715,13.4824"/>
+        <dia:rectangle val="45.415,9.4748;55.6136,13.5252"/>
       </dia:attribute>
       <dia:attribute name="text">
         <dia:composite type="text">
           <dia:attribute name="string">
             <dia:string>#Database 3
-Connection information
-to the whois servers#</dia:string>
+Connection info to
+the whois servers#</dia:string>
           </dia:attribute>
           <dia:attribute name="font">
             <dia:font family="Inconsolata" style="48" name="Courier"/>
@@ -324,7 +324,7 @@ to the whois servers#</dia:string>
             <dia:real val="1.411111056804657"/>
           </dia:attribute>
           <dia:attribute name="pos">
-            <dia:point val="50.5,10.4601"/>
+            <dia:point val="50.5,10.4459"/>
           </dia:attribute>
           <dia:attribute name="color">
             <dia:color val="#000000"/>

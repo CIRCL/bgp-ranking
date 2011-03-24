@@ -31,7 +31,7 @@ class SshblBase(AbstractModule):
         """ 
             Parse the list
         """
-        self.date = date.today()
+        self.date = datetime.date.today()
         self.ips = []
         for file in self.files:
             daily = open(file)

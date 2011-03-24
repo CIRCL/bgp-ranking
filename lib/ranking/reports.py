@@ -241,7 +241,7 @@ class Reports():
                                                             ip_block = self.config.get('input_keys','ips_block'))]
                 owner, ip_block = self.global_db.mget(keys)
                 sources_web = self.history_db_temp.smembers(asn_timestamp)
-                asn_descs_to_print.append([asn, asn_timestamp, owner, ip_block, nb_of_ips, ', '.join(sources_web)])
+                asn_descs_to_print.append([asn, timestamp, owner, ip_block, nb_of_ips, ', '.join(sources_web)])
         to_return = sorted(asn_descs_to_print, key=lambda desc: IP(desc[3]).len())
         return to_return, current_asn_sources
 

@@ -15,6 +15,7 @@ import ConfigParser
 import sys
 import IPy
 from master_controler import MasterControler
+import cgi
 
 class Master(object):
     
@@ -48,13 +49,16 @@ class Master(object):
         self.template.sources = self.controler.sources
         self.template.source = source
     
+    def escape(self, var):
+        return cgi.escape(var)
+
     def reset_if_empty(self, to_check = None):
         """
             Ensure the empty paramaters are None before doing anything
         """
         if to_check is None or len(to_check) == 0:
             return None
-        return to_check
+        return self.escape(to_check)
     
     def asns(self, source = None, asn = None):
         """

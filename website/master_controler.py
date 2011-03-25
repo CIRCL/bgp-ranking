@@ -88,6 +88,7 @@ class MasterControler():
             Get the data needed to display the page of the comparator
         """
         js_name = self.config.get('web','canvas_comparator_name')
+        asns_to_return = []
         if asns is not None:
             self.set_params()
             splitted_asns = asns.split()
@@ -95,6 +96,7 @@ class MasterControler():
             title = ''
             for asn in splitted_asns:
                 if asn.isdigit():
+                    asns_to_return.append(asn)
                     as_graph_infos, self.sources = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date)
                     g.add_line(as_graph_infos, str(asn + self.report.ip_key), self.graph_first_date, self.graph_last_date)
                     title += asn + ' '
@@ -105,6 +107,7 @@ class MasterControler():
                 self.js_name = js_name
             else:
                 self.js = self.js_name = None
+        return " ".join(asns_to_return)
     
     def make_graph(self, asn, infos):
         """

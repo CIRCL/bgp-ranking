@@ -5,6 +5,7 @@
 #attr ip_details = None
 #attr javascript = None
 #attr asn_descs = []
+#attr current_sources = []
 
 #block menu
     <form method="get" action="/asn_details">
@@ -24,14 +25,16 @@
         </div>
     </form>
     <br/>
-    This AS ($asn) is known in the following lists:
-    <ul>
-    #for $current_source in $current_sources
-        <li>
-            $current_source
-        </li>
-    #end for
-    </ul>
+    #if $asn is not None
+        This AS ($asn) is known in the following lists:
+        <ul>
+        #for $current_source in $current_sources
+            <li>
+                $current_source
+            </li>
+        #end for
+        </ul>
+    #end if
 #end block menu
 
 #block main_content

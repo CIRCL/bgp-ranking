@@ -65,7 +65,7 @@ class MasterControler():
         """
             Get the data needed to display the page of the details on an AS 
         """
-        as_infos, current_sources = []
+        as_infos, current_sources = [], []
         if asn is not None:
             self.set_params()
             as_infos, current_sources = self.report.get_asn_descs(asn, source)

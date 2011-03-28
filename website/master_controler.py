@@ -61,8 +61,13 @@ class MasterControler():
         """
             Returns all the available sources given by the model
         """
-        # FIXME: it it really usefull ?
         self.sources = self.report.sources
+
+    def get_dates(self):
+        """
+            Returns all the available dates given by the model
+        """
+        self.dates = self.report.dates
     
     def get_as_infos(self, asn = None, source = None, date = None):
         """

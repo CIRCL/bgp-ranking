@@ -37,7 +37,7 @@ class Master(object):
                                 'RGraph.common.tooltips.js']
         self.controler = MasterControler()
     
-    def init_template(self, source = None):
+    def init_template(self, source = None, date = None):
         """
             Initialize the basic components of the template
         """
@@ -46,8 +46,11 @@ class Master(object):
         self.template.rgraph_scripts = self.rgraph_scripts
         self.template.css_file = self.config.get('web','css_file')
         self.controler.get_sources()
+        self.controler.get_dates()
         self.template.sources = self.controler.sources
+        self.template.dates = self.controler.dates
         self.template.source = source
+        self.template.date = date
     
     def escape(self, var):
         return cgi.escape(var)
@@ -70,7 +73,7 @@ class Master(object):
         if asn is not None:
             return self.asn_details(source = source, asn = asn, date = date)
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'index_asn.tmpl'))
-        self.init_template(source)
+        self.init_template(source, date)
         self.template.histories = self.controler.prepare_index(source, date)
         return str(self.template)
     asns.exposed = True
@@ -84,7 +87,7 @@ class Master(object):
         ip_details = self.reset_if_empty(ip_details)
         date = self.reset_if_empty(date)
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'asn_details.tmpl'))
-        self.init_template(source)
+        self.init_template(source, date)
         self.controler.js = self.controler.js_name = None
         if asn is not None:
             asn = asn.lstrip('AS')
@@ -93,6 +96,7 @@ class Master(object):
                 as_infos, current_sources = self.controler.get_as_infos(asn, source, date)
                 if as_infos is not None: 
                     self.template.sources = self.controler.sources
+                    self.template.dates = self.controler.dates
                     self.template.asn_descs = as_infos
                     self.template.current_sources = current_sources
                     self.template.javascript = self.controler.js

@@ -28,7 +28,10 @@ class Reports():
         return redis.Redis(port = int(self.config.get('redis','port_master')),\
                             db   = self.config.get('redis','history')).get(self.config.get('ranking','latest_ranking'))
 
-    def build_reports_lasts_days(self, nr_days = 1):
+    def build_reports_lasts_days(self, nr_days = 2):
+        """
+            Build the reports of the `nr_days` last days 
+        """
         if nr_days <= 0:
             return
         nr_days += 1
@@ -67,6 +70,9 @@ class Reports():
             self.date = date.isoformat()
 
     def set_sources(self, date):
+        """
+            Set the sources paset on a `date`
+        """
         self.sources =  self.global_db.smembers(\
                             '{date}{sep}{key}'.format(  date   = date, \
                                                         sep    = self.separator,\
@@ -100,6 +106,9 @@ class Reports():
         self.set_sources(self.date)
     
     def flush_temp_db(self):
+        """
+            Drop the whole temporary ranking database.
+        """
         self.history_db_temp.flushdb()
     
     def build_reports(self, date = None):
@@ -118,8 +127,15 @@ class Reports():
         """
         if date is None:
             date = self.date
+        # delete the old key
+        zset_key = self.config.get('input_keys','histo_global')
+        histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
+                                                                    date        = date,\
+                                                                    histo_key   = zset_key,\
+                                                                    ip_key      = self.ip_key)
+        self.history_db_temp.delete(histo_key)
         for source in self.sources:
-            self.source_report(source, self.config.get('input_keys','histo_global'), date)
+            self.source_report(source, zset_key, date)
 
     def build_asns_by_source(self, source, date = None):
         """
@@ -129,12 +145,12 @@ class Reports():
             return
         if date is None:
             date = self.date
-        pipeline = self.history_db_temp.pipeline(transaction=False)
         asns_details = self.global_db.smembers(\
                             '{date}{sep}{source}{sep}{key}'.format( sep     = self.separator,\
                                                                     date    = date,\
                                                                     source  = source,\
                                                                     key     = self.config.get('input_keys','index_asns_details')))
+        pipeline = self.history_db_temp.pipeline(transaction=False)
         for detail in asns_details:
             asn, ts = detail.split(self.separator)
             pipeline.sadd('{date}{sep}{asn}'.format(date = date, sep = self.separator, asn = asn), source)
@@ -154,6 +170,9 @@ class Reports():
                                                                     date        = date,\
                                                                     histo_key   = zset_key,\
                                                                     ip_key      = self.ip_key)
+        if zset_key == source:
+            # delete the old key if we are not in the "global" ranking
+            self.history_db_temp.delete(histo_key)
 
         asns = self.global_db.smembers(\
                     '{date}{sep}{source}{sep}{key}'.format( sep     = self.separator,\

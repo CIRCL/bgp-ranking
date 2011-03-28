@@ -23,9 +23,14 @@ class MasterControler():
         self.config.read(config_file)
         root_dir =  self.config.get('directories','root')
         sys.path.append(os.path.join(root_dir,self.config.get('directories','libraries')))
-        
-        self.report = None
+
+        # Ensure there is something to display
+        self.report = Reports(self.graph_last_date)
+        self.report.flush_temp_db()
+        self.report.build_reports()
+        self.report.build_reports_lasts_days()
         self.set_params()
+        
 
     def set_params(self, date = None):
         """
@@ -38,15 +43,7 @@ class MasterControler():
             date = self.graph_last_date
         if self.report is not None:
             self.report.set_sources(date)
-        else:
-            self.report = Reports(self.graph_last_date)
-            # Not absolutely usefull but does not take that much time and ensure 
-            # there is something to display
-            self.report.flush_temp_db()
-            self.report.build_reports()        
-            # FIXME: only for testing: not necessary to rebuild all the rankings each time
-            # It has to be updated once a day, not more
-            self.report.build_reports_lasts_days()
+
 
     def prepare_index(self, source, date = None):
         """

@@ -151,6 +151,9 @@ if __name__ == '__main__':
         
         if compute_yesterday_ranking():
             date = (datetime.date.today() - datetime.timedelta(1)).isoformat()
+            # Clean the whole database and regenerate it (like this we do not keep data of the old rankings)
+            Reports(date).flush_temp_db()
+            Reports(date).build_reports_lasts_days()
         else:
             date = datetime.date.today().isoformat()
         separator = config.get('input_keys','separator')

@@ -23,9 +23,10 @@ class MasterControler():
         self.config.read(config_file)
         root_dir =  self.config.get('directories','root')
         sys.path.append(os.path.join(root_dir,self.config.get('directories','libraries')))
-
+        from ranking.reports import Reports
+        
         # Ensure there is something to display
-        self.report = Reports(self.graph_last_date)
+        self.report = Reports(datetime.date.today())
         self.report.flush_temp_db()
         self.report.build_reports()
         self.report.build_reports_lasts_days()
@@ -36,7 +37,6 @@ class MasterControler():
         """
             Set the params to always display the latest version of the rankings
         """
-        from ranking.reports import Reports
         self.graph_last_date = datetime.date.today()
         self.graph_first_date = datetime.date.today() - datetime.timedelta(days=30)
         if date is None:

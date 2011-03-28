@@ -27,6 +27,16 @@
                     #end if
                 #end for
             </select>
+            <select name="date">
+                <option value="">All the Dates</option>
+                #for $d in $dates
+                    #if $date == $d
+                        <option value="${d}" selected>${d}</option>
+                    #else
+                        <option value="${d}">${d}</option>
+                    #end if
+                #end for
+            </select>
             <input type="submit" value="Submit"/>
         </div>
     </form>

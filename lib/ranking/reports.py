@@ -35,8 +35,6 @@ class Reports():
         if nr_days <= 0:
             return
         nr_days += 1
-        set_days = self.config.get('ranking','latest_ranking')
-        self.history_db_temp.sadd(set_days, self.date)
         for i in range(1, nr_days):
             date = self.date_raw - datetime.timedelta(i)
             iso_date = date.isoformat()
@@ -117,6 +115,8 @@ class Reports():
         """
         if date is None:
             date = self.date
+        set_days = self.config.get('ranking','all_dates')
+        self.history_db_temp.sadd(set_days, date)
         self.global_report(date)
         for source in self.sources:
             self.source_report(source = source, date = date)

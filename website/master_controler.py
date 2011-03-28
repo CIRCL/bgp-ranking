@@ -27,15 +27,17 @@ class MasterControler():
         self.report = None
         self.set_params()
 
-    def set_params(self):
+    def set_params(self, date = None):
         """
             Set the params to always display the latest version of the rankings
         """
         from ranking.reports import Reports
         self.graph_last_date = datetime.date.today()
         self.graph_first_date = datetime.date.today() - datetime.timedelta(days=30)
+        if date is None:
+            date = self.graph_last_date
         if self.report is not None:
-            self.report.set_params_report(self.graph_last_date)
+            self.report.set_sources(date)
         else:
             self.report = Reports(self.graph_last_date)
             # Not absolutely usefull but does not take that much time and ensure 

@@ -43,22 +43,22 @@ class Reports():
                 return True
         return False
     
-    def set_default_date(self, date):
+    def set_date(self, date):
         """
             Allow to reload the report displayed on the website.
         """
         if self.last_ranking is None or self.last_ranking != self.get_last_ranking():
             self.last_ranking = self.get_last_ranking()
-            
+
             if self.display_graphs_prec_day(date):
                 date = date - datetime.timedelta(1)
             self.date = date.isoformat()
 
-    def get_sources(self, date)
-            return = self.global_db.smembers(\
-                        '{date}{sep}{key}'.format(  date   = date, \
-                                                    sep    = self.separator,\
-                                                    key    = self.config.get('input_keys','index_sources')))
+    def set_sources(self, date):
+        self.sources =  self.global_db.smembers(\
+                            '{date}{sep}{key}'.format(  date   = date, \
+                                                        sep    = self.separator,\
+                                                        key    = self.config.get('input_keys','index_sources')))
     
     def __init__(self, date, ip_version = 4):
         self.config = ConfigParser.RawConfigParser()
@@ -82,8 +82,9 @@ class Reports():
         items = self.config.items('modules_to_parse')
         for item in items:
             self.impacts[item[0]] = float(item[1])
-        self.set_default_date(date)
         self.last_ranking = None
+        self.set_date(date)
+        self.set_sources(self.date)
     
     def build_reports(self, date = None):
         """

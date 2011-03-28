@@ -44,12 +44,12 @@ class MasterControler():
             # there is something to display
             self.report.build_reports()
 
-    def prepare_index(self, source):
+    def prepare_index(self, source, date = None):
         """
             Get the data from the model and prepare the ranks to pass to the index
         """
         self.set_params()
-        rank = self.report.format_report(source)
+        rank = self.report.format_report(source, date)
         histories = []
         if rank is not None:
             for r in rank:
@@ -63,27 +63,27 @@ class MasterControler():
         # FIXME: it it really usefull ?
         self.sources = self.report.sources
     
-    def get_as_infos(self, asn = None, source = None):
+    def get_as_infos(self, asn = None, source = None, date = None):
         """
             Get the data needed to display the page of the details on an AS 
         """
         as_infos, current_sources = [], []
         if asn is not None:
             self.set_params()
-            as_infos, current_sources = self.report.get_asn_descs(asn, source)
+            as_infos, current_sources = self.report.get_asn_descs(asn, source, date)
             if len(as_infos) == 0:
                 return [], []
             as_graph_infos, self.sources = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date, source)
             self.make_graph(asn, as_graph_infos)
         return as_infos, current_sources
     
-    def get_ip_infos(self, asn = None, asn_tstamp = None, source = None):
+    def get_ip_infos(self, asn = None, asn_tstamp = None, source = None, date = None):
         """
             Get the descriptions of the IPs of a subnet
         """
         if asn is not None and asn_tstamp is not None:
             self.set_params()
-            return self.report.get_ips_descs(asn, asn_tstamp, source)
+            return self.report.get_ips_descs(asn, asn_tstamp, source, date)
     
     def comparator(self, asns = None):
         """

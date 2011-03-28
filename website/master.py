@@ -60,27 +60,29 @@ class Master(object):
             return None
         return self.escape(to_check)
     
-    def asns(self, source = None, asn = None):
+    def asns(self, source = None, asn = None, date = None):
         """
             Generate the view of the global ranking
         """
         source = self.reset_if_empty(source)
         asn = self.reset_if_empty(asn)
+        date = self.reset_if_empty(date)
         if asn is not None:
-            return self.asn_details(source, asn)
+            return self.asn_details(source = source, asn = asn, date = date)
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'index_asn.tmpl'))
         self.init_template(source)
-        self.template.histories = self.controler.prepare_index(source)
+        self.template.histories = self.controler.prepare_index(source, date)
         return str(self.template)
     asns.exposed = True
     
-    def asn_details(self, source = None, asn = None, ip_details = None):
+    def asn_details(self, source = None, asn = None, ip_details = None, date = None):
         """
             Generate the view of an ASN 
         """
         asn = self.reset_if_empty(asn)
         source = self.reset_if_empty(source)
         ip_details = self.reset_if_empty(ip_details)
+        date = self.reset_if_empty(date)
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'asn_details.tmpl'))
         self.init_template(source)
         self.controler.js = self.controler.js_name = None
@@ -88,7 +90,7 @@ class Master(object):
             asn = asn.lstrip('AS')
             if asn.isdigit():
                 self.template.asn = asn
-                as_infos, current_sources = self.controler.get_as_infos(asn, source)
+                as_infos, current_sources = self.controler.get_as_infos(asn, source, date)
                 if as_infos is not None: 
                     self.template.sources = self.controler.sources
                     self.template.asn_descs = as_infos
@@ -97,7 +99,7 @@ class Master(object):
                     self.template.js_name = self.controler.js_name
                     if ip_details is not None:
                         self.template.ip_details = ip_details
-                        self.template.ip_descs = self.controler.get_ip_infos(asn, ip_details, source)
+                        self.template.ip_descs = self.controler.get_ip_infos(asn, ip_details, source, date)
                 else:
                     self.template.error = asn + " not found in the database."
             else: 

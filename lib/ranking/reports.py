@@ -27,6 +27,17 @@ class Reports():
         """
         return redis.Redis(port = int(self.config.get('redis','port_master')),\
                             db   = self.config.get('redis','history')).get(self.config.get('ranking','latest_ranking'))
+
+    def build_reports_lasts_days(self, nr_days = 1):
+        if nr_days <= 0:
+            return
+        set_days = self.config.get('ranking','latest_ranking')
+        self.history_db_temp.sadd(set_days, self.date)
+        for i in range(nr_days):
+            date = self.date_raw - datetime.timedelta(i)
+            iso_date = date.isoformat()
+            self.build_reports(iso_date)
+            self.history_db_temp.sadd(set_days, iso_date)
     
     def display_graphs_prec_day(self, date):
         """
@@ -83,6 +94,7 @@ class Reports():
         for item in items:
             self.impacts[item[0]] = float(item[1])
         self.last_ranking = None
+        self.date_raw = date
         self.set_date(date)
         self.set_sources(self.date)
     
@@ -96,6 +108,8 @@ class Reports():
         self.global_report(date)
         for source in self.sources:
             self.source_report(source = source, date = date)
+        # FIXME: only for testing: not necessary to rebuild all the rankings each time
+        self.build_reports_lasts_days()
     
     def global_report(self, date = None):
         """

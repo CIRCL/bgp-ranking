@@ -175,10 +175,10 @@ class Reports():
             source = self.config.get('input_keys','histo_global')
         if date is None:
             date = self.date
-        histo_key = '{date}{histo_key}{sep}{ip_key}'.format(sep         = self.separator,\
-                                                            date        = date,\
-                                                            histo_key   = source,\
-                                                            ip_key      = self.ip_key)
+        histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
+                                                                    date        = date,\
+                                                                    histo_key   = source,\
+                                                                    ip_key      = self.ip_key)
 
         reports_temp = self.history_db_temp.zrevrange(histo_key, 0, limit, True)
         if reports_temp is None:

@@ -45,7 +45,7 @@ class MasterControler():
             self.report.build_reports()        
             # FIXME: only for testing: not necessary to rebuild all the rankings each time
             # It has to be updated once a day, not more
-            self.build_reports_lasts_days()
+            self.report.build_reports_lasts_days()
 
     def prepare_index(self, source, date = None):
         """

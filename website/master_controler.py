@@ -42,6 +42,7 @@ class MasterControler():
             self.report = Reports(self.graph_last_date)
             # Not absolutely usefull but does not take that much time and ensure 
             # there is something to display
+            self.report.flush_temp_db()
             self.report.build_reports()        
             # FIXME: only for testing: not necessary to rebuild all the rankings each time
             # It has to be updated once a day, not more

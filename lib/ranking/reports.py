@@ -99,13 +99,15 @@ class Reports():
         self.set_date(date)
         self.set_sources(self.date)
     
+    def flush_temp_db(self):
+        self.history_db_temp.flushdb()
+    
     def build_reports(self, date = None):
         """
             Build all the reports: for all the sources independently and the global one
         """
         if date is None:
             date = self.date
-        self.history_db_temp.flushdb()
         self.global_report(date)
         for source in self.sources:
             self.source_report(source = source, date = date)
@@ -148,10 +150,10 @@ class Reports():
         if date is None:
             date = self.date
         self.build_asns_by_source(source, date)
-        histo_key = '{date}{histo_key}{sep}{ip_key}'.format(sep         = self.separator,\
-                                                            date        = date,\
-                                                            histo_key   = zset_key,\
-                                                            ip_key      = self.ip_key)
+        histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
+                                                                    date        = date,\
+                                                                    histo_key   = zset_key,\
+                                                                    ip_key      = self.ip_key)
 
         asns = self.global_db.smembers(\
                     '{date}{sep}{source}{sep}{key}'.format( sep     = self.separator,\

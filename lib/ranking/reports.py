@@ -89,15 +89,12 @@ class Reports():
         self.history_db_temp.flushdb()
         self.global_report()
         for source in self.sources:
-            histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
             self.source_report(source)
     
     def global_report(self):
         """
             Build the global report (add all the results of all the sources)
         """
-        histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = self.config.get('input_keys','histo_global'), \
-                        sep = self.separator, ip_key = self.ip_key)
         for source in self.sources:
             self.source_report(source, self.config.get('input_keys','histo_global'))
 

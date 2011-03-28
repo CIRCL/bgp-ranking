@@ -52,7 +52,7 @@ class MasterControler():
             Get the data from the model and prepare the ranks to pass to the index
         """
         self.set_params(date)
-        rank = self.report.format_report(source, date)
+        rank = self.report.format_report(source = source, date = date)
         histories = []
         if rank is not None:
             for r in rank:

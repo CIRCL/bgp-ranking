@@ -43,7 +43,7 @@ class Reports():
                 return True
         return False
     
-    def set_params_report(self, date):
+    def set_default_date(self, date):
         """
             Allow to reload the report displayed on the website.
         """
@@ -53,8 +53,12 @@ class Reports():
             if self.display_graphs_prec_day(date):
                 date = date - datetime.timedelta(1)
             self.date = date.isoformat()
-            self.sources = self.global_db.smembers('{date}{sep}{key}'.format(date = self.date, \
-                                sep = self.separator, key = self.config.get('input_keys','index_sources')))
+
+    def get_sources(self, date)
+            return = self.global_db.smembers(\
+                        '{date}{sep}{key}'.format(  date   = date, \
+                                                    sep    = self.separator,\
+                                                    key    = self.config.get('input_keys','index_sources')))
     
     def __init__(self, date, ip_version = 4):
         self.config = ConfigParser.RawConfigParser()
@@ -78,53 +82,69 @@ class Reports():
         items = self.config.items('modules_to_parse')
         for item in items:
             self.impacts[item[0]] = float(item[1])
-
+        self.set_default_date(date)
         self.last_ranking = None
-        self.set_params_report(date)
     
-    def build_reports(self):
+    def build_reports(self, date = None):
         """
             Build all the reports: for all the sources independently and the global one
         """
+        if date is None:
+            date = self.date
         self.history_db_temp.flushdb()
-        self.global_report()
+        self.global_report(date)
         for source in self.sources:
-            self.source_report(source)
+            self.source_report(source = source, date = date)
     
-    def global_report(self):
+    def global_report(self, date = None):
         """
             Build the global report (add all the results of all the sources)
         """
+        if date is None:
+            date = self.date
         for source in self.sources:
-            self.source_report(source, self.config.get('input_keys','histo_global'))
+            self.source_report(source, self.config.get('input_keys','histo_global'), date)
 
-    def build_asns_by_source(self, source):
+    def build_asns_by_source(self, source, date = None):
         """
             Create a bunch of keys to easily find the sources associed to the asn/subnet
         """
         if source == self.config.get('input_keys','histo_global'):
             return
-
+        if date is None:
+            date = self.date
         pipeline = self.history_db_temp.pipeline(transaction=False)
-        asns_details = self.global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date,\
-                            sep = self.separator, source = source,\
-                            key = self.config.get('input_keys','index_asns_details')))
+        asns_details = self.global_db.smembers(\
+                            '{date}{sep}{source}{sep}{key}'.format( sep     = self.separator,\
+                                                                    date    = date,\
+                                                                    source  = source,\
+                                                                    key     = self.config.get('input_keys','index_asns_details')))
         for detail in asns_details:
             asn, ts = detail.split(self.separator)
-            pipeline.sadd(asn, source)
-            pipeline.sadd(detail, source)
+            pipeline.sadd('{date}{sep}{asn}'.format(date = date, sep = self.separator, asn = asn), source)
+            pipeline.sadd('{date}{sep}{detail}'.format(date = date, sep = self.separator, detail = detail), source)
         pipeline.execute()
 
-    def source_report(self, source, zset_key = None):
+    def source_report(self, source, zset_key = None, date = None):
         """
             Build the report of a particular source
         """
         if zset_key is None:
             zset_key = source
-        self.build_asns_by_source(source)
-        histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = zset_key, sep = self.separator, ip_key = self.ip_key)
-        asns = self.global_db.smembers('{date}{sep}{source}{sep}{key}'.format(date = self.date, sep = self.separator, \
-                                    source = source, key = self.config.get('input_keys','index_asns')))
+        if date is None:
+            date = self.date
+        self.build_asns_by_source(source, date)
+        histo_key = '{date}{histo_key}{sep}{ip_key}'.format(sep         = self.separator,\
+                                                            date        = date,\
+                                                            histo_key   = zset_key,\
+                                                            ip_key      = self.ip_key)
+
+        asns = self.global_db.smembers(\
+                    '{date}{sep}{source}{sep}{key}'.format( sep     = self.separator,\
+                                                            date    = date,\
+                                                            source  = source,\
+                                                            key     = self.config.get('input_keys','index_asns')))
+
         pipeline = self.history_db_temp.pipeline(transaction=False)
         for asn in asns:
             if asn != self.config.get('modules_global','default_asn'):
@@ -133,19 +153,27 @@ class Reports():
                     pipeline.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
         pipeline.execute()
 
-    def format_report(self, source = None, limit = 50):
+    def format_report(self, source = None, limit = 50, date = None):
         """
             Format the report to be displayed in the website
         """
         if source is None:
             source = self.config.get('input_keys','histo_global')
-        histo_key = '{histo_key}{sep}{ip_key}'.format(histo_key = source, sep = self.separator, ip_key = self.ip_key)
-        if histo_key is None:
-            return None
+        if date is None:
+            date = self.date
+        histo_key = '{date}{histo_key}{sep}{ip_key}'.format(sep         = self.separator,\
+                                                            date        = date,\
+                                                            histo_key   = source,\
+                                                            ip_key      = self.ip_key)
+
         reports_temp = self.history_db_temp.zrevrange(histo_key, 0, limit, True)
+        if reports_temp is None:
+            return None
         pipeline = self.history_db_temp.pipeline()
         for report_temp in reports_temp:
-            pipeline.smembers(report_temp[0])
+            pipeline.smembers('{date}{sep}{asn}'.format(sep     = self.separator,\
+                                                        date    = date,\
+                                                        asn     = report_temp[0]))
         sources = pipeline.execute()
         report = [list(x) + [', '.join(y)] for x,y in zip(reports_temp,sources)]
         return report
@@ -158,8 +186,12 @@ class Reports():
             source = self.config.get('input_keys','histo_global')
         if date is None:
             date = self.date
-        return self.history_db.get('{asn}{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep = self.separator, \
-                                        asn = asn, date = date, source = source, ip_key = self.ip_key))
+        return self.history_db.get(\
+                    '{asn}{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep     = self.separator,\
+                                                                        asn     = asn,\
+                                                                        date    = date,\
+                                                                        source  = source,\
+                                                                        ip_key  = self.ip_key))
 
     def prepare_graphe_js(self, asn, first_date, last_date, sources = None):
         """
@@ -173,8 +205,11 @@ class Reports():
 
         pipeline = self.global_db.pipeline()
         for date in dates:
-            pipeline.smembers('{date}{sep}{key}'.format(date = date, sep = self.separator, \
-                                key = self.config.get('input_keys','index_sources')))
+            pipeline.smembers(\
+                '{date}{sep}{key}'.format(  date    = date,\
+                                            sep     = self.separator,\
+                                            key     = self.config.get('input_keys','index_sources')))
+
         lists_sources = pipeline.execute()
         to_return_sources = set(()).union(*lists_sources)
 
@@ -189,8 +224,13 @@ class Reports():
         for source in sources:
             keys[source] = []
             for date in dates:
-                keys[source].append('{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = asn, \
-                            date = date, source = source, v4 = self.config.get('input_keys','rankv4')))
+                keys[source].append(\
+                    '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep     = self.separator,\
+                                                                    asn     = asn,\
+                                                                    date    = date,\
+                                                                    source  = source,\
+                                                                    v4      = self.config.get('input_keys','rankv4')))
+
             pipeline.mget(keys[source])
         histories = pipeline.execute()
         if len(histories) == 0:
@@ -216,7 +256,7 @@ class Reports():
             ranks_by_days[ranks] += 1 
         return ranks_by_days, to_return_sources
         
-    def get_asn_descs(self, asn, sources = None):
+    def get_asn_descs(self, asn, sources = None, date = None):
         """
             Get the details of an ASN
         """
@@ -224,34 +264,42 @@ class Reports():
             sources = self.sources
         else:
             sources = [sources]
+        if date is None:
+            date = self.date
         timestamps = self.global_db.smembers(asn)
         if len(timestamps) == 0:
             # The ASN does not exists in the database
             return [], []
-        current_asn_sources = self.history_db_temp.smembers(asn)
+        current_asn_sources = self.history_db_temp.smembers(\
+                                    '{date}{sep}{asn}'.format(  date    = date,\
+                                                                sep     = self.separator,\
+                                                                asn     = asn))
         asn_descs_to_print = []
         for timestamp in timestamps:
-            asn_timestamp = '{asn}{sep}{timestamp}'.format(asn = asn, sep = self.separator, timestamp = timestamp)
-            asn_timestamp_key = '{asn_timestamp}{sep}'.format(sep = self.separator, asn_timestamp = asn_timestamp)
+            asn_timestamp_temp = '{date}{sep}{asn}{sep}{timestamp}'.format( sep         = self.separator,\
+                                                                            date        = date,\
+                                                                            asn         = asn,\
+                                                                            timestamp   = timestamp)
+            asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(sep = self.separator, asn = asn, timestamp = timestamp)
             nb_of_ips = 0 
             pipeline = self.global_db.pipeline()
             for source in sources:
                 pipeline.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
-                                    asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
+                                    asn_timestamp_key = asn_timestamp_key, date = date, source=source))
             nb_of_ips += sum(pipeline.execute())
             if nb_of_ips > 0:
-                keys = ['{asn_timestamp_key}{owner}'.format(asn_timestamp_key = asn_timestamp_key, \
-                                                            owner = self.config.get('input_keys','owner')),
+                keys = ['{asn_timestamp_key}{owner}'.   format(asn_timestamp_key = asn_timestamp_key, \
+                                                                           owner = self.config.get('input_keys','owner')),
                         '{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, \
-                                                            ip_block = self.config.get('input_keys','ips_block'))]
+                                                                        ip_block = self.config.get('input_keys','ips_block'))]
                 owner, ip_block = self.global_db.mget(keys)
-                sources_web = self.history_db_temp.smembers(asn_timestamp)
+                sources_web = self.history_db_temp.smembers(asn_timestamp_temp)
                 asn_descs_to_print.append([asn, timestamp, owner, ip_block, nb_of_ips, ', '.join(sources_web)])
         to_return = sorted(asn_descs_to_print, key=lambda desc: IP(desc[3]).len())
         return to_return, current_asn_sources
 
 
-    def get_ips_descs(self, asn, asn_timestamp, sources = None):
+    def get_ips_descs(self, asn, asn_timestamp, sources = None, date = None):
         """
             Get the details of an IP
         """
@@ -259,6 +307,8 @@ class Reports():
             sources = self.sources
         else:
             sources = [sources]
+        if date is None:
+            date = self.date
         key_list_tstamp = self.config.get('input_keys','list_tstamp')
         key_infection = self.config.get('input_keys','infection')
         key_raw = self.config.get('input_keys','raw')
@@ -269,7 +319,7 @@ class Reports():
         pipeline = self.global_db.pipeline()
         for source in sources:
             pipeline.smembers('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
-                                        asn_timestamp_key = asn_timestamp_key, date = self.date, source=source))
+                                        asn_timestamp_key = asn_timestamp_key, date = date, source=source))
         ips_by_source = pipeline.execute()
         if len(ips_by_source) == 0:
             return []

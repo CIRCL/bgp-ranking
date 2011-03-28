@@ -31,9 +31,10 @@ class Reports():
     def build_reports_lasts_days(self, nr_days = 1):
         if nr_days <= 0:
             return
+        nr_days += 1
         set_days = self.config.get('ranking','latest_ranking')
         self.history_db_temp.sadd(set_days, self.date)
-        for i in range(nr_days):
+        for i in range(1, nr_days):
             date = self.date_raw - datetime.timedelta(i)
             iso_date = date.isoformat()
             self.build_reports(iso_date)
@@ -108,8 +109,6 @@ class Reports():
         self.global_report(date)
         for source in self.sources:
             self.source_report(source = source, date = date)
-        # FIXME: only for testing: not necessary to rebuild all the rankings each time
-        self.build_reports_lasts_days()
     
     def global_report(self, date = None):
         """

@@ -42,13 +42,16 @@ class MasterControler():
             self.report = Reports(self.graph_last_date)
             # Not absolutely usefull but does not take that much time and ensure 
             # there is something to display
-            self.report.build_reports()
+            self.report.build_reports()        
+            # FIXME: only for testing: not necessary to rebuild all the rankings each time
+            # It has to be updated once a day, not more
+            self.build_reports_lasts_days()
 
     def prepare_index(self, source, date = None):
         """
             Get the data from the model and prepare the ranks to pass to the index
         """
-        self.set_params()
+        self.set_params(date)
         rank = self.report.format_report(source, date)
         histories = []
         if rank is not None:
@@ -69,7 +72,7 @@ class MasterControler():
         """
         as_infos, current_sources = [], []
         if asn is not None:
-            self.set_params()
+            self.set_params(date)
             as_infos, current_sources = self.report.get_asn_descs(asn, source, date)
             if len(as_infos) == 0:
                 return [], []
@@ -82,7 +85,7 @@ class MasterControler():
             Get the descriptions of the IPs of a subnet
         """
         if asn is not None and asn_tstamp is not None:
-            self.set_params()
+            self.set_params(date)
             return self.report.get_ips_descs(asn, asn_tstamp, source, date)
     
     def comparator(self, asns = None):

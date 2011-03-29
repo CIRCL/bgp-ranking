@@ -50,21 +50,16 @@ Homepage
 --------
 
 * latest ranking of each source available
-* each ASN: all the sources where it has been found
-* ranking of each day (global + by source), or at least the last week
 
 ASN Details
 -----------
-* display all the sources where the AS has been found and highligh depending 
-  on the number of sources where it has been found + credibility
+* highligh depending on the number of sources where it has been found + credibility
 * ability to display the details of the other days (click on the graph?)
-* sort the subnets/size 
 
 IP Details
 ----------
 
 * highligh the IPs found in more than one source
-* sort the IPs
 
 Documentation
 =============

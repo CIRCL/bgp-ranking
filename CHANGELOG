@@ -2,6 +2,20 @@
 Changelog
 =========
 
+v1.1.1
+
+New 
+ * Website: Ability to display the ranking of the last 2 days (or more)
+ * Website: Display the Sources where the ASN has been found (index and details)
+ * Website: In the ASNs details, the subnets are sorted by size
+ * Website: Same for the IPs
+
+Bugfixes:
+ * Sort the IPs by subnets correctly
+ * Update the date of the source files correctly
+ * Website: XSS Vulnerability
+ * Website: Escape the input
+
 v1.1
 
 New:

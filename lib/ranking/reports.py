@@ -76,6 +76,9 @@ class Reports():
                                                         key    = self.config.get('input_keys','index_sources')))
     
     def set_dates(self):
+        """
+            Get the available sources from the database
+        """
         self.dates = self.history_db_temp.smembers(self.config.get('ranking','all_dates'))
     
     def __init__(self, date, ip_version = 4):
@@ -103,6 +106,8 @@ class Reports():
         self.last_ranking = None
         self.date_raw = date
         self.set_date(date)
+        self.set_sources(date)
+        self.set_dates()
     
     def flush_temp_db(self):
         """
@@ -118,11 +123,11 @@ class Reports():
             date = self.date
         set_days = self.config.get('ranking','all_dates')
         self.history_db_temp.sadd(set_days, date)
+        self.set_sources(date)
         self.global_report(date)
         for source in self.sources:
             self.source_report(source = source, date = date)
         self.set_dates()
-        self.set_sources(date)
     
     def global_report(self, date = None):
         """

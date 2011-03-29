@@ -152,8 +152,9 @@ if __name__ == '__main__':
         if compute_yesterday_ranking():
             date = (datetime.date.today() - datetime.timedelta(1)).isoformat()
             # Clean the whole database and regenerate it (like this we do not keep data of the old rankings)
-            Reports(date).flush_temp_db()
-            Reports(date).build_reports_lasts_days()
+            report = Reports(date)
+            report.flush_temp_db()
+            report.build_reports_lasts_days()
         else:
             date = datetime.date.today().isoformat()
         separator = config.get('input_keys','separator')
@@ -191,5 +192,5 @@ if __name__ == '__main__':
         rmpid(ranking_process_service)
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Updating the reports...')
-        Reports(datetime.date.today()).build_reports()
+        Reports(date).build_reports()
         syslog.syslog(syslog.LOG_INFO, '...done.')

@@ -48,7 +48,7 @@ class Master(object):
         self.controler.get_sources()
         self.controler.get_dates()
         self.template.sources = self.controler.sources
-        self.template.dates = self.controler.dates
+        self.template.dates = sorted(self.controler.dates)
         self.template.source = source
         self.template.date = date
     
@@ -96,7 +96,7 @@ class Master(object):
                 as_infos, current_sources = self.controler.get_as_infos(asn, source, date)
                 if as_infos is not None: 
                     self.template.sources = self.controler.sources
-                    self.template.dates = self.controler.dates
+                    self.template.dates = sorted(self.controler.dates)
                     self.template.asn_descs = as_infos
                     self.template.current_sources = current_sources
                     self.template.javascript = self.controler.js

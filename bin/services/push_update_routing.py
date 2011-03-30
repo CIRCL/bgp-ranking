@@ -150,9 +150,10 @@ if __name__ == '__main__':
         os.unlink(filename)
         
         if compute_yesterday_ranking():
-            date = (datetime.date.today() - datetime.timedelta(1)).isoformat()
+            date_raw = datetime.date.today() - datetime.timedelta(1)
             # Clean the whole database and regenerate it (like this we do not keep data of the old rankings)
-            report = Reports(date)
+            date = date_raw.isoformat()
+            report = Reports(date_raw)
             report.flush_temp_db()
             report.build_reports_lasts_days(self.config.get('ranking','days'))
         else:

@@ -157,7 +157,8 @@ if __name__ == '__main__':
             report.flush_temp_db()
             report.build_reports_lasts_days(int(config.get('ranking','days')))
         else:
-            date = datetime.date.today().isoformat()
+            date_raw = datetime.date.today()
+            date = date_raw.isoformat()
         separator = config.get('input_keys','separator')
         sources = global_db.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
         

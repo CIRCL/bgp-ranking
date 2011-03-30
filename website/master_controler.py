@@ -24,12 +24,12 @@ class MasterControler():
         root_dir =  self.config.get('directories','root')
         sys.path.append(os.path.join(root_dir,self.config.get('directories','libraries')))
         from ranking.reports import Reports
-        
+
         # Ensure there is something to display
         self.report = Reports(datetime.date.today())
         self.report.flush_temp_db()
-        self.report.build_reports()
         self.report.build_reports_lasts_days(int(self.config.get('ranking','days')))
+        self.report.build_reports()
         self.set_params()
         
 
@@ -43,6 +43,7 @@ class MasterControler():
             date = self.graph_last_date
         if self.report is not None:
             self.report.set_sources(date)
+        self.report.set_dates()
 
 
     def prepare_index(self, source, date = None):

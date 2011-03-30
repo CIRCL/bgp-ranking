@@ -155,7 +155,7 @@ if __name__ == '__main__':
             date = date_raw.isoformat()
             report = Reports(date_raw)
             report.flush_temp_db()
-            report.build_reports_lasts_days(self.config.get('ranking','days'))
+            report.build_reports_lasts_days(int(self.config.get('ranking','days')))
         else:
             date = datetime.date.today().isoformat()
         separator = config.get('input_keys','separator')

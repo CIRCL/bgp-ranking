@@ -29,7 +29,7 @@ class MasterControler():
         self.report = Reports(datetime.date.today())
         self.report.flush_temp_db()
         self.report.build_reports()
-        self.report.build_reports_lasts_days(self.config.get('ranking','days'))
+        self.report.build_reports_lasts_days(int(self.config.get('ranking','days')))
         self.set_params()
         
 

@@ -44,6 +44,7 @@ class MasterControler():
         if self.report is not None:
             self.report.set_sources(date)
         self.report.set_dates()
+        self.report.set_date(date)
 
 
     def prepare_index(self, source, date = None):

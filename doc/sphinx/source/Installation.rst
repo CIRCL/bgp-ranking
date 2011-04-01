@@ -43,11 +43,38 @@ Repository of the Redis client (Python). You can safely get the latest stable ve
 .. _gitorious: http://gitorious.org/bgp-ranking/bgp-ranking/archive-tarball/1.0.1
 .. _github: https://github.com/Rafiot/bgp-ranking/tree/1.0.1
 
+Optional dependencies
+---------------------
+
+.. _hiredis: https://github.com/pietern/hiredis-py
+
+`hiredis`_ may improve the performances of the system. To use it, you have to do the following: 
+
+1. Install the dependencies
+
+    ::
+        
+        $ apt-get install python-dev python-setuptools
+
+2. Fetch hiredis-py
+    
+    ::
+        
+        $ wget http://pypi.python.org/packages/source/h/hiredis/hiredis-0.1.0.tar.gz#md5=0030abe2fd3acbecbd0d960d60844142
+
+3. Install hiredis
+
+    ::
+        
+        $ easy_install hiredis
+
+
+
 BGP Ranking
 ===========
 
 You can get the latest stable version of the code from `gitorious`_ or 
-from `github`_. Now the latest stable version is 1.0.1. Always ensure you 
+from `github`_. Now the latest stable version is 1.1. Always ensure you 
 are using the latest stable version.
 
 
@@ -76,7 +103,7 @@ Our test environnement is based on Ubuntu 10.10. Except the following programms,
 versions of the repositories: 
 
 * Redis : 2.2
-* Redis-py : 2.2.3
+* Redis-py : 2.2.4
 * libbgpdump : 1.4.99.13
 * Rgraph : 2011-01-28-stable
 

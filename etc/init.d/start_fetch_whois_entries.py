@@ -43,8 +43,8 @@ if __name__ == '__main__':
             service_start_multiple(servicename = service, param = option, number = int(config.get('processes','whois_fetch')))
 
     elif sys.argv[1] == "stop":
-        print("Stopping sorting...")
-        syslog.syslog(syslog.LOG_INFO, "Stopping sorting...")
+        print("Stopping fetching...")
+        syslog.syslog(syslog.LOG_INFO, "Stopping fetching...")
         pids = pidof(processname=service)
         if pids:
             print(service + " to be stopped...")

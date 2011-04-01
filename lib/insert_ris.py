@@ -24,9 +24,9 @@ import dateutil.parser
 
 class InsertRIS():
     """
-        Generate a ASNsDescriptions to all IPsDescriptions wich do not already have one.
+        Link the entries with their ASN. 
         
-        Take a look at doc/uml-diagramms/RIS\ Fetching.png to see a diagramm.
+        A new asn "object" is created by :meth:`add_asn_entry` if it does not already exists
     """
     default_asn_desc = None
     max_consecutive_errors = 5
@@ -44,9 +44,12 @@ class InsertRIS():
         self.key_asn = self.config.get('input_keys','asn')
         self.key_owner = self.config.get('input_keys','owner')
         self.key_ips_block = self.config.get('input_keys','ips_block')
-        self.cache_db   = redis.Redis(port = int(self.config.get('redis','port_cache')) , db=int(self.config.get('redis','cache_ris')))
-        self.cache_db_0 = redis.Redis(port = int(self.config.get('redis','port_cache')) , db=int(self.config.get('redis','temp')))
-        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')), db=int(self.config.get('redis','global')))
+        self.cache_db   = redis.Redis(port = int(self.config.get('redis','port_cache')),\
+                                        db = int(self.config.get('redis','cache_ris')))
+        self.cache_db_0 = redis.Redis(port = int(self.config.get('redis','port_cache')) ,\
+                                        db = int(self.config.get('redis','temp')))
+        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
+                                        db = int(self.config.get('redis','global')))
         default_asn_members = self.global_db.smembers(self.config.get('modules_global','default_asn'))
         if len(default_asn_members) == 0 :
             self.default_asn_key = self.add_asn_entry(\
@@ -58,7 +61,9 @@ class InsertRIS():
 
     def add_asn_entry(self, asn, owner, ips_block):
         """
-            Add a new subnet to the ASNs known by the system, only if the subnet is not already present.
+            Add a new subnet to the ASNs known by the system, 
+            only if the subnet is not already present. Elsewhere, simply return 
+            the value from the database.
         """
         key = None
         asn_timestamps = self.global_db.smembers(asn)
@@ -74,7 +79,8 @@ class InsertRIS():
             if block == ips_block:
                 asn, timestamp, b = key_list[i].split(self.separator)
                 temp_key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=timestamp)
-                if self.global_db.get("{key}{sep}{owner}".format(key = temp_key, sep = self.separator, owner = self.key_owner)) == owner:
+                if self.global_db.get("{key}{sep}{owner}".format(key = temp_key,\
+                    sep = self.separator, owner = self.key_owner)) == owner:
                     key = temp_key
                     break
             i =1
@@ -91,7 +97,8 @@ class InsertRIS():
 
     def update_db_ris(self, data):
         """ 
-            Update the database with the RIS whois informations and return the corresponding entry
+            Use :meth:`add_asn_entry` to update the database with the RIS whois informations 
+            from :class:`WhoisFetcher` and return the corresponding entry.
         """
         splitted = data.partition('\n')
         ris_origin = splitted[0]
@@ -105,7 +112,8 @@ class InsertRIS():
 
     def get_ris(self):
         """
-            Get the RIS whois information on a particular interval and put it into redis
+            Get the RIS whois information if the IPs without ASNs and put it into redis.
+            The entry has now a link with his ASN.
         """
         key_no_asn = self.config.get('redis','no_asn')
         errors = 0 

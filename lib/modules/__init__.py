@@ -10,5 +10,6 @@ from shadowserver_sinkhole import ShadowserverSinkhole
 from spyeyetracker_ddos import SpyeyetrackerDdos
 from spyeyetracker_ipblocklist import SpyeyetrackerIpBlockList
 from sshbl_base import  SshblBase
+from urlquery import URLQuery
 from zeustracker_ddos import ZeustrackerDdos
 from zeustracker_ipblocklist import ZeustrackerIpBlockList

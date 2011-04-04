@@ -150,12 +150,14 @@ if __name__ == '__main__':
         os.unlink(filename)
         
         if compute_yesterday_ranking():
-            date_raw = datetime.date.today() - datetime.timedelta(1)
+            date_raw = datetime.date.today()
             # Clean the whole database and regenerate it (like this we do not keep data of the old rankings)
-            date = date_raw.isoformat()
             report = Reports(date_raw)
             report.flush_temp_db()
             report.build_reports_lasts_days(int(config.get('ranking','days')))
+
+            # date used to generate a ranking with the data in the database at this point
+            date = (date_raw - datetime.timedelta(1)).isoformat()
         else:
             date_raw = datetime.date.today()
             date = date_raw.isoformat()

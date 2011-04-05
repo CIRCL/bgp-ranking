@@ -67,10 +67,12 @@ class Reports():
             self.date = date.isoformat()
         return self.date
 
-    def set_sources(self, date):
+    def set_sources(self, date = None):
         """
             Set the sources paset on a `date`
         """
+        if date is None:
+            date = self.date
         self.sources =  self.global_db.smembers(\
                             '{date}{sep}{key}'.format(  date   = date, \
                                                         sep    = self.separator,\
@@ -107,7 +109,7 @@ class Reports():
         self.last_ranking = None
         self.date_raw = date
         self.set_date(date)
-        self.set_sources(date)
+        self.set_sources()
         self.set_dates()
     
     def flush_temp_db(self):

@@ -103,3 +103,22 @@ The dataset is a flat file
 .. _Malware Domain List: http://www.malwaredomainlist.com/
 
 More information available on the `Malware Domain List`_ website.
+
+
+URL Query
+=========
+
+The dataset is a flat file
+
+.. _URL Query: http://urlquery.net/
+
+More information available on the `URL Query`_ website.
+
+Blocklist
+=========
+
+The dataset is a flat file
+
+.. _Blocklist.de: http://www.blocklist.de
+
+More information available on the `URL Query`_ website.

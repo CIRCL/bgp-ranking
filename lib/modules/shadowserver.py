@@ -39,13 +39,13 @@ class Shadowserver(AbstractModule):
         pass
     
     def __init__(self):
-        self.date = datetime.date.today()
         AbstractModule.__init__(self)
 
     def parse(self):
         """ 
             Parse the list
         """
+        self.date = datetime.date.today()
         self.ips = []
         for file in self.files:
             reader = csv.reader(open(file), delimiter=',')

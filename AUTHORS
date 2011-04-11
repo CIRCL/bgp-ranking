@@ -1,3 +1,9 @@
 BGP Ranking is written and maintained by Raphaël Vinot <raphael.vinot@gmail.com>.
 
-Many thanks to Alexandre Dulaunoy <a@foo.be> for his help, ideas and support. 
+Many thanks to Alexandre Dulaunoy <a@foo.be> for his help, ideas and support.
+
+Contributors: 
+ - Conostix team, pentesting of the web interface. 
+    * Davy Stoffel
+    * Rémi Laurent
+    * Wiliam Robinet

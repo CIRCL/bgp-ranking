@@ -26,7 +26,6 @@ class AbuseCh(AbstractModule):
     
     
     def __init__(self, raw_dir):
-        self.date = datetime.date.today()
         AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
  
@@ -35,6 +34,7 @@ class AbuseCh(AbstractModule):
             Parse the list depending on the type (blocklist or ddos)
             and put the entries into redis
         """
+        self.date = datetime.date.today()
         self.ips = []
         for file in self.files:
             blocklist = open(file)

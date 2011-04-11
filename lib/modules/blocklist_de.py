@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-    DShield Top IPs parser
-    ~~~~~~~~~~~~~~~~~~~~
+    Blocklist.de parser
+    ~~~~~~~~~~~~~~~~
 
-    Class used to parse the Top IPs files provided by DShield
+    Class used to parse the files provided by blocklist.de
 """
 
 import re
@@ -15,18 +15,17 @@ import datetime
 from modules.abstract_module import AbstractModule
 
 
-class DshieldTopIPs(AbstractModule):
+class BlocklistDe(AbstractModule):
     """
         Parser
     """
-    
+
     def __init__(self, raw_dir):
-        # Dshield doesn't give a date for his TopIPs list. So we assume that 
-        # the list is updated every days
-        self.directory = 'dshield/topips/'
+        self.directory = 'blocklist_de/ip/'
         AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
- 
+
+
     def parse(self):
         """ 
             Parse the list

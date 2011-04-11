@@ -5,13 +5,14 @@
 #attr ip_details = None
 #attr javascript = None
 #attr asn_descs = []
+#attr current_sources = []
 
 #block menu
     <form method="get" action="/asn_details">
         <div>
             <input type="text" name="asn" value="$asn"/>
             <select name="source">
-                <option value="">Select a particular source</option>
+                <option value="">All the sources</option>
                 #for $s in $sources
                     #if $source == $s
                         <option value="${s}" selected>${s}</option>
@@ -20,9 +21,30 @@
                     #end if
                 #end for
             </select>
+            <select name="date">
+                <option value="">Choose a date</option>
+                #for $d in $dates
+                    #if $date == $d
+                        <option value="${d}" selected>${d}</option>
+                    #else
+                        <option value="${d}">${d}</option>
+                    #end if
+                #end for
+            </select>
             <input type="submit" value="Submit"/>
         </div>
     </form>
+    <br/>
+    #if $asn is not None
+        This AS ($asn) is known in the following lists:
+        <ul>
+        #for $current_source in $current_sources
+            <li>
+                $current_source
+            </li>
+        #end for
+        </ul>
+    #end if
 #end block menu
 
 #block main_content
@@ -38,18 +60,16 @@
                 <th scope="col" >Owner</th>
                 <th scope="col" >Block</th>
                 <th scope="col" >Number of IPs today</th>
+                <th scope="col" >Source(s)</th>
             </tr>
         </thead>
         #for $asn_desc in $asn_descs
         <tr>
             <td>$asn_desc[1]</td>
             <td>$asn_desc[2]</td>
-            #if $source is not None
-                <td><a href="/asn_details?source=${source};asn=${asn};ip_details=${asn_desc[1]}">$asn_desc[3]</a></td>
-            #else
-                <td><a href="/asn_details?asn=${asn};ip_details=${asn_desc[1]}">$asn_desc[3]</a></td>
-            #end if
+            <td><a href="/asn_details?date=${date};source=${source};asn=${asn};ip_details=${asn_desc[1]}">$asn_desc[3]</a></td>
             <td>$asn_desc[4]</td>
+            <td>$asn_desc[5]</td>
         </tr>
         #end for
     </table>
@@ -61,9 +81,6 @@
                         <th scope="col" >Timestamp</th>
                         <th scope="col" >IP Address</th>
                         <th scope="col" >List Name</th>
-                        <th scope="col" >Infection type</th>
-                        <th scope="col" >Raw Informations</th>
-                        <th scope="col" >Whois entry</th>
                     </tr>
                 </thead>
                 #for $ip_desc in $ip_descs
@@ -71,9 +88,6 @@
                     <td>$ip_desc[0]</td>
                     <td>$ip_desc[1]</td>
                     <td>$ip_desc[2]</td>
-                    <td>$ip_desc[3]</td>
-                    <td>$ip_desc[4]</td>
-                    <td><pre>$ip_desc[5]</pre></td>
                 </tr>
                 #end for
             </table>

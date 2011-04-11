@@ -18,12 +18,22 @@
         <div>
             <input type="text" name="asn" value="$asn"/>
             <select name="source">
-                <option value="">Select a particular source</option>
+                <option value="">All the sources</option>
                 #for $s in $sources
                     #if $source == $s
                         <option value="${s}" selected>${s}</option>
                     #else
                         <option value="${s}">${s}</option>
+                    #end if
+                #end for
+            </select>
+            <select name="date">
+                <option value="">Choose a date</option>
+                #for $d in $dates
+                    #if $date == $d
+                        <option value="${d}" selected>${d}</option>
+                    #else
+                        <option value="${d}">${d}</option>
                     #end if
                 #end for
             </select>
@@ -43,11 +53,7 @@
         </thead>
         #for $history in $histories
         <tr>
-            #if $source is not None
-                <td><a href="/asn_details?source=${source};asn=${history[0]}">${history[0]}</a></td>
-            #else
-                <td><a href="/asn_details?asn=${history[0]}">${history[0]}</a></td>
-            #end if
+            <td><a href="/asn_details?date=${date};source=${source};asn=${history[0]}">${history[0]}</a></td>
             <td>$history[1]</td>
             <td>$history[2]</td>
         </tr>

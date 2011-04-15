@@ -26,6 +26,14 @@ Improvements
 
 * Make a "standard module" which just look for IP Addresses in a file.
 
+* Reduce the length of the keys (idea of adulau)::
+    
+    5577|2011-03-30|URLQuery|rankv4
+    -> 5577|20110330|1|4  
+    
+    1->URLQuery
+    4->rankv4
+
 New functionalities
 ===================
 

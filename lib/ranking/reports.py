@@ -64,8 +64,8 @@ class Reports():
 
             if self.display_graphs_prec_day(date):
                 date = date - datetime.timedelta(1)
+            self.date_raw = date
             self.date = date.isoformat()
-        return self.date
 
     def set_sources(self, date = None):
         """

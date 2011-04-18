@@ -41,7 +41,7 @@ class MasterControler():
         self.graph_first_date = datetime.date.today() - datetime.timedelta(days=30)
         if date is None:
             date = self.graph_last_date
-        self.report.set_date(date)
+            self.report.set_date(date)
         self.report.set_sources(date)
         self.report.set_dates()
 

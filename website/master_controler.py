@@ -42,7 +42,7 @@ class MasterControler():
         if date is None:
             date = self.graph_last_date
         self.report.set_date(date)
-        self.report.set_sources()
+        self.report.set_sources(date)
         self.report.set_dates()
 
 

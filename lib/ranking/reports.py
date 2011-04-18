@@ -194,7 +194,7 @@ class Reports():
         pipeline = self.history_db_temp.pipeline(transaction=False)
         for asn in asns:
             if asn != self.config.get('modules_global','default_asn'):
-                rank = self.get_daily_rank(asn, source)
+                rank = self.get_daily_rank(asn, source, date)
                 if rank is not None:
                     pipeline.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
         pipeline.execute()

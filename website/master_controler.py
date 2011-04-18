@@ -63,8 +63,7 @@ class MasterControler():
             Returns all the available sources given by the model
         """
         if date is not None:
-            self.report.set_date(date)
-            self.report.set_sources()
+            self.report.set_sources(date)
         return self.report.sources
 
     def get_dates(self):

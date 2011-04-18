@@ -64,8 +64,8 @@ class Reports():
 
             if self.display_graphs_prec_day(date):
                 date = date - datetime.timedelta(1)
-            self.date_raw = date
-            self.date = date.isoformat()
+        self.date_raw = date
+        self.date = date.isoformat()
 
     def set_sources(self, date = None):
         """
@@ -107,7 +107,6 @@ class Reports():
         for item in items:
             self.impacts[item[0]] = float(item[1])
         self.last_ranking = None
-        self.date_raw = date
         self.set_date(date)
         self.set_sources()
         self.set_dates()

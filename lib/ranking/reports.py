@@ -59,8 +59,8 @@ class Reports():
         """
             Allow to reload the report displayed on the website.
         """
-        #if self.display_graphs_prec_day(date):
-            #date = date - datetime.timedelta(1)
+        if self.display_graphs_prec_day(date):
+            date = date - datetime.timedelta(1)
         self.date_raw = date
         self.date = date.isoformat()
 

@@ -94,8 +94,8 @@ class Master(object):
                 self.template.asn = asn
                 as_infos, current_sources = self.controler.get_as_infos(asn, source, date)
                 if as_infos is not None: 
-                    self.template.sources = self.controler.sources
-                    self.template.dates = sorted(self.controler.dates)
+                    self.template.sources = self.controler.get_sources(date)
+                    self.template.dates = sorted(self.controler.get_dates())
                     self.template.asn_descs = as_infos
                     self.template.current_sources = current_sources
                     self.template.javascript = self.controler.js
@@ -124,7 +124,7 @@ class Master(object):
         self.init_template(source)
         if asns is not None:
             self.template.asns = self.controler.comparator(asns)
-            self.template.sources = self.controler.sources
+            self.template.sources = self.controler.get_sources()
             self.template.js_comparator = self.controler.js
             self.template.js_comparator_name = self.controler.js_name
             if self.template.js_comparator is None:

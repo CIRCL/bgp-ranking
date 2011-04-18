@@ -294,9 +294,9 @@ class Reports():
                 if rank is not None:
                     asn_day = dates[i]
                     if ranks_by_days.get(asn_day, None) is None:
-                        ranks_by_days[asn_day] = float(rank)
+                        ranks_by_days[asn_day] = float(rank) * self.impacts[str(source)]
                     else:
-                        ranks_by_days[asn_day] += float(rank)
+                        ranks_by_days[asn_day] += float(rank) * self.impacts[str(source)]
                 i += 1 
         for ranks in ranks_by_days:
             ranks_by_days[ranks] += 1 

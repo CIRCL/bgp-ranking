@@ -42,13 +42,12 @@ class Master(object):
             Initialize the basic components of the template
         """
         source = self.reset_if_empty(source)
+        date = self.reset_if_empty(date)
         self.template.rgraph_dir = config.get('web','rgraph_dir')
         self.template.rgraph_scripts = self.rgraph_scripts
         self.template.css_file = self.config.get('web','css_file')
-        self.controler.get_sources()
-        self.controler.get_dates()
-        self.template.sources = self.controler.sources
-        self.template.dates = sorted(self.controler.dates)
+        self.template.sources = self.controler.get_sources(date)
+        self.template.dates = sorted(self.controler.get_dates())
         self.template.source = source
         self.template.date = date
     

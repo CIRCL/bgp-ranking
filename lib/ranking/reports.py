@@ -207,7 +207,6 @@ class Reports():
             source = self.config.get('input_keys','histo_global')
         if date is None:
             date = self.date
-        self.set_sources(date)
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
                                                                     date        = date,\
                                                                     histo_key   = source,\
@@ -258,10 +257,10 @@ class Reports():
                                             key     = self.config.get('input_keys','index_sources')))
 
         lists_sources = pipeline.execute()
-        to_return_sources = set(()).union(*lists_sources)
+        all_sources = set(()).union(*lists_sources)
 
         if sources is None:
-            sources = to_return_sources
+            sources = all_sources
         else:
             sources = [sources]
 
@@ -282,7 +281,7 @@ class Reports():
         histories = pipeline.execute()
         if len(histories) == 0:
             # Nothing to display, quit
-            return {}, to_return_sources
+            return {}
         i = 0 
         for source in sources:
             ranks[source] = histories[i]
@@ -301,7 +300,7 @@ class Reports():
                 i += 1 
         for ranks in ranks_by_days:
             ranks_by_days[ranks] += 1 
-        return ranks_by_days, to_return_sources
+        return ranks_by_days
         
     def get_asn_descs(self, asn, sources = None, date = None):
         """

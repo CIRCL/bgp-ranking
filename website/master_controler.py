@@ -58,17 +58,20 @@ class MasterControler():
                 histories.append([r[0], r[1] + 1, r[2]])
         return histories
 
-    def get_sources(self):
+    def get_sources(self, date = None):
         """
             Returns all the available sources given by the model
         """
-        self.sources = self.report.sources
+        if date is not None:
+            self.report.set_date(date)
+            self.report.set_sources()
+        return self.report.sources
 
     def get_dates(self):
         """
             Returns all the available dates given by the model
         """
-        self.dates = self.report.dates
+        return self.report.dates
     
     def get_as_infos(self, asn = None, source = None, date = None):
         """
@@ -80,7 +83,7 @@ class MasterControler():
             as_infos, current_sources = self.report.get_asn_descs(asn, source, date)
             if len(as_infos) == 0:
                 return [], []
-            as_graph_infos, self.sources = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date, source)
+            as_graph_infos = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date, source)
             self.make_graph(asn, as_graph_infos)
         return as_infos, current_sources
     
@@ -106,7 +109,7 @@ class MasterControler():
             for asn in splitted_asns:
                 if asn.isdigit():
                     asns_to_return.append(asn)
-                    as_graph_infos, self.sources = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date)
+                    as_graph_infos = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date)
                     g.add_line(as_graph_infos, str(asn + self.report.ip_key), self.graph_first_date, self.graph_last_date)
                     title += asn + ' '
             if len(g.lines) > 0:

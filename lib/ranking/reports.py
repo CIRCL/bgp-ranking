@@ -59,11 +59,8 @@ class Reports():
         """
             Allow to reload the report displayed on the website.
         """
-        if self.last_ranking is None or self.last_ranking != self.get_last_ranking():
-            self.last_ranking = self.get_last_ranking()
-
-            if self.display_graphs_prec_day(date):
-                date = date - datetime.timedelta(1)
+        if self.display_graphs_prec_day(date):
+            date = date - datetime.timedelta(1)
         self.date_raw = date
         self.date = date.isoformat()
 
@@ -106,7 +103,6 @@ class Reports():
         items = self.config.items('modules_to_parse')
         for item in items:
             self.impacts[item[0]] = float(item[1])
-        self.last_ranking = None
         self.set_date(date)
         self.set_sources()
         self.set_dates()

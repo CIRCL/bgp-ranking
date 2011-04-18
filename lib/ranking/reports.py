@@ -207,6 +207,7 @@ class Reports():
             source = self.config.get('input_keys','histo_global')
         if date is None:
             date = self.date
+        self.set_sources(date)
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
                                                                     date        = date,\
                                                                     histo_key   = source,\

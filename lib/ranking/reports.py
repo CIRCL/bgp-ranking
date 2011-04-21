@@ -48,7 +48,7 @@ class Reports():
         timestamp = self.get_last_ranking()
         if timestamp is not None:
             timestamp = timestamp.split()
-            self.default_date_raw = dateutil.parser.parse(timestamp[0]) - datetime.timedelta(days=1)
+            self.default_date_raw = dateutil.parser.parse(timestamp[0]).date() - datetime.timedelta(days=1)
         else:
             self.default_date_raw = datetime.date.today() - datetime.timedelta(days=1)
         self.default_date = self.default_date_raw.isoformat()

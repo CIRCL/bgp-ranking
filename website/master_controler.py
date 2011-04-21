@@ -26,7 +26,7 @@ class MasterControler():
         from ranking.reports import Reports
 
         # Ensure there is something to display
-        self.report = Reports(datetime.date.today())
+        self.report = Reports()
         self.report.flush_temp_db()
         self.report.build_reports_lasts_days(int(self.config.get('ranking','days')))
         self.report.build_reports()
@@ -40,10 +40,8 @@ class MasterControler():
         self.graph_last_date = datetime.date.today()
         self.graph_first_date = datetime.date.today() - datetime.timedelta(days=30)
         if date is None:
-            date = self.graph_last_date
-            self.report.set_date(date)
+            self.report.set_default_date()
         self.report.set_sources(date)
-        self.report.set_dates()
 
 
     def prepare_index(self, source, date = None):
@@ -62,15 +60,13 @@ class MasterControler():
         """
             Returns all the available sources given by the model
         """
-        if date is not None:
-            self.report.set_sources(date)
-        return self.report.sources
+        return self.report.get_sources(date)
 
     def get_dates(self):
         """
             Returns all the available dates given by the model
         """
-        return self.report.dates
+        return self.report.get_dates()
     
     def get_as_infos(self, asn = None, source = None, date = None):
         """

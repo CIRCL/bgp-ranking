@@ -194,5 +194,5 @@ if __name__ == '__main__':
         rmpid(ranking_process_service)
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Updating the reports...')
-        Reports().build_reports()
+        Reports().build_reports(date)
         syslog.syslog(syslog.LOG_INFO, '...done.')

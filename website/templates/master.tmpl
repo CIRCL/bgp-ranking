@@ -28,14 +28,26 @@
     </div>
     <div id="body" class="body">
        <h1>BGP Ranking</h1>
-       <div id="container">
-            <div id="menu">
-                <a href="/reload">Reload</a><br/>
+            <div id="leftbox">
+                <div id="nav">
+                    <ul>
+                        <li>
+                            <a href="/reload">Reload</a><br/>
+                        </li>
+                        <li>
+                           #if $source is None
+                               <a href="/comparator">Compare a list of ASNs</a>
+                           #else
+                               <a href="/comparator?source=${source}">Compare a list of ASNs</a>
+                           #end if 
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="content">
                 #block menu
                     Menu Content
                 #end block menu
-            </div>
-            <div id="content">
                 #if $error is not None
                     <div class="error">$error</div>
                 #end if
@@ -43,7 +55,6 @@
                     Main Content
                 #end block main_content
             </div>
-        </div>
     </div>
   </body>
 </html>

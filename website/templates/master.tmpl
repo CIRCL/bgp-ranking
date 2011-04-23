@@ -18,25 +18,32 @@
     #end if
   </head>
   <body>
-    <div id="container">
-        <div id="header">
-            <h1><a href="/">BGP Ranking</a></h1>
+    <div id="header" class="header">
+        <div id="logo">
+            <a href="/"><img src="http://www.circl.lu/pics/logo.png"></a>
         </div>
-        <div id="menu">
-            <a href="/reload">Reload</a><br/>
-            #block menu
-                Menu Content
-            #end block menu
+        <div id="banner" align="center">
+            <img src="http://www.circl.lu/pics/topbanner.jpg">
         </div>
-        <div id="content">
-            #if $error is not None
-                <div class="error">$error</div>
-            #end if
-            #block main_content
-                Main Content
-            #end block main_content
+    </div>
+    <div id="body" class="body">
+       <h1>BGP Ranking</h1>
+       <div id="container">
+            <div id="menu">
+                <a href="/reload">Reload</a><br/>
+                #block menu
+                    Menu Content
+                #end block menu
+            </div>
+            <div id="content">
+                #if $error is not None
+                    <div class="error">$error</div>
+                #end if
+                #block main_content
+                    Main Content
+                #end block main_content
+            </div>
         </div>
-        <div id="footer"> Footer </div>
     </div>
   </body>
 </html>

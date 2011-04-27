@@ -27,7 +27,6 @@ class Master(object):
         self.templates = config.get('web','templates')
         self.website_root = os.path.join(self.config.get('directories','root'),\
                                             config.get('web','root_web'))
-        self.css_file = config.get('web','css_file')
         
         self.rgraph_scripts = [ 'RGraph.common.core.js',\
                                 'RGraph.common.zoom.js', \
@@ -46,6 +45,8 @@ class Master(object):
         self.template.rgraph_dir = config.get('web','rgraph_dir')
         self.template.rgraph_scripts = self.rgraph_scripts
         self.template.css_file = self.config.get('web','css_file')
+        self.template.logo     = self.config.get('web','logo')
+        self.template.banner   = self.config.get('web','banner')
         self.template.sources = self.controler.get_sources(date)
         self.template.dates = sorted(self.controler.get_dates())
         self.template.source = source

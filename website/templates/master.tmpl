@@ -20,10 +20,10 @@
   <body>
     <div id="header" class="header">
         <div id="logo">
-            <a href="/"><img src="http://www.circl.lu/pics/logo.png"></a>
+            <a href="/"><img src="${logo}"></a>
         </div>
         <div id="banner" align="center">
-            <img src="http://www.circl.lu/pics/topbanner.jpg">
+            <img src="${banner}">
         </div>
     </div>
     <div id="body" class="body">
@@ -39,7 +39,7 @@
                                <a href="/comparator">Compare a list of ASNs</a>
                            #else
                                <a href="/comparator?source=${source}">Compare a list of ASNs</a>
-                           #end if 
+                           #end if
                         </li>
                     </ul>
                 </div>

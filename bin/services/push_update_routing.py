@@ -104,7 +104,7 @@ if __name__ == '__main__':
     bgpdump = os.path.join(root_dir,config.get('routing','bgpdump'))
 
     
-    syslog.openlog('Push_n_Rank', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('Push_n_Rank', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     routing_db          = redis.Redis(port = int(config.get('redis','port_cache')),\
                                         db = config.get('redis','routing'))

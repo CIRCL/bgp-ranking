@@ -104,7 +104,7 @@ if __name__ == '__main__':
     sleep_timer = int(config.get('routing','timer'))
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
 
-    syslog.openlog('BGP_Ranking_Fetch_bview', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('BGP_Ranking_Fetch_bview', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     base_url = config.get('routing','base_url')
     hours = sorted(config.get('routing','update_hours').split())

@@ -31,7 +31,7 @@ class InputReader():
     
     def __init__(self):
         
-        syslog.openlog('BGP_Ranking_Input', syslog.LOG_PID, syslog.LOG_USER)
+        syslog.openlog('BGP_Ranking_Input', syslog.LOG_PID, syslog.LOG_LOCAL5)
         self.config = ConfigParser.RawConfigParser()
         config_file = "/path/to/bgp-ranking.conf"
         self.config.read(config_file)

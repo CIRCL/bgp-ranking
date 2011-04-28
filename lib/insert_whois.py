@@ -25,7 +25,7 @@ class InsertWhois():
         """
         Initialize the two connectors to the redis server 
         """
-        syslog.openlog('BGP_Ranking_Fetching_Whois', syslog.LOG_PID, syslog.LOG_USER)
+        syslog.openlog('BGP_Ranking_Fetching_Whois', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
         self.config= ConfigParser.RawConfigParser()
         config_file = "/path/to/bgp-ranking.conf"

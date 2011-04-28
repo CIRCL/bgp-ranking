@@ -27,6 +27,8 @@ if __name__ == '__main__':
     from helpers.initscript import *
     services_dir = os.path.join(root_dir,config.get('directories','services'))
 
+    syslog.openlog('BGP_Ranking_Sort_Whois', syslog.LOG_PID, syslog.LOG_LOCAL5)
+
     if int(config.get('whois_servers','desactivate_whois')) :
         print "Impossible to start the whois sorting: it has been desactivated in the config file"
         exit (1)

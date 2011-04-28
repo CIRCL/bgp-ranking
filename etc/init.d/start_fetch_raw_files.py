@@ -32,6 +32,8 @@ if __name__ == '__main__':
 
     items = config.items('raw_fetching')
 
+    syslog.openlog('BGP_Ranking_RAW_Fetch', syslog.LOG_PID, syslog.LOG_LOCAL5)
+
     options = {}
     for item in items:
         elts = item[1].split()

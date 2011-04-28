@@ -40,6 +40,14 @@ class Reports():
             date = self.default_date_raw - datetime.timedelta(i)
             iso_date = date.isoformat()
             self.build_reports(iso_date)
+
+    def build_last_reports(self):
+        self.build_reports()
+        timestamp = self.get_last_ranking()
+        if timestamp is not None:
+            timestamp = timestamp.split()
+            to_build = dateutil.parser.parse(timestamp[0]).date()
+            self.build_reports(to_build.isoformat())
     
     def set_default_date(self):
         """

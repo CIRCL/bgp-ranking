@@ -27,7 +27,6 @@ class Master(object):
         self.templates = config.get('web','templates')
         self.website_root = os.path.join(self.config.get('directories','root'),\
                                             config.get('web','root_web'))
-        self.css_file = config.get('web','css_file')
         
         self.rgraph_scripts = [ 'RGraph.common.core.js',\
                                 'RGraph.common.zoom.js', \
@@ -42,13 +41,14 @@ class Master(object):
             Initialize the basic components of the template
         """
         source = self.reset_if_empty(source)
+        date = self.reset_if_empty(date)
         self.template.rgraph_dir = config.get('web','rgraph_dir')
         self.template.rgraph_scripts = self.rgraph_scripts
         self.template.css_file = self.config.get('web','css_file')
-        self.controler.get_sources()
-        self.controler.get_dates()
-        self.template.sources = self.controler.sources
-        self.template.dates = sorted(self.controler.dates)
+        self.template.logo     = self.config.get('web','logo')
+        self.template.banner   = self.config.get('web','banner')
+        self.template.sources = self.controler.get_sources(date)
+        self.template.dates = sorted(self.controler.get_dates())
         self.template.source = source
         self.template.date = date
     
@@ -95,8 +95,8 @@ class Master(object):
                 self.template.asn = asn
                 as_infos, current_sources = self.controler.get_as_infos(asn, source, date)
                 if as_infos is not None: 
-                    self.template.sources = self.controler.sources
-                    self.template.dates = sorted(self.controler.dates)
+                    self.template.sources = self.controler.get_sources(date)
+                    self.template.dates = sorted(self.controler.get_dates())
                     self.template.asn_descs = as_infos
                     self.template.current_sources = current_sources
                     self.template.javascript = self.controler.js
@@ -125,7 +125,7 @@ class Master(object):
         self.init_template(source)
         if asns is not None:
             self.template.asns = self.controler.comparator(asns)
-            self.template.sources = self.controler.sources
+            self.template.sources = self.controler.get_sources()
             self.template.js_comparator = self.controler.js
             self.template.js_comparator_name = self.controler.js_name
             if self.template.js_comparator is None:

@@ -14,6 +14,7 @@ import ConfigParser
 import datetime
 import redis
 from IPy import IP
+import dateutil.parser
 
 class Reports():
     """
@@ -36,55 +37,59 @@ class Reports():
             return
         nr_days += 1
         for i in range(1, nr_days):
-            date = self.date_raw - datetime.timedelta(i)
+            date = self.default_date_raw - datetime.timedelta(i)
             iso_date = date.isoformat()
             self.build_reports(iso_date)
-    
-    def display_graphs_prec_day(self, date):
-        """
-            Unless the ranking of `date` exists, there is nothing to display. 
-            
-            That is why we will display the ranking of the precedent day
-        """
-        hours = sorted(self.config.get('routing','update_hours').split())
-        first_hour = hours[0]
+
+    def build_last_reports(self):
+        self.build_reports()
         timestamp = self.get_last_ranking()
         if timestamp is not None:
             timestamp = timestamp.split()
-            if int(timestamp[1]) == int(first_hour) or timestamp[0] != date.strftime("%Y%m%d"):
-                return True
-        return False
+            to_build = dateutil.parser.parse(timestamp[0]).date()
+            self.build_reports(to_build.isoformat())
     
-    def set_date(self, date):
+    def set_default_date(self):
         """
-            Allow to reload the report displayed on the website.
+            Set the default date displayed on the website.
         """
-        if self.last_ranking is None or self.last_ranking != self.get_last_ranking():
-            self.last_ranking = self.get_last_ranking()
+        timestamp = self.get_last_ranking()
+        if timestamp is not None:
+            timestamp = timestamp.split()
+            self.default_date_raw = dateutil.parser.parse(timestamp[0]).date() - datetime.timedelta(days=1)
+        else:
+            self.default_date_raw = datetime.date.today() - datetime.timedelta(days=1)
+        self.default_date = self.default_date_raw.isoformat()
 
-            if self.display_graphs_prec_day(date):
-                date = date - datetime.timedelta(1)
-            self.date = date.isoformat()
-        return self.date
+    def get_sources(self, date):
+        """
+            Get the sources parsed on a `date`
+        """
+        if date is None:
+            date = self.default_date
+        return self.global_db.smembers(\
+                    '{date}{sep}{key}'.format(  date   = date, \
+                                                sep    = self.separator,\
+                                                key    = self.config.get('input_keys','index_sources')))
 
     def set_sources(self, date = None):
         """
-            Set the sources paset on a `date`
+            Set the sources parsed on a `date`
         """
         if date is None:
-            date = self.date
+            date = self.default_date
         self.sources =  self.global_db.smembers(\
                             '{date}{sep}{key}'.format(  date   = date, \
                                                         sep    = self.separator,\
                                                         key    = self.config.get('input_keys','index_sources')))
-    
-    def set_dates(self):
+
+    def get_dates(self):
         """
-            Get the available sources from the database
+            Get the dates where there is a ranking available in the database
         """
-        self.dates = self.history_db_temp.smembers(self.config.get('ranking','all_dates'))
+        return self.history_db_temp.smembers(self.config.get('ranking','all_dates'))
     
-    def __init__(self, date, ip_version = 4):
+    def __init__(self, ip_version = 4):
         self.config = ConfigParser.RawConfigParser()
         self.config.optionxform = str
         config_file = "/path/to/bgp-ranking.conf"
@@ -106,11 +111,8 @@ class Reports():
         items = self.config.items('modules_to_parse')
         for item in items:
             self.impacts[item[0]] = float(item[1])
-        self.last_ranking = None
-        self.date_raw = date
-        self.set_date(date)
+        self.set_default_date()
         self.set_sources()
-        self.set_dates()
     
     def flush_temp_db(self):
         """
@@ -123,21 +125,20 @@ class Reports():
             Build all the reports: for all the sources independently and the global one
         """
         if date is None:
-            date = self.date
+            date = self.default_date
         set_days = self.config.get('ranking','all_dates')
         self.history_db_temp.sadd(set_days, date)
         self.set_sources(date)
         self.global_report(date)
         for source in self.sources:
             self.source_report(source = source, date = date)
-        self.set_dates()
     
     def global_report(self, date = None):
         """
             Build the global report (add all the results of all the sources)
         """
         if date is None:
-            date = self.date
+            date = self.default_date
         # delete the old key
         zset_key = self.config.get('input_keys','histo_global')
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
@@ -155,7 +156,7 @@ class Reports():
         if source == self.config.get('input_keys','histo_global'):
             return
         if date is None:
-            date = self.date
+            date = self.default_date
         asns_details = self.global_db.smembers(\
                             '{date}{sep}{source}{sep}{key}'.format( sep     = self.separator,\
                                                                     date    = date,\
@@ -175,7 +176,7 @@ class Reports():
         if zset_key is None:
             zset_key = source
         if date is None:
-            date = self.date
+            date = self.default_date
         self.build_asns_by_source(source, date)
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
                                                                     date        = date,\
@@ -194,7 +195,7 @@ class Reports():
         pipeline = self.history_db_temp.pipeline(transaction=False)
         for asn in asns:
             if asn != self.config.get('modules_global','default_asn'):
-                rank = self.get_daily_rank(asn, source)
+                rank = self.get_daily_rank(asn, source, date)
                 if rank is not None:
                     pipeline.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
         pipeline.execute()
@@ -206,7 +207,7 @@ class Reports():
         if source is None:
             source = self.config.get('input_keys','histo_global')
         if date is None:
-            date = self.date
+            date = self.default_date
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
                                                                     date        = date,\
                                                                     histo_key   = source,\
@@ -231,7 +232,7 @@ class Reports():
         if source is None:
             source = self.config.get('input_keys','histo_global')
         if date is None:
-            date = self.date
+            date = self.default_date
         return self.history_db.get(\
                     '{asn}{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep     = self.separator,\
                                                                         asn     = asn,\
@@ -257,10 +258,10 @@ class Reports():
                                             key     = self.config.get('input_keys','index_sources')))
 
         lists_sources = pipeline.execute()
-        to_return_sources = set(()).union(*lists_sources)
+        all_sources = set(()).union(*lists_sources)
 
         if sources is None:
-            sources = to_return_sources
+            sources = all_sources
         else:
             sources = [sources]
 
@@ -281,7 +282,7 @@ class Reports():
         histories = pipeline.execute()
         if len(histories) == 0:
             # Nothing to display, quit
-            return {}, to_return_sources
+            return {}
         i = 0 
         for source in sources:
             ranks[source] = histories[i]
@@ -294,13 +295,13 @@ class Reports():
                 if rank is not None:
                     asn_day = dates[i]
                     if ranks_by_days.get(asn_day, None) is None:
-                        ranks_by_days[asn_day] = float(rank)
+                        ranks_by_days[asn_day] = float(rank) * self.impacts[str(source)]
                     else:
-                        ranks_by_days[asn_day] += float(rank)
+                        ranks_by_days[asn_day] += float(rank) * self.impacts[str(source)]
                 i += 1 
         for ranks in ranks_by_days:
             ranks_by_days[ranks] += 1 
-        return ranks_by_days, to_return_sources
+        return ranks_by_days
         
     def get_asn_descs(self, asn, sources = None, date = None):
         """
@@ -311,7 +312,7 @@ class Reports():
         else:
             sources = [sources]
         if date is None:
-            date = self.date
+            date = self.default_date
         timestamps = self.global_db.smembers(asn)
         if len(timestamps) == 0:
             # The ASN does not exists in the database
@@ -354,7 +355,7 @@ class Reports():
         else:
             sources = [sources]
         if date is None:
-            date = self.date
+            date = self.default_date
         key_list_tstamp = self.config.get('input_keys','list_tstamp')
         key_infection = self.config.get('input_keys','infection')
         key_raw = self.config.get('input_keys','raw')

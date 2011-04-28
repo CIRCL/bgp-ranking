@@ -4,12 +4,6 @@
 #attr title = 'Index ASN'
 
 #block menu
-    #if $source is None
-        <a href="/comparator">Compare a list of ASNs</a>
-    #else
-        <a href="/comparator?source=${source}">Compare a list of ASNs</a>
-    #end if 
-
     #if $asn is not None:
         <form method="get" action="/asn_details">
     #else

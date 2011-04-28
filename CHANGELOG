@@ -2,6 +2,20 @@
 Changelog
 =========
 
+v1.1.3
+
+Improvements:
+ * Website: Corporate branding (CIRCL - http://circl.lu/)
+
+v1.1.2
+
+Bugfixes:
+ * Website: Use the weight of the sources to display the graphs
+
+Improvements:
+ * Website: Display the ranking of yesterday by default
+ * Tweek the default weights
+
 v1.1.1
 
 New 

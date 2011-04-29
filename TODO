@@ -53,7 +53,7 @@ New functionalities
   
 * Module which ping a list of URL known as malicious and insert the IP in the system.
 
-* API (telnet like ?) 
+* API (telnet like ?) -> See https://github.com/adulau/bgpranking-API
     - get the weight of each source
     - get the rank of a subnet/asn (by whatever you want)
 

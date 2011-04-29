@@ -1,0 +1,11 @@
+# Twitter Stuff
+twitter_customer_key =  'XXX'
+twitter_consumer_secret = 'XXX'
+twitter_access_token_key = 'XXX'
+twitter_access_token_secret = 'XXX'
+
+# Identica stuff
+identica_customer_key =  'XXX'
+identica_consumer_secret = 'XXX'
+identica_access_token_key = 'XXX'
+identica_access_token_secret = 'XXX'

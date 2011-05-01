@@ -35,6 +35,9 @@ if __name__ == '__main__':
     insertor = InsertRIS()
 
     while 1:
-        if insertor.get_ris():
-            syslog.syslog(syslog.LOG_INFO, 'New RIS entries inserted in Redis.')
+        try:
+            if insertor.get_ris():
+                syslog.syslog(syslog.LOG_INFO, 'New RIS entries inserted in Redis.')
+        except:
+            syslog.syslog(syslog.LOG_CRIT, 'Unable to insert, redis does not respond')
         time.sleep(sleep_timer)

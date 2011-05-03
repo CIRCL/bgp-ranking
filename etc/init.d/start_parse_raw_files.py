@@ -33,6 +33,8 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         usage()
     service = os.path.join(services_dir, "parse_raw_files")
+    
+    syslog.openlog('BGP_Ranking_Parsing', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     items = config.items('modules_to_parse')
     options = []

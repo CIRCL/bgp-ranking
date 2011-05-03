@@ -26,7 +26,7 @@ if __name__ == '__main__':
     from insert_ris import InsertRIS
     sleep_timer = int(config.get('sleep_timers','short'))
 
-    syslog.openlog('BGP_Ranking_RIS_Whois_Insert', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('BGP_Ranking_RIS_Whois_Insert', syslog.LOG_PID, syslog.LOG_LOCAL5)
     
     def usage():
         print "ris.py"
@@ -35,6 +35,9 @@ if __name__ == '__main__':
     insertor = InsertRIS()
 
     while 1:
-        if insertor.get_ris():
-            syslog.syslog(syslog.LOG_INFO, 'New RIS entries inserted in Redis.')
+        try:
+            if insertor.get_ris():
+                syslog.syslog(syslog.LOG_INFO, 'New RIS entries inserted in Redis.')
+        except:
+            syslog.syslog(syslog.LOG_CRIT, 'Unable to insert, redis does not respond')
         time.sleep(sleep_timer)

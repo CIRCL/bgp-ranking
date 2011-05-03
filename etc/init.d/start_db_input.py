@@ -27,6 +27,8 @@ if __name__ == '__main__':
     from helpers.initscript import *
     services_dir = os.path.join(root_dir,config.get('directories','services'))
 
+    syslog.openlog('BGP_Ranking_DB_Input', syslog.LOG_PID, syslog.LOG_LOCAL5)
+
     if len(sys.argv) < 2:
         usage()
     service = os.path.join(services_dir, "db_input")

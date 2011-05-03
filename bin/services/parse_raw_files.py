@@ -30,7 +30,7 @@ if __name__ == '__main__':
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
     sleep_timer = int(config.get('sleep_timers','short'))
 
-    syslog.openlog('BGP_Ranking_Get_Whois_Entries', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('BGP_Ranking_Get_Whois_Entries', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     if len(sys.argv) < 2:
         usage()

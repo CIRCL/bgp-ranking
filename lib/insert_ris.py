@@ -32,7 +32,7 @@ class InsertRIS():
     max_consecutive_errors = 5
 
     def __init__(self):
-        syslog.openlog('BGP_Ranking_Fetching_RIS', syslog.LOG_PID, syslog.LOG_USER)
+        syslog.openlog('BGP_Ranking_Fetching_RIS', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
         self.config = ConfigParser.RawConfigParser()
         config_file = "/path/to/bgp-ranking.conf"

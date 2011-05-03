@@ -26,7 +26,8 @@ if __name__ == '__main__':
     services_dir = os.path.join(root_dir,config.get('directories','services'))
 
     service = os.path.join(services_dir, "fetch_bview")
-        
+
+    syslog.openlog('BGP_Ranking_Bview', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     if len(sys.argv) < 2:
         usage()

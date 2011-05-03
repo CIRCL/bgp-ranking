@@ -34,7 +34,7 @@ class Connector(object):
         # In case there is nothing to fetch, the process will sleep 5 seconds 
         self.process_sleep = int(self.config.get('sleep_timers','short'))
         
-        syslog.openlog('BGP_Ranking_Connectors', syslog.LOG_PID, syslog.LOG_USER)
+        syslog.openlog('BGP_Ranking_Connectors', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
         # Set the ttl of the cached entries to 1 day 
         self.cache_ttl = int(self.config.get('redis','cache_entries'))

@@ -1,0 +1,4 @@
+#consumer_key    = 'XXXX'   # Twitter
+consumer_key     = 'XXXX'   # identi.ca
+#consumer_secret = 'XXXX'   # Twitter
+consumer_secret  = 'XXXX'   # identi.ca

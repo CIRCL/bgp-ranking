@@ -38,7 +38,7 @@ if __name__ == '__main__':
     old_dir = config.get('fetch_files','old_dir')
     sleep_timer = int(config.get('sleep_timers','long'))
 
-    syslog.openlog('BGP_Ranking_Fetch_Raw_Files', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('BGP_Ranking_Fetch_Raw_Files', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     if len(sys.argv) < 2:
         usage()

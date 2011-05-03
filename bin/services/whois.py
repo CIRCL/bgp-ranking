@@ -25,7 +25,7 @@ if __name__ == '__main__':
     from insert_whois import InsertWhois
     sleep_timer = int(config.get('sleep_timers','short'))
     
-    syslog.openlog('BGP_Ranking_Whois_Insert', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('BGP_Ranking_Whois_Insert', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     def usage():
         print "whois.py"

@@ -104,7 +104,7 @@ if __name__ == '__main__':
     sleep_timer = int(config.get('routing','timer'))
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
 
-    syslog.openlog('BGP_Ranking_Fetch_bview', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('BGP_Ranking_Fetch_bview', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     base_url = config.get('routing','base_url')
     hours = sorted(config.get('routing','update_hours').split())
@@ -113,18 +113,21 @@ if __name__ == '__main__':
 
     current_date = None
     while 1:
-        current_date = datetime.date.today()
-        # Initialization of the URL to fetch
-        dir = current_date.strftime("%Y.%m")
-        file_day = current_date.strftime("%Y%m%d")
-        daily_url = base_url + '/' + dir + '/' + prefix + file_day + '.%s' +  suffix
+        try:
+            current_date = datetime.date.today()
+            # Initialization of the URL to fetch
+            dir = current_date.strftime("%Y.%m")
+            file_day = current_date.strftime("%Y%m%d")
+            daily_url = base_url + '/' + dir + '/' + prefix + file_day + '.%s' +  suffix
 
-        for hour in reversed(hours):
-            url = daily_url % hour
-            if checkURL(url):
-                if not already_downloaded(file_day, hour):
-                    syslog.syslog(syslog.LOG_INFO, "New bview file found: " + url)
-                    downloadURL(url)
-                    last_hour = hour
-                    break
+            for hour in reversed(hours):
+                url = daily_url % hour
+                if checkURL(url):
+                    if not already_downloaded(file_day, hour):
+                        syslog.syslog(syslog.LOG_INFO, "New bview file found: " + url)
+                        downloadURL(url)
+                        last_hour = hour
+                        break
+        except:
+            syslog.syslog(syslog.LOG_CRIT, 'Unable to download bview file. Server does not respond.')
         time.sleep(sleep_timer)

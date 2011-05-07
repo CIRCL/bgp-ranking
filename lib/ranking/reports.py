@@ -41,21 +41,23 @@ class Reports(CommonReport):
         """
         self.sources = self.get_sources(date)
 
-    def get_sources(self, date = None):
+    @overload
+    def get_sources(__proceed__, self, date = None):
         """
             Get the sources parsed on a `date`
         """
         if date is None:
             date = self.default_date
-        return CommonReport.get_sources(date)
+        return __proceed__(self, date)
 
-    def get_daily_rank(self, asn, source = None, date = None):
+    @overload
+    def get_daily_rank(__proceed__, self, asn, source = None, date = None):
         """
             Get the rank of an AS for a particular `source` and `date`
         """
         if date is None:
             date = self.default_date
-        return CommonReport.get_daily_rank(asn, source, date)
+        return __proceed__(self, asn, source, date)
     
     def flush_temp_db(self):
         """

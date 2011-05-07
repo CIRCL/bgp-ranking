@@ -14,7 +14,7 @@ import redis
 import dateutil.parser
 import datetime
 
-class CommonReport():
+class CommonReport(object):
     """
         Some values are used quite often. Thanks to this class, the code to get them
         will not be repeated everywhere.

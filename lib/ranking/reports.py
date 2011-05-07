@@ -78,7 +78,7 @@ class Reports(CommonReport):
 
     def build_last_reports(self):
         self.build_reports()
-        timestamp = common_values.get_last_ranking()
+        timestamp = self.get_last_ranking()
         if timestamp is not None:
             timestamp = timestamp.split()
             to_build = dateutil.parser.parse(timestamp[0]).date()

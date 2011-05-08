@@ -20,7 +20,7 @@ import os
 import sys
 import ConfigParser
 
-class InputReader():
+class InputReader(object):
     """
         Filter and sort the new entries given by the modules.
         Ensure that:

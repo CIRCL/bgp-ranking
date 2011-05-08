@@ -13,7 +13,7 @@ import sys
 import ConfigParser
 import syslog
 
-class InsertWhois():
+class InsertWhois(object):
     """
     Set the whois information to ASNsDescriptions wich do not already have one.
     

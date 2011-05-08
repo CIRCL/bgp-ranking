@@ -61,7 +61,7 @@ class MicroBlog(CommonReport):
         if reports is not None:
             to_return = 'Top Ranking {date}\n'.format(date = date)
             for report in reports:
-                to_return += ''.join('{asn}: {rank}\n'.format(asn = report[0], rank = round(report[1]),2))
+                to_return += ''.join('{asn}: {rank}\n'.format(asn = report[0], rank = round(1+report[1],3)))
         return to_return
 
     def last_ranks_asn(self, asn):

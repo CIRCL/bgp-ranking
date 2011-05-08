@@ -16,7 +16,7 @@
 
 import os 
 
-class FilesSplitter():
+class FilesSplitter(object):
     """
         Needs a filename to split and the number of file to generate. 
         

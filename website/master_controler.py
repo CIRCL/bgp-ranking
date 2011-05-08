@@ -15,7 +15,7 @@ import os
 import datetime
 from graph_generator import GraphGenerator
 
-class MasterControler():
+class MasterControler(object):
 
     def __init__(self):
         self.config = ConfigParser.RawConfigParser()

@@ -72,7 +72,7 @@ class MicroBlog(CommonReport):
         ranks = []
         values = ''
         for date in dates:
-            rank = self.get_daily_rank(asn = asn, source = None, date = date)
+            rank = self.get_daily_rank(asn = asn, date = date, source = None)
             if rank is not None:
                 values += ''.join('{date}: {rank}\n'.format(date = date, rank = round(rank,2)))
         if len(values) > 0:

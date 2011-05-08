@@ -55,7 +55,7 @@ class Reports(CommonReport):
         """
         if date is None:
             date = self.default_date
-        return super(Reports, self).get_daily_rank(asn, source, date)
+        return super(Reports, self).get_daily_rank(asn, date, source)
     
     def flush_temp_db(self):
         """

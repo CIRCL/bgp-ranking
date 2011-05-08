@@ -49,8 +49,8 @@ class MicroBlog(CommonReport):
         raw_date, date = self.get_default_date()
         if date != last_top_date:
             self.post(self.top_date())
-            return true
-        return false
+            return True
+        return False
 
     def check_last_top(self):
         # FIXME test on identica and twitter
@@ -58,7 +58,7 @@ class MicroBlog(CommonReport):
         last_top_date = None
         for entry in tl:
             if "Top Ranking" in entry.text:
-                last_top_date = entry.text.split[2]
+                last_top_date = entry.text.split()[2]
                 break
         return last_top_date
 
@@ -69,8 +69,8 @@ class MicroBlog(CommonReport):
         if len(string) <= 140:
             self.twitter_api.PostUpdate(string)
             self.identica_api.PostUpdate(string)
-            return true
-        return false
+            return True
+        return False
     
     def top_date(self, date = None):
         """

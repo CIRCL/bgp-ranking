@@ -16,7 +16,7 @@ import time
 
 
 def usage():
-    print "microblog.py"
+    print "microblogging.py"
     exit (1)
 
 

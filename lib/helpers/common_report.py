@@ -76,7 +76,7 @@ class CommonReport(object):
         return self.history_db_temp.smembers(self.config.get('ranking','all_dates'))
 
     
-    def get_daily_rank(self, asn, source = None, date = None):
+    def get_daily_rank(self, asn, source = None, date):
         """
             Get the rank of an AS for a particular `source` and `date`
         """

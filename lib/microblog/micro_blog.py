@@ -11,8 +11,18 @@
 
 import twitter
 from micro_blog_keys import *
-import sys
-sys.path.append("/home/rvinot/bgp-ranking/lib/")
+import dateutil.parser
+
+
+if __name__ == '__main__':
+    import os 
+    import sys
+    import ConfigParser
+    config = ConfigParser.RawConfigParser()
+    config_file = "/path/to/bgp-ranking.conf"
+    config.read(config_file)
+    root_dir = config.get('directories','root')
+    sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
 from helpers.common_report import CommonReport
 
@@ -33,6 +43,24 @@ class MicroBlog(CommonReport):
                                         access_token_key    =   identica_access_token_key,
                                         access_token_secret =   identica_access_token_secret,
                                         base_url = 'https://identi.ca/api')
+    
+    def post_last_top(self):
+        last_top_date = self.check_last_top()
+        raw_date, date = self.get_default_date()
+        if date != last_top_date:
+            self.post(self.top_date())
+            return true
+        return false
+
+    def check_last_top(self):
+        # FIXME test on identica and twitter
+        tl = self.twitter_api.GetUserTimeline("bgpranking")
+        last_top_date = None
+        for entry in tl:
+            if "Top Ranking" in entry.text:
+                last_top_date = entry.text.split[2]
+                break
+        return last_top_date
 
     def post(self, string):
         """
@@ -41,8 +69,8 @@ class MicroBlog(CommonReport):
         if len(string) <= 140:
             self.twitter_api.PostUpdate(string)
             self.identica_api.PostUpdate(string)
-            return 0
-        return 1
+            return true
+        return false
     
     def top_date(self, date = None):
         """

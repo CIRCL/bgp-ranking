@@ -10,6 +10,7 @@ $PYTHON start_fetch_raw_files.py stop
 $PYTHON start_parse_raw_files.py stop
 $PYTHON start_ris.py stop
 $PYTHON start_fetch_whois_entries.py stop
+$NICE $PYTHON start_microblog.py stop
 
 # Desactivated by default
 #$PYTHON start_sort_whois_queries.py stop

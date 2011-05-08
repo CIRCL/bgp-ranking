@@ -13,7 +13,7 @@ import signal
 import syslog
 
 def usage():
-    print "start_microblog.py (start|stop)"
+    print "start_microblogging.py (start|stop)"
     exit (1)
 
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
     if len(sys.argv) < 2:
         usage()
-    service = os.path.join(services_dir, "microblog")
+    service = os.path.join(services_dir, "microblogging")
 
     if sys.argv[1] == "start":
         print("Starting Microblog...")

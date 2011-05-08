@@ -4,7 +4,7 @@
 
 """
     Micro-blog
-    ~~~~~~~~~~~~~
+    ~~~~~~~~~~
     
     Microblog client for twitter and identica
 """

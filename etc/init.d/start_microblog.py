@@ -38,23 +38,23 @@ if __name__ == '__main__':
         syslog.syslog(syslog.LOG_INFO, "Starting Microblog...")
         print(service+" to start...")
         syslog.syslog(syslog.LOG_INFO, service+" to start...")
-        service_start_multiple(servicename = service, number = int(config.get('processes','input')))
+        proc = service_start_once(servicename = service, processname = service)
 
     elif sys.argv[1] == "stop":
         print("Stopping Microblog...")
         syslog.syslog(syslog.LOG_INFO, "Stopping Microblog...")
-        pids = pidof(processname=service)
-        if pids:
-            print(service+" to be stopped...")
-            syslog.syslog(syslog.LOG_INFO, service+" to be stopped...")
-            for pid in pids:
-                try:
-                    os.kill(int(pid), signal.SIGKILL)
-                except OSError, e:
-                    print(service+  " unsuccessfully stopped")
-                    syslog.syslog(syslog.LOG_ERR, service+  " unsuccessfully stopped")
+        pid = pidof(processname=service)
+        if pid:
+            pid = pid[0]
+            try:
+                os.kill(int(pid), signal.SIGKILL)
+            except OSError, e:
+                print(service+  " unsuccessfully stopped")
+                syslog.syslog(syslog.LOG_ERR, service+  " unsuccessfully stopped")
             rmpid(processname=service)
-
+        else:
+            print('No running microblog process')
+            syslog.syslog(syslog.LOG_INFO, 'No running microblog process')
     else:
         usage()
 

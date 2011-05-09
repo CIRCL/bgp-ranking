@@ -13,9 +13,8 @@ import twitter
 from micro_blog_keys import *
 import dateutil.parser
 
-
 if __name__ == '__main__':
-    import os 
+    import os
     import sys
     import ConfigParser
     config = ConfigParser.RawConfigParser()
@@ -92,7 +91,7 @@ class MicroBlog(CommonReport):
                 to_return += ''.join('{asn}: {rank}\n'.format(asn = report[0], rank = round(1+report[1],3)))
         return to_return
 
-    def last_ranks_asn(self, asn):
+    def last_ranks_asn(self, asn, source = None):
         """
             Return all the rankings found in the DB for a given ASN
         """
@@ -100,7 +99,7 @@ class MicroBlog(CommonReport):
         ranks = []
         values = ''
         for date in dates:
-            rank = self.get_daily_rank(asn = asn, date = date, source = None)
+            rank = self.get_daily_rank(asn, date, source)
             if rank is not None:
                 values += ''.join('{date}: {rank}\n'.format(date = date, rank = round(rank,2)))
         if len(values) > 0:

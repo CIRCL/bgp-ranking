@@ -93,4 +93,4 @@ class CommonReport(object):
                                                                     date        = date,\
                                                                     histo_key   = source,\
                                                                     ip_key      = self.ip_key)
-        return self.history_db_temp.zrank(histo_key, asn)
+        return self.history_db_temp.zscore(histo_key, asn)

@@ -118,13 +118,13 @@ class MicroBlog(CommonReport):
         """
             Return all the rankings found in the DB for a given ASN
         """
-        dates = self.get_dates()
+        dates = sort(self.get_dates())
         ranks = []
         values = ''
         for date in dates:
             rank = self.get_daily_rank_client(asn, date, source)
             if rank is not None:
-                values += ''.join('{date}: {rank}\n'.format(date = date, rank = round(1 + float(rank),3)))
+                values += ''.join('{date}: {rank}\n'.format(date = date, rank = round(1 + rank,3)))
         if len(values) > 0:
             return '{asn}\n{values}'.format(asn = asn, values = values)
         return None

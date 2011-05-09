@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     history_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','history'))
     
-    syslog.openlog('Compute_Ranking_Process', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('Compute_Ranking_Process', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     i = 0 
 

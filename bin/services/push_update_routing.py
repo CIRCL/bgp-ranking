@@ -104,7 +104,7 @@ if __name__ == '__main__':
     bgpdump = os.path.join(root_dir,config.get('routing','bgpdump'))
 
     
-    syslog.openlog('Push_n_Rank', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('Push_n_Rank', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     routing_db          = redis.Redis(port = int(config.get('redis','port_cache')),\
                                         db = config.get('redis','routing'))
@@ -150,17 +150,15 @@ if __name__ == '__main__':
         os.unlink(filename)
         
         if compute_yesterday_ranking():
-            date_raw = datetime.date.today()
             # Clean the whole database and regenerate it (like this we do not keep data of the old rankings)
-            report = Reports(date_raw)
+            report = Reports()
             report.flush_temp_db()
             report.build_reports_lasts_days(int(config.get('ranking','days')))
 
             # date used to generate a ranking with the data in the database at this point
-            date = (date_raw - datetime.timedelta(1)).isoformat()
+            date = (datetime.date.today() - datetime.timedelta(1)).isoformat()
         else:
-            date_raw = datetime.date.today()
-            date = date_raw.isoformat()
+            date = datetime.date.today().isoformat()
         separator = config.get('input_keys','separator')
         sources = global_db.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
         
@@ -196,5 +194,5 @@ if __name__ == '__main__':
         rmpid(ranking_process_service)
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Updating the reports...')
-        Reports(date_raw).build_reports()
+        Reports().build_reports(date)
         syslog.syslog(syslog.LOG_INFO, '...done.')

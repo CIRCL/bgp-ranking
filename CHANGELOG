@@ -2,6 +2,27 @@
 Changelog
 =========
 
+v1.1.3
+
+New:
+ * Very simple migroblog bot (twitter and identica)
+
+Improvements:
+ * Website: Corporate branding (CIRCL - http://circl.lu/)
+ * Use a dedicated logfile and not user.log anymore
+
+Bugfixes:
+ * Catch exception and try again if redis or a fetching server does not respond
+
+v1.1.2
+
+Bugfixes:
+ * Website: Use the weight of the sources to display the graphs
+
+Improvements:
+ * Website: Display the ranking of yesterday by default
+ * Tweek the default weights
+
 v1.1.1
 
 New 

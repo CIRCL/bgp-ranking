@@ -37,6 +37,8 @@ if __name__ == '__main__':
     service = os.path.join(services_dir, "push_update_routing")
     option = os.path.join(raw_data, config.get('routing','bviewfile'))
 
+    syslog.openlog('BGP_Ranking_Update', syslog.LOG_PID, syslog.LOG_LOCAL5)
+
     if len(sys.argv) < 2:
         usage()
 

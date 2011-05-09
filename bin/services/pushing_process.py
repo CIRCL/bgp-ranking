@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     routing_db = redis.Redis(port = int(config.get('redis','port_cache')), db=config.get('redis','routing'))
 
-    syslog.openlog('Push_BGP_Routing', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('Push_BGP_Routing', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     file = open(sys.argv[1])
     entry = ''

@@ -26,7 +26,7 @@ def init_static():
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     
-    syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_LOCAL5)
     return config
 
 def get_all_servers_urls():

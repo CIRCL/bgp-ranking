@@ -15,7 +15,7 @@ import os
 import datetime
 from graph_generator import GraphGenerator
 
-class MasterControler():
+class MasterControler(object):
 
     def __init__(self):
         self.config = ConfigParser.RawConfigParser()
@@ -26,10 +26,10 @@ class MasterControler():
         from ranking.reports import Reports
 
         # Ensure there is something to display
-        self.report = Reports(datetime.date.today())
+        self.report = Reports()
         self.report.flush_temp_db()
         self.report.build_reports_lasts_days(int(self.config.get('ranking','days')))
-        self.report.build_reports()
+        self.report.build_last_reports()
         self.set_params()
         
 
@@ -40,10 +40,8 @@ class MasterControler():
         self.graph_last_date = datetime.date.today()
         self.graph_first_date = datetime.date.today() - datetime.timedelta(days=30)
         if date is None:
-            date = self.graph_last_date
-        self.report.set_date(date)
-        self.report.set_sources()
-        self.report.set_dates()
+            self.report.set_default_date()
+        self.report.set_sources(date)
 
 
     def prepare_index(self, source, date = None):
@@ -58,17 +56,17 @@ class MasterControler():
                 histories.append([r[0], r[1] + 1, r[2]])
         return histories
 
-    def get_sources(self):
+    def get_sources(self, date = None):
         """
             Returns all the available sources given by the model
         """
-        self.sources = self.report.sources
+        return self.report.get_sources(date)
 
     def get_dates(self):
         """
             Returns all the available dates given by the model
         """
-        self.dates = self.report.dates
+        return self.report.get_dates()
     
     def get_as_infos(self, asn = None, source = None, date = None):
         """
@@ -80,7 +78,7 @@ class MasterControler():
             as_infos, current_sources = self.report.get_asn_descs(asn, source, date)
             if len(as_infos) == 0:
                 return [], []
-            as_graph_infos, self.sources = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date, source)
+            as_graph_infos = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date, source)
             self.make_graph(asn, as_graph_infos)
         return as_infos, current_sources
     
@@ -106,7 +104,7 @@ class MasterControler():
             for asn in splitted_asns:
                 if asn.isdigit():
                     asns_to_return.append(asn)
-                    as_graph_infos, self.sources = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date)
+                    as_graph_infos = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date)
                     g.add_line(as_graph_infos, str(asn + self.report.ip_key), self.graph_first_date, self.graph_last_date)
                     title += asn + ' '
             if len(g.lines) > 0:

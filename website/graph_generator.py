@@ -9,7 +9,7 @@
 from string import Template
 import datetime
 
-class GraphGenerator():
+class GraphGenerator(object):
     """
         The script to generate is defined here as a template and we
         insert the data we want to display. 

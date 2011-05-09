@@ -30,14 +30,16 @@ if __name__ == '__main__':
     from input_reader import InputReader
     sleep_timer = int(config.get('sleep_timers','short'))
 
-    syslog.openlog('BGP_Ranking_DB_Input', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('BGP_Ranking_DB_Input', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     reader = InputReader()
     reader.connect()
 
     while 1:
-        if reader.insert():
-            syslog.syslog(syslog.LOG_INFO, 'New entries inserted in Redis.')
+        try:
+            if reader.insert():
+                syslog.syslog(syslog.LOG_INFO, 'New entries inserted in Redis.')
+        except:
+            syslog.syslog(syslog.LOG_CRIT, 'Unable to insert, redis does not respond')
         time.sleep(sleep_timer)
-
     reader.disconnect()

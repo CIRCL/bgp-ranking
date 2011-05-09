@@ -29,7 +29,7 @@ def init_static():
     root_dir = config.get('directories','root')
     pid_path = os.path.join(root_dir,config.get('directories','pids'))
 
-    syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_LOCAL5)
     return config, pid_path
 
 

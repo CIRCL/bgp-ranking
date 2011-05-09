@@ -31,7 +31,7 @@ if __name__ == '__main__':
     from whois_client.whois_fetcher_redis import get_server_by_query
     sleep_timer = int(config.get('sleep_timers','short'))
 
-    syslog.openlog('BGP_Ranking_Sort_Whois_Entries', syslog.LOG_PID, syslog.LOG_USER)
+    syslog.openlog('BGP_Ranking_Sort_Whois_Entries', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     temp_db = redis.Redis(port = int(config.get('redis','port_cache')), db=int(config.get('redis','temp_reris')))
     key = config.get('redis','key_temp_whois')

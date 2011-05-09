@@ -118,7 +118,7 @@ class MicroBlog(CommonReport):
         """
             Return all the rankings found in the DB for a given ASN
         """
-        dates = sort(self.get_dates())
+        dates = sorted(self.get_dates())
         ranks = []
         values = ''
         for date in dates:

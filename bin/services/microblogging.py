@@ -35,10 +35,8 @@ if __name__ == '__main__':
     mb = MicroBlog()
 
     while 1:
-        try:
-            if mb.post_last_top():
-                syslog.syslog(syslog.LOG_INFO, 'New Ranking posted on twitter and identica.')
-        except:
-            syslog.syslog(syslog.LOG_CRIT, 'Unable to post, someone is not happy.')
+        if mb.post_last_top():
+            syslog.syslog(syslog.LOG_INFO, 'New Ranking posted on twitter and identica.')
+        mb.grab_dms()
         time.sleep(sleep_timer)
     reader.disconnect()

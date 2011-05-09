@@ -7,11 +7,14 @@
     ~~~~~~~~~~
     
     Microblog client for twitter and identica
+    
+    FIXME identica not completely implemented
 """
 
 import twitter
 from micro_blog_keys import *
 import dateutil.parser
+import redis
 
 if __name__ == '__main__':
     import os
@@ -42,6 +45,25 @@ class MicroBlog(CommonReport):
                                         access_token_key    =   identica_access_token_key,
                                         access_token_secret =   identica_access_token_secret,
                                         base_url = 'https://identi.ca/api')
+        self.twitter_db_temp = redis.Redis(port = int(self.config.get('redis','port_cache')),\
+                                        db = self.config.get('redis','temp'))
+        self.last_dm_key = "last_dm"
+
+    def grab_dms(self):
+        last_dm_id = self.twitter_db_temp.get(self.last_dm_key)
+        if last_dm_id is None:
+            dms = self.twitter_api.GetDirectMessages()
+        else:
+            dms = self.twitter_api.GetDirectMessages(since_id = last_dm_id)
+            for dm in dms:
+                data = dm.split()
+                if len(data) == 2:
+                    asn, source = data
+                    to_send = self.last_ranks_asn(asn, source)
+                    if to_send is not None:
+                        self.twitter_api.PostDirectMessage(dm.sender_id, to_send)
+        if len(dms) > 0 :
+            self.twitter_db_temp.set(last_dm_key, dms[0].id)
     
     def post_last_top(self):
         last_top_date = self.check_last_top()
@@ -52,7 +74,6 @@ class MicroBlog(CommonReport):
         return False
 
     def check_last_top(self):
-        # FIXME test on identica and twitter
         tl = self.twitter_api.GetUserTimeline("bgpranking")
         last_top_date = None
         for entry in tl:

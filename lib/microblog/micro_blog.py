@@ -58,7 +58,6 @@ class MicroBlog(CommonReport):
             for dm in dms:
                 data = dm.text.split()
                 if len(data) > 0:
-                    asn, source = data
                     to_send = self.last_ranks_asn(*data)
                     if to_send is not None:
                         try:

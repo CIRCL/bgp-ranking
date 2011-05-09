@@ -121,12 +121,14 @@ class MicroBlog(CommonReport):
         dates = sorted(self.get_dates())
         ranks = []
         values = ''
+        if source is None:
+            source = self.config.get('input_keys','histo_global')
         for date in dates:
             rank = self.get_daily_rank_client(asn, date, source)
             if rank is not None:
                 values += ''.join('{date}: {rank}\n'.format(date = date, rank = round(1 + rank,3)))
         if len(values) > 0:
-            return '{asn}\n{values}'.format(asn = asn, values = values)
+            return '{asn} - {source}\n{values}'.format(asn = asn, source = source, values = values)
         return None
 
 if __name__ == '__main__':

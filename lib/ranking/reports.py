@@ -282,17 +282,23 @@ class Reports(CommonReport):
             for source in sources:
                 pipeline.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
                                     asn_timestamp_key = asn_timestamp_key, date = date, source=source))
-            nb_of_ips += sum(pipeline.execute())
+            ips_by_sources = pipeline.execute()
+            nb_of_ips += sum(ips_by_sources)
             if nb_of_ips > 0:
                 keys = ['{asn_timestamp_key}{owner}'.   format(asn_timestamp_key = asn_timestamp_key, \
                                                                            owner = self.config.get('input_keys','owner')),
                         '{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, \
                                                                         ip_block = self.config.get('input_keys','ips_block'))]
                 owner, ip_block = self.global_db.mget(keys)
+                local_rank = 0.0
+                i = 0 
+                for source in sources:
+                    local_rank += float(ips_by_sources[i]) * self.impacts[str(source)]
+                    i += 1
                 sources_web = self.history_db_temp.smembers(asn_timestamp_temp)
-                asn_descs_to_print.append([asn, timestamp, owner, ip_block, nb_of_ips,\
-                                            ', '.join(sources_web), 1 + nb_of_ips / IPy.IP(ip_block).len()])
-        to_return = sorted(asn_descs_to_print, key=lambda desc: IP(desc[3]).len())
+                asn_descs_to_print.append([asn, timestamp, owner, ip_block,\
+                                            nb_of_ips, ', '.join(sources_web), 1 + local_rank / IP(ip_block).len()])
+        to_return = sorted(asn_descs_to_print, key=lambda desc: desc[6], reverse = True)
         return to_return, current_asn_sources
 
 

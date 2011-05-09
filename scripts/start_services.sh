@@ -10,6 +10,7 @@ $NICE $PYTHON start_fetch_raw_files.py start
 $NICE $PYTHON start_parse_raw_files.py start
 $NICE $PYTHON start_ris.py start
 $NICE $PYTHON start_fetch_whois_entries.py start
+$NICE $PYTHON start_microblog.py start
 
 # Desactivated by default
 #$NICE $PYTHON start_sort_whois_queries.py start

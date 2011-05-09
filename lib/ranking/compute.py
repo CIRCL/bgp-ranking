@@ -17,7 +17,7 @@ import IPy
 
 import datetime
 
-class Ranking():
+class Ranking(object):
     """
         This class is used in a big loop on each subnet we want to rank.
     """

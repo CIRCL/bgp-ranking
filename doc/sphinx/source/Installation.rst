@@ -12,7 +12,6 @@ Dependencies available in the ubuntu repositories:
     
         $ apt-get install python-dateutil python-feedparser python-cherrypy3 python-cheetah python-ipy
 
-
 Dependencies of libbgpdump + gcc (compilation :) ) + unzip (rgraph is zipped):
 
     ::
@@ -60,7 +59,7 @@ Optional dependencies
     
     ::
         
-        $ wget http://pypi.python.org/packages/source/h/hiredis/hiredis-0.1.0.tar.gz#md5=0030abe2fd3acbecbd0d960d60844142
+        $ wget http://pypi.python.org/packages/source/h/hiredis/hiredis-0.1.0.tar.gz
 
 3. Install hiredis
 
@@ -69,6 +68,26 @@ Optional dependencies
         $ easy_install hiredis
 
 
+To be able to post on twitter and identi.ca:
+    
+    ::
+        
+        $ apt-get install python-simplejson python-httplib2
+
+.. _oauth2: https://github.com/simplegeo/python-oauth2
+.. _python-twitter: https://code.google.com/p/python-twitter/
+
+The versions of `oauth2`_ and `python-twitter`_ provided by ubuntu are too old:
+    
+    ::
+
+        $ wget http://pypi.python.org/packages/source/o/oauth2/oauth2-1.5.170.tar.gz
+        $ wget http://python-twitter.googlecode.com/files/python-twitter-0.8.1.tar.gz
+
+Unpack the archives and do::
+        $ sudo python setup.py install
+
+In both directories.
 
 BGP Ranking
 ===========

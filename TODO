@@ -36,6 +36,10 @@ Improvements
 
 * Invent a favicon/logo
 
+* Log the queries and the IPs::
+
+    cat /var/log/nginx/localhost.access.log | grep -v "::1" | grep -v "RGraph" |  grep -v "Google" | cut -f1,7,12- -d " " | sort | less
+
 New functionalities
 ===================
 
@@ -58,6 +62,17 @@ New functionalities
     - get the rank of a subnet/asn (by whatever you want)
 
 * Display the daily ASN max ranking
+
+Documentation
+=============
+
+* How-to generate customer_{key,secret} and access_token_{key,secret} on twitter and identica
+
+Microblogging client
+====================
+
+* Post when a new ranking has been computed
+* Possiblity to do query on AS/IP
 
 Website
 =======

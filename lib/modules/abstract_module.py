@@ -19,7 +19,7 @@ import os
 import sys
 import ConfigParser
 
-class AbstractModule():
+class AbstractModule(object):
     """   
     To use this class you have to provide a variable called self.directory which is the directory 
     where the new files are. 

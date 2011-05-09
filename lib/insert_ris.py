@@ -22,7 +22,7 @@ import datetime
 
 import dateutil.parser
 
-class InsertRIS():
+class InsertRIS(object):
     """
         Link the entries with their ASN. 
         

@@ -16,18 +16,53 @@ import redis
 from IPy import IP
 import dateutil.parser
 
-class Reports():
+from helpers.common_report import CommonReport
+
+class Reports(CommonReport):
     """
         This class is used to generate reports for a day 
         (you can also choose between IPv4 and IPv6)
     """
+
+    def __init__(self, ip_version = 4):
+        CommonReport.__init__(self, ip_version)
+        self.set_default_date()
+        self.set_sources()
     
-    def get_last_ranking(self):
+    def set_default_date(self):
         """
-            Get the timestamp of the ranking
+            Set the default date displayed on the website.
         """
-        return redis.Redis(port = int(self.config.get('redis','port_master')),\
-                            db   = self.config.get('redis','history')).get(self.config.get('ranking','latest_ranking'))
+        self.default_date_raw, self.default_date = self.get_default_date()
+
+    def set_sources(self, date = None):
+        """
+            Set the sources parsed on a `date`
+        """
+        self.sources = self.get_sources(date)
+
+    def get_sources(self, date = None):
+        """
+            Get the sources parsed on a `date`
+        """
+        if date is None:
+            date = self.default_date
+        return super(Reports, self).get_sources(date)
+
+    def get_daily_rank(self, asn, source = None, date = None):
+        """
+            Get the rank of an AS for a particular `source` and `date`
+        """
+        if date is None:
+            date = self.default_date
+        return super(Reports, self).get_daily_rank(asn, date, source)
+    
+    def flush_temp_db(self):
+        """
+            Drop the whole temporary ranking database.
+        """
+        self.history_db_temp.flushdb()
+
 
     def build_reports_lasts_days(self, nr_days = 2):
         """
@@ -48,77 +83,6 @@ class Reports():
             timestamp = timestamp.split()
             to_build = dateutil.parser.parse(timestamp[0]).date()
             self.build_reports(to_build.isoformat())
-    
-    def set_default_date(self):
-        """
-            Set the default date displayed on the website.
-        """
-        timestamp = self.get_last_ranking()
-        if timestamp is not None:
-            timestamp = timestamp.split()
-            self.default_date_raw = dateutil.parser.parse(timestamp[0]).date() - datetime.timedelta(days=1)
-        else:
-            self.default_date_raw = datetime.date.today() - datetime.timedelta(days=1)
-        self.default_date = self.default_date_raw.isoformat()
-
-    def get_sources(self, date):
-        """
-            Get the sources parsed on a `date`
-        """
-        if date is None:
-            date = self.default_date
-        return self.global_db.smembers(\
-                    '{date}{sep}{key}'.format(  date   = date, \
-                                                sep    = self.separator,\
-                                                key    = self.config.get('input_keys','index_sources')))
-
-    def set_sources(self, date = None):
-        """
-            Set the sources parsed on a `date`
-        """
-        if date is None:
-            date = self.default_date
-        self.sources =  self.global_db.smembers(\
-                            '{date}{sep}{key}'.format(  date   = date, \
-                                                        sep    = self.separator,\
-                                                        key    = self.config.get('input_keys','index_sources')))
-
-    def get_dates(self):
-        """
-            Get the dates where there is a ranking available in the database
-        """
-        return self.history_db_temp.smembers(self.config.get('ranking','all_dates'))
-    
-    def __init__(self, ip_version = 4):
-        self.config = ConfigParser.RawConfigParser()
-        self.config.optionxform = str
-        config_file = "/path/to/bgp-ranking.conf"
-        self.config.read(config_file)
-        self.separator = self.config.get('input_keys','separator')
-        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
-                                        db = self.config.get('redis','global'))
-        self.history_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
-                                        db = self.config.get('redis','history'))
-        self.history_db_temp = redis.Redis(port = int(self.config.get('redis','port_cache')),\
-                                             db = self.config.get('redis','history'))
-        
-        if ip_version == 4:
-            self.ip_key = self.config.get('input_keys','rankv4')
-        elif ip_version == 6:
-            self.ip_key = self.config.get('input_keys','rankv6')
-
-        self.impacts = {}
-        items = self.config.items('modules_to_parse')
-        for item in items:
-            self.impacts[item[0]] = float(item[1])
-        self.set_default_date()
-        self.set_sources()
-    
-    def flush_temp_db(self):
-        """
-            Drop the whole temporary ranking database.
-        """
-        self.history_db_temp.flushdb()
     
     def build_reports(self, date = None):
         """
@@ -224,21 +188,6 @@ class Reports():
         sources = pipeline.execute()
         report = [list(x) + [', '.join(y)] for x,y in zip(reports_temp,sources)]
         return report
-    
-    def get_daily_rank(self, asn, source = None, date = None):
-        """
-            Get the rank of an AS for a particular `source` and `date`
-        """
-        if source is None:
-            source = self.config.get('input_keys','histo_global')
-        if date is None:
-            date = self.default_date
-        return self.history_db.get(\
-                    '{asn}{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep     = self.separator,\
-                                                                        asn     = asn,\
-                                                                        date    = date,\
-                                                                        source  = source,\
-                                                                        ip_key  = self.ip_key))
 
     def prepare_graphe_js(self, asn, first_date, last_date, sources = None):
         """

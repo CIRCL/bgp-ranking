@@ -35,9 +35,12 @@ if __name__ == '__main__':
     mb = MicroBlog()
 
     while 1:
-        if mb.post_last_top():
-            syslog.syslog(syslog.LOG_INFO, 'New Ranking posted on twitter and identica.')
-        mb.grab_dms(mb.twitter_api, mb.last_dm_twitter_key)
-        mb.grab_dms(mb.identica_api, mb.last_dm_identica_key)
+        try:
+            if mb.post_last_top():
+                syslog.syslog(syslog.LOG_INFO, 'New Ranking posted on twitter and identica.')
+            mb.grab_dms(mb.twitter_api, mb.last_dm_twitter_key)
+            mb.grab_dms(mb.identica_api, mb.last_dm_identica_key)
+        except:
+            pass
         time.sleep(sleep_timer)
     reader.disconnect()

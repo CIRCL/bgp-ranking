@@ -62,7 +62,7 @@ class MicroBlog(CommonReport):
                     to_send = self.last_ranks_asn(*data)
                     if to_send is not None:
                         try:
-                            api.PostDirectMessage(dm.sender_id, to_send)
+                            api.PostDirectMessage(dm.sender_screen_name, to_send)
                         except:
                             pass
         if len(dms) > 0 :

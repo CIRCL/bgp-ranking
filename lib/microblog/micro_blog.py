@@ -56,14 +56,17 @@ class MicroBlog(CommonReport):
         else:
             dms = self.twitter_api.GetDirectMessages(since_id = last_dm_id)
             for dm in dms:
-                data = dm.split()
+                data = dm.text.split()
                 if len(data) == 2:
                     asn, source = data
                     to_send = self.last_ranks_asn(asn, source)
                     if to_send is not None:
-                        self.twitter_api.PostDirectMessage(dm.sender_id, to_send)
+                        try:
+                            self.twitter_api.PostDirectMessage(dm.sender_id, to_send)
+                        except:
+                            pass
         if len(dms) > 0 :
-            self.twitter_db_temp.set(last_dm_key, dms[0].id)
+            self.twitter_db_temp.set(self.last_dm_key, dms[0].id)
     
     def post_last_top(self):
         last_top_date = self.check_last_top()
@@ -122,7 +125,7 @@ class MicroBlog(CommonReport):
         for date in dates:
             rank = self.get_daily_rank(asn, date, source)
             if rank is not None:
-                values += ''.join('{date}: {rank}\n'.format(date = date, rank = round(rank,2)))
+                values += ''.join('{date}: {rank}\n'.format(date = date, rank = round(float(rank),3)))
         if len(values) > 0:
             return '{asn}\n{values}'.format(asn = asn, values = values)
         return None

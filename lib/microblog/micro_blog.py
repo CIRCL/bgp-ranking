@@ -45,27 +45,28 @@ class MicroBlog(CommonReport):
                                         access_token_key    =   identica_access_token_key,
                                         access_token_secret =   identica_access_token_secret,
                                         base_url = 'https://identi.ca/api')
-        self.twitter_db_temp = redis.Redis(port = int(self.config.get('redis','port_cache')),\
+        self.microblog_db_temp = redis.Redis(port = int(self.config.get('redis','port_cache')),\
                                         db = self.config.get('redis','temp'))
-        self.last_dm_key = "last_dm"
+        self.last_dm_twitter_key = "last_dm_twitter"
+        self.last_dm_identica_key = "last_dm_identica"
 
-    def grab_dms(self):
-        last_dm_id = self.twitter_db_temp.get(self.last_dm_key)
+    def grab_dms(self, api, key):
+        last_dm_id = self.microblog_db_temp.get(key)
         if last_dm_id is None:
-            dms = self.twitter_api.GetDirectMessages()
+            dms = api.GetDirectMessages()
         else:
-            dms = self.twitter_api.GetDirectMessages(since_id = last_dm_id)
+            dms = api.GetDirectMessages(since_id = last_dm_id)
             for dm in dms:
                 data = dm.text.split()
                 if len(data) > 0:
                     to_send = self.last_ranks_asn(*data)
                     if to_send is not None:
                         try:
-                            self.twitter_api.PostDirectMessage(dm.sender_id, to_send)
+                            api.PostDirectMessage(dm.sender_id, to_send)
                         except:
                             pass
         if len(dms) > 0 :
-            self.twitter_db_temp.set(self.last_dm_key, dms[0].id)
+            self.microblog_db_temp.set(key, dms[0].id)
     
     def post_last_top(self):
         last_top_date = self.check_last_top()

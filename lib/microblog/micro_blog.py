@@ -57,9 +57,9 @@ class MicroBlog(CommonReport):
             dms = self.twitter_api.GetDirectMessages(since_id = last_dm_id)
             for dm in dms:
                 data = dm.text.split()
-                if len(data) == 2:
+                if len(data) > 0:
                     asn, source = data
-                    to_send = self.last_ranks_asn(asn, source)
+                    to_send = self.last_ranks_asn(*data)
                     if to_send is not None:
                         try:
                             self.twitter_api.PostDirectMessage(dm.sender_id, to_send)
@@ -112,7 +112,7 @@ class MicroBlog(CommonReport):
         if reports is not None:
             to_return = 'Top Ranking {date}\n'.format(date = date)
             for report in reports:
-                to_return += ''.join('{asn}: {rank}\n'.format(asn = report[0], rank = round(1+report[1],3)))
+                to_return += ''.join('{asn}: {rank}\n'.format(asn = report[0], rank = round(1 + report[1],3)))
         return to_return
 
     def last_ranks_asn(self, asn, source = None):
@@ -123,9 +123,9 @@ class MicroBlog(CommonReport):
         ranks = []
         values = ''
         for date in dates:
-            rank = self.get_daily_rank(asn, date, source)
+            rank = self.get_daily_rank_client(asn, date, source)
             if rank is not None:
-                values += ''.join('{date}: {rank}\n'.format(date = date, rank = round(float(rank),3)))
+                values += ''.join('{date}: {rank}\n'.format(date = date, rank = round(1 + float(rank),3)))
         if len(values) > 0:
             return '{asn}\n{values}'.format(asn = asn, values = values)
         return None

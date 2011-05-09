@@ -28,7 +28,7 @@ if __name__ == '__main__':
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     from microblog.micro_blog import MicroBlog
-    sleep_timer = int(config.get('sleep_timers','long'))
+    sleep_timer = int(config.get('sleep_timers','intermediate'))
 
     syslog.openlog('BGP_Ranking_Microblog', syslog.LOG_PID, syslog.LOG_LOCAL5)
 

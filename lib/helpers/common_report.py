@@ -76,16 +76,21 @@ class CommonReport(object):
         return self.history_db_temp.smembers(self.config.get('ranking','all_dates'))
 
     
-    def get_daily_rank(self, asn, date, source = None):
+    def get_daily_rank(self, asn, date, source):
         """
             Get the rank of an AS for a particular `source` and `date`
         """
-        if source is None:
-            source = self.config.get('input_keys','histo_global')
         return self.history_db.get(\
                     '{asn}{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep     = self.separator,\
                                                                         asn     = asn,\
                                                                         date    = date,\
                                                                         source  = source,\
                                                                         ip_key  = self.ip_key))
-    
+    def get_daily_rank_client(self, asn, date, source = None):
+        if source is None:
+            source = self.config.get('input_keys','histo_global')
+        histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
+                                                                    date        = date,\
+                                                                    histo_key   = source,\
+                                                                    ip_key      = self.ip_key)
+        return self.history_db_temp.zrank(asn)

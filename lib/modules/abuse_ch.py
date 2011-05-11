@@ -46,7 +46,7 @@ class AbuseCh(AbstractModule):
                     ip, date = self.line_ddos(line)
                 if ip is None:
                     continue
-                entry = self.prepare_entry(ip = ip, source = self.class_name, timestamp = date)
+                entry = self.prepare_entry(ip = ip, source = self.__class__.__name__, timestamp = date)
                 self.put_entry(entry)
             blocklist.close()
             self.move_file(file)

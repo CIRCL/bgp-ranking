@@ -23,4 +23,3 @@ class SpyeyetrackerDdos(AbuseCh):
 
     def __init__(self, raw_dir):
         AbuseCh.__init__(self, raw_dir)
-        self.class_name = self.__class__.__name__

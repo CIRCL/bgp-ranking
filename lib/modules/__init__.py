@@ -1,7 +1,7 @@
 from amada_ipblocklist import AmadaIpBlockList
 from atlas import Atlas 
 from abusix import Abusix
-from blocklist_de import BlocklistDe
+from blocklist_de import BlocklistDeSsh, BlocklistDeMail, BlocklistDeApache, BlocklistDePop3, BlocklistDeFtp
 from dshield_daily import DshieldDaily
 from dshield_topips import DshieldTopIPs 
 from malwaredomainlist import MalwareDomainListIP

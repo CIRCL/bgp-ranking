@@ -61,6 +61,7 @@
                 <th scope="col" >Block</th>
                 <th scope="col" >Number of IPs today</th>
                 <th scope="col" >Source(s)</th>
+                <th scope="col" >Block Ranking</th>
             </tr>
         </thead>
         #for $asn_desc in $asn_descs
@@ -70,6 +71,7 @@
             <td><a href="/asn_details?date=${date};source=${source};asn=${asn};ip_details=${asn_desc[1]}">$asn_desc[3]</a></td>
             <td>$asn_desc[4]</td>
             <td>$asn_desc[5]</td>
+            <td>$asn_desc[6]</td>
         </tr>
         #end for
     </table>

@@ -42,7 +42,6 @@ class HTTPParser(object):
 
     def uri_by_origin_ip(self):
         """
-            Database 0 
             "ips" -> all ips
             ip -> all uris
         """
@@ -59,7 +58,6 @@ class HTTPParser(object):
 
     def agent_by_origin_ip(self):
         """
-            Database 1
             "ips" -> all ips
             ip -> all agents
         """
@@ -74,7 +72,6 @@ class HTTPParser(object):
 
     def origin_ip_by_asn(self):
         """
-            Database 0
             "asns" -> all asns
             asn -> all ips
         """
@@ -91,7 +88,6 @@ class HTTPParser(object):
 
     def ip_by_agent(self):
         """
-            Database 0
             "agents" -> all agents
             agent -> all ips
         """
@@ -105,7 +101,6 @@ class HTTPParser(object):
 
     def ip_by_origin(self):
         """
-            Database 0
             "origins" -> all origins
             origin -> all ips
         """
@@ -120,7 +115,6 @@ class HTTPParser(object):
 
     def ip_queries(self):
         """
-            db3
             "ips" -> all ips
             "ip_queries"    -> ip_asn  top = one IP did many queries on one ASN
             ip              -> asns    top = the AS which interests a lot this ip

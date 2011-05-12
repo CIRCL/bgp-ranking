@@ -23,6 +23,6 @@ If you take a look at the other functions, you might find some other interesting
 
 This script draws inspiration and code from:
 
+* https://github.com/lethain/apache-log-parser (Mostly)
 * http://effbot.org/zone/wide-finder.htm
 * http://www.python.org/dev/peps/pep-0265/
-* https://github.com/Rafiot/apache-log-parser

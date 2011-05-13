@@ -5,14 +5,20 @@ Changelog
 v1.1.3
 
 New:
- * Very simple migroblog bot (twitter and identica)
+ * Very simple migroblogging bot (twitter and identica)
+ * Add an HTTP log analyzer to play with
+ * Website: display the rank of each subnet on asn_details
+
+Bugfixes:
+ * Catch exception and try again if redis or a fetching server does not respond
+ * Mask old untested modules which need particular sources
 
 Improvements:
  * Website: Corporate branding (CIRCL - http://circl.lu/)
  * Use a dedicated logfile and not user.log anymore
-
-Bugfixes:
- * Catch exception and try again if redis or a fetching server does not respond
+ * Use the lists/services (ssh, mail, pop3, apache and ftp) of blocklist.de instead the
+   Global one which contains complete subnets.
+ * First usage of the "default module" used on files which only contains IP adresses
 
 v1.1.2
 

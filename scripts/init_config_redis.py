@@ -7,16 +7,16 @@ import redis
 
 
 config_file = "/path/to/bgp-ranking.conf"
-redis_config_file = config_file + ".redis"
+config_file_redis = config_file + ".redis"
 
 config = ConfigParser.SafeConfigParser()
 config.read(config_file)
 
-config_db  = redis.Redis( port = int(self.config.get('redis','port_master')),\
-                            db = int(self.config.get('redis','config')))
+config_db  = redis.Redis( port = int(config.get('redis','port_master')),\
+                            db = int(config.get('redis','config')))
 
 redis_config = ConfigParser.SafeConfigParser()
-redis_config.read(redis_config_file)
+redis_config.read(config_file_redis)
 
 p = config_db.pipeline()
 

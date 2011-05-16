@@ -36,11 +36,6 @@ class CommonReport(object):
             self.ip_key = self.config.get('input_keys','rankv4')
         elif ip_version == 6:
             self.ip_key = self.config.get('input_keys','rankv6')
-
-        self.impacts = {}
-        items = self.config.items('modules_to_parse')
-        for item in items:
-            self.impacts[item[0]] = float(item[1])
     
     def get_last_ranking(self):
         """

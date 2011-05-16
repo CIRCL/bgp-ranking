@@ -26,6 +26,8 @@ class Reports(CommonReport):
 
     def __init__(self, ip_version = 4):
         CommonReport.__init__(self, ip_version)
+        self.config_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
+                                       db = self.config.get('redis','config'))
         self.set_default_date()
         self.set_sources()
     
@@ -161,7 +163,7 @@ class Reports(CommonReport):
             if asn != self.config.get('modules_global','default_asn'):
                 rank = self.get_daily_rank(asn, source, date)
                 if rank is not None:
-                    pipeline.zincrby(histo_key, asn, float(rank) * self.impacts[str(source)])
+                    pipeline.zincrby(histo_key, asn, float(rank) * float(self.config_db.get(str(source))))
         pipeline.execute()
 
     def format_report(self, source = None, limit = 50, date = None):
@@ -244,9 +246,9 @@ class Reports(CommonReport):
                 if rank is not None:
                     asn_day = dates[i]
                     if ranks_by_days.get(asn_day, None) is None:
-                        ranks_by_days[asn_day] = float(rank) * self.impacts[str(source)]
+                        ranks_by_days[asn_day] = float(rank) *  float(self.config_db.get(str(source)))
                     else:
-                        ranks_by_days[asn_day] += float(rank) * self.impacts[str(source)]
+                        ranks_by_days[asn_day] += float(rank) *  float(self.config_db.get(str(source)))
                 i += 1 
         for ranks in ranks_by_days:
             ranks_by_days[ranks] += 1 
@@ -293,7 +295,7 @@ class Reports(CommonReport):
                 local_rank = 0.0
                 i = 0 
                 for source in sources:
-                    local_rank += float(ips_by_sources[i]) * self.impacts[str(source)]
+                    local_rank += float(ips_by_sources[i]) *  float(self.config_db.get(str(source)))
                     i += 1
                 sources_web = self.history_db_temp.smembers(asn_timestamp_temp)
                 asn_descs_to_print.append([asn, timestamp, owner, ip_block,\

@@ -11,20 +11,15 @@
 import re
 import os
 import dateutil.parser
-
 from modules.abstract_module import AbstractModule
 
 
 class DshieldDaily(AbstractModule):
-    """
-        Parser
-    """
 
     def __init__(self, raw_dir):
         self.directory = 'dshield/daily/'
         AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
-
 
     def parse(self):
         """ 

@@ -21,8 +21,24 @@ redis_config.read(config_file_redis)
 
 p = config_db.pipeline()
 
-items = redis_config.items('modules_to_parse')
+
+items = redis_config.items('modules')
+for dummy_name, modules_names in items:
+    names = modules_names.split()
+    for name in names:
+        p.sadd('modules', name)
+
+items = redis_config.items('modules_impacts')
 for source, weight in items:
     p.set(source, weight)
+
+items = redis_config.items('modules_home_dirs')
+for source, home_dir in items:
+    p.set(source + "|" + "home_dir", home_dir)
+
+items = redis_config.items('modules_urls')
+for source, url in items:
+    p.set(source + "|" + "url", url)
+
 
 p.execute()

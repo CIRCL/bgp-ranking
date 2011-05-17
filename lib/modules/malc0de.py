@@ -29,7 +29,7 @@ class Malc0de(AbstractModule):
         for file in self.files:
             self.date = dateutil.parser.parse(re.findall('Last updated (.*)\n', open(file).read())[0])
             malc0de = open(file)
-            for line in daily:
+            for line in malc0de:
                 ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s].*',line)
                 if len(ip) == 0:
                     continue

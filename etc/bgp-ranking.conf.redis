@@ -33,6 +33,7 @@ BlocklistDePop3 = 5
 BlocklistDeFtp = 5
 DshieldDaily = 0.1
 DshieldTopIPs = 1
+Malc0de = 5
 MalwareDomainListIP = 4
 ;ShadowserverSinkhole = 10
 ;ShadowserverReport = 10

@@ -2,6 +2,19 @@
 Changelog
 =========
 
+v1.1.4
+
+New:
+ * 
+
+Bugfixes:
+ * 
+
+Improvements:
+ * The impact value of the sources is now saved in redis.
+ * Use one single file for several modules.
+
+
 v1.1.3
 
 New:

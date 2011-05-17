@@ -15,13 +15,8 @@ from modules.abstract_module import AbstractModule
 
 
 class SshblBase(AbstractModule):
-    """
-        Parser
-    """
     
     def __init__(self, raw_dir):
-        # Dshield doesn't give a date for his TopIPs list. So we assume that 
-        # the list is updated every days
         self.directory = 'sshbl/base/'
         AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    
+
     Module Manager
     ~~~~~~~~~~~~~~
 
@@ -17,7 +17,7 @@
             * $HOME of each module (parser and fetcher)
             * The URL where is the file to fetch (fetcher)
 """
-import os 
+import os
 import sys
 import ConfigParser
 import syslog
@@ -78,7 +78,7 @@ class ModuleManager(object):
         else:
             syslog.syslog(syslog.LOG_ERR, 'Unable to start parsing of ' + module + ': home_dir unknown.')
             self.config_db.set(module + "|" + "parsing", 0)
-    
+
     def stop_services(self):
         modules = self.config_db.smembers('modules')
         for module in modules:

@@ -6,8 +6,6 @@ import ConfigParser
 import redis
 
 class AddModules(object):
-    
-    
     def __init__(self):
         config_file = "/path/to/bgp-ranking.conf"
         config_file_redis = config_file + ".redis"
@@ -28,19 +26,17 @@ class AddModules(object):
         # !!! Always last !!!!
         self.config_db.sadd('modules', name)
 
-
-    
 if __name__ == '__main__':
     # Make it a "ncurse interface"
     config_file = "/path/to/bgp-ranking.conf"
     config_file_redis = config_file + ".redis"
-    
+
     redis_config = ConfigParser.RawConfigParser()
     redis_config.optionxform = str
     redis_config.read(config_file_redis)
-    
+
     add_modules = AddModules()
-    
+
     items = redis_config.items('modules')
     for module, params in items:
         p = params.split()

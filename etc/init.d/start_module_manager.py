@@ -5,7 +5,7 @@
 """
 Start the module manager
 """
-import os 
+import os
 import sys
 import ConfigParser
 

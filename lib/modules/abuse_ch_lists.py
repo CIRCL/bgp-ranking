@@ -16,7 +16,6 @@ class ZeustrackerIpBlockList(AbuseCh):
     """
 
     def __init__(self, raw_dir):
-        self.directory = 'zeus/ipblocklist/'
         self.list_type = 1
         AbuseCh.__init__(self, raw_dir)
 
@@ -26,7 +25,6 @@ class SpyeyetrackerIpBlockList(AbuseCh):
     """
 
     def __init__(self, raw_dir):
-        self.directory = 'spyeye/ipblocklist/'
         self.list_type = 1
         AbuseCh.__init__(self, raw_dir)
 
@@ -40,7 +38,6 @@ class AmadaIpBlockList(AbuseCh):
     """
 
     def __init__(self, raw_dir):
-        self.directory = 'amada/ipblocklist/'
         self.list_type = 1
         AbuseCh.__init__(self, raw_dir)
 
@@ -50,7 +47,6 @@ class SpyeyetrackerDdos(AbuseCh):
     """
 
     def __init__(self, raw_dir):
-        self.directory = 'spyeye/ddos/'
         self.list_type = 2
         AbuseCh.__init__(self, raw_dir)
 
@@ -60,6 +56,5 @@ class ZeustrackerDdos(AbuseCh):
     """
 
     def __init__(self, raw_dir):
-        self.directory = 'zeus/ddos/'
         self.list_type = 2
         AbuseCh.__init__(self, raw_dir)

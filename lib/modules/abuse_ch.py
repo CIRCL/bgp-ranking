@@ -27,7 +27,7 @@ class AbuseCh(AbstractModule):
     
     def __init__(self, raw_dir):
         AbstractModule.__init__(self)
-        self.directory = os.path.join(raw_dir, self.directory)
+        self.directory = raw_dir
  
     def parse(self):
         """

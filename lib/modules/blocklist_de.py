@@ -13,29 +13,24 @@ from modules.abstract_module_default import AbstractModuleDefault
 class BlocklistDeSsh(AbstractModuleDefault):
 
     def __init__(self, raw_dir):
-        self.directory = 'blocklist_de/ssh/'
         AbstractModuleDefault.__init__(self, raw_dir)
 
 class BlocklistDeMail(AbstractModuleDefault):
 
     def __init__(self, raw_dir):
-        self.directory = 'blocklist_de/mail/'
         AbstractModuleDefault.__init__(self, raw_dir)
 
 class BlocklistDeApache(AbstractModuleDefault):
 
     def __init__(self, raw_dir):
-        self.directory = 'blocklist_de/apache/'
         AbstractModuleDefault.__init__(self, raw_dir)
 
 class BlocklistDePop3(AbstractModuleDefault):
 
     def __init__(self, raw_dir):
-        self.directory = 'blocklist_de/pop3/'
         AbstractModuleDefault.__init__(self, raw_dir)
 
 class BlocklistDeFtp(AbstractModuleDefault):
 
     def __init__(self, raw_dir):
-        self.directory = 'blocklist_de/ftp/'
         AbstractModuleDefault.__init__(self, raw_dir)

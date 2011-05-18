@@ -25,53 +25,78 @@ import time
 
 
 def usage():
-    print "fetch_raw_files.py dir url"
+    print "fetch_raw_files.py name dir url"
     exit (1)
+
+class FetchRaw(object):
+
+    def __init__(self, module, directory, url):
+        config = ConfigParser.RawConfigParser()
+        config_file = "/path/to/bgp-ranking.conf"
+        config.read(config_file)
+        root_dir = config.get('directories','root')
+        temporary_dir = config.get('fetch_files','tmp_dir')
+        old_dir = config.get('fetch_files','old_dir')
+
+        self.sleep_timer = int(config.get('sleep_timers','long'))
+        self.sleep_timer_short = int(config.get('sleep_timers','short'))
+
+        self.config_db = redis.Redis(port = int(config.get('redis','port_master')),\
+                                       db = config.get('redis','config'))
+
+        self.module = module
+        self.directory = directory
+        self.url = url
+
+        self.temp_filename = os.path.join(self.directory, temporary_dir, str(datetime.date.today()))
+        self.filename = os.path.join(self.directory, str(datetime.date.today()))
+        self.old_directory = os.path.join(self.directory, old_dir)
+
+    def fetcher(self):
+        while config_db.exists(self.module):
+            try:
+                urllib.urlretrieve(self.url, temp_filename)
+            except:
+                syslog.syslog(syslog.LOG_ERR, 'Unable to fetch ' + self.url)
+                self.check_exit()
+                continue
+            drop_file = False
+            """
+                Check is the file already exists, if the same file is found,
+                the downloaded file is dropped. Else, it is moved in his final directory.
+                FIXME: I should not check ALL the file present, or do sth with old files
+            """
+            to_check = glob.glob( os.path.join(self.old_directory, '*') )
+            to_check += glob.glob( os.path.join(self.directory, '*') )
+            for file in to_check:
+                if filecmp.cmp(self.temp_filename, file):
+                    drop_file = True
+                    break
+            if drop_file:
+                os.unlink(self.temp_filename)
+        #        syslog.syslog(syslog.LOG_DEBUG, 'No new file on ' + sys.argv[3])
+            else:
+                os.rename(self.temp_filename, self.filename)
+                syslog.syslog(syslog.LOG_INFO, 'New file on ' + self.url)
+            self.check_exit()
+        config_db.delete(self.module + "|" + "fetching")
+
+    def check_exit(self):
+        wait_until = datetime.datetime.now() + datetime.timedelta(seconds = sleep_timer)
+        while wait_until >= datetime.datetime.now():
+            if not config_db.exists(module):
+                break
+            time.sleep(sleep_timer_short)
+
 
 if __name__ == '__main__':
 
-    config = ConfigParser.RawConfigParser()
-    config_file = "/path/to/bgp-ranking.conf"
-    config.read(config_file)
-    root_dir = config.get('directories','root')
-    temporary_dir = config.get('fetch_files','tmp_dir')
-    old_dir = config.get('fetch_files','old_dir')
-    sleep_timer = int(config.get('sleep_timers','long'))
 
     syslog.openlog('BGP_Ranking_Fetch_Raw_Files', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 4:
         usage()
 
-    args = sys.argv[1].split(' ')
+    fr = FetchRaw(sys.argv[1], sys.argv[2], sys.argv[3])
 
-    temp_filename = os.path.join(args[0], temporary_dir, str(datetime.date.today()))
-    filename = os.path.join(args[0], str(datetime.date.today()))
-    old_directory = os.path.join(args[0], old_dir)
-
-    while 1:
-        try:
-            urllib.urlretrieve(args[1], temp_filename)
-        except:
-            syslog.syslog(syslog.LOG_ERR, 'Unable to fetch ' + args[1])
-            time.sleep(sleep_timer)
-            continue
-        drop_file = False
-        """
-            Check is the file already exists, if the same file is found, 
-            the downloaded file is dropped. Else, it is moved in his final directory. 
-            FIXME: I should not check ALL the file present, or do sth with old files 
-        """
-        to_check = glob.glob( os.path.join(old_directory, '*') )
-        to_check += glob.glob( os.path.join(args[0], '*') )
-        for file in to_check:
-            if filecmp.cmp(temp_filename, file):
-                drop_file = True
-                break
-        if drop_file:
-            os.unlink(temp_filename)
-    #        syslog.syslog(syslog.LOG_DEBUG, 'No new file on ' + args[1])
-        else:
-            os.rename(temp_filename, filename)
-            syslog.syslog(syslog.LOG_INFO, 'New file on ' + args[1])
-        time.sleep(sleep_timer)
+    fr.fetcher()

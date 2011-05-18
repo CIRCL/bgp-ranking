@@ -10,7 +10,7 @@ class AddModules(object):
         self.config_file = "/path/to/bgp-ranking.conf"
 
         config = ConfigParser.SafeConfigParser()
-        config.read(config_file)
+        config.read(self.config_file)
 
         self.config_db  = redis.Redis( port = int(config.get('redis','port_master')),\
                                     db = int(config.get('redis','config')))
@@ -41,7 +41,8 @@ if __name__ == '__main__':
     response = raw_input("Do you want to import modules from the config file ? (y/N) ")
     if response == 'y':
         add_modules.from_config_file()
-
+    response = None
+    
     while True:
         response = raw_input("Do you want to import a new module? (y/N) ")
         if response == 'y':

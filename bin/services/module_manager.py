@@ -23,6 +23,7 @@ import ConfigParser
 import syslog
 import time
 import redis
+import subprocess
 
 
 def usage():
@@ -106,7 +107,7 @@ class ModuleManager(object):
             else:
                 time.sleep(self.sleep_timer)
 
-def stop_services():
+def stop_services(signum, frame):
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
@@ -117,6 +118,7 @@ def stop_services():
         config_db.set(module + "|" + "parsing", 0)
         config_db.set(module + "|" + "fetching", 0)
     syslog.syslog(syslog.LOG_INFO, 'The services will be stopped ASAP')
+    exit(0)
 
 if __name__ == '__main__':
     import signal

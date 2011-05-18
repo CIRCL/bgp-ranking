@@ -28,8 +28,8 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
     sleep_timer = int(config.get('sleep_timers','short'))
-    config_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
-                              db = self.config.get('redis','config'))
+    config_db = redis.Redis(port = int(config.get('redis','port_master')),\
+                              db = config.get('redis','config'))
 
     syslog.openlog('BGP_Ranking_Get_Whois_Entries', syslog.LOG_PID, syslog.LOG_LOCAL5)
 

@@ -12,6 +12,7 @@ Bugfixes
 * There is actually a problem with the slave database: it takes **to much** time.
   The proper fix it the move the temporary data from the global database to an other one,
   not synchronized with the slave.
+* Ensure there is a ranking to post before posting a message on twitter and identica.
 
 Improvements
 ============

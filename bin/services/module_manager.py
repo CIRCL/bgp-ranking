@@ -106,7 +106,12 @@ class ModuleManager(object):
             else:
                 time.sleep(self.sleep_timer)
 
-def stop_services(config_db):
+def stop_services():
+    config = ConfigParser.RawConfigParser()
+    config_file = "/path/to/bgp-ranking.conf"
+    config.read(config_file)
+    config_db = redis.Redis(port = int(config.get('redis','port_master')),\
+                              db = config.get('redis','config'))
     modules = config_db.smembers('modules')
     for module in modules:
         config_db.set(module + "|" + "parsing", 0)
@@ -119,5 +124,5 @@ if __name__ == '__main__':
     syslog.syslog(syslog.LOG_INFO, 'Manager started.')
     mm = ModuleManager()
     config_db = mm.get_config_db()
-    signal.signal(signal.SIGHUP, stop_services(config_db))
+    signal.signal(signal.SIGHUP, stop_services)
     mm.manager()

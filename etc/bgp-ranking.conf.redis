@@ -22,7 +22,8 @@
 [modules]
 abuse_ch = AmadaIpBlockList SpyeyetrackerDdos SpyeyetrackerIpBlockList  ZeustrackerDdos ZeustrackerIpBlockList
 blocklist_de = BlocklistDeSsh BlocklistDeMail BlocklistDeApache BlocklistDePop3 BlocklistDeFtp 
-divers = DshieldDaily DshieldTopIPs MalwareDomainListIP SshblBase URLQuery
+divers = DshieldDaily DshieldTopIPs Malc0de MalwareDomainListIP SshblBase URLQuery
+
 
 
 [modules_home_dirs]
@@ -33,6 +34,7 @@ BlocklistDeApache   = blocklist_de/apache/
 BlocklistDePop3     = blocklist_de/pop3/
 BlocklistDeFtp      = blocklist_de/ftp/
 DshieldDaily        = dshield/daily/
+Malc0de             = malc0de/blocklist/
 MalwareDomainListIP = malwaredomainlist/ip/
 SpyeyetrackerIpBlockList = spyeye/ipblocklist/
 SshblBase           = sshbl/base/ 
@@ -48,6 +50,7 @@ BlocklistDeApache   = http://www.blocklist.de/lists/apache.txt
 BlocklistDePop3     = http://www.blocklist.de/lists/pop3.txt
 BlocklistDeFtp      = http://www.blocklist.de/lists/ftp.txt
 DshieldDaily        = http://www.dshield.org/feeds/daily_sources
+Malc0de             = http://malc0de.com/bl/IP_Blacklist.txt
 MalwareDomainListIP = http://www.malwaredomainlist.com/hostslist/ip.txt
 SpyeyetrackerIpBlockList = http://www.abuse.ch/spyeyetracker/blocklist.php?download=ipblocklist
 SshblBase           = http://www.sshbl.org/lists/date.txt
@@ -69,6 +72,7 @@ BlocklistDePop3     = 5
 BlocklistDeFtp      = 5
 DshieldDaily        = 0.1
 DshieldTopIPs       = 1
+Malc0de             = 5
 MalwareDomainListIP = 4
 ;ShadowserverSinkhole = 10
 ;ShadowserverReport = 10

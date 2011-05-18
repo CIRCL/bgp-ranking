@@ -3,4 +3,5 @@ from blocklist_de import BlocklistDeSsh, BlocklistDeMail, BlocklistDeApache, Blo
 from simple_lists import URLQuery, MalwareDomainListIP, DshieldTopIPs
 
 from dshield_daily import DshieldDaily
+from malc0de import Malc0de
 from sshbl_base import  SshblBase

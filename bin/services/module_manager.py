@@ -32,15 +32,15 @@ def usage():
 class ModuleManager(object):
 
     def __init__(self):
-        self.config = ConfigParser.RawConfigParser()
-        self.config_file = "/path/to/bgp-ranking.conf"
-        self.config.read(config_file)
+        config = ConfigParser.RawConfigParser()
+        config_file = "/path/to/bgp-ranking.conf"
+        config.read(config_file)
         root_dir = config.get('directories','root')
         services_dir = os.path.join(root_dir,config.get('directories','services'))
         sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
-        self.config_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
-                                       db = self.config.get('redis','config'))
+        self.config_db = redis.Redis(port = int(config.get('redis','port_master')),\
+                                       db = config.get('redis','config'))
         self.service_fetcher = os.path.join(services_dir, "fetch_raw_files.py")
         self.service_parser = os.path.join(services_dir, "parse_raw_files.py")
         syslog.openlog('BGP_Ranking_Module_Manager', syslog.LOG_PID, syslog.LOG_LOCAL5)
@@ -79,12 +79,8 @@ class ModuleManager(object):
             syslog.syslog(syslog.LOG_ERR, 'Unable to start parsing of ' + module + ': home_dir unknown.')
             self.config_db.set(module + "|" + "parsing", 0)
 
-    def stop_services(self):
-        modules = self.config_db.smembers('modules')
-        for module in modules:
-            self.config_db.set(module + "|" + "parsing", 0)
-            self.config_db.set(module + "|" + "fetching", 0)
-        syslog.syslog(syslog.LOG_INFO, 'The services will be stopped ASAP')
+    def get_config_db(self):
+        return self.config_db
 
     def manager(self):
         modules = self.config_db.smembers('modules')
@@ -110,9 +106,18 @@ class ModuleManager(object):
             else:
                 time.sleep(self.sleep_timer)
 
+def stop_services(config_db):
+    modules = config_db.smembers('modules')
+    for module in modules:
+        config_db.set(module + "|" + "parsing", 0)
+        config_db.set(module + "|" + "fetching", 0)
+    syslog.syslog(syslog.LOG_INFO, 'The services will be stopped ASAP')
+
 if __name__ == '__main__':
+    import signal
     syslog.openlog('BGP_Ranking_Module_Manager', syslog.LOG_PID, syslog.LOG_LOCAL5)
     syslog.syslog(syslog.LOG_INFO, 'Manager started.')
     mm = ModuleManager()
-    signal.signal(signal.SIGHUP, mm.stop_services())
+    config_db = mm.get_config_db()
+    signal.signal(signal.SIGHUP, stop_services(config_db))
     mm.manager()

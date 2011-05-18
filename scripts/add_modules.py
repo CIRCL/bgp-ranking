@@ -7,8 +7,7 @@ import redis
 
 class AddModules(object):
     def __init__(self):
-        config_file = "/path/to/bgp-ranking.conf"
-        config_file_redis = config_file + ".redis"
+        self.config_file = "/path/to/bgp-ranking.conf"
 
         config = ConfigParser.SafeConfigParser()
         config.read(config_file)
@@ -26,18 +25,32 @@ class AddModules(object):
         # !!! Always last !!!!
         self.config_db.sadd('modules', module)
 
-if __name__ == '__main__':
-    # Make it a "ncurse interface"
-    config_file = "/path/to/bgp-ranking.conf"
-    config_file_redis = config_file + ".redis"
+    def from_config_file(self):
+        config_file_redis = self.config_file + ".redis"
+        redis_config = ConfigParser.RawConfigParser()
+        redis_config.optionxform = str
+        redis_config.read(config_file_redis)
+        items = redis_config.items('modules')
+        for module, params in items:
+            p = params.split()
+            add_modules.push_module_information(module, *p)
 
-    redis_config = ConfigParser.RawConfigParser()
-    redis_config.optionxform = str
-    redis_config.read(config_file_redis)
+if __name__ == '__main__':
 
     add_modules = AddModules()
+    response = raw_input("Do you want to import modules from the config file ? (y/N) ")
+    if response == 'y':
+        add_modules.from_config_file()
 
-    items = redis_config.items('modules')
-    for module, params in items:
-        p = params.split()
-        add_modules.push_module_information(module, *p)
+    while True:
+        response = raw_input("Do you want to import a new module? (y/N) ")
+        if response == 'y':
+            classname = raw_input("ClassName? (required)")
+            impact = raw_input("Impact? (required, float)")
+            home_dir = raw_input("Home directory? (required)")
+            url = raw_input("URL? (optional)")
+            add_modules.push_module_information(classname, impact, home_dir, url)
+        else:
+            break
+
+    print("Do not forget to add the module in lib/modules/ !")

@@ -24,7 +24,7 @@ class AddModules(object):
             self.config_db.set(module + "|" + "url", home_dir)
 
         # !!! Always last !!!!
-        self.config_db.sadd('modules', name)
+        self.config_db.sadd('modules', module)
 
 if __name__ == '__main__':
     # Make it a "ncurse interface"

@@ -13,6 +13,7 @@ import sys
 import ConfigParser
 import syslog
 import time
+import redis
 
 
 def usage():

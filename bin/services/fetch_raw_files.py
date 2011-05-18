@@ -22,6 +22,7 @@ import urllib
 import filecmp
 import glob
 import time
+import redis
 
 
 def usage():
@@ -35,6 +36,7 @@ class FetchRaw(object):
         config_file = "/path/to/bgp-ranking.conf"
         config.read(config_file)
         root_dir = config.get('directories','root')
+        raw_dir = config.get('directories','raw_data')
         temporary_dir = config.get('fetch_files','tmp_dir')
         old_dir = config.get('fetch_files','old_dir')
 
@@ -45,7 +47,7 @@ class FetchRaw(object):
                                        db = config.get('redis','config'))
 
         self.module = module
-        self.directory = directory
+        self.directory = os.path.join(root_dir, raw_dir, directory)
         self.url = url
 
         self.temp_filename = os.path.join(self.directory, temporary_dir, str(datetime.date.today()))
@@ -53,9 +55,9 @@ class FetchRaw(object):
         self.old_directory = os.path.join(self.directory, old_dir)
 
     def fetcher(self):
-        while config_db.exists(self.module):
+        while self.config_db.exists(self.module):
             try:
-                urllib.urlretrieve(self.url, temp_filename)
+                urllib.urlretrieve(self.url, self.temp_filename)
             except:
                 syslog.syslog(syslog.LOG_ERR, 'Unable to fetch ' + self.url)
                 self.check_exit()
@@ -79,14 +81,14 @@ class FetchRaw(object):
                 os.rename(self.temp_filename, self.filename)
                 syslog.syslog(syslog.LOG_INFO, 'New file on ' + self.url)
             self.check_exit()
-        config_db.delete(self.module + "|" + "fetching")
+        self.config_db.delete(self.module + "|" + "fetching")
 
     def check_exit(self):
-        wait_until = datetime.datetime.now() + datetime.timedelta(seconds = sleep_timer)
+        wait_until = datetime.datetime.now() + datetime.timedelta(seconds = self.sleep_timer)
         while wait_until >= datetime.datetime.now():
-            if not config_db.exists(module):
+            if not self.config_db.exists(self.module):
                 break
-            time.sleep(sleep_timer_short)
+            time.sleep(self.sleep_timer_short)
 
 
 if __name__ == '__main__':

@@ -51,11 +51,13 @@ class ModuleManager(object):
     def launch_fetcher(self, module):
         if module is None:
             syslog.syslog(syslog.LOG_ERR, 'Unable to start fetching : module is None')
+            return
 
         url = self.config_db.get(module + "|" + "url")
         if url is None:
             syslog.syslog(syslog.LOG_INFO, module + ' does not have an URL, no fetcher.')
             self.config_db.set(module + "|" + "fetching", 0)
+            return
 
         directory = self.config_db.get(module + "|" + "home_dir")
         if directory is not None:
@@ -70,6 +72,7 @@ class ModuleManager(object):
     def launch_parser(self, module):
         if module is None:
             syslog.syslog(syslog.LOG_ERR, 'Unable to start parsing : module is None')
+            return
 
         directory = self.config_db.get(module + "|" + "home_dir")
         if directory is not None:
@@ -86,6 +89,9 @@ class ModuleManager(object):
     def manager(self):
         modules = self.config_db.smembers('modules')
         modules_nr = len(modules)
+        for module in modules:
+            self.config_db.delete(module + "|" + "parsing")
+            self.config_db.delete(module + "|" + "fetching")
         while True:
             for module in modules:
                 parsing = self.config_db.get(module + "|" + "parsing")

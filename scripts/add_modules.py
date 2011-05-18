@@ -24,6 +24,8 @@ class AddModules(object):
 
         # !!! Always last !!!!
         self.config_db.sadd('modules', module)
+        self.config_db.delete(module + "|" + "parsing")
+        self.config_db.delete(module + "|" + "fetching")
 
     def from_config_file(self):
         config_file_redis = self.config_file + ".redis"

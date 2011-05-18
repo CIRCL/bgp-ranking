@@ -123,6 +123,7 @@ def stop_services(signum, frame):
     for module in modules:
         config_db.set(module + "|" + "parsing", 0)
         config_db.set(module + "|" + "fetching", 0)
+    config_db.delete('modules', module)
     syslog.syslog(syslog.LOG_INFO, 'The services will be stopped ASAP')
     exit(0)
 

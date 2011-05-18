@@ -20,7 +20,7 @@ class AddModules(object):
         if home_dir is not None:
             self.config_db.set(module + "|" + "home_dir", home_dir)
         if url is not None:
-            self.config_db.set(module + "|" + "url", home_dir)
+            self.config_db.set(module + "|" + "url", url)
 
         # !!! Always last !!!!
         self.config_db.sadd('modules', module)

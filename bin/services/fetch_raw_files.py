@@ -55,7 +55,7 @@ class FetchRaw(object):
         self.old_directory = os.path.join(self.directory, old_dir)
 
     def fetcher(self):
-        while self.config_db.exists(self.module):
+        while self.config_db.sismember('modules', self.module):
             try:
                 urllib.urlretrieve(self.url, self.temp_filename)
             except:
@@ -86,7 +86,7 @@ class FetchRaw(object):
     def check_exit(self):
         wait_until = datetime.datetime.now() + datetime.timedelta(seconds = self.sleep_timer)
         while wait_until >= datetime.datetime.now():
-            if not self.config_db.exists(self.module):
+            if not self.config_db.sismember('modules', self.module):
                 break
             time.sleep(self.sleep_timer_short)
 

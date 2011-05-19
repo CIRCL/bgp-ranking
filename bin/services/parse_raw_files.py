@@ -27,6 +27,7 @@ if __name__ == '__main__':
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+    from modules import *
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
     sleep_timer = int(config.get('sleep_timers','short'))
     config_db = redis.Redis(port = int(config.get('redis','port_master')),\
@@ -39,10 +40,7 @@ if __name__ == '__main__':
 
     directory = os.path.join(raw_data, sys.argv[2])
 
-    _temp = __import__('modules', globals(), locals(), [sys.argv[1]], -1)
-    ModuleClass = _temp.__dict__(sys.argv[1])
-
-    module = ModuleClass(directory)
+    module = eval(sys.argv[1])(directory)
     while config_db.exists(sys.argv[1]):
         if module.update():
             syslog.syslog(syslog.LOG_INFO, 'Done with ' + sys.argv[1])

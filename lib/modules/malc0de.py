@@ -17,9 +17,8 @@ from modules.abstract_module import AbstractModule
 class Malc0de(AbstractModule):
 
     def __init__(self, raw_dir):
-        self.directory = 'malc0de/blocklist/'
         AbstractModule.__init__(self)
-        self.directory = os.path.join(raw_dir, self.directory)
+        self.directory = raw_dir
 
     def parse(self):
         """ 

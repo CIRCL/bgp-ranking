@@ -19,28 +19,24 @@
 ;processes_routing_push = 6
 ;processes_ranking = 6
 
+
 ; all the modules to use. 
-[modules_to_parse]
-; classname = impact
-;Abusix = 2
-AmadaIpBlockList = 5
-;Atlas = 20
-BlocklistDe = 0.1
-BlocklistDeSsh = 5
-BlocklistDeMail = 5
-BlocklistDeApache = 5
-BlocklistDePop3 = 5
-BlocklistDeFtp = 5
-DshieldDaily = 0.1
-DshieldTopIPs = 1
-Malc0de = 5
-MalwareDomainListIP = 4
-;ShadowserverSinkhole = 10
-;ShadowserverReport = 10
-;ShadowserverReport2 = 10
-SpyeyetrackerDdos = 5
-SpyeyetrackerIpBlockList = 5
-SshblBase = 5
-URLQuery = 5
-ZeustrackerDdos = 5
-ZeustrackerIpBlockList = 5
+[modules]
+; classname = impact home_dir url
+AmadaIpBlockList    = 5 amada/ipblocklist/ http://amada.abuse.ch/blocklist.php?download=ipblocklist
+BlocklistDe         = 0.1
+BlocklistDeSsh      = 5 blocklist_de/ssh/ http://www.blocklist.de/lists/ssh.txt
+BlocklistDeMail     = 5 blocklist_de/mail/ http://www.blocklist.de/lists/mail.txt
+BlocklistDeApache   = 5 blocklist_de/apache/ http://www.blocklist.de/lists/apache.txt
+BlocklistDePop3     = 5 blocklist_de/pop3/ http://www.blocklist.de/lists/pop3.txt
+BlocklistDeFtp      = 5 blocklist_de/ftp/ http://www.blocklist.de/lists/ftp.txt
+DshieldDaily        = 0.1 dshield/daily/ http://www.dshield.org/feeds/daily_sources
+DshieldTopIPs       = 1 dshield/topips/ http://www.dshield.org/feeds/topips.txt
+Malc0de             = 5 malc0de/blocklist/ http://malc0de.com/bl/IP_Blacklist.txt
+MalwareDomainListIP = 4 malwaredomainlist/ip/ http://www.malwaredomainlist.com/hostslist/ip.txt
+SpyeyetrackerDdos   = 5 spyeye/ddos/
+SpyeyetrackerIpBlockList = 5 spyeye/ipblocklist/ http://www.abuse.ch/spyeyetracker/blocklist.php?download=ipblocklist
+SshblBase           = 5 sshbl/base/ http://www.sshbl.org/lists/date.txt
+URLQuery            = 5 urlquery/ip/ http://urlquery.net/ip.txt
+ZeustrackerDdos     = 5 zeus/ddos/
+ZeustrackerIpBlockList = 5 zeus/ipblocklist/ http://www.abuse.ch/zeustracker/blocklist.php?download=ipblocklist

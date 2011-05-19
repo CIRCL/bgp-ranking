@@ -17,7 +17,6 @@ class URLQuery(AbstractModuleDefault):
     """
 
     def __init__(self, raw_dir):
-        self.directory = 'urlquery/ip/'
         AbstractModuleDefault.__init__(self, raw_dir)
 
 class MalwareDomainListIP(AbstractModuleDefault):
@@ -26,7 +25,6 @@ class MalwareDomainListIP(AbstractModuleDefault):
     """
     
     def __init__(self, raw_dir):
-        self.directory = 'malwaredomainlist/ip/'
         AbstractModuleDefault.__init__(self, raw_dir)
 
 class DshieldTopIPs(AbstractModuleDefault):
@@ -35,5 +33,4 @@ class DshieldTopIPs(AbstractModuleDefault):
     """
     
     def __init__(self, raw_dir):
-        self.directory = 'dshield/topips/'
         AbstractModuleDefault.__init__(self, raw_dir)

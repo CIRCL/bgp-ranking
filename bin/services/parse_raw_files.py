@@ -41,7 +41,7 @@ if __name__ == '__main__':
     directory = os.path.join(raw_data, sys.argv[2])
 
     module = eval(sys.argv[1])(directory)
-    while config_db.exists(sys.argv[1]):
+    while config_db.sismember('modules', sys.argv[1]):
         if module.update():
             syslog.syslog(syslog.LOG_INFO, 'Done with ' + sys.argv[1])
         else:

@@ -77,11 +77,12 @@ class Master(object):
         json = self.reset_if_empty(json)
         if asn is not None:
             return self.asn_details(source = source, asn = asn, date = date, json = json)
+        histo = self.controler.prepare_index(source, date)
         if json is not None:
-            return self.json_dump(self.controler.prepare_index(source, date, json))
+            return self.json_dump(histo)
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'index_asn.tmpl'))
         self.init_template(source, date)
-        self.template.histories = self.controler.prepare_index(source, date)
+        self.template.histories = histo
         return str(self.template)
     asns.exposed = True
     

@@ -39,7 +39,7 @@ class Master(object):
 
     @cherrypy.tools.json_out()
     def json_dump(self, data):
-        return json.dumps(data, indent=4)
+        return data
 
     def init_template(self, source = None, date = None):
         """
@@ -67,7 +67,8 @@ class Master(object):
         if to_check is None or len(to_check) == 0:
             return None
         return self.escape(to_check)
-    
+
+    @cherrypy.expose
     def asns(self, source = None, asn = None, date = None, json = None):
         """
             Generate the view of the global ranking
@@ -85,8 +86,8 @@ class Master(object):
         self.init_template(source, date)
         self.template.histories = histo
         return str(self.template)
-    asns.exposed = True
-    
+
+    @cherrypy.expose
     def asn_details(self, source = None, asn = None, ip_details = None, date = None, json = None):
         """
             Generate the view of an ASN 
@@ -125,8 +126,8 @@ class Master(object):
             return str(self.template)
         else:
             return str(self.default())
-    asn_details.exposed = True
-    
+
+    @cherrypy.expose
     def comparator(self, source = None, asns = None):
         """
             Generate the view comparing a set of ASNs
@@ -143,22 +144,21 @@ class Master(object):
             if self.template.js_comparator is None:
                 self.template.error = "No valid ASN in the list..."
         return str(self.template)
-    comparator.exposed = True
 
+    @cherrypy.expose
     def reload(self):
         """
             Recompute all the ranks and return on the index
         """
         self.controler = MasterControler()
         return self.default()
-    reload.exposed = True
 
+    @cherrypy.expose
     def default(self):
         """
             Load the index
         """
         return str(self.asns())
-    default.exposed = True
 
 def error_page_404(status, message, traceback, version):
     """

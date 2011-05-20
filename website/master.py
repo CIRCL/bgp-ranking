@@ -16,6 +16,7 @@ import sys
 import IPy
 from master_controler import MasterControler
 import cgi
+import json
 
 class Master(object):
     
@@ -38,7 +39,7 @@ class Master(object):
 
     @cherrypy.tools.json_out()
     def json_dump(self, data):
-        return data
+        return json.dumps(data, indent=4)
 
     def init_template(self, source = None, date = None):
         """

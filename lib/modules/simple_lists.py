@@ -34,3 +34,11 @@ class DshieldTopIPs(AbstractModuleDefault):
     
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
+
+class Sucuri(AbstractModuleDefault):
+    """
+        Top IPs list provided by Sucuri
+    """
+
+    def __init__(self, raw_dir):
+        AbstractModuleDefault.__init__(self, raw_dir)

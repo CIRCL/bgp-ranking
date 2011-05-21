@@ -144,7 +144,7 @@ if __name__ == '__main__':
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Start pushing all routes...')
         run_splitted_processing(int(config.get('processes','routing_push')), pushing_process_service, splitted_files)
-        syslog.syslog(syslog.LOG_INFO, 'Pushing all routes done')
+        syslog.syslog(syslog.LOG_INFO, 'All routes pushed.')
         # Remove the binary and the plain text files
         os.unlink(output.name)
         os.unlink(filename)

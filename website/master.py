@@ -36,9 +36,16 @@ class Master(object):
                                 'RGraph.line.js',\
                                 'RGraph.common.tooltips.js']
         self.controler = MasterControler()
-
+        
+    @cherrypy.expose
     @cherrypy.tools.json_out()
-    def json_dump(self, data):
+    def json(self, source = None, asn = None, date = None):
+        source = self.reset_if_empty(source)
+        date = self.reset_if_empty(date)
+        asn = self.reset_if_empty(asn)
+        if asn is not None:
+            data = self.controler.get_as_infos(asn, source, date)
+        data = self.controler.prepare_index(source, date)
         return data
 
     def init_template(self, source = None, date = None):
@@ -69,26 +76,23 @@ class Master(object):
         return self.escape(to_check)
 
     @cherrypy.expose
-    def asns(self, source = None, asn = None, date = None, json = None):
+    def asns(self, source = None, asn = None, date = None):
         """
             Generate the view of the global ranking
         """
         source = self.reset_if_empty(source)
         asn = self.reset_if_empty(asn)
         date = self.reset_if_empty(date)
-        json = self.reset_if_empty(json)
         if asn is not None:
-            return self.asn_details(source = source, asn = asn, date = date, json = json)
+            return self.asn_details(source = source, asn = asn, date = date)
         histo = self.controler.prepare_index(source, date)
-        if json is not None:
-            return self.json_dump(histo)
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'index_asn.tmpl'))
         self.init_template(source, date)
         self.template.histories = histo
         return str(self.template)
 
     @cherrypy.expose
-    def asn_details(self, source = None, asn = None, ip_details = None, date = None, json = None):
+    def asn_details(self, source = None, asn = None, ip_details = None, date = None):
         """
             Generate the view of an ASN 
         """
@@ -96,7 +100,6 @@ class Master(object):
         source = self.reset_if_empty(source)
         ip_details = self.reset_if_empty(ip_details)
         date = self.reset_if_empty(date)
-        json = self.reset_if_empty(json)
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'asn_details.tmpl'))
         self.init_template(source, date)
         self.controler.js = self.controler.js_name = None
@@ -106,8 +109,6 @@ class Master(object):
                 self.template.asn = asn
                 as_infos, current_sources = self.controler.get_as_infos(asn, source, date)
                 if as_infos is not None:
-                    if json is not None:
-                        return self.json_dump(as_infos)
                     self.template.sources = self.controler.get_sources(date)
                     self.template.dates = sorted(self.controler.get_dates())
                     self.template.asn_descs = as_infos

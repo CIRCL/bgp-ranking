@@ -45,15 +45,16 @@ class Master(object):
         ip_details = self.reset_if_empty(ip_details)
 
         to_return = {}
-        dates = sorted(self.controler.get_dates())
-        sources = self.controler.get_sources(date)
-        to_return = { "dates" : dates, "sources": sources}
+        to_return["dates"] = list(sorted(self.controler.get_dates()))
         if asn is not None:
-            to_return["asn"] = self.controler.get_as_infos(asn, source, date)
-            if ip_details is not None:
-                to_return["ip"] = self.controler.get_ip_infos(asn, ip_details, source, date)
+            temp_as_info = self.controler.get_as_infos(asn, source, date)
+            to_return["sources"] = list(temp_as_info[1])
+            to_return["asn"] = list(temp_as_info[0])
+            if ip_details is not None and len(temp_as_info[0]) > 0:
+                to_return["ip"] = list(self.controler.get_ip_infos(asn, ip_details, source, date))
         else:
-            to_return["ranking"] = self.controler.prepare_index(source, date)
+            to_return["sources"] = list(self.controler.get_sources(date))
+            to_return["ranking"] = list(self.controler.prepare_index(source, date))
         return to_return
 
     def init_template(self, source = None, date = None):

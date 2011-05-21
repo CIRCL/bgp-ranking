@@ -12,6 +12,12 @@ Dependencies available in the ubuntu repositories:
     
         $ apt-get install python-dateutil python-feedparser python-cherrypy3 python-cheetah python-ipy
 
+To use the JSON interface (v1.1.4), you need at least Cherrypy 3.2:
+    
+    ::
+
+        sudo easy_install -U cherrypy
+
 Dependencies of libbgpdump + gcc (compilation :) ) + unzip (rgraph is zipped):
 
     ::

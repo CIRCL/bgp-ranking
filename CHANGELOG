@@ -2,20 +2,29 @@
 Changelog
 =========
 
-v1.1.4
+v1.1.4 - Soon
 
 New:
- * 
+ * JSON interface: replace asn{s,_details} by json on the address bar
+                   and get the JSON dumps.
+ * IMPORTANT: The modules are now loaded dynamically.
+              You will have to edit etc/bgpranking.conf and move the 
+              configuration to etc/bgpranking.conf.redis (see example)
+              Then, launch add_modules.py to populate the redis config database.
+  * The config database contains: 
+      - The names of the modules
+      - The impact of the modules
+      - The URL where the dataset is downloaded
+      - The path to put the dataset
 
 Bugfixes:
- * 
+ * Do not post on identica and twitter without having a ranking available
 
 Improvements:
- * The impact value of the sources is now saved in redis.
  * Use one single file for several modules.
 
 
-v1.1.3
+v1.1.3 - 2011-05-12
 
 New:
  * Very simple migroblogging bot (twitter and identica)
@@ -33,7 +42,7 @@ Improvements:
    Global one which contains complete subnets.
  * First usage of the "default module" used on files which only contains IP adresses
 
-v1.1.2
+v1.1.2 - 2011-04-23
 
 Bugfixes:
  * Website: Use the weight of the sources to display the graphs
@@ -42,7 +51,7 @@ Improvements:
  * Website: Display the ranking of yesterday by default
  * Tweek the default weights
 
-v1.1.1
+v1.1.1 - 2011-04-05
 
 New 
  * Website: Ability to display the ranking of the last X days
@@ -56,7 +65,7 @@ Bugfixes:
  * Website: XSS Vulnerability
  * Website: Escape the input
 
-v1.1
+v1.1 - 2011-03-21
 
 New:
  * The project is now completely documented using sphinx

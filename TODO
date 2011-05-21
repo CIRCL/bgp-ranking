@@ -37,13 +37,10 @@ Improvements
 
 * Invent a favicon/logo
 
-* Log the queries and the IPs::
-
-    cat /var/log/nginx/localhost.access.log | grep -v "::1" | grep -v "RGraph" |  grep -v "Google" | cut -f1,7,12- -d " " | sort | less
-
 * Adulau said: 
     "Maybe we should work in the future on a way to publish and share the source "unique" name , with their urls and a recommended impact."
   I agree. :-)
+    Work in progress: "unique" name/urls/impact are now saved in the redis database
 
 New functionalities
 ===================
@@ -67,8 +64,6 @@ New functionalities
     - get the rank of a subnet/asn (by whatever you want)
 
 * Display the daily ASN max ranking
-
-* JSON interface
 
 Documentation
 =============

@@ -3,7 +3,7 @@
     Controler class of the website
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    The website respects the MVC pattern and this class is the controler.
+    The website respects the MVC design pattern and this class is the controler.
     It gets the datas from the `report` class.
 
 """

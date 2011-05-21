@@ -3,7 +3,7 @@
     View class of the website
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    The website respects the MVC pattern and this class is the view.
+    The website respects the MVC design pattern and this class is the view.
 
 """
 
@@ -39,6 +39,9 @@ class Master(object):
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def json(self, source = None, date = None, asn = None, ip_details = None):
+        """
+            JSON interface
+        """
         source = self.reset_if_empty(source)
         date = self.reset_if_empty(date)
         asn = self.reset_if_empty(asn)

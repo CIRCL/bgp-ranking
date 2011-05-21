@@ -16,7 +16,6 @@ import sys
 import IPy
 from master_controler import MasterControler
 import cgi
-import json
 
 class Master(object):
     
@@ -39,14 +38,23 @@ class Master(object):
         
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def json(self, source = None, asn = None, date = None):
+    def json(self, source = None, date = None, asn = None, ip_details = None):
         source = self.reset_if_empty(source)
         date = self.reset_if_empty(date)
         asn = self.reset_if_empty(asn)
+        ip_details = self.reset_if_empty(ip_details)
+
+        to_return = {}
+        dates = sorted(self.controler.get_dates())
+        sources = self.controler.get_sources(date)
+        to_return = { "dates" : dates, "sources": sources}
         if asn is not None:
-            data = self.controler.get_as_infos(asn, source, date)
-        data = self.controler.prepare_index(source, date)
-        return data
+            to_return["asn"] = self.controler.get_as_infos(asn, source, date)
+            if ip_details is not None:
+                to_return["ip"] = self.controler.get_ip_infos(asn, ip_details, source, date)
+        else:
+            to_return["ranking"] = self.controler.prepare_index(source, date)
+        return to_return
 
     def init_template(self, source = None, date = None):
         """

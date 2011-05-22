@@ -37,7 +37,29 @@ class DshieldTopIPs(AbstractModuleDefault):
 
 class Sucuri(AbstractModuleDefault):
     """
-        Top IPs list provided by Sucuri
+        IPs list provided by Sucuri
+        .. note:
+            contains date
+    """
+
+    def __init__(self, raw_dir):
+        AbstractModuleDefault.__init__(self, raw_dir)
+
+class EmergingThreatsCompromized(AbstractModuleDefault):
+    """
+        IPs list of compromized hosts provided by EmergingThreats
+        .. note:
+            contains date
+    """
+
+    def __init__(self, raw_dir):
+        AbstractModuleDefault.__init__(self, raw_dir)
+
+class EmergingThreatsRBN(AbstractModuleDefault):
+    """
+        RBN IPs list provided by EmergingThreats
+        .. note:
+            contains date
     """
 
     def __init__(self, raw_dir):

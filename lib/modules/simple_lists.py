@@ -55,12 +55,13 @@ class EmergingThreatsCompromized(AbstractModuleDefault):
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
 
-class EmergingThreatsRBN(AbstractModuleDefault):
+class MaliciousnetworksFIRE(AbstractModuleDefault):
     """
-        RBN IPs list provided by EmergingThreats
+        IPs list provided by MaliciousNetworks.org
         .. note:
             contains date
     """
 
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
+

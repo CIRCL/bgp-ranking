@@ -23,7 +23,7 @@
 ; all the modules to use. 
 [modules]
 ; classname = impact home_dir url
-AmadaIpBlockList    = 5 amada/ipblocklist/ http://amada.abuse.ch/blocklist.php?download=ipblocklist
+AmadaIpBlockList    = 7 amada/ipblocklist/ http://amada.abuse.ch/blocklist.php?download=ipblocklist
 BlocklistDe         = 0.1
 BlocklistDeSsh      = 5 blocklist_de/ssh/ http://www.blocklist.de/lists/ssh.txt
 BlocklistDeMail     = 5 blocklist_de/mail/ http://www.blocklist.de/lists/mail.txt
@@ -31,15 +31,16 @@ BlocklistDeApache   = 5 blocklist_de/apache/ http://www.blocklist.de/lists/apach
 BlocklistDePop3     = 5 blocklist_de/pop3/ http://www.blocklist.de/lists/pop3.txt
 BlocklistDeFtp      = 5 blocklist_de/ftp/ http://www.blocklist.de/lists/ftp.txt
 EmergingThreatsCompromized = 5 emergingthreats/compromized/ http://rules.emergingthreats.net/blockrules/compromised-ips.txt
-EmergingThreatsRBN  = 5 emergingthreats/rbn/ http://rules.emergingthreats.net/blockrules/rbn-ips.txt
+;EmergingThreatsRBN  = 5 emergingthreats/rbn/ http://rules.emergingthreats.net/blockrules/rbn-ips.txt
+MaliciousnetworksFIRE = 7 maliciousnetworks/fire/ http://maliciousnetworks.org/fire-blocklist.txt
 DshieldDaily        = 0.1 dshield/daily/ http://www.dshield.org/feeds/daily_sources
 DshieldTopIPs       = 1 dshield/topips/ http://www.dshield.org/feeds/topips.txt
 Malc0de             = 5 malc0de/blocklist/ http://malc0de.com/bl/IP_Blacklist.txt
 MalwareDomainListIP = 5 malwaredomainlist/ip/ http://www.malwaredomainlist.com/hostslist/ip.txt
-SpyeyetrackerDdos   = 5 spyeye/ddos/
-SpyeyetrackerIpBlockList = 5 spyeye/ipblocklist/ http://www.abuse.ch/spyeyetracker/blocklist.php?download=ipblocklist
+SpyeyetrackerDdos   = 3 spyeye/ddos/
+SpyeyetrackerIpBlockList = 7 spyeye/ipblocklist/ http://www.abuse.ch/spyeyetracker/blocklist.php?download=ipblocklist
 SshblBase           = 5 sshbl/base/ http://www.sshbl.org/lists/date.txt
 Sucuri              = 5 sucuri/ip/ http://sucuri.net/blacklist/MS-iplist.txt
 URLQuery            = 5 urlquery/ip/ http://urlquery.net/ip.txt
-ZeustrackerDdos     = 5 zeus/ddos/
-ZeustrackerIpBlockList = 5 zeus/ipblocklist/ http://www.abuse.ch/zeustracker/blocklist.php?download=ipblocklist
+ZeustrackerDdos     = 3 zeus/ddos/
+ZeustrackerIpBlockList = 7 zeus/ipblocklist/ http://www.abuse.ch/zeustracker/blocklist.php?download=ipblocklist

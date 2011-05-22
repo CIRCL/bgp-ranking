@@ -328,13 +328,16 @@ class Reports(CommonReport):
         ips_by_source = pipeline.execute()
         if len(ips_by_source) == 0:
             return []
-        ip_descs_to_print = []
+        ip_descs_to_print = {}
         i = 0
         for source in sources:
             ips = ips_by_source[i]
             for ip_details in ips:
                 ip, timestamp = ip_details.split(self.separator)
-                ip_descs_to_print.append([timestamp, ip, source])
+                if ip_descs_to_print[ip] is None:
+                    ip_descs_to_print[ip] = [source]
+                else:
+                    ip_descs_to_print[ip].append(source)
             i += 1
-        to_return = sorted(ip_descs_to_print, key=lambda desc: IP(desc[1]).int())
+        to_return = sorted(ip_descs_to_print.items(), key=lambda desc: IP(desc[0]).int())
         return to_return

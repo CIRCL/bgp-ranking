@@ -9,6 +9,7 @@ TODO List
 Bugfixes
 ========
 
+* Ensure each modules is running ony one time, it works but easy to do a misake
 * There is actually a problem with the slave database: it takes **to much** time.
   The proper fix it the move the temporary data from the global database to an other one,
   not synchronized with the slave.
@@ -64,6 +65,13 @@ New functionalities
     - get the rank of a subnet/asn (by whatever you want)
 
 * Display the daily ASN max ranking
+
+* grab files using rsync, example : http://psbl.surriel.com/howto/
+
+* handle this lists?
+    - https://www.projecthoneypot.org/index.php
+    - http://doc.emergingthreats.net/bin/view/Main/RussianBusinessNetwork
+    - http://doc.pfsense.org/index.php/IP_Blocklist
 
 Documentation
 =============

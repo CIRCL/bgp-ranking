@@ -50,11 +50,8 @@ class MasterControler(object):
         """
         self.set_params(date)
         rank = self.report.format_report(source = source, date = date)
-        histories = []
         if rank is not None:
-            for r in rank:
-                histories.append([r[0], r[1] + 1, r[2]])
-        return histories
+            return [ [r[0], r[1] + 1, ', '.join(r[2]] for r in rank]
 
     def get_sources(self, date = None):
         """
@@ -75,9 +72,10 @@ class MasterControler(object):
         as_infos, current_sources = [], []
         if asn is not None:
             self.set_params(date)
-            as_infos, current_sources = self.report.get_asn_descs(asn, source, date)
-            if len(as_infos) == 0:
+            as_infos_temp, current_sources = self.report.get_asn_descs(asn, source, date)
+            if len(as_infos_temp) == 0:
                 return [], []
+            as_infos = [ [as_info_temp[0], ', '.join(as_info_temp[1]), as_info_temp[2] ] for as_info_temp in as_infos_temp]
             as_graph_infos = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date, source)
             self.make_graph(asn, as_graph_infos)
         return as_infos, current_sources
@@ -88,7 +86,8 @@ class MasterControler(object):
         """
         if asn is not None and asn_tstamp is not None:
             self.set_params(date)
-            return self.report.get_ips_descs(asn, asn_tstamp, source, date)
+            ips_descs_temp = self.report.get_ips_descs(asn, asn_tstamp, source, date)
+            return [ [ips_desc_temp[0], ', '.join(ips_desc_temp[1]) ] for ips_desc_temp in ips_descs_temp]
     
     def comparator(self, asns = None):
         """

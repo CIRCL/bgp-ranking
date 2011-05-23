@@ -72,11 +72,11 @@ class MasterControler(object):
         as_infos, current_sources = [], []
         if asn is not None:
             self.set_params(date)
-            as_infos_temp, current_sources = self.report.get_asn_descs(asn, source, date)
+            as_infos_temp, current_sources_temp, as_graph_infos = self.report.get_asn_descs(asn, source, date)
             if len(as_infos_temp) == 0:
                 return [], []
             as_infos = [ [a[0], a[1], a[2], a[3], a[4], ', '.join(a[5]), 1 + a[6]  ] for a in as_infos_temp]
-            as_graph_infos = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date, source)
+            current_sources = [ ', last seen: '.join(cs) for cs in current_sources_temp ]
             self.make_graph(asn, as_graph_infos)
         return as_infos, current_sources
     

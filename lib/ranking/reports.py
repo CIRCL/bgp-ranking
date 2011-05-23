@@ -190,16 +190,23 @@ class Reports(CommonReport):
         sources = pipeline.execute()
         return [ [ x[0], x[1], list(y)] for x,y in zip(reports_temp,sources)]
 
-    def prepare_graphe_js(self, asn, first_date, last_date, sources = None):
+    def get_dates_from_interval(self, first_date, last_date):
         """
-            Prepare the JavaScript graph of an AS between `first_date` and `last_date` for a `source`
+            Generate a list of dates between first_date and  last_date
+            with this format: YYYY-MM-DD
         """
         dates = []
         current = first_date
         while current <= last_date:
             dates.append(current.strftime("%Y-%m-%d"))
             current += datetime.timedelta(days=1)
+        return dates
 
+    def get_all_sources(self, dates):
+        """
+            Return a list of sources available for all the dates.
+            { day: [source1, source2...}, ...}
+        """
         pipeline = self.global_db.pipeline()
         for date in dates:
             pipeline.smembers(\
@@ -208,52 +215,52 @@ class Reports(CommonReport):
                                             key     = self.config.get('input_keys','index_sources')))
 
         lists_sources = pipeline.execute()
-        all_sources = set(()).union(*lists_sources)
+        #set(()).union(*lists_sources)
+        return dict(zip(dates,sources))
 
-        if sources is None:
-            sources = all_sources
-        else:
-            sources = [sources]
+    def get_all_ranks(self, asn, dates, dates_sources):
+        """
+            Return all the ranks of an ASN for all the dates and all the sources:
+                { 'Source1' : [rank_day1, rank_day_2, ...], ...}
+                Note: it there is no rank for a day, rank_day_X will be None
+        """
 
         keys = {}
-        ranks = {}
-        pipeline = self.history_db.pipeline()
-        for source in sources:
-            keys[source] = []
-            for date in dates:
-                keys[source].append(\
+        for date, sources in dates_sources.iteritems():
+            keys[date] = []
+            for source in sources:
+                keys[date].append(\
                     '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep     = self.separator,\
                                                                     asn     = asn,\
                                                                     date    = date,\
                                                                     source  = source,\
                                                                     v4      = self.config.get('input_keys','rankv4')))
-
-            pipeline.mget(keys[source])
+            pipeline.mget(keys[date])
         histories = pipeline.execute()
         if len(histories) == 0:
             # Nothing to display, quit
-            return {}
-        i = 0 
-        for source in sources:
-            ranks[source] = histories[i]
-            i += 1 
+            return []
+        return histories
 
+    def prepare_graphe_js(self, ranks, dates_sources):
+        """
+            Prepare the data to display in the graph
+        """
         ranks_by_days = {}
-        for source in sources:
-            i = 0 
-            for rank in ranks[source]:
+        i = 0
+        for date, sources in dates_sources.iteritems():
+            raily_ranks = ranks[i]
+            ranks_by_days[date] = 0
+            j = 0
+            for source in sources:
+                rank = raily_ranks[j]
                 if rank is not None:
-                    asn_day = dates[i]
-                    if ranks_by_days.get(asn_day, None) is None:
-                        ranks_by_days[asn_day] = float(rank) *  float(self.config_db.get(str(source)))
-                    else:
-                        ranks_by_days[asn_day] += float(rank) *  float(self.config_db.get(str(source)))
-                i += 1 
-        for ranks in ranks_by_days:
-            ranks_by_days[ranks] += 1 
+                    ranks_by_days[date] += float(rank) * float(self.config_db.get(str(source)))
+                j += 1
+            i += 1
         return ranks_by_days
         
-    def get_asn_descs(self, asn, sources = None, date = None):
+    def get_asn_descs(self, graph_first_date, graph_last_date, asn, sources = None, date = None):
         """
             Get the details of an ASN
         """
@@ -267,10 +274,30 @@ class Reports(CommonReport):
         if len(timestamps) == 0:
             # The ASN does not exists in the database
             return [], []
+
+        # generate a list of dates
+        graph_dates = self.get_dates_from_interval(graph_first_date, graph_last_date)
+        if len(sources) == 1:
+            dates_sources = {date: sources[0] for dade in graph_dates}
+        else:
+            # get all the sources available, by date: { day: [source1, source2...}, ...}
+            dates_sources = self.get_all_sources(graph_dates)
+        all_ranks = self.get_all_ranks(asn, graph_dates, dates_sources)
+        # Compute the data to display in the graph
+        data_graph = self.prepare_graphe_js(all_ranks, dates_sources)
+
         current_asn_sources = self.history_db_temp.smembers(\
                                     '{date}{sep}{asn}'.format(  date    = date,\
                                                                 sep     = self.separator,\
                                                                 asn     = asn))
+        # Search other sources
+        for source, rank in all_ranks.iteritems():
+            if source not in current_asn_sources:
+                rank.reverse()
+                index = next((i for i, j in enumerate(rank) if j is not None), None) +1
+                date = graph_dates[-index]
+                current_asn_sources.append([source, date])
+
         asn_descs_to_print = []
         for timestamp in timestamps:
             asn_timestamp_temp = '{date}{sep}{asn}{sep}{timestamp}'.format( sep         = self.separator,\
@@ -300,7 +327,7 @@ class Reports(CommonReport):
                 asn_descs_to_print.append([asn, timestamp, owner, ip_block,\
                                             nb_of_ips, sources_web, local_rank / IP(ip_block).len()])
         to_return = sorted(asn_descs_to_print, key=lambda desc: desc[6], reverse = True)
-        return to_return, current_asn_sources
+        return to_return, current_asn_sources, data_graph
 
 
     def get_ips_descs(self, asn, asn_timestamp, sources = None, date = None):

@@ -11,6 +11,8 @@
         See http://doc.emergingthreats.net/bin/view/Main/RussianBusinessNetwork
 """
 
+import datetime
+from modules.abstract_module import AbstractModule
 import IPy
 
 class EmergingThreatsRBN(AbstractModule):

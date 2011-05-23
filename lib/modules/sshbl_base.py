@@ -3,7 +3,7 @@
 
 """
     sshbl parser
-    ~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~
 
     Class used to parse the files provided by sshbl
 """
@@ -17,16 +17,11 @@ from modules.abstract_module import AbstractModule
 class SshblBase(AbstractModule):
     
     def __init__(self, raw_dir):
-        self.directory = 'sshbl/base/'
         AbstractModule.__init__(self)
-        self.directory = os.path.join(raw_dir, self.directory)
+        self.directory = raw_dir
  
     def parse(self):
-        """ 
-            Parse the list
-        """
         self.date = datetime.date.today()
-        self.ips = []
         for file in self.files:
             daily = open(file)
             for line in daily:

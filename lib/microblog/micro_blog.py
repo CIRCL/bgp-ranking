@@ -109,7 +109,7 @@ class MicroBlog(CommonReport):
         limit = 5
         reports = self.history_db_temp.zrevrange(histo_key, 0, limit, True)
         to_return = None
-        if reports is not None:
+        if reports is not None and len(reports) > limit:
             to_return = 'Top Ranking {date}\n'.format(date = date)
             for report in reports:
                 to_return += ''.join('{asn}: {rank}\n'.format(asn = report[0], rank = round(1 + report[1],3)))

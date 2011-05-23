@@ -6,8 +6,7 @@ OLD_PWD=$PWD
 cd ${BGP_RANKING_ROOT}/etc/init.d/
 
 $NICE $PYTHON start_db_input.py start
-$NICE $PYTHON start_fetch_raw_files.py start
-$NICE $PYTHON start_parse_raw_files.py start
+$NICE $PYTHON start_module_manager.py start
 $NICE $PYTHON start_ris.py start
 $NICE $PYTHON start_fetch_whois_entries.py start
 $NICE $PYTHON start_microblog.py start

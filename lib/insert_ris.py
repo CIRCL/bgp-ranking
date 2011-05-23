@@ -159,6 +159,6 @@ class InsertRIS(object):
                             self.global_db.sadd(index_as_ips, ip_details)
                             to_return = True
                     if i%100000 == 0:
-                        syslog.syslog(syslog.LOG_DEBUG, str(self.cache_db_0.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
+                        syslog.syslog(syslog.LOG_INFO, str(self.cache_db_0.scard(ip_set)) + ' RIS Whois to insert on ' + ip_set)
             time.sleep(int(self.config.get('sleep_timers','short')))
         return to_return

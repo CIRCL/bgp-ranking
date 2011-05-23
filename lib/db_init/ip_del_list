@@ -9,17 +9,16 @@
 0.0.0.0/8	UNKNOWN
 1.0.0.0/8	apnic
 2.0.0.0/8	ripe
-5.0.0.0/8	UNALLOCATED
+5.0.0.0/8	ripe
 14.0.0.0/8	apnic
-23.0.0.0/8	UNALLOCATED
 24.132.0.0/14	ripe
 27.0.0.0/8	apnic
 31.0.0.0/8	ripe
-36.0.0.0/8	UNALLOCATED
-37.0.0.0/8	UNALLOCATED
-39.0.0.0/8	UNALLOCATED
+36.0.0.0/8	apnic
+37.0.0.0/8	ripe
+39.0.0.0/8	apnic
 41.0.0.0/8	afrinic
-42.0.0.0/8	UNALLOCATED
+42.0.0.0/8	apnic
 43.0.0.0/8	whois.nic.ad.jp
 46.0.0.0/8	ripe
 49.0.0.0/8	apnic
@@ -38,13 +37,13 @@
 77.0.0.0/8	ripe
 78.0.0.0/7	ripe
 80.0.0.0/4	ripe			# => 95.255.255.255
-96.0.0.0/6	arin			# => 99.255.255.255
 101.0.0.0/8	apnic
-107.0.0.0/8	arin
-108.0.0.0/8	arin
+102.0.0.0/8	afrinic
+103.0.0.0/8	apnic
+105.0.0.0/8	afrinic
+106.0.0.0/8	apnic
 109.0.0.0/8	ripe
 110.0.0.0/7	apnic
-96.0.0.0/4	UNALLOCATED		# => 112.215.255.255
 112.160.0.0/11	whois.nic.or.kr
 115.0.0.0/12	whois.nic.or.kr
 115.16.0.0/13	whois.nic.or.kr
@@ -118,12 +117,12 @@
 176.0.0.0/8	ripe
 177.0.0.0/8	lacnic
 178.0.0.0/8	ripe
-179.0.0.0/8	UNALLOCATED
+179.0.0.0/8	lacnic
 180.0.0.0/8	apnic
 181.0.0.0/8	lacnic
 183.96.0.0/11	whois.nic.or.kr
 182.0.0.0/7	apnic
-185.0.0.0/8	UNALLOCATED
+185.0.0.0/8	ripe
 186.0.0.0/7	lacnic
 188.0.0.0/8	ripe # transferred from ARIN to to RIPE
 189.0.0.0/8	lacnic

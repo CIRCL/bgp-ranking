@@ -188,8 +188,7 @@ class Reports(CommonReport):
                                                         date    = date,\
                                                         asn     = report_temp[0]))
         sources = pipeline.execute()
-        report = [list(x) + [', '.join(y)] for x,y in zip(reports_temp,sources)]
-        return report
+        return [ [ x[0], x[1], list(y)] for x,y in zip(reports_temp,sources)]
 
     def prepare_graphe_js(self, asn, first_date, last_date, sources = None):
         """
@@ -299,7 +298,7 @@ class Reports(CommonReport):
                     i += 1
                 sources_web = self.history_db_temp.smembers(asn_timestamp_temp)
                 asn_descs_to_print.append([asn, timestamp, owner, ip_block,\
-                                            nb_of_ips, ', '.join(sources_web), 1 + local_rank / IP(ip_block).len()])
+                                            nb_of_ips, sources_web, local_rank / IP(ip_block).len()])
         to_return = sorted(asn_descs_to_print, key=lambda desc: desc[6], reverse = True)
         return to_return, current_asn_sources
 
@@ -328,13 +327,16 @@ class Reports(CommonReport):
         ips_by_source = pipeline.execute()
         if len(ips_by_source) == 0:
             return []
-        ip_descs_to_print = []
+        ip_descs_to_print = {}
         i = 0
         for source in sources:
             ips = ips_by_source[i]
             for ip_details in ips:
                 ip, timestamp = ip_details.split(self.separator)
-                ip_descs_to_print.append([timestamp, ip, source])
+                if ip_descs_to_print.get(ip) is None:
+                    ip_descs_to_print[ip] = [source]
+                else:
+                    ip_descs_to_print[ip].append(source)
             i += 1
-        to_return = sorted(ip_descs_to_print, key=lambda desc: IP(desc[1]).int())
+        to_return = sorted(ip_descs_to_print.items(), key=lambda desc: IP(desc[0]).int())
         return to_return

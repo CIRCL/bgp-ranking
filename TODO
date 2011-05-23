@@ -9,9 +9,11 @@ TODO List
 Bugfixes
 ========
 
+* Ensure each modules is running ony one time, it works but easy to do a misake
 * There is actually a problem with the slave database: it takes **to much** time.
   The proper fix it the move the temporary data from the global database to an other one,
   not synchronized with the slave.
+* Ensure there is a ranking to post before posting a message on twitter and identica.
 
 Improvements
 ============
@@ -36,16 +38,17 @@ Improvements
 
 * Invent a favicon/logo
 
-* Log the queries and the IPs::
-
-    cat /var/log/nginx/localhost.access.log | grep -v "::1" | grep -v "RGraph" |  grep -v "Google" | cut -f1,7,12- -d " " | sort | less
-
 * Adulau said: 
     "Maybe we should work in the future on a way to publish and share the source "unique" name , with their urls and a recommended impact."
   I agree. :-)
+    Work in progress: "unique" name/urls/impact are now saved in the redis database
 
 New functionalities
 ===================
+
+* Have some "Static lists": the Russian Business Network list provided by emergingthreats.net is a good example: 
+  It is not really a "malware list" but will give information on "probably bad IPs" and it should be possible to,
+  when you want more information about an ASN, know that the ASN has IP in this list.
 
 * Ranking by subnet can be improved: we divide the number of IPs found in a subnet by 
   the total of IPs announced by the AS. Like this, we just have to add the ranks of 
@@ -66,6 +69,13 @@ New functionalities
     - get the rank of a subnet/asn (by whatever you want)
 
 * Display the daily ASN max ranking
+
+* grab files using rsync, example : http://psbl.surriel.com/howto/
+
+* handle this lists?
+    - https://www.projecthoneypot.org/index.php
+    - http://doc.emergingthreats.net/bin/view/Main/RussianBusinessNetwork
+    - http://doc.pfsense.org/index.php/IP_Blocklist
 
 Documentation
 =============

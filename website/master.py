@@ -3,7 +3,7 @@
     View class of the website
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    The website respects the MVC pattern and this class is the view.
+    The website respects the MVC design pattern and this class is the view.
 
 """
 
@@ -35,7 +35,31 @@ class Master(object):
                                 'RGraph.line.js',\
                                 'RGraph.common.tooltips.js']
         self.controler = MasterControler()
-    
+        
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def json(self, source = None, date = None, asn = None, ip_details = None):
+        """
+            JSON interface
+        """
+        source = self.reset_if_empty(source)
+        date = self.reset_if_empty(date)
+        asn = self.reset_if_empty(asn)
+        ip_details = self.reset_if_empty(ip_details)
+
+        to_return = {}
+        to_return["dates"] = list(sorted(self.controler.get_dates()))
+        if asn is not None:
+            temp_as_info = self.controler.get_as_infos(asn, source, date)
+            to_return["sources"] = list(temp_as_info[1])
+            to_return["asn"] = list(temp_as_info[0])
+            if ip_details is not None and len(temp_as_info[0]) > 0:
+                to_return["ip"] = list(self.controler.get_ip_infos(asn, ip_details, source, date))
+        else:
+            to_return["sources"] = list(self.controler.get_sources(date))
+            to_return["ranking"] = list(self.controler.prepare_index(source, date))
+        return to_return
+
     def init_template(self, source = None, date = None):
         """
             Initialize the basic components of the template
@@ -62,7 +86,8 @@ class Master(object):
         if to_check is None or len(to_check) == 0:
             return None
         return self.escape(to_check)
-    
+
+    @cherrypy.expose
     def asns(self, source = None, asn = None, date = None):
         """
             Generate the view of the global ranking
@@ -72,12 +97,13 @@ class Master(object):
         date = self.reset_if_empty(date)
         if asn is not None:
             return self.asn_details(source = source, asn = asn, date = date)
+        histo = self.controler.prepare_index(source, date)
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'index_asn.tmpl'))
         self.init_template(source, date)
-        self.template.histories = self.controler.prepare_index(source, date)
+        self.template.histories = histo
         return str(self.template)
-    asns.exposed = True
-    
+
+    @cherrypy.expose
     def asn_details(self, source = None, asn = None, ip_details = None, date = None):
         """
             Generate the view of an ASN 
@@ -94,7 +120,7 @@ class Master(object):
             if asn.isdigit():
                 self.template.asn = asn
                 as_infos, current_sources = self.controler.get_as_infos(asn, source, date)
-                if as_infos is not None: 
+                if as_infos is not None:
                     self.template.sources = self.controler.get_sources(date)
                     self.template.dates = sorted(self.controler.get_dates())
                     self.template.asn_descs = as_infos
@@ -113,8 +139,8 @@ class Master(object):
             return str(self.template)
         else:
             return str(self.default())
-    asn_details.exposed = True
-    
+
+    @cherrypy.expose
     def comparator(self, source = None, asns = None):
         """
             Generate the view comparing a set of ASNs
@@ -131,22 +157,21 @@ class Master(object):
             if self.template.js_comparator is None:
                 self.template.error = "No valid ASN in the list..."
         return str(self.template)
-    comparator.exposed = True
 
+    @cherrypy.expose
     def reload(self):
         """
             Recompute all the ranks and return on the index
         """
         self.controler = MasterControler()
         return self.default()
-    reload.exposed = True
 
+    @cherrypy.expose
     def default(self):
         """
             Load the index
         """
         return str(self.asns())
-    default.exposed = True
 
 def error_page_404(status, message, traceback, version):
     """

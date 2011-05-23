@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    DShield daily parser
-    ~~~~~~~~~~~~~~~~~~~~
+    malc0de parser
+    ~~~~~~~~~~~~~~
 
     Class used to parse the daily files provided by DShield
 """
@@ -14,7 +14,7 @@ import dateutil.parser
 from modules.abstract_module import AbstractModule
 
 
-class DshieldDaily(AbstractModule):
+class Malc0de(AbstractModule):
 
     def __init__(self, raw_dir):
         AbstractModule.__init__(self)
@@ -26,13 +26,13 @@ class DshieldDaily(AbstractModule):
         """
         self.ips = []
         for file in self.files:
-            self.date = dateutil.parser.parse(re.findall('updated (.*)\n', open(file).read())[0])
-            daily = open(file)
-            for line in daily:
+            self.date = dateutil.parser.parse(re.findall('Last updated (.*)\n', open(file).read())[0])
+            malc0de = open(file)
+            for line in malc0de:
                 ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s].*',line)
                 if len(ip) == 0:
                     continue
                 entry = self.prepare_entry(ip = ip[0], source = self.__class__.__name__, timestamp = self.date)
                 self.put_entry(entry)
-            daily.close()
+            malc0de.close()
             self.move_file(file)

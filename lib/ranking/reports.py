@@ -188,8 +188,7 @@ class Reports(CommonReport):
                                                         date    = date,\
                                                         asn     = report_temp[0]))
         sources = pipeline.execute()
-        report = [list(x) + y for x,y in zip(reports_temp,sources)]
-        return report
+        return [ [ x[0], x[1], list(y)] for x,y in zip(reports_temp,sources)]
 
     def prepare_graphe_js(self, asn, first_date, last_date, sources = None):
         """

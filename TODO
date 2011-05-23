@@ -46,6 +46,10 @@ Improvements
 New functionalities
 ===================
 
+* Have some "Static lists": the Russian Business Network list provided by emergingthreats.net is a good example: 
+  It is not really a "malware list" but will give information on "probably bad IPs" and it should be possible to,
+  when you want more information about an ASN, know that the ASN has IP in this list.
+
 * Ranking by subnet can be improved: we divide the number of IPs found in a subnet by 
   the total of IPs announced by the AS. Like this, we just have to add the ranks of 
   each subnet of the AS to get the global rank of the AS.

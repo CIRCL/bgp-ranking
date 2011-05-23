@@ -51,7 +51,7 @@ class MasterControler(object):
         self.set_params(date)
         rank = self.report.format_report(source = source, date = date)
         if rank is not None:
-            return [ [r[0], r[1] + 1, ', '.join(r[2])] for r in rank]
+            return [ [r[0], 1 + r[1], ', '.join(r[2])] for r in rank]
 
     def get_sources(self, date = None):
         """
@@ -75,7 +75,7 @@ class MasterControler(object):
             as_infos_temp, current_sources = self.report.get_asn_descs(asn, source, date)
             if len(as_infos_temp) == 0:
                 return [], []
-            as_infos = [ [a[0], a[1], a[2], a[3], a[4], ', '.join(a[5]), a[6]  ] for a in as_infos_temp]
+            as_infos = [ [a[0], a[1], a[2], a[3], a[4], ', '.join(a[5]), 1 + a[6]  ] for a in as_infos_temp]
             as_graph_infos = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date, source)
             self.make_graph(asn, as_graph_infos)
         return as_infos, current_sources

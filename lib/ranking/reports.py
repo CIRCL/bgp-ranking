@@ -298,7 +298,7 @@ class Reports(CommonReport):
                     i += 1
                 sources_web = self.history_db_temp.smembers(asn_timestamp_temp)
                 asn_descs_to_print.append([asn, timestamp, owner, ip_block,\
-                                            nb_of_ips, sources_web, 1 + local_rank / IP(ip_block).len()])
+                                            nb_of_ips, sources_web, local_rank / IP(ip_block).len()])
         to_return = sorted(asn_descs_to_print, key=lambda desc: desc[6], reverse = True)
         return to_return, current_asn_sources
 

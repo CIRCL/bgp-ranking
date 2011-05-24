@@ -226,8 +226,9 @@ class Reports(CommonReport):
         """
 
         keys = {}
-        pipeline = self.global_db.pipeline()
-        for date, sources in dates_sources.iteritems():
+        pipeline = self.history_db.pipeline()
+        for date in dates:
+            sources = dates_sources[date]
             if len(sources) > 0:
                 keys[date] = []
                 for source in sources:
@@ -244,20 +245,21 @@ class Reports(CommonReport):
             return []
         return histories
 
-    def prepare_graphe_js(self, ranks, dates_sources):
+    def prepare_graphe_js(self, ranks, dates, dates_sources):
         """
             Prepare the data to display in the graph
         """
         ranks_by_days = {}
         last_seen_sources = {}
         i = 0
-        for date, sources in dates_sources.iteritems():
+        for date in dates:
+            sources = dates_sources[date]
             if len(sources) > 0:
                 ranks_by_days[date] = 0
-                raily_ranks = ranks[i]
+                daily_ranks = ranks[i]
                 j = 0
                 for source in sources:
-                    rank = raily_ranks[j]
+                    rank = daily_ranks[j]
                     if rank is not None:
                         last_seen_sources[source] = date
                         ranks_by_days[date] += float(rank) * float(self.config_db.get(str(source)))
@@ -285,7 +287,7 @@ class Reports(CommonReport):
         # generate a list of dates
         graph_dates = self.get_dates_from_interval(graph_first_date, graph_last_date)
         if len(sources) == 1:
-            dict.fromkeys( graph_dates, sources[0])
+            dates_sources = dict.fromkeys( graph_dates, sources[0])
             # python 2.7 only:
             #dates_sources = {date: sources[0] for date in graph_dates}
         else:
@@ -293,15 +295,9 @@ class Reports(CommonReport):
             dates_sources = self.get_all_sources(graph_dates)
         all_ranks = self.get_all_ranks(asn, graph_dates, dates_sources)
         # Compute the data to display in the graph
-        data_graph, last_seen_source = self.prepare_graphe_js(all_ranks, dates_sources)
+        data_graph, last_seen_source = self.prepare_graphe_js(all_ranks, graph_dates, dates_sources)
 
-        current_asn_sources = self.history_db_temp.smembers(\
-                                    '{date}{sep}{asn}'.format(  date    = date,\
-                                                                sep     = self.separator,\
-                                                                asn     = asn))
-
-        lss_list = [ [ source, date] for source, date in last_seen_source.iteritems() ]
-        current_asn_sources += lss_list
+        lss_list = [ [ s, d] for s, d in last_seen_source.iteritems() ]
 
         asn_descs_to_print = []
         for timestamp in timestamps:
@@ -332,7 +328,7 @@ class Reports(CommonReport):
                 asn_descs_to_print.append([asn, timestamp, owner, ip_block,\
                                             nb_of_ips, sources_web, local_rank / IP(ip_block).len()])
         to_return = sorted(asn_descs_to_print, key=lambda desc: desc[6], reverse = True)
-        return to_return, current_asn_sources, data_graph
+        return to_return, lss_list, data_graph
 
 
     def get_ips_descs(self, asn, asn_timestamp, sources = None, date = None):

@@ -237,7 +237,7 @@ class Reports(CommonReport):
                                                                         date    = date,\
                                                                         source  = source,\
                                                                         v4      = self.config.get('input_keys','rankv4')))
-            pipeline.mget(keys[date])
+                pipeline.mget(keys[date])
         histories = pipeline.execute()
         if len(histories) == 0:
             # Nothing to display, quit
@@ -249,6 +249,7 @@ class Reports(CommonReport):
             Prepare the data to display in the graph
         """
         ranks_by_days = {}
+        last_seen_sources = {}
         i = 0
         for date, sources in dates_sources.iteritems():
             if len(sources) > 0:
@@ -258,13 +259,14 @@ class Reports(CommonReport):
                 for source in sources:
                     rank = raily_ranks[j]
                     if rank is not None:
+                        last_seen_sources[source] = date
                         ranks_by_days[date] += float(rank) * float(self.config_db.get(str(source)))
                     j += 1
                 i += 1
             else:
                 ranks_by_days[date] = None
-        return ranks_by_days
-        
+        return ranks_by_days, last_seen_sources
+
     def get_asn_descs(self, graph_first_date, graph_last_date, asn, sources = None, date = None):
         """
             Get the details of an ASN
@@ -291,19 +293,15 @@ class Reports(CommonReport):
             dates_sources = self.get_all_sources(graph_dates)
         all_ranks = self.get_all_ranks(asn, graph_dates, dates_sources)
         # Compute the data to display in the graph
-        data_graph = self.prepare_graphe_js(all_ranks, dates_sources)
+        data_graph, last_seen_source = self.prepare_graphe_js(all_ranks, dates_sources)
 
         current_asn_sources = self.history_db_temp.smembers(\
                                     '{date}{sep}{asn}'.format(  date    = date,\
                                                                 sep     = self.separator,\
                                                                 asn     = asn))
-        # Search other sources
-        for source, rank in all_ranks.iteritems():
-            if source not in current_asn_sources:
-                rank.reverse()
-                index = next((i for i, j in enumerate(rank) if j is not None), None) +1
-                date = graph_dates[-index]
-                current_asn_sources.append([source, date])
+
+        lss_list = [ [ source, date] for source, date in last_seen_source.iteritems() ]
+        current_asn_sources += lss_list
 
         asn_descs_to_print = []
         for timestamp in timestamps:

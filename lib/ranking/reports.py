@@ -216,7 +216,7 @@ class Reports(CommonReport):
 
         lists_sources = pipeline.execute()
         #set(()).union(*lists_sources)
-        return dict(zip(dates,sources))
+        return dict(zip(dates,lists_sources))
 
     def get_all_ranks(self, asn, dates, dates_sources):
         """
@@ -226,15 +226,17 @@ class Reports(CommonReport):
         """
 
         keys = {}
+        pipeline = self.global_db.pipeline()
         for date, sources in dates_sources.iteritems():
-            keys[date] = []
-            for source in sources:
-                keys[date].append(\
-                    '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep     = self.separator,\
-                                                                    asn     = asn,\
-                                                                    date    = date,\
-                                                                    source  = source,\
-                                                                    v4      = self.config.get('input_keys','rankv4')))
+            if len(sources) > 0:
+                keys[date] = []
+                for source in sources:
+                    keys[date].append(\
+                        '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep     = self.separator,\
+                                                                        asn     = asn,\
+                                                                        date    = date,\
+                                                                        source  = source,\
+                                                                        v4      = self.config.get('input_keys','rankv4')))
             pipeline.mget(keys[date])
         histories = pipeline.execute()
         if len(histories) == 0:
@@ -249,15 +251,18 @@ class Reports(CommonReport):
         ranks_by_days = {}
         i = 0
         for date, sources in dates_sources.iteritems():
-            raily_ranks = ranks[i]
-            ranks_by_days[date] = 0
-            j = 0
-            for source in sources:
-                rank = raily_ranks[j]
-                if rank is not None:
-                    ranks_by_days[date] += float(rank) * float(self.config_db.get(str(source)))
-                j += 1
-            i += 1
+            if len(sources) > 0:
+                ranks_by_days[date] = 0
+                raily_ranks = ranks[i]
+                j = 0
+                for source in sources:
+                    rank = raily_ranks[j]
+                    if rank is not None:
+                        ranks_by_days[date] += float(rank) * float(self.config_db.get(str(source)))
+                    j += 1
+                i += 1
+            else:
+                ranks_by_days[date] = None
         return ranks_by_days
         
     def get_asn_descs(self, graph_first_date, graph_last_date, asn, sources = None, date = None):
@@ -273,12 +278,14 @@ class Reports(CommonReport):
         timestamps = self.global_db.smembers(asn)
         if len(timestamps) == 0:
             # The ASN does not exists in the database
-            return [], []
+            return [], [], []
 
         # generate a list of dates
         graph_dates = self.get_dates_from_interval(graph_first_date, graph_last_date)
         if len(sources) == 1:
-            dates_sources = {date: sources[0] for dade in graph_dates}
+            dict.fromkeys( graph_dates, sources[0])
+            # python 2.7 only:
+            #dates_sources = {date: sources[0] for date in graph_dates}
         else:
             # get all the sources available, by date: { day: [source1, source2...}, ...}
             dates_sources = self.get_all_sources(graph_dates)

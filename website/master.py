@@ -119,12 +119,14 @@ class Master(object):
             asn = asn.lstrip('AS')
             if asn.isdigit():
                 self.template.asn = asn
-                as_infos, current_sources = self.controler.get_as_infos(asn, source, date)
+                as_infos, current_sources, raw_sources = self.controler.get_as_infos(asn, source, date)
                 if len(as_infos) > 0:
                     self.template.sources = self.controler.get_sources(date)
                     self.template.dates = sorted(self.controler.get_dates())
                     self.template.asn_descs = as_infos
                     self.template.current_sources = current_sources
+                    if len(raw_sources) > 0:
+                        self.template.sources = raw_sources
                     if ip_details is not None:
                         self.template.ip_details = ip_details
                         self.template.ip_descs = self.controler.get_ip_infos(asn, ip_details, source, date)

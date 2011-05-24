@@ -295,9 +295,7 @@ class Reports(CommonReport):
             dates_sources = self.get_all_sources(graph_dates)
         all_ranks = self.get_all_ranks(asn, graph_dates, dates_sources)
         # Compute the data to display in the graph
-        data_graph, last_seen_source = self.prepare_graphe_js(all_ranks, graph_dates, dates_sources)
-
-        lss_list = [ [ s, d] for s, d in last_seen_source.iteritems() ]
+        data_graph, last_seen_sources = self.prepare_graphe_js(all_ranks, graph_dates, dates_sources)
 
         asn_descs_to_print = []
         for timestamp in timestamps:
@@ -328,7 +326,7 @@ class Reports(CommonReport):
                 asn_descs_to_print.append([asn, timestamp, owner, ip_block,\
                                             nb_of_ips, sources_web, local_rank / IP(ip_block).len()])
         to_return = sorted(asn_descs_to_print, key=lambda desc: desc[6], reverse = True)
-        return to_return, lss_list, data_graph
+        return to_return, last_seen_sources, data_graph
 
 
     def get_ips_descs(self, asn, asn_timestamp, sources = None, date = None):

@@ -73,11 +73,12 @@ class MasterControler(object):
         if asn is not None:
             self.set_params(date)
             as_infos_temp, current_sources_temp, as_graph_infos = self.report.get_asn_descs(self.graph_first_date, self.graph_last_date, asn, source, date)
-            if len(as_infos_temp) == 0:
-                return [], []
-            as_infos = [ [a[0], a[1], a[2], a[3], a[4], ', '.join(a[5]), 1 + a[6]  ] for a in as_infos_temp]
-            current_sources = [ ', last seen: '.join(cs) for cs in current_sources_temp ]
-            self.make_graph(asn, as_graph_infos)
+            if len(as_graph_infos) > 0 :
+                self.make_graph(asn, as_graph_infos)
+            if len(current_sources_temp) > 0:
+                current_sources = [ ', last seen: '.join(cs) for cs in current_sources_temp ]
+            if len(as_infos_temp) >= 0:
+                as_infos = [ [a[0], a[1], a[2], a[3], a[4], ', '.join(a[5]), 1 + a[6]  ] for a in as_infos_temp]
         return as_infos, current_sources
     
     def get_ip_infos(self, asn = None, asn_tstamp = None, source = None, date = None):
@@ -126,4 +127,3 @@ class MasterControler(object):
         g.make_js()
         self.js = g.js
         self.js_name = js_name
-        

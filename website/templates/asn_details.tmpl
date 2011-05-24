@@ -36,14 +36,16 @@
     </form>
     <br/>
     #if $asn is not None
-        This AS ($asn) is known in the following lists:
-        <ul>
-        #for $current_source in $current_sources
-            <li>
-                $current_source
-            </li>
-        #end for
-        </ul>
+        #if len($current_sources) > 0
+            This AS ($asn) is known in the following lists:
+            <ul>
+            #for $current_source in $current_sources
+                <li>
+                    $current_source
+                </li>
+            #end for
+            </ul>
+        #end if
     #end if
 #end block menu
 

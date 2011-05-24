@@ -287,7 +287,7 @@ class Reports(CommonReport):
         # generate a list of dates
         graph_dates = self.get_dates_from_interval(graph_first_date, graph_last_date)
         if len(sources) == 1:
-            dates_sources = dict.fromkeys( graph_dates, sources[0])
+            dates_sources = dict.fromkeys(graph_dates, sources)
             # python 2.7 only:
             #dates_sources = {date: sources[0] for date in graph_dates}
         else:

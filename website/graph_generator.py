@@ -65,7 +65,7 @@ window.onload = function ()
         list = []
         for label in self.labels:
             rank = line.get(label, None)
-            if rank is not None:
+            if rank > 0:
                 list.append(1 + rank)
             else:
                 list.append(self.empty)

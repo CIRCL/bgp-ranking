@@ -120,18 +120,17 @@ class Master(object):
             if asn.isdigit():
                 self.template.asn = asn
                 as_infos, current_sources = self.controler.get_as_infos(asn, source, date)
-                if as_infos is not None:
+                if len(as_infos) > 0:
                     self.template.sources = self.controler.get_sources(date)
                     self.template.dates = sorted(self.controler.get_dates())
                     self.template.asn_descs = as_infos
                     self.template.current_sources = current_sources
-                    self.template.javascript = self.controler.js
-                    self.template.js_name = self.controler.js_name
                     if ip_details is not None:
                         self.template.ip_details = ip_details
                         self.template.ip_descs = self.controler.get_ip_infos(asn, ip_details, source, date)
-                else:
-                    self.template.error = asn + " not found in the database."
+                if self.controler.js is not None:
+                    self.template.javascript = self.controler.js
+                    self.template.js_name = self.controler.js_name
             else: 
                 self.template.error = "Invalid query: " +  asn
             if self.template.javascript is None:

@@ -81,6 +81,7 @@ class MasterControler(object):
     def comparator(self, asns = None):
         """
             Get the data needed to display the page of the comparator
+            FIXME: rewrite it!!
         """
         js_name = self.config.get('web','canvas_comparator_name')
         asns_to_return = []
@@ -91,10 +92,15 @@ class MasterControler(object):
             for asn in splitted_asns:
                 if asn.isdigit():
                     asns_to_return.append(asn)
+
                     graph_last_date = datetime.date.today()
                     graph_first_date = datetime.date.today() - datetime.timedelta(days=self.days_graph)
-                    as_graph_infos = self.report.prepare_graphe_js(asn, graph_first_date, graph_last_date)
-                    g.add_line(as_graph_infos, str(asn + self.report.ip_key), graph_first_date, graph_last_date)
+                    graph_dates = self.report.get_dates_from_interval(graph_first_date, graph_last_date)
+                    dates_sources = self.report.get_all_sources(graph_dates)
+                    all_ranks = self.report.get_all_ranks(asn, graph_dates, dates_sources)
+
+                    data_graph, last_seen_sources = self.report.prepare_graphe_js(all_ranks, graph_dates, dates_sources)
+                    g.add_line(data_graph, str(asn + self.report.ip_key), graph_first_date, graph_last_date)
                     title += asn + ' '
             if len(g.lines) > 0:
                 g.set_title(title)

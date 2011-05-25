@@ -230,7 +230,7 @@ class Reports(CommonReport):
             Generate a list of dates between first_date and  last_date
             with this format: YYYY-MM-DD
         """
-        dates = [ d.strftime("%Y-%m-%d") for d in self.daterange(first_date, last_date, datetime.timedelta(days=1))]
+        return [ d.strftime("%Y-%m-%d") for d in self.daterange(first_date, last_date, datetime.timedelta(days=1))]
 
     def get_all_sources(self, dates):
         """

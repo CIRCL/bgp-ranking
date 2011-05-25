@@ -69,14 +69,13 @@ class MasterControler(object):
         """
             Get the data needed to display the page of the details on an AS 
         """
-        as_infos, current_sources = [], []
+        as_infos, current_sources, raw_sources = [], [], []
         if asn is not None:
             self.set_params(date)
             as_infos_temp, last_seen_sources, as_graph_infos = self.report.get_asn_descs(self.graph_first_date, self.graph_last_date, asn, source, date)
             if len(as_graph_infos) > 0 :
                 self.make_graph(asn, as_graph_infos)
-            raw_sources = []
-            if len(current_sources_temp) > 0:
+            if len(last_seen_sources) > 0:
                 raw_sources = last_seen_sources.keys()
                 current_sources = [ "{s}, last seen: {d}".format(s = source, d = date) for source, date in last_seen_sources.iteritems() ]
             if len(as_infos_temp) >= 0:

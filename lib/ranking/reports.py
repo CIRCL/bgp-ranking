@@ -95,9 +95,9 @@ class Reports(CommonReport):
         set_days = self.config.get('ranking','all_dates')
         self.history_db_temp.sadd(set_days, date)
         self.set_sources(date)
-        self.global_report(date)
         for source in self.sources:
             self.source_report(source = source, date = date)
+        self.global_report(date)
     
     def global_report(self, date = None):
         """
@@ -112,8 +112,13 @@ class Reports(CommonReport):
                                                                     histo_key   = zset_key,\
                                                                     ip_key      = self.ip_key)
         self.history_db_temp.delete(histo_key)
+        to_merge = []
         for source in self.sources:
-            self.source_report(source, zset_key, date)
+            to_merge.append('{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
+                                                                            date        = date,\
+                                                                            histo_key   = zset_key,\
+                                                                            ip_key      = self.ip_key))
+        self.history_db_temp.zunionstore(histo_key, to_merge)
 
     def build_asns_by_source(self, source, date = None):
         """
@@ -158,7 +163,7 @@ class Reports(CommonReport):
                                                             source  = source,\
                                                             key     = self.config.get('input_keys','index_asns')))
 
-        ranks = self.get_multiple_daily_rank(asns, source, date)
+        ranks = self.get_multiple_daily_rank(asns, date, source)
         pipeline = self.history_db_temp.pipeline(transaction=False)
         i = 0
         for asn in asns:
@@ -166,7 +171,7 @@ class Reports(CommonReport):
                 rank = ranks[i]
                 if rank is not None:
                     pipeline.zincrby(histo_key, asn, float(rank) * float(self.config_db.get(str(source))))
-                i += 1
+            i += 1
         pipeline.execute()
 
     def format_report(self, source = None, limit = 50, date = None):

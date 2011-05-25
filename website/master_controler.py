@@ -30,26 +30,13 @@ class MasterControler(object):
         self.report.flush_temp_db()
         self.report.build_reports_lasts_days(int(self.config.get('ranking','days')))
         self.report.build_last_reports()
-        self.set_params()
-        
+        self.days_graph = 30
 
-    def set_params(self, date = None):
-        """
-            Set the params to always display the latest version of the rankings
-        """
-        self.graph_last_date = datetime.date.today()
-        self.graph_first_date = datetime.date.today() - datetime.timedelta(days=30)
-        if date is None:
-            self.report.set_default_date()
-        self.report.set_sources(date)
-
-
-    def prepare_index(self, source, date = None):
+    def prepare_index(self, source, date):
         """
             Get the data from the model and prepare the ranks to pass to the index
         """
-        self.set_params(date)
-        rank = self.report.format_report(source = source, date = date)
+        rank = self.report.format_report(source, date)
         if rank is not None:
             return [ [r[0], 1 + r[1], ', '.join(r[2])] for r in rank]
 
@@ -71,8 +58,9 @@ class MasterControler(object):
         """
         as_infos, current_sources, raw_sources = [], [], []
         if asn is not None:
-            self.set_params(date)
-            as_infos_temp, last_seen_sources, as_graph_infos = self.report.get_asn_descs(self.graph_first_date, self.graph_last_date, asn, source, date)
+            graph_last_date = datetime.date.today()
+            graph_first_date = datetime.date.today() - datetime.timedelta(days=self.days_graph)
+            as_infos_temp, last_seen_sources, as_graph_infos = self.report.get_asn_descs(graph_first_date, graph_last_date, asn, source, date)
             if len(as_graph_infos) > 0 :
                 self.make_graph(asn, as_graph_infos)
             if len(last_seen_sources) > 0:
@@ -87,7 +75,6 @@ class MasterControler(object):
             Get the descriptions of the IPs of a subnet
         """
         if asn is not None and asn_tstamp is not None:
-            self.set_params(date)
             ips_descs_temp = self.report.get_ips_descs(asn, asn_tstamp, source, date)
             return [ [ips_desc_temp[0], ', '.join(ips_desc_temp[1]) ] for ips_desc_temp in ips_descs_temp]
     
@@ -98,15 +85,16 @@ class MasterControler(object):
         js_name = self.config.get('web','canvas_comparator_name')
         asns_to_return = []
         if asns is not None:
-            self.set_params()
             splitted_asns = asns.split()
             g = GraphGenerator(js_name)
             title = ''
             for asn in splitted_asns:
                 if asn.isdigit():
                     asns_to_return.append(asn)
-                    as_graph_infos = self.report.prepare_graphe_js(asn, self.graph_first_date, self.graph_last_date)
-                    g.add_line(as_graph_infos, str(asn + self.report.ip_key), self.graph_first_date, self.graph_last_date)
+                    graph_last_date = datetime.date.today()
+                    graph_first_date = datetime.date.today() - datetime.timedelta(days=self.days_graph)
+                    as_graph_infos = self.report.prepare_graphe_js(asn, graph_first_date, graph_last_date)
+                    g.add_line(as_graph_infos, str(asn + self.report.ip_key), graph_first_date, graph_last_date)
                     title += asn + ' '
             if len(g.lines) > 0:
                 g.set_title(title)

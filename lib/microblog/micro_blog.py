@@ -72,7 +72,7 @@ class MicroBlog(CommonReport):
         last_top_date = self.check_last_top()
         raw_date, date = self.get_default_date()
         if date != last_top_date:
-            self.post(self.top_date())
+            self.post(self.top_date(date))
             return True
         return False
 
@@ -95,12 +95,10 @@ class MicroBlog(CommonReport):
             return True
         return False
     
-    def top_date(self, date = None):
+    def top_date(self, date):
         """
             Return the top ASN for a given date
         """
-        if date is None:
-            raw_date, date = self.get_default_date()
         source = self.config.get('input_keys','histo_global')
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
                                                                     date        = date,\

@@ -99,8 +99,7 @@ class Ranking(object):
         """
         if self.rank_by_source[0] > 0.0:
             asn_key_v4_details = '{asn}{sep}{date}{sep}{source}{sep}{v4}{sep}{details}'\
-                                    .format(sep = self.separator, \
-                                            asn = self.asn, \
+                                    .format(sep = self.separator, asn = self.asn, \
                                             date = self.date, source = self.source, \
                                             v4 = self.config.get('input_keys','rankv4'), \
                                             details = self.config.get('input_keys','daily_asns_details'))

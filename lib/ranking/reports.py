@@ -207,7 +207,7 @@ class Reports(CommonReport):
                 owner, ip_block = self.global_db.mget(keys)
                 impacts = self.config_db.mget(sources)
                 # Compute the local ranking: the ranking if this subnet is the only one for this AS
-                local_rank = sum([ float(ips_by_sources[i]) * float(impacts[i]) for i in len(sources) ]) / IP(ip_block).len()
+                local_rank = sum([ float(ips_by_sources[i]) * float(impacts[i]) for i in range(len(sources)) ]) / IP(ip_block).len()
 
                 asn_timestamp_temp = '{date}{sep}{asn}{sep}{timestamp}'.format(\
                                                     sep = self.separator, date      = date,\
@@ -218,7 +218,7 @@ class Reports(CommonReport):
         return to_return, last_seen_sources, data_graph
 
     # origin: http://stackoverflow.com/questions/1950098/does-python-have-any-for-loop-equivalent-not-foreach
-    def daterange(start, end, delta):
+    def daterange(self, start, end, delta):
         """ Just like `range`, but for dates! """
         current = start
         while current < end:
@@ -230,7 +230,7 @@ class Reports(CommonReport):
             Generate a list of dates between first_date and  last_date
             with this format: YYYY-MM-DD
         """
-        dates = [ d.strftime("%Y-%m-%d") for d in daterange(first_date, last_date, datetime.timedelta(days=1))]
+        dates = [ d.strftime("%Y-%m-%d") for d in self.daterange(first_date, last_date, datetime.timedelta(days=1))]
 
     def get_all_sources(self, dates):
         """

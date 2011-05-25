@@ -111,7 +111,9 @@ class MasterControler(object):
         """
         js_name = self.config.get('web','canvas_asn_name')
         g = GraphGenerator(js_name)
-        g.add_line(infos, self.report.ip_key, self.graph_first_date, self.graph_last_date )
+        graph_last_date = datetime.date.today()
+        graph_first_date = datetime.date.today() - datetime.timedelta(days=self.days_graph)
+        g.add_line(infos, self.report.ip_key, graph_first_date, graph_last_date )
         g.set_title(asn)
         g.make_js()
         self.js = g.js

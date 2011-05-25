@@ -70,6 +70,13 @@ class CommonReport(object):
         """
         return self.history_db_temp.smembers(self.config.get('ranking','all_dates'))
 
+    def get_multiple_daily_rank(self, asn_list, date, source):
+        string = '{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep    = self.separator,\
+                                                                date   = date,\
+                                                                source = source,\
+                                                                ip_key = self.ip_key)
+        to_get = ['{asn}{string}'.format(asn = asn, string = string) for asn in asn_list]
+        return self.history_db.mget(to_get)
 
     def get_daily_rank(self, asn, date, source):
         """

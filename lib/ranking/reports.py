@@ -158,12 +158,15 @@ class Reports(CommonReport):
                                                             source  = source,\
                                                             key     = self.config.get('input_keys','index_asns')))
 
+        ranks = self.get_multiple_daily_rank(asns, source, date)
         pipeline = self.history_db_temp.pipeline(transaction=False)
+        i = 0
         for asn in asns:
             if asn != self.config.get('modules_global','default_asn'):
-                rank = self.get_daily_rank(asn, source, date)
+                rank = ranks[i]
                 if rank is not None:
                     pipeline.zincrby(histo_key, asn, float(rank) * float(self.config_db.get(str(source))))
+                i += 1
         pipeline.execute()
 
     def format_report(self, source = None, limit = 50, date = None):

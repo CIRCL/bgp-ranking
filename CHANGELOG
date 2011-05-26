@@ -16,7 +16,8 @@ New:
       - The impact of the modules
       - The URL where the dataset is downloaded
       - The path to put the dataset
- * New modules: malc0de, Sucuri, EmergingThreatsCompromized, EmergingThreatsRBN, MaliciousnetworksFIRE
+ * New modules: malc0de, Sucuri, EmergingThreatsCompromized, EmergingThreatsRBN
+                MaliciousnetworksFIRE, CIArmy
 
 Bugfixes:
  * Do not post on identica and twitter without having a ranking available

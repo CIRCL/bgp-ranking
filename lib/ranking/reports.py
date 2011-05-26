@@ -221,7 +221,7 @@ class Reports(CommonReport):
     def daterange(self, start, end, delta):
         """ Just like `range`, but for dates! """
         current = start
-        while current < end:
+        while current <= end:
             yield current
             current += delta
 
@@ -329,5 +329,4 @@ class Reports(CommonReport):
                 else:
                     ip_descs_to_print[ip].append(source)
             i += 1
-        to_return = sorted(ip_descs_to_print.items(), key=lambda desc: IP(desc[0]).int())
-        return to_return
+        return sorted(ip_descs_to_print.items(), key=lambda desc: (len(desc[1]), IP(desc[0]).int()), reverse=True)

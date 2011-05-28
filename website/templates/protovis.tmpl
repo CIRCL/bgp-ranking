@@ -1,0 +1,54 @@
+#from templates.master import master
+#extends master
+
+
+#block menu
+#end block menu
+
+#block main_content
+<script type="text/javascript+protovis">
+    var panel = JSON.parse($panel);
+    var data = JSON.parse($data);
+
+    var w = 1000,
+        h = 700,
+        x = pv.Scale.linear(0, data[data.length-1]).range(0, w),
+        y = pv.Scale.linear(0, 1500).range(0, h),
+        fill = pv.colors("lightpink", "darkgray", "lightblue"),
+//         format = pv.Format.date("%b");
+
+    var vis = new pv.Panel()
+        .width(w)
+        .height(h)
+        .margin(19.5)
+        .right(40);
+
+    vis.add(pv.Panel)
+        .data(panel)
+        .add(pv.Line)
+        .data(data)
+        .left(function(d) x(d.x))
+        .bottom(function(d, t) y(d[t]))
+        .strokeStyle(fill.by(pv.parent))
+        .lineWidth(3);
+
+    vis.add(pv.Label)
+        .data(x.ticks())
+        .left(x)
+        .bottom(0)
+        .textBaseline("top")
+        .textMargin(5)
+        .text(pv.Format.date("%b"));
+
+    vis.add(pv.Rule)
+        .data(y.ticks())
+        .bottom(y)
+        .strokeStyle(function(i) i ? "#ccc" : "black")
+        .anchor("right").add(pv.Label)
+        .visible(function() !(this.index & 1))
+        .textMargin(6);
+
+    vis.render();
+
+</script>
+#end block main_content

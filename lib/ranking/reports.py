@@ -265,3 +265,19 @@ class Reports(CommonReport):
         for rank in unique_set:
             to_return[rank] = report_rounded.count(rank)
         return to_return
+
+    def prepare_distrib_graph_protovis(self, dates):
+        source = self.config.get('input_keys','histo_global')
+        to_return = {}
+        for date in dates:
+            histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
+                                                                date        = date,\
+                                                                histo_key   = source,\
+                                                                ip_key      = self.ip_key)
+
+            reports_temp = self.history_db_temp.zrevrange(histo_key, 0, -1, True)
+            report_rounded = [ round(1 + r[1],3) for r in reports_temp ]
+            unique_set = set(rank for rank in report_rounded)
+            for rank in unique_set:
+                to_return[rank][date] = report_rounded.count(rank)
+        return to_return

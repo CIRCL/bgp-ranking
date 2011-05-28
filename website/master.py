@@ -37,6 +37,17 @@ class Master(object):
         self.controler = MasterControler()
 
     @cherrypy.expose
+    def protovis(self):
+        """
+            Some tests with protovis
+        """
+        dates, data = self.controler.protovis()
+        self.template = Template(file = os.path.join(self.website_root, self.templates, 'protovis.tmpl'))
+        self.template.panel = dates
+        self.template.data = data
+        return str(self.template)
+
+    @cherrypy.expose
     def stats(self):
         """
             Some stats

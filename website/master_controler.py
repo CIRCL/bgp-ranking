@@ -14,6 +14,7 @@ import os
 
 import datetime
 from graph_generator import GraphGenerator
+import json
 
 class MasterControler(object):
 
@@ -115,19 +116,28 @@ class MasterControler(object):
         return " ".join(asns_to_return)
 
     def get_stats(self):
-        stats= self.report.get_stats()
+        stats = self.report.get_stats()
         dates = self.get_dates()
         lines = []
-        for date in dates:
-            lines.append(self.report.prepare_distrib_graph(date))
-
-        sorted_label = sorted(lines[0].keys())
         g = GraphGenerator('canvas_stats')
-        for line in lines:
-            g.add_line(line, "rank", sorted_label[10:-1])
+        for date in dates:
+            line = self.report.prepare_distrib_graph(date)
+            sorted_label = sorted(line.keys())
+            g.add_line(line, date, sorted_label[3:-1])
         g.set_title("stats")
         g.make_js()
         return stats, g.js, 'canvas_stats'
+
+    def protovis(self):
+        dates = self.get_dates()
+        data_temp = self.report.prepare_distrib_graph_protovis(dates)
+        data_return = []
+        for rank, data in data_temp.iteritems():
+            dict_temp = {'rank': rank}
+            for date, value in data.iteritems():
+                dict_temp[date] = value
+            data_return.append(dict_temp)
+        return dates, json.dumps(data_return)
     
     def make_graph(self, asn, infos):
         """

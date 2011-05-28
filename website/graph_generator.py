@@ -62,14 +62,14 @@ window.onload = function ()
         """
             Prepare the components of a line
         """
-        list = []
+        _list = []
         for label in self.labels:
             rank = line.get(label, None)
             if rank > 0:
-                list.append(1 + rank)
+                _list.append(1 + rank)
             else:
-                list.append(self.empty)
-        return list
+                _list.append(self.empty)
+        return _list
 
     def repr_list(self, list):
         """
@@ -104,7 +104,9 @@ window.onload = function ()
                 real_max = max(real_max, max(line))
         form_keys = str(self.keys)
         real_min = 1.0
-        self.js = self.template.substitute( name = self.name, lines = form_lines, tooltips = self.repr_list(tooltips), labels = str(self.labels), title = self.title, min = real_min, max = real_max, keys = str(self.keys) )
+        self.js = self.template.substitute( name = self.name, lines = form_lines, tooltips = self.repr_list(tooltips),\
+                                            labels = str(self.labels), title = self.title, min = real_min, max = real_max,\
+                                            keys = str(self.keys) )
 
 if __name__ == "__main__":
     g = GraphGenerator('plop')

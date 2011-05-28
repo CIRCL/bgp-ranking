@@ -8,6 +8,10 @@
     Generate reports for a particular day.
 """
 
+from helpers.common_report import CommonReport
+import redis
+import datetime
+
 class ReportsGenerator(CommonReport):
 
     def __init__(self, ip_version = 4):

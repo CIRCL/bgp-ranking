@@ -116,9 +116,9 @@ class MasterControler(object):
 
     def get_stats(self):
         stats= self.report.get_stats()
-        x,y = self.prepare_distrib_graph()
+        line = self.report.prepare_distrib_graph()
         g = GraphGenerator('canvas_stats')
-        g.add_line(y, "rank", x)
+        g.add_line(sorted(line.keys()), "rank", line)
         g.set_title("stats")
         g.make_js()
         return stats, g.js, 'canvas_stats'

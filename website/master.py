@@ -41,8 +41,6 @@ class Master(object):
         """
             Some stats
         """
-        source = self.reset_if_empty(source)
-        date = self.reset_if_empty(date)
         stats, graph, graph_name = self.controler.get_stats()
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'statistics.tmpl'))
         self.template.rgraph_dir = config.get('web','rgraph_dir')

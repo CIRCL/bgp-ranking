@@ -232,24 +232,22 @@ class Reports(CommonReport):
             { Source : [nb_asns, nb_subnets]...}
         """
         dates = self.get_dates()
-        sources = self.get_sources(date)
-
         to_return = {}
-
         for date in dates:
             to_return[date] = {}
+            sources = self.get_sources(date)
             for source in sources:
                 to_return[date][source] = []
-                to_return[source].append(self.history_db_temp.zcard(\
+                to_return[date][source].append(self.history_db_temp.zcard(\
                                                 '{date}{sep}{histo_key}{sep}{ip_key}'.format(\
                                                     sep         = self.separator,\
                                                     date        = date,\
                                                     histo_key   = source,\
                                                     ip_key      = self.ip_key)))
-                to_return[source].append(self.global_db.scard(\
+                to_return[date][source].append(self.global_db.scard(\
                                         '{date}{sep}{source}{sep}{key}'.format(\
-                                            date = date, sep = separator, source = source,\
-                                            key = config.get('input_keys','index_asns_details'))))
+                                            date = date, sep = self.separator, source = source,\
+                                            key = self.config.get('input_keys','index_asns_details'))))
         return to_return
 
     def prepare_distrib_graph(self):
@@ -263,6 +261,8 @@ class Reports(CommonReport):
         reports_temp = self.history_db_temp.zrevrange(histo_key, 0, -1, True)
         report_rounded = [ round(1 + r[1],4) for r in reports_temp ]
         unique_set = set(rank for rank in report_rounded)
-        to_return = [], []
-        [ (to_return[0].append(rank), to_return[1].append(dupedList.count(rank))) for rank in unique_set]
+        to_return = {}
+        # FIXME python 2.7
+        for rank in unique_set:
+            to_return[rank] = report_rounded.count(rank)
         return to_return

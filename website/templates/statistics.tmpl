@@ -17,16 +17,16 @@
                 <th scope="col" >Subnets</th>
             </tr>
         </thead>
-        #for $stat_dates in $stats
+        #for $order in $order_stats
         <tr>
-            <td>$stats[$stat_dates]</td>
-            <tr>
-            #for $stat_source in $stats[$stat_dates]
-                <td>$stats[$stat_dates][$stat_source]</td>
-                <td>$stats[$stat_dates][$stat_source][0]</td>
-                <td>$stats[$stat_dates][$stat_source][1]</td>
+            <th rowspan=$rowspan[$stat_dates]>$stat_dates</th>
+            #for $stat_source in $stats[$order]
+                <tr>
+                    <td>$stat_source</td>
+                    <td>$stats[$stat_dates][$stat_source][0]</td>
+                    <td>$stats[$stat_dates][$stat_source][1]</td>
+                </tr>
             #end for
-            </tr>
         </tr>
         #end for
     </table>

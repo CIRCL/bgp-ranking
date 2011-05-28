@@ -48,7 +48,12 @@ class Master(object):
         self.template.css_file = self.config.get('web','css_file')
         self.template.logo     = self.config.get('web','logo')
         self.template.banner   = self.config.get('web','banner')
+        rowspan = {}
+        for section in stats:
+            rowspan[section] = len(stats[section]) + 1
+        self.template.order_stats = sorted(stats.items)
         self.template.stats    = stats
+        self.template.rowspan  = rowspan
         self.template.js_stats = graph
         self.template.js_stats_name = graph_name
         return str(self.template)

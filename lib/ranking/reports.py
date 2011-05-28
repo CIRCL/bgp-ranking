@@ -259,7 +259,7 @@ class Reports(CommonReport):
                                                             ip_key      = self.ip_key)
 
         reports_temp = self.history_db_temp.zrevrange(histo_key, 0, -1, True)
-        report_rounded = [ round(1 + r[1],4) for r in reports_temp ]
+        report_rounded = [ round(1 + r[1],5) for r in reports_temp ]
         unique_set = set(rank for rank in report_rounded)
         to_return = {}
         # FIXME python 2.7

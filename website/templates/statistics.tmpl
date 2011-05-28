@@ -19,8 +19,8 @@
         </thead>
         #for $order in $order_stats
         <tr>
-            <th rowspan=$rowspan[$stat_dates]>$stat_dates</th>
             <th rowspan=$rowspan[$order]>$order</th>
+            #for $stat_source in $stats[$order]
                 <tr>
                     <td>$stat_source</td>
                     <td>$stats[$order][$stat_source][0]</td>

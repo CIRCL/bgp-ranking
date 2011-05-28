@@ -258,13 +258,10 @@ class Reports(CommonReport):
                                                             ip_key      = self.ip_key)
 
         reports_temp = self.history_db_temp.zrevrange(histo_key, 0, -1, True)
-        report_rounded = [ '%.3f' % round( 1 + r[1],3) for r in reports_temp ]
         unique_set = set(rank for rank in report_rounded)
         to_return = {}
         # FIXME python 2.7
         for rank in unique_set:
-            if to_return.get(rank) is None:
-                to_return[rank] = {}
             to_return[rank] = report_rounded.count(rank)
         return to_return
 
@@ -279,7 +276,10 @@ class Reports(CommonReport):
 
             reports_temp = self.history_db_temp.zrevrange(histo_key, 0, -1, True)
             report_rounded = [ round(1 + r[1],3) for r in reports_temp ]
+            report_rounded = [ '%.3f' % round( 1 + r[1],3) for r in reports_temp ]
             unique_set = set(rank for rank in report_rounded)
             for rank in unique_set:
+                if to_return.get(rank) is None:
+                    to_return[rank] = {}
                 to_return[rank][date] = report_rounded.count(rank)
         return to_return

@@ -20,11 +20,11 @@
         #for $order in $order_stats
         <tr>
             <th rowspan=$rowspan[$stat_dates]>$stat_dates</th>
-            #for $stat_source in $stats[$order]
+            <th rowspan=$rowspan[$order]>$order</th>
                 <tr>
                     <td>$stat_source</td>
-                    <td>$stats[$stat_dates][$stat_source][0]</td>
-                    <td>$stats[$stat_dates][$stat_source][1]</td>
+                    <td>$stats[$order][$stat_source][0]</td>
+                    <td>$stats[$order][$stat_source][1]</td>
                 </tr>
             #end for
         </tr>

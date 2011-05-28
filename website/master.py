@@ -51,7 +51,7 @@ class Master(object):
         rowspan = {}
         for section in stats:
             rowspan[section] = len(stats[section]) + 1
-        self.template.order_stats = sorted(stats.items)
+        self.template.order_stats = sorted(stats.keys())
         self.template.stats    = stats
         self.template.rowspan  = rowspan
         self.template.js_stats = graph

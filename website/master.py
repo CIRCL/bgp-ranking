@@ -35,7 +35,26 @@ class Master(object):
                                 'RGraph.line.js',\
                                 'RGraph.common.tooltips.js']
         self.controler = MasterControler()
-        
+
+    @cherrypy.expose
+    def stats(self):
+        """
+            Some stats
+        """
+        source = self.reset_if_empty(source)
+        date = self.reset_if_empty(date)
+        stats, graph, graph_name = self.controler.get_stats()
+        self.template = Template(file = os.path.join(self.website_root, self.templates, 'statistics.tmpl'))
+        self.template.rgraph_dir = config.get('web','rgraph_dir')
+        self.template.rgraph_scripts = self.rgraph_scripts
+        self.template.css_file = self.config.get('web','css_file')
+        self.template.logo     = self.config.get('web','logo')
+        self.template.banner   = self.config.get('web','banner')
+        self.template.stats    = stats
+        self.template.js_stats = graph
+        self.template.js_stats_name = graph_name
+        return str(self.template)
+
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def json(self, source = None, date = None, asn = None, ip_details = None):

@@ -99,7 +99,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     from helpers.initscript import *
     from helpers.files_splitter import FilesSplitter
-    from ranking.reports import Reports
+    from ranking.reports_generator import ReportsGenerator
     services_dir = os.path.join(root_dir,config.get('directories','services'))
     bgpdump = os.path.join(root_dir,config.get('routing','bgpdump'))
 
@@ -151,7 +151,7 @@ if __name__ == '__main__':
         
         if compute_yesterday_ranking():
             # Clean the whole database and regenerate it (like this we do not keep data of the old rankings)
-            report = Reports()
+            report = ReportsGenerator()
             report.flush_temp_db()
             report.build_reports_lasts_days(int(config.get('ranking','days')))
 
@@ -194,5 +194,5 @@ if __name__ == '__main__':
         rmpid(ranking_process_service)
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Updating the reports...')
-        Reports().build_reports(date)
+        ReportsGenerator().build_reports(date)
         syslog.syslog(syslog.LOG_INFO, '...done.')

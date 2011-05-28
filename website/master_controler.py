@@ -24,12 +24,15 @@ class MasterControler(object):
         root_dir =  self.config.get('directories','root')
         sys.path.append(os.path.join(root_dir,self.config.get('directories','libraries')))
         from ranking.reports import Reports
+        from ranking.reports_generator import ReportsGenerator
 
         # Ensure there is something to display
+        report_generator = ReportsGenerator()
+        report_generator.flush_temp_db()
+        report_generator.build_reports_lasts_days(int(self.config.get('ranking','days')))
+        report_generator.build_last_reports()
+
         self.report = Reports()
-        self.report.flush_temp_db()
-        self.report.build_reports_lasts_days(int(self.config.get('ranking','days')))
-        self.report.build_last_reports()
         self.days_graph = 30
 
     def prepare_index(self, source, date):
@@ -100,7 +103,7 @@ class MasterControler(object):
                     all_ranks = self.report.get_all_ranks(asn, graph_dates, dates_sources)
 
                     data_graph, last_seen_sources = self.report.prepare_graphe_js(all_ranks, graph_dates, dates_sources)
-                    g.add_line(data_graph, str(asn + self.report.ip_key), graph_first_date, graph_last_date)
+                    g.add_line(data_graph, str(asn + self.report.ip_key), graph_dates)
                     title += asn + ' '
             if len(g.lines) > 0:
                 g.set_title(title)
@@ -110,6 +113,15 @@ class MasterControler(object):
             else:
                 self.js = self.js_name = None
         return " ".join(asns_to_return)
+
+    def get_stats(self):
+        stats= self.report.get_stats()
+        x,y = self.prepare_distrib_graph()
+        g = GraphGenerator('canvas_stats')
+        g.add_line(y, "rank", x)
+        g.set_title("stats")
+        g.make_js()
+        return stats, g.js, 'canvas_stats'
     
     def make_graph(self, asn, infos):
         """
@@ -119,7 +131,8 @@ class MasterControler(object):
         g = GraphGenerator(js_name)
         graph_last_date = datetime.date.today()
         graph_first_date = datetime.date.today() - datetime.timedelta(days=self.days_graph)
-        g.add_line(infos, self.report.ip_key, graph_first_date, graph_last_date )
+        graph_dates = self.report.get_dates_from_interval(graph_first_date, graph_last_date)
+        g.add_line(infos, self.report.ip_key, graph_dates)
         g.set_title(asn)
         g.make_js()
         self.js = g.js

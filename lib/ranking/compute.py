@@ -28,9 +28,12 @@ class Ranking(object):
         config_file = "/path/to/bgp-ranking.conf"
         self.config.read(config_file)
         
-        self.routing_db = redis.Redis(port = int(self.config.get('redis','port_cache')) , db=self.config.get('redis','routing'))
-        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')), db=self.config.get('redis','global'))
-        self.history_db = redis.Redis(port = int(self.config.get('redis','port_master')), db=self.config.get('redis','history'))
+        self.routing_db = redis.Redis(port = int(self.config.get('redis','port_cache')),\
+                                        db = self.config.get('redis','routing'))
+        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
+                                        db = self.config.get('redis','global'))
+        self.history_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
+                                        db = self.config.get('redis','history'))
         self.separator = self.config.get('input_keys','separator')
         self.weight = {}
         self.date = None
@@ -72,8 +75,10 @@ class Ranking(object):
         """
             Count the number of IPs found in the dataset for this subnet
         """
-        ips = self.global_db.smembers('{asn}{sep}{timestamp}{sep}{date}{sep}{source}'.format(sep = self.separator, \
-                                        asn = self.asn, timestamp = self.timestamp, date = self.date, source = self.source))
+        ips = self.global_db.smembers('{asn}{sep}{timestamp}{sep}{date}{sep}{source}'.format(\
+                                        sep = self.separator, asn = self.asn,\
+                                        timestamp = self.timestamp, date = self.date,\
+                                        source = self.source))
         self.weight = [0.0,0.0]
         for i in ips:
             ip_extract, timestamp = i.split(self.separator)
@@ -106,8 +111,10 @@ class Ranking(object):
 
             self.history_db.zadd(asn_key_v4_details, self.timestamp, self.rank_by_source[0])
             
-            asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep = self.separator, asn = self.asn, \
-                            date = self.date, source = self.source, v4 = self.config.get('input_keys','rankv4'))
+            asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(\
+                            sep = self.separator, asn = self.asn,\
+                            date = self.date, source = self.source,\
+                            v4 = self.config.get('input_keys','rankv4'))
 
             temp_rank = self.history_db.get(asn_key_v4)
             if temp_rank is not None:
@@ -117,14 +124,18 @@ class Ranking(object):
             self.history_db.set(asn_key_v4, temp_rank)
 
         if self.rank_by_source[1] > 0.0:
-            asn_key_v6_details = '{asn}{sep}{date}{sep}{source}{sep}{v6}{sep}{details}'.format(sep = self.separator, asn = self.asn, \
-                                    date = self.date, source = self.source, v6 = self.config.get('input_keys','rankv6'), \
+            asn_key_v6_details = '{asn}{sep}{date}{sep}{source}{sep}{v6}{sep}{details}'.format(\
+                                    sep = self.separator, asn = self.asn,\
+                                    date = self.date, source = self.source,\
+                                    v6 = self.config.get('input_keys','rankv6'), \
                                     details = self.config.get('input_keys','daily_asns_details'))
 
             self.history_db.zadd(asn_key_v6_details, self.timestamp, self.rank_by_source[1])
 
-            asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(sep = self.separator, asn = self.asn, \
-                            date = self.date, source = self.source, v6 = self.config.get('input_keys','rankv6'))
+            asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(\
+                            sep = self.separator, asn = self.asn,\
+                            date = self.date, source = self.source,\
+                            v6 = self.config.get('input_keys','rankv6'))
 
             temp_rank = self.history_db.get(asn_key_v6)
             if temp_rank is not None:

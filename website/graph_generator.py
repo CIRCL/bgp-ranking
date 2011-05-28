@@ -50,11 +50,11 @@ window.onload = function ()
         self.title = None
         self.name = name
 
-    def add_line(self, line, key, first_date, last_date):
+    def add_line(self, line, key, xaxis):
         """
             Add all the data needed to display a line on the graph
         """
-        self.set_labels(first_date, last_date)
+        self.labels = xaxis
         self.lines.append(self.line_values(line))
         self.keys.append(key)
     
@@ -82,20 +82,6 @@ window.onload = function ()
             to_return += str(l)
         to_return += ']'
         return to_return
-    
-    # xaxis
-    def set_labels(self, first_date, last_date):
-        """
-            Prepare the label, on the X axis
-        """
-        if self.first_date is None or self.last_date is None or first_date < self.first_date or last_date > self.last_date:
-            self.first_date = first_date
-            self.last_date = last_date
-            self.labels = []
-            current = first_date
-            while current <= last_date:
-                self.labels.append(current.strftime("%Y-%m-%d"))
-                current += datetime.timedelta(days=1)
     
     def set_title(self, title):
         """

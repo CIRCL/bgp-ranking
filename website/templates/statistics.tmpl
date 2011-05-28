@@ -1,0 +1,38 @@
+#from templates.master import master
+#extends master
+
+#attr title = 'Statistics'
+
+#block menu
+#end block menu
+
+#block main_content
+    #if $stats is not None
+    <table>
+        <thead>
+            <tr>
+                <th scope="col" >Date</th>
+                <th scope="col" >Source</th>
+                <th scope="col" >ASNs</th>
+                <th scope="col" >Subnets</th>
+            </tr>
+        </thead>
+        #for $stat_dates in $stats
+        <tr>
+            <td>$stats[$stat_dates]</td>
+            <tr>
+            #for $stat_source in $stats[$stat_dates]
+                <td>$stats[$stat_dates][$stat_source]</td>
+                <td>$stats[$stat_dates][$stat_source][0]</td>
+                <td>$stats[$stat_dates][$stat_source][1]</td>
+            #end for
+            </tr>
+        </tr>
+        #end for
+    </table>
+    #end if 
+    #if $js_stats is not None
+        <script type="text/javascript">$js_stats</script>
+        <canvas id="$js_stats_name" width="1000" height="700">[Please wait...]</canvas>
+    #end if
+#end block main_content

@@ -62,6 +62,15 @@ class CommonReport(object):
         """
         return self.history_db_temp.smembers(self.config.get('ranking','all_dates'))
 
+    def get_sources(self, date):
+        """
+            Get the sources parsed on a `date`
+        """
+        return self.global_db.smembers('{date}{sep}{key}'.format(\
+                            date   = date, \
+                            sep    = self.separator,\
+                            key    = self.config.get('input_keys','index_sources')))
+
     def get_multiple_daily_rank(self, asn_list, date, source):
         string = '{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep    = self.separator,\
                                                                 date   = date,\

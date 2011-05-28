@@ -250,8 +250,7 @@ class Reports(CommonReport):
                                             key = self.config.get('input_keys','index_asns_details'))))
         return to_return
 
-    def prepare_distrib_graph(self):
-        date = self.get_default_date()[1]
+    def prepare_distrib_graph(self, date):
         source = self.config.get('input_keys','histo_global')
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
                                                             date        = date,\

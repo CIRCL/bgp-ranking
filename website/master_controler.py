@@ -119,7 +119,7 @@ class MasterControler(object):
         line = self.report.prepare_distrib_graph()
         g = GraphGenerator('canvas_stats')
         sorted_label = sorted(line.keys())
-        g.add_line(line, "rank", Sorted_label[10:-1])
+        g.add_line(line, "rank", sorted_label[10:-1])
         g.set_title("stats")
         g.make_js()
         return stats, g.js, 'canvas_stats'

@@ -6,6 +6,7 @@
 #end block menu
 
 #block main_content
+This Graph only displays the ranks with less than $max_y ASNs.
 <script type="text/javascript+protovis">
     var panel = $panel;
     var data = $data;
@@ -16,7 +17,7 @@
     })();
 
     var w = 1000,
-        h = 700,
+        h = 500,
         x = pv.Scale.linear(data, function(d) d.rank).range(0, w),
         y = pv.Scale.linear(0, max_y).range(0, h),
         fill = pv.colors("lightpink", "darkgray", "lightblue");
@@ -34,17 +35,21 @@
         .left(function(d) x(d.rank))
         .bottom(function(d, t) y(d[t]))
         .strokeStyle(fill.by(pv.parent))
-        .lineWidth(3);
-
-    vis.add(pv.Label)
-        .data(x.ticks())
-        .left(x)
-        .bottom(0)
-        .textBaseline("top")
-        .textMargin(5);
+        .lineWidth(1);
 
     vis.add(pv.Rule)
-        .data(y.ticks())
+        .data(x.ticks(20))
+        .visible(function(d) d > 0)
+         .left(x)
+        .strokeStyle(function(i) i ? "#ccc" : "black")
+        .add(pv.Rule)
+        .bottom(-5)
+        .height(5)
+        .anchor("bottom").add(pv.Label)
+        .text(x.tickFormat);
+
+    vis.add(pv.Rule)
+        .data(y.ticks(20))
         .bottom(y)
         .strokeStyle(function(i) i ? "#ccc" : "black")
         .anchor("right").add(pv.Label)

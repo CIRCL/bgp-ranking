@@ -136,6 +136,8 @@ class MasterControler(object):
         for rank, data in data_temp.iteritems():
             dict_temp = {'rank': rank}
             for date, value in data.iteritems():
+                if value > 50:
+                    continue
                 max_y = max(max_y, value)
                 dict_temp[date] = value
             data_return.append(dict_temp)

@@ -10,12 +10,15 @@
     var panel = $panel;
     var data = $data;
 
+    (function() {
+        data.forEach(function(d) { d.rank = parseFloat(d.rank); });
+    })();
+
     var w = 1000,
         h = 700,
         x = pv.Scale.linear(data, function(d) d.rank).range(0, w),
         y = pv.Scale.linear(0, 1500).range(0, h),
         fill = pv.colors("lightpink", "darkgray", "lightblue");
-//         format = pv.Format.date("%b");
 
     var vis = new pv.Panel()
         .width(w)
@@ -37,8 +40,7 @@
         .left(x)
         .bottom(0)
         .textBaseline("top")
-        .textMargin(5)
-        .text(pv.Format.date("%b"));
+        .textMargin(5);
 
     vis.add(pv.Rule)
         .data(y.ticks())

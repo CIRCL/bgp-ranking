@@ -133,9 +133,9 @@ class MasterControler(object):
         data_temp = self.report.prepare_distrib_graph_protovis(dates)
         data_return = []
         for rank, data in data_temp.iteritems():
-            dict_temp = {'rank': float(rank)}
+            dict_temp = {'rank': rank}
             for date, value in data.iteritems():
-                dict_temp[date] = int(value)
+                dict_temp[date] = value
             data_return.append(dict_temp)
         return json.dumps(list(dates)), json.dumps(sorted(data_return, key=lambda k: k['rank']))
     

@@ -132,12 +132,14 @@ class MasterControler(object):
         dates = self.get_dates()
         data_temp = self.report.prepare_distrib_graph_protovis(dates)
         data_return = []
+        max_y = 0
         for rank, data in data_temp.iteritems():
             dict_temp = {'rank': rank}
             for date, value in data.iteritems():
+                max_y = max(max_y, value)
                 dict_temp[date] = value
             data_return.append(dict_temp)
-        return json.dumps(list(dates)), json.dumps(sorted(data_return, key=lambda k: k['rank']))
+        return json.dumps(list(dates)), json.dumps(sorted(data_return, key=lambda k: k['rank'])), json.dumps(max_y)
     
     def make_graph(self, asn, infos):
         """

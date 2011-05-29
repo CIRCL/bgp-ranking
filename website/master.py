@@ -41,7 +41,7 @@ class Master(object):
         """
             Some tests with protovis
         """
-        dates, data = self.controler.protovis()
+        dates, data, max_y = self.controler.protovis()
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'protovis.tmpl'))
         self.template.rgraph_dir = config.get('web','rgraph_dir')
         self.template.rgraph_scripts = self.rgraph_scripts
@@ -50,6 +50,7 @@ class Master(object):
         self.template.banner   = self.config.get('web','banner')
         self.template.panel = dates
         self.template.data = data
+        self.template.max_y = max_y
         return str(self.template)
 
     @cherrypy.expose

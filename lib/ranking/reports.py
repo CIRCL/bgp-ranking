@@ -29,6 +29,15 @@ class Reports(CommonReport):
         self.config_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
                                        db = self.config.get('redis','config'))
 
+    def get_sources(self, date):
+        """
+            Get the sources parsed on a `date`
+        """
+        if date is None:
+            # Fallback if no date is given in the web interface
+            date = self.get_default_date()
+        return super(Reports, self).get_sources(date)
+
     def format_report(self, source, date, limit = 50):
         """
             Format the report to be displayed in the website

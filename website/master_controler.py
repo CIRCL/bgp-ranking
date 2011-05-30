@@ -141,7 +141,8 @@ class MasterControler(object):
                 max_y = max(max_y, value)
                 dict_temp[date] = value
             data_return.append(dict_temp)
-        return json.dumps(list(dates)), json.dumps(sorted(data_return, key=lambda k: k['rank'])), json.dumps(max_y)
+        stats, max_x = self.report.get_stats_asns()
+        return json.dumps(list(dates)), json.dumps(sorted(data_return, key=lambda k: k['rank'])), max_y, stats, max_x
     
     def make_graph(self, asn, infos):
         """

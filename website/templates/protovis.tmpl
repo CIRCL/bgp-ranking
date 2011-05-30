@@ -8,6 +8,8 @@
 #block main_content
 This Graph only displays the ranks with less than $max_y ASNs.
 <script type="text/javascript+protovis">
+// Origin: http://vis.stanford.edu/protovis/ex/area.html
+// FIXME Add something like this: http://vis.stanford.edu/protovis/docs/invert.html
     var panel = $panel;
     var data = $data;
     var max_y = $max_y;
@@ -55,6 +57,68 @@ This Graph only displays the ranks with less than $max_y ASNs.
         .anchor("right").add(pv.Label)
         .visible(function() !(this.index & 1))
         .textMargin(6);
+
+    vis.render();
+
+</script>
+
+<script type="text/javascript+protovis">
+// Origin: http://vis.stanford.edu/protovis/ex/group.html
+
+    var panel = $panel;
+    var max_x = $max_x;
+    var data_2 = $data_2;
+
+    /* Sizing and scales. */
+    var w = 400,
+        h = 250,
+        x = pv.Scale.linear(0, max_x).range(0, w),
+        y = pv.Scale.ordinal(panel.length).splitBanded(0, h, 4/5);
+
+    /* The root panel. */
+    var vis = new pv.Panel()
+        .width(w)
+        .height(h)
+        .bottom(20)
+        .left(20)
+        .right(10)
+        .top(5);
+
+    /* The bars. */
+    var bar = vis.add(pv.Panel)
+        .data(data)
+        .top(function() y(this.index))
+        .height(y.range().band)
+    .add(pv.Bar)
+        .data(function(d) d)
+        .top(function() this.index * y.range().band / m)
+        .height(y.range().band / m)
+        .left(0)
+        .width(x)
+        .fillStyle(pv.Colors.category20().by(pv.index));
+
+    /* The value label. */
+    bar.anchor("right").add(pv.Label)
+        .textStyle("white")
+        .text(function(d) d.toFixed(1));
+
+    /* The variable label. */
+    bar.parent.anchor("left").add(pv.Label)
+        .textAlign("right")
+        .textMargin(5)
+        .text(function() "ABCDEFGHIJK".charAt(this.parent.index));
+
+    /* X-axis ticks. */
+    vis.add(pv.Rule)
+        .data(x.ticks(5))
+        .left(x)
+        .strokeStyle(function(d) d ? "rgba(255,255,255,.3)" : "#000")
+    .add(pv.Rule)
+        .bottom(0)
+        .height(5)
+        .strokeStyle("#000")
+    .anchor("bottom").add(pv.Label)
+        .text(x.tickFormat);
 
     vis.render();
 

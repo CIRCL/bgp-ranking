@@ -250,6 +250,27 @@ class Reports(CommonReport):
                                             key = self.config.get('input_keys','index_asns_details'))))
         return to_return
 
+    def get_stats_asns(self):
+        """
+            Return stats by sources:
+            { Source : [nb_asns, nb_subnets]...}
+        """
+        dates = self.get_dates()
+        max_nr = 0
+        to_return = {}
+        for date in dates:
+            to_return[date] = {}
+            sources = self.get_sources(date)
+            for source in sources:
+                to_return[date][source] = self.history_db_temp.zcard(\
+                                                '{date}{sep}{histo_key}{sep}{ip_key}'.format(\
+                                                    sep         = self.separator,\
+                                                    date        = date,\
+                                                    histo_key   = source,\
+                                                    ip_key      = self.ip_key))
+                max_nr = max(max_nr, to_return[date][source])
+        return to_return, max_nr
+
     def prepare_distrib_graph(self, date):
         source = self.config.get('input_keys','histo_global')
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\

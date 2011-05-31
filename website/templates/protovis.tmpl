@@ -14,30 +14,17 @@ This Graph only displays the ranks with less than $max_y ASNs.
     var data = $data;
     var max_y = $max_y;
 
-    (function() {
-        data.forEach(function(d) { d.rank = parseFloat(d.rank); });
-    })();
-
     var w = 1000,
         h = 500,
         x = pv.Scale.linear(data, function(d) d.rank).range(0, w),
         y = pv.Scale.linear(0, max_y).range(0, h),
-        fill = pv.colors("lightpink", "darkgray", "lightblue");
+        fill = pv.colors("red", "blue", "green", "yellow");
 
     var vis = new pv.Panel()
-        .width(w)
-        .height(h)
-        .margin(19.5)
+        .width(w + 30 )
+        .height(h + 5 )
+        .margin(20)
         .right(40);
-
-    vis.add(pv.Panel)
-        .data(panel)
-        .add(pv.Line)
-        .data(data)
-        .left(function(d) x(d.rank))
-        .bottom(function(d, t) y(d[t]))
-        .strokeStyle(fill.by(pv.parent))
-        .lineWidth(1);
 
     vis.add(pv.Rule)
         .data(x.ticks(20))
@@ -58,6 +45,23 @@ This Graph only displays the ranks with less than $max_y ASNs.
         .visible(function() !(this.index & 1))
         .textMargin(6);
 
+    vis.add(pv.Panel)
+        .data(panel)
+        .add(pv.Line)
+        .data(data)
+        .left(function(d) x(d.rank))
+        .bottom(function(d, t) y(d[t]))
+        .strokeStyle(fill.by(function(d, t) t))
+        .lineWidth(2);
+
+    vis.add(pv.Dot)
+        .data(panel)
+        .right(10)
+        .top(function() this.index * 12 + 10)
+        .fillStyle(fill.by(function(t) t))
+        .strokeStyle(null)
+        .anchor("left").add(pv.Label)
+        .text(function(t) t);
     vis.render();
 
 </script>
@@ -70,8 +74,8 @@ This Graph only displays the ranks with less than $max_y ASNs.
     var data_2 = $data_2;
 
     /* Sizing and scales. */
-    var w = 400,
-        h = 250,
+    var w = 700,
+        h = 500,
         x = pv.Scale.linear(0, max_x).range(0, w),
         y = pv.Scale.ordinal(panel.length).splitBanded(0, h, 4/5);
 

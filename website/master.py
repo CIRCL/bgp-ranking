@@ -41,7 +41,7 @@ class Master(object):
         """
             Some tests with protovis
         """
-        dates, data, max_y, stats, max_x = self.controler.protovis()
+        dates, data, max_y, stats = self.controler.protovis()
         self.template = Template(file = os.path.join(self.website_root, self.templates, 'protovis.tmpl'))
         self.template.rgraph_dir = config.get('web','rgraph_dir')
         self.template.rgraph_scripts = self.rgraph_scripts
@@ -51,7 +51,6 @@ class Master(object):
         self.template.panel = dates
         self.template.data = data
         self.template.max_y = max_y
-        self.template.max_x = max_x
         self.template.data_2 = stats
         return str(self.template)
 

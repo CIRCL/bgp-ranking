@@ -68,63 +68,46 @@ This Graph only displays the ranks with less than $max_y ASNs.
 
 <script type="text/javascript+protovis">
 // Origin: http://vis.stanford.edu/protovis/ex/group.html
+//         http://eagereyes.org/tutorials/protovis-primer-part-2
 
     var panel = $panel;
-    var max_x = $max_x;
     var data_2 = $data_2;
 
-    /* Sizing and scales. */
-    var w = 700,
-        h = 500,
-        x = pv.Scale.linear(0, max_x).range(0, w),
-        y = pv.Scale.ordinal(panel.length).splitBanded(0, h, 4/5);
+    var width = 1000;
+    var height = 700;
 
-    /* The root panel. */
-    var vis = new pv.Panel()
-        .width(w)
-        .height(h)
-        .bottom(20)
-        .left(20)
-        .right(10)
-        .top(5);
+    var barWidth = (width-10)/data_2.length;
+    var gap = 2;
 
-    /* The bars. */
-    var bar = vis.add(pv.Panel)
-        .data(data)
-        .top(function() y(this.index))
-        .height(y.range().band)
-    .add(pv.Bar)
-        .data(function(d) d)
-        .top(function() this.index * y.range().band / m)
-        .height(y.range().band / m)
-        .left(0)
-        .width(x)
-        .fillStyle(pv.Colors.category20().by(pv.index));
+    var xScale = pv.Scale.linear(0, data_2.length).range(10, width);
+    var amount = pv.Scale.linear(0, 20000).range(0, height);
 
-    /* The value label. */
-    bar.anchor("right").add(pv.Label)
-        .textStyle("white")
-        .text(function(d) d.toFixed(1));
+//     var depthColors = pv.Scale.linear(0, 150).range("lightgray", "blue");
 
-    /* The variable label. */
-    bar.parent.anchor("left").add(pv.Label)
-        .textAlign("right")
-        .textMargin(5)
-        .text(function() "ABCDEFGHIJK".charAt(this.parent.index));
+    var eq = new pv.Panel().width(width).height(height+5);
 
-    /* X-axis ticks. */
-    vis.add(pv.Rule)
-        .data(x.ticks(5))
-        .left(x)
-        .strokeStyle(function(d) d ? "rgba(255,255,255,.3)" : "#000")
-    .add(pv.Rule)
+    eq.add(pv.Rule)
+        .data(amount.ticks())
+        .bottom(amount)
+        .strokeStyle("lightgray")
+        .left(10)
+        .width(width-10)
+    .anchor("left").add(pv.Label)
+        .visible(function(d) d > 0);
+
+    eq.add(pv.Bar)
+        .data(data_2)
         .bottom(0)
-        .height(5)
-        .strokeStyle("#000")
-    .anchor("bottom").add(pv.Label)
-        .text(x.tickFormat);
+        .width(barWidth-gap)
+        .height(function(d) amount(d.nr_asns))
+        .left(function() xScale(this.index))
+//         .fillStyle(function(d) depthColors(d.Depth))
+    .anchor("top").add(pv.Label)
+        .text(function(d) d.nr_asns)
+        .visible(function(d) d.nr_asns >= 100)
+        .textBaseline("bottom");
 
-    vis.render();
+    eq.render();
 
 </script>
 #end block main_content

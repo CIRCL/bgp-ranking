@@ -35,7 +35,7 @@ class Reports(CommonReport):
         """
         if date is None:
             # Fallback if no date is given in the web interface
-            date = self.get_default_date()
+            date = self.get_default_date()[1]
         return super(Reports, self).get_sources(date)
 
     def format_report(self, source, date, limit = 50):

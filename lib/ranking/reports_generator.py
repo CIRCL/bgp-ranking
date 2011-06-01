@@ -27,25 +27,30 @@ class ReportsGenerator(CommonReport):
 
     def build_reports_lasts_days(self, nr_days = 2):
         """
-            Build the reports of the `nr_days` last days 
+            Build the reports of the `nr_days` last days, begins with "default date"
         """
         if nr_days <= 0:
             return
         nr_days += 1
+        default_date_raw = self.get_default_date()[0]
         for i in range(1, nr_days):
-            default_date_raw = self.get_default_date()[0]
-            date = default_date_raw - datetime.timedelta(i)
-            self.build_reports(date.isoformat())
+            self.build_reports(default_date_raw.isoformat())
+            default_date_raw = default_date_raw - datetime.timedelta(i)
 
     def build_last_reports(self):
-        self.build_reports(self.get_default_date()[1])
+        """
+            Build last available report (today if there is something to report)
+        """
+        self.build_reports(datetime.date.today().isoformat())
 
     def build_reports(self, date):
         """
             Build all the reports: for all the sources independently and the global one
         """
-        self.history_db_temp.sadd(self.config.get('ranking','all_dates'), date)
         sources = self.get_sources(date)
+        if len(sources) == 0:
+            return
+        self.history_db_temp.sadd(self.config.get('ranking','all_dates'), date)
         for source in sources:
             self.source_report(source = source, date = date)
         self.global_report(date)

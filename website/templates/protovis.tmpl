@@ -66,46 +66,82 @@ This Graph only displays the ranks with less than $max_y ASNs.
 
 </script>
 
+ASNs/sources
+
 <script type="text/javascript+protovis">
 // Origin: http://vis.stanford.edu/protovis/ex/group.html
 //         http://eagereyes.org/tutorials/protovis-primer-part-2
 
     var panel = $panel;
     var data_2 = $data_2;
+    var max_asn = 13000;
 
-    var width = 1000;
+    var width = 1100;
     var height = 700;
+    var x = pv.Scale.linear(0, max_asn).range(0, width);
 
     var barWidth = (width-10)/data_2.length;
     var gap = 2;
 
     var xScale = pv.Scale.linear(0, data_2.length).range(10, width);
-    var amount = pv.Scale.linear(0, 20000).range(0, height);
+    var amount = pv.Scale.linear(0, max_asn).range(0, height);
 
-//     var depthColors = pv.Scale.linear(0, 150).range("lightgray", "blue");
+    var sourceColors = pv.Colors.category20();
 
-    var eq = new pv.Panel().width(width).height(height+5);
+    var eq = new pv.Panel()
+        .width(width)
+        .height(height+5)
+        .margin(60)
+        .left(40);
 
-    eq.add(pv.Rule)
-        .data(amount.ticks())
-        .bottom(amount)
-        .strokeStyle("lightgray")
-        .left(10)
-        .width(width-10)
-    .anchor("left").add(pv.Label)
-        .visible(function(d) d > 0);
+        eq.add(pv.Rule)
+            .data(amount.ticks())
+            .bottom(amount)
+            .strokeStyle("lightgray")
+            .left(10)
+            .width(width-10)
+        .anchor("left").add(pv.Label)
+            .visible(function(d) d > 0);
 
-    eq.add(pv.Bar)
+    eq.add(pv.Panel)
         .data(data_2)
+        .left(function() xScale(this.index))
+    .add(pv.Panel) // group bar and label for redraw
+        .def("active", false)
+    .add(pv.Bar)
         .bottom(0)
         .width(barWidth-gap)
         .height(function(d) amount(d.nr_asns))
-        .left(function() xScale(this.index))
-//         .fillStyle(function(d) depthColors(d.Depth))
+        .fillStyle(sourceColors.by(function(d) d.source))
+        .event("mouseover", function() this.parent.active(true))
+        .event("mouseout", function() this.parent.active(false))
     .anchor("top").add(pv.Label)
+        .visible(function() ! this.parent.active())
         .text(function(d) d.nr_asns)
-        .visible(function(d) d.nr_asns >= 100)
-        .textBaseline("bottom");
+       .textBaseline("bottom")
+    .anchor("bottom").add(pv.Label)
+        .visible(function() this.parent.active())
+        .text(function(d) d.source)
+        .textAlign("left")
+        .textBaseline("middle")
+        .textAngle(-Math.PI / 2)
+        .font("16px bold sans-serif");
+
+        eq.add(pv.Rule)
+            .width(width)
+            .bottom(0)
+            .left(10);
+
+        eq.add(pv.Label)
+            .data(data_2)
+            .width(barWidth-gap)
+            .left(function() 10 + xScale(this.index))
+            .bottom(0)
+            .textAlign("right")
+            .textBaseline("middle")
+            .text(function(d) d.date)
+            .textAngle(-Math.PI / 2);
+
 
     eq.render();
 

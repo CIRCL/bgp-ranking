@@ -143,8 +143,8 @@ class MasterControler(object):
             data_return.append(dict_temp)
         stats = self.report.get_stats()
         stats_protovis = []
-        for date, data in stats.iteritems():
-            for source, values in data.iteritems():
+        for date in dates:
+            for source, values in stats[date].items():
                 stats_protovis.append({ "date": date, "source": source, "nr_asns": values[0], "nr_subnets": values[1]})
         return json.dumps(list(dates)), json.dumps(sorted(data_return, key=lambda k: k['rank'])), max_y, json.dumps(stats_protovis)
     

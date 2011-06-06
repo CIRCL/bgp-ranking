@@ -140,8 +140,7 @@ if __name__ == '__main__':
         fs = FilesSplitter(output.name, int(config.get('routing','number_of_splits')))
         splitted_files = fs.fplit()
         syslog.syslog(syslog.LOG_INFO, 'Splitting finished.')
-        global_db.set('{date}{sep}{amount_asns}'.format(date = date, sep = separator, amount_asns = amount_asns), routing_db.dbsize())
-        # Flush the old database and launch the population of the new database
+        # Flush the old routing database and launch the population of the new database
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Start pushing all routes...')
         run_splitted_processing(int(config.get('processes','routing_push')), pushing_process_service, splitted_files)
@@ -193,6 +192,8 @@ if __name__ == '__main__':
             # wait for a new file
             time.sleep(sleep_timer_short)
         rmpid(ranking_process_service)
+        # Save the number of asns known by the RIPE 
+        global_db.set('{date}{sep}{amount_asns}'.format(date = date, sep = separator, amount_asns = amount_asns), routing_db.dbsize())
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Updating the reports...')
         ReportsGenerator().build_reports(date)

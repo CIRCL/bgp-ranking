@@ -82,7 +82,8 @@ class ReportsGenerator(CommonReport):
                 if rank is not None:
                     to_zadd[asn] = float(rank) * float(self.config_db.get(str(source)))
             i += 1
-        self.history_db_temp.zadd(histo_key, **to_zadd)
+        if len(to_zadd) > 0:
+            self.history_db_temp.zadd(histo_key, **to_zadd)
 
     def build_asns_by_source(self, source, date):
         """

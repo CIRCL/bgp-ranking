@@ -30,6 +30,7 @@ Improvements:
  * Use one single file for several modules.
  * Website: The IPs found in many sources are now at seen first
  * Generation of the reports much more faster
+ * Sync the redis configs files with the default
 
 v1.1.3 - 2011-05-12
 

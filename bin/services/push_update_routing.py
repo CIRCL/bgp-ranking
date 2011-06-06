@@ -193,7 +193,7 @@ if __name__ == '__main__':
             time.sleep(sleep_timer_short)
         rmpid(ranking_process_service)
         # Save the number of asns known by the RIPE 
-        global_db.set('{date}{sep}{amount_asns}'.format(date = date, sep = separator, amount_asns = config.get('redis','amount_asns')), routing_db.dbsize())
+        history_db_static.set('{date}{sep}{amount_asns}'.format(date = date, sep = separator, amount_asns = config.get('redis','amount_asns')), routing_db.dbsize())
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Updating the reports...')
         ReportsGenerator().build_reports(date)

@@ -74,15 +74,15 @@ class ReportsGenerator(CommonReport):
                                                             key     = self.config.get('input_keys','index_asns')))
 
         ranks = self.get_multiple_daily_rank(asns, date, source)
-        pipeline = self.history_db_temp.pipeline(transaction=False)
+        to_zadd = {}
         i = 0
         for asn in asns:
             if asn != self.config.get('modules_global','default_asn'):
                 rank = ranks[i]
                 if rank is not None:
-                    pipeline.zadd(histo_key, asn, float(rank) * float(self.config_db.get(str(source))))
+                    to_zadd[asn] = float(rank) * float(self.config_db.get(str(source)))
             i += 1
-        pipeline.execute()
+        self.history_db_temp.zadd(histo_key, **to_zadd)
 
     def build_asns_by_source(self, source, date):
         """

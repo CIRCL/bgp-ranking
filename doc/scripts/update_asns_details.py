@@ -23,14 +23,14 @@ def update_day(day):
                 if rank is not None:
                     to_drop.append(current)
                     asn_key_v4_details = '{asn}|{day}|{source}|rankv4|details'.format(asn = asn, day = day, source = source)
-                    pipeline.zadd(asn_key_v4_details, timestamp, rank)
-                
+                    pipeline.zadd(asn_key_v4_details, **{timestamp: rank})
+
                 current = '{detail}|{day}|{source}|rankv6'.format(detail = detail, day = day, source = source)
                 rank = r_history.get(current)
                 if rank is not None:
                     to_drop.append(current)
                     asn_key_v6_details = '{asn}|{day}|{source}|rankv6|details'.format(asn = asn, day = day, source = source)
-                    pipeline.zadd(asn_key_v6_details, timestamp, rank)
+                    pipeline.zadd(asn_key_v6_details, **{timestamp: rank})
         pipeline.execute()
         if len(to_drop) > 0:
             r_history.delete(*to_drop)

@@ -109,7 +109,7 @@ class Ranking(object):
                                             v4 = self.config.get('input_keys','rankv4'), \
                                             details = self.config.get('input_keys','daily_asns_details'))
 
-            self.history_db.zadd(asn_key_v4_details, self.timestamp, self.rank_by_source[0])
+            self.history_db.zadd(asn_key_v4_details, **{self.timestamp: self.rank_by_source[0]})
             
             asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(\
                             sep = self.separator, asn = self.asn,\
@@ -130,7 +130,7 @@ class Ranking(object):
                                     v6 = self.config.get('input_keys','rankv6'), \
                                     details = self.config.get('input_keys','daily_asns_details'))
 
-            self.history_db.zadd(asn_key_v6_details, self.timestamp, self.rank_by_source[1])
+            self.history_db.zadd(asn_key_v6_details, **{self.timestamp: self.rank_by_source[1]})
 
             asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}{v6}'.format(\
                             sep = self.separator, asn = self.asn,\

@@ -140,6 +140,7 @@ if __name__ == '__main__':
         fs = FilesSplitter(output.name, int(config.get('routing','number_of_splits')))
         splitted_files = fs.fplit()
         syslog.syslog(syslog.LOG_INFO, 'Splitting finished.')
+        global_db.set('{date}{sep}{amount_asns}'.format(date = date, sep = separator, amount_asns = amount_asns), routing_db.dbsize())
         # Flush the old database and launch the population of the new database
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Start pushing all routes...')

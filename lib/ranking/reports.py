@@ -121,9 +121,11 @@ class Reports(CommonReport):
         to_return = sorted(asn_descs_to_print, key=lambda desc: desc[6], reverse = True)
         return to_return, last_seen_sources, data_graph
 
-    # origin: http://stackoverflow.com/questions/1950098/does-python-have-any-for-loop-equivalent-not-foreach
     def daterange(self, start, end, delta):
-        """ Just like `range`, but for dates! """
+        """
+            Just like `range`, but for dates!
+            origin: http://stackoverflow.com/questions/1950098/does-python-have-any-for-loop-equivalent-not-foreach
+        """
         current = start
         while current <= end:
             yield current
@@ -281,6 +283,9 @@ class Reports(CommonReport):
         return to_return, max_nr
 
     def prepare_distrib_graph(self, date):
+        """
+            Prepate the distributions graph printed using RGaph
+        """
         source = self.config.get('input_keys','histo_global')
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
                                                             date        = date,\
@@ -297,6 +302,9 @@ class Reports(CommonReport):
         return to_return
 
     def prepare_distrib_graph_protovis(self, dates):
+        """
+            Prepare the data used to display statististics using ProtoVis
+        """
         source = self.config.get('input_keys','histo_global')
         to_return = {}
         for date in dates:

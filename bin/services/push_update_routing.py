@@ -3,8 +3,8 @@
 
 """
     
-    :file:`bin/services/push_update_routing.py` - Push routing dump and initialize ranking
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    :file:`bin/services/push_update_routing.py` - Push routing dump and compute ranking
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     This script has two parts: 
     

@@ -72,6 +72,9 @@ class CommonReport(object):
                             key    = self.config.get('input_keys','index_sources'))))
 
     def get_multiple_daily_rank(self, asn_list, date, source):
+        """
+            Get the rakns of multiple ASNs in one query
+        """
         string = '{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep    = self.separator,\
                                                                 date   = date,\
                                                                 source = source,\
@@ -80,6 +83,9 @@ class CommonReport(object):
         return self.history_db.mget(to_get)
 
     def get_daily_rank_client(self, asn, date, source = None):
+        """
+            Get a single rank *from the temporary database*
+        """
         if source is None:
             source = self.config.get('input_keys','histo_global')
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\

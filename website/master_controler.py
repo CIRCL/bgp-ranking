@@ -115,7 +115,25 @@ class MasterControler(object):
                 self.js = self.js_name = None
         return " ".join(asns_to_return)
 
+    def make_graph(self, asn, infos):
+        """
+            Generate the graph with the data provided by the model
+        """
+        js_name = self.config.get('web','canvas_asn_name')
+        g = GraphGenerator(js_name)
+        graph_last_date = datetime.date.today()
+        graph_first_date = datetime.date.today() - datetime.timedelta(days=self.days_graph)
+        graph_dates = self.report.get_dates_from_interval(graph_first_date, graph_last_date)
+        g.add_line(infos, self.report.ip_key, graph_dates)
+        g.set_title(asn)
+        g.make_js()
+        self.js = g.js
+        self.js_name = js_name
+
     def get_stats(self):
+        """
+            Get data to diaplay on the RGraph graph
+        """
         stats = self.report.get_stats()
         dates = self.get_dates()
         lines = []
@@ -129,6 +147,9 @@ class MasterControler(object):
         return stats, g.js, 'canvas_stats'
 
     def protovis(self):
+        """
+            Get data to diaplay on the ProtoVis graph
+        """
         dates = self.get_dates()
         data_temp = self.report.prepare_distrib_graph_protovis(dates)
         data_return = []
@@ -147,18 +168,3 @@ class MasterControler(object):
             for source, values in stats[date].items():
                 stats_protovis.append({ "date": date, "source": source, "nr_asns": values[0], "nr_subnets": values[1]})
         return json.dumps(list(dates)), json.dumps(sorted(data_return, key=lambda k: k['rank'])), max_y, json.dumps(stats_protovis)
-    
-    def make_graph(self, asn, infos):
-        """
-            Generate the graph with the data provided by the model
-        """
-        js_name = self.config.get('web','canvas_asn_name')
-        g = GraphGenerator(js_name)
-        graph_last_date = datetime.date.today()
-        graph_first_date = datetime.date.today() - datetime.timedelta(days=self.days_graph)
-        graph_dates = self.report.get_dates_from_interval(graph_first_date, graph_last_date)
-        g.add_line(infos, self.report.ip_key, graph_dates)
-        g.set_title(asn)
-        g.make_js()
-        self.js = g.js
-        self.js_name = js_name

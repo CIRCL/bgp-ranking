@@ -117,6 +117,9 @@ class Master(object):
         self.template.date = date
     
     def escape(self, var):
+        """
+            Escape input
+        """
         return cgi.escape(var)
 
     def reset_if_empty(self, to_check = None):

@@ -3,8 +3,8 @@
 
 """
 
-    :file:`bin/services/pushing_process.py` - Compute ranking
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    :file:`bin/services/pushing_process.py` - Push RIS
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Service pushing the routing information. 
 

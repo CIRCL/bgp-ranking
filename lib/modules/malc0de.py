@@ -21,9 +21,6 @@ class Malc0de(AbstractModule):
         self.directory = raw_dir
 
     def parse(self):
-        """ 
-            Parse the list
-        """
         self.ips = []
         for file in self.files:
             self.date = dateutil.parser.parse(re.findall('Last updated (.*)\n', open(file).read())[0])

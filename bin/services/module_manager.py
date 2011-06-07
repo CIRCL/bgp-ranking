@@ -109,7 +109,7 @@ class ModuleManager(object):
                 if parsing == 0 and fetching == 0:
                     self.config_db.srem('modules', module)
 
-            modules = config_db.smembers('modules')
+            modules = self.config_db.smembers('modules')
             if len(modules) != modules_nr:
                 modules_nr = len(modules)
                 syslog.syslog(syslog.LOG_INFO, 'These modules are running: ' + str(modules))

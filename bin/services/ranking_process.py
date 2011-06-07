@@ -38,10 +38,12 @@ if __name__ == '__main__':
     r = Ranking()
     while history_db.scard(config.get('redis','to_rank')) > 0 :
         key = history_db.spop(config.get('redis','to_rank'))
-        if key is not None:
-            r.rank_using_key(key)
-            i +=1 
-            if i >= 1000:
-                #r.update_asn_list()
-                syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(number = history_db.scard(config.get('redis','to_rank'))))
-                i = 0
+        try:
+            if key is not None:
+                r.rank_using_key(key)
+                i +=1 
+                if i >= 1000:
+                    syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(number = history_db.scard(config.get('redis','to_rank'))))
+                    i = 0
+        except:
+            history_db.sadd(config.get('redis','to_rank'), key)

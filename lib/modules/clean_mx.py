@@ -34,8 +34,8 @@ class CleanMXDefault(AbstractModule):
                 # FIXME ensure it is correct
                 if elem.tag == "ip" or elem.tag == "review":
                     ip = elem.text
-                    if len(ip) == 0:
+                    if ip is None or len(ip) == 0:
                         continue
-                    entry = self.prepare_entry(ip = ip[0], source = self.__class__.__name__, timestamp = self.date)
+                    entry = self.prepare_entry(ip = ip, source = self.__class__.__name__, timestamp = self.date)
                     self.put_entry(entry)
             self.move_file(file)

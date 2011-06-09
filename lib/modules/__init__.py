@@ -1,5 +1,6 @@
 from abuse_ch_lists import AmadaIpBlockList, SpyeyetrackerIpBlockList, ZeustrackerIpBlockList, SpyeyetrackerDdos,ZeustrackerDdos
 from blocklist_de import BlocklistDeSsh, BlocklistDeMail, BlocklistDeApache, BlocklistDePop3, BlocklistDeFtp
+from clean_mx_lists import CleanMXMalwares, CleanMXPhishing, CleanMXPortals
 from emergingthreats_rbn import EmergingThreatsRBN
 from simple_lists import URLQuery, MalwareDomainListIP, DshieldTopIPs, Sucuri, EmergingThreatsCompromized, MaliciousnetworksFIRE, CIArmy
 from dshield_daily import DshieldDaily

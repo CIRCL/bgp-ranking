@@ -9,7 +9,7 @@
 """
 
 import datetime
-from xml.etree import cElementTree
+import re
 
 from modules.abstract_module import AbstractModule
 
@@ -30,12 +30,12 @@ class CleanMXDefault(AbstractModule):
         self.date = datetime.date.today()
         self.ips = []
         for file in self.files:
-            for event, elem in cElementTree.iterparse(file):
+            f = open(file)
+            for line in f:
                 # FIXME ensure it is correct
-                if elem.tag == "ip" or elem.tag == "review":
-                    ip = elem.text
-                    if ip is None or len(ip) == 0:
-                        continue
-                    entry = self.prepare_entry(ip = ip, source = self.__class__.__name__, timestamp = self.date)
-                    self.put_entry(entry)
+                ip = re.findall('<(?:ip|review)>((?:\d{1,3}\.){3}\d{1,3})<.*',line)
+                if len(ip) == 0:
+                    continue
+                entry = self.prepare_entry(ip = ip[0], source = self.__class__.__name__, timestamp = self.date)
+                self.put_entry(entry)
             self.move_file(file)

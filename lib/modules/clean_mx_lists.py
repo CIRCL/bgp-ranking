@@ -8,7 +8,7 @@
     All the lists provided by Clean MX
 """
 
-from modules.clean_mx import AbuseCh
+from modules.clean_mx import CleanMXDefault
 
 class CleanMXMalwares(CleanMXDefault):
     """

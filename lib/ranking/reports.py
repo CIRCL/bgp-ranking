@@ -5,7 +5,7 @@
     Reports
     ~~~~~~~
     
-    Generate reports for a particular day.
+    Model used by the website to get information from the database (read only)
 """
 import os 
 import sys
@@ -28,152 +28,24 @@ class Reports(CommonReport):
         CommonReport.__init__(self, ip_version)
         self.config_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
                                        db = self.config.get('redis','config'))
-        self.set_default_date()
-        self.set_sources()
-    
-    def set_default_date(self):
-        """
-            Set the default date displayed on the website.
-        """
-        self.default_date_raw, self.default_date = self.get_default_date()
 
-    def set_sources(self, date = None):
-        """
-            Set the sources parsed on a `date`
-        """
-        self.sources = self.get_sources(date)
-
-    def get_sources(self, date = None):
+    def get_sources(self, date):
         """
             Get the sources parsed on a `date`
         """
         if date is None:
-            date = self.default_date
+            # Fallback if no date is given in the web interface
+            date = self.get_default_date()[1]
         return super(Reports, self).get_sources(date)
 
-    def get_daily_rank(self, asn, source = None, date = None):
-        """
-            Get the rank of an AS for a particular `source` and `date`
-        """
-        if date is None:
-            date = self.default_date
-        return super(Reports, self).get_daily_rank(asn, date, source)
-    
-    def flush_temp_db(self):
-        """
-            Drop the whole temporary ranking database.
-        """
-        self.history_db_temp.flushdb()
-
-
-    def build_reports_lasts_days(self, nr_days = 2):
-        """
-            Build the reports of the `nr_days` last days 
-        """
-        if nr_days <= 0:
-            return
-        nr_days += 1
-        for i in range(1, nr_days):
-            date = self.default_date_raw - datetime.timedelta(i)
-            iso_date = date.isoformat()
-            self.build_reports(iso_date)
-
-    def build_last_reports(self):
-        self.build_reports()
-        timestamp = self.get_last_ranking()
-        if timestamp is not None:
-            timestamp = timestamp.split()
-            to_build = dateutil.parser.parse(timestamp[0]).date()
-            self.build_reports(to_build.isoformat())
-    
-    def build_reports(self, date = None):
-        """
-            Build all the reports: for all the sources independently and the global one
-        """
-        if date is None:
-            date = self.default_date
-        set_days = self.config.get('ranking','all_dates')
-        self.history_db_temp.sadd(set_days, date)
-        self.set_sources(date)
-        self.global_report(date)
-        for source in self.sources:
-            self.source_report(source = source, date = date)
-    
-    def global_report(self, date = None):
-        """
-            Build the global report (add all the results of all the sources)
-        """
-        if date is None:
-            date = self.default_date
-        # delete the old key
-        zset_key = self.config.get('input_keys','histo_global')
-        histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
-                                                                    date        = date,\
-                                                                    histo_key   = zset_key,\
-                                                                    ip_key      = self.ip_key)
-        self.history_db_temp.delete(histo_key)
-        for source in self.sources:
-            self.source_report(source, zset_key, date)
-
-    def build_asns_by_source(self, source, date = None):
-        """
-            Create a bunch of keys to easily find the sources associed to the asn/subnet
-        """
-        if source == self.config.get('input_keys','histo_global'):
-            return
-        if date is None:
-            date = self.default_date
-        asns_details = self.global_db.smembers(\
-                            '{date}{sep}{source}{sep}{key}'.format( sep     = self.separator,\
-                                                                    date    = date,\
-                                                                    source  = source,\
-                                                                    key     = self.config.get('input_keys','index_asns_details')))
-        pipeline = self.history_db_temp.pipeline(transaction=False)
-        for detail in asns_details:
-            asn, ts = detail.split(self.separator)
-            pipeline.sadd('{date}{sep}{asn}'.format(date = date, sep = self.separator, asn = asn), source)
-            pipeline.sadd('{date}{sep}{detail}'.format(date = date, sep = self.separator, detail = detail), source)
-        pipeline.execute()
-
-    def source_report(self, source, zset_key = None, date = None):
-        """
-            Build the report of a particular source
-        """
-        if zset_key is None:
-            zset_key = source
-        if date is None:
-            date = self.default_date
-        self.build_asns_by_source(source, date)
-        histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
-                                                                    date        = date,\
-                                                                    histo_key   = zset_key,\
-                                                                    ip_key      = self.ip_key)
-        if zset_key == source:
-            # delete the old key if we are not in the "global" ranking
-            self.history_db_temp.delete(histo_key)
-
-        asns = self.global_db.smembers(\
-                    '{date}{sep}{source}{sep}{key}'.format( sep     = self.separator,\
-                                                            date    = date,\
-                                                            source  = source,\
-                                                            key     = self.config.get('input_keys','index_asns')))
-
-        pipeline = self.history_db_temp.pipeline(transaction=False)
-        for asn in asns:
-            if asn != self.config.get('modules_global','default_asn'):
-                rank = self.get_daily_rank(asn, source, date)
-                if rank is not None:
-                    pipeline.zincrby(histo_key, asn, float(rank) * float(self.config_db.get(str(source))))
-        pipeline.execute()
-
-    def format_report(self, source = None, limit = 50, date = None):
+    def format_report(self, source, date, limit = 50):
         """
             Format the report to be displayed in the website
         """
         if source is None:
             source = self.config.get('input_keys','histo_global')
         if date is None:
-            date = self.default_date
+            date = self.get_default_date()[1]
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
                                                                     date        = date,\
                                                                     histo_key   = source,\
@@ -190,99 +62,21 @@ class Reports(CommonReport):
         sources = pipeline.execute()
         return [ [ x[0], x[1], list(y)] for x,y in zip(reports_temp,sources)]
 
-    def get_dates_from_interval(self, first_date, last_date):
-        """
-            Generate a list of dates between first_date and  last_date
-            with this format: YYYY-MM-DD
-        """
-        dates = []
-        current = first_date
-        while current <= last_date:
-            dates.append(current.strftime("%Y-%m-%d"))
-            current += datetime.timedelta(days=1)
-        return dates
-
-    def get_all_sources(self, dates):
-        """
-            Return a list of sources available for all the dates.
-            { day: [source1, source2...}, ...}
-        """
-        pipeline = self.global_db.pipeline()
-        for date in dates:
-            pipeline.smembers(\
-                '{date}{sep}{key}'.format(  date    = date,\
-                                            sep     = self.separator,\
-                                            key     = self.config.get('input_keys','index_sources')))
-
-        lists_sources = pipeline.execute()
-        #set(()).union(*lists_sources)
-        return dict(zip(dates,lists_sources))
-
-    def get_all_ranks(self, asn, dates, dates_sources):
-        """
-            Return all the ranks of an ASN for all the dates and all the sources:
-                { 'Source1' : [rank_day1, rank_day_2, ...], ...}
-                Note: it there is no rank for a day, rank_day_X will be None
-        """
-
-        keys = {}
-        pipeline = self.history_db.pipeline()
-        for date in dates:
-            sources = dates_sources[date]
-            if len(sources) > 0:
-                keys[date] = []
-                for source in sources:
-                    keys[date].append(\
-                        '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(sep     = self.separator,\
-                                                                        asn     = asn,\
-                                                                        date    = date,\
-                                                                        source  = source,\
-                                                                        v4      = self.config.get('input_keys','rankv4')))
-                pipeline.mget(keys[date])
-        histories = pipeline.execute()
-        if len(histories) == 0:
-            # Nothing to display, quit
-            return []
-        return histories
-
-    def prepare_graphe_js(self, ranks, dates, dates_sources):
-        """
-            Prepare the data to display in the graph
-        """
-        ranks_by_days = {}
-        last_seen_sources = {}
-        i = 0
-        for date in dates:
-            sources = dates_sources[date]
-            if len(sources) > 0:
-                ranks_by_days[date] = 0
-                daily_ranks = ranks[i]
-                j = 0
-                for source in sources:
-                    rank = daily_ranks[j]
-                    if rank is not None:
-                        last_seen_sources[source] = date
-                        ranks_by_days[date] += float(rank) * float(self.config_db.get(str(source)))
-                    j += 1
-                i += 1
-            else:
-                ranks_by_days[date] = None
-        return ranks_by_days, last_seen_sources
-
-    def get_asn_descs(self, graph_first_date, graph_last_date, asn, sources = None, date = None):
+    def get_asn_descs(self, graph_first_date, graph_last_date, asn, sources, date):
         """
             Get the details of an ASN
         """
-        if sources is None:
-            sources = self.sources
-        else:
-            sources = [sources]
-        if date is None:
-            date = self.default_date
         timestamps = self.global_db.smembers(asn)
         if len(timestamps) == 0:
             # The ASN does not exists in the database
             return [], [], []
+
+        if date is None:
+            date = self.get_default_date()[1]
+        if sources is None:
+            sources = self.get_sources(date)
+        else:
+            sources = [sources]
 
         # generate a list of dates
         graph_dates = self.get_dates_from_interval(graph_first_date, graph_last_date)
@@ -299,10 +93,7 @@ class Reports(CommonReport):
 
         asn_descs_to_print = []
         for timestamp in timestamps:
-            asn_timestamp_temp = '{date}{sep}{asn}{sep}{timestamp}'.format( sep         = self.separator,\
-                                                                            date        = date,\
-                                                                            asn         = asn,\
-                                                                            timestamp   = timestamp)
+            # Get the number of IPs found in the database for each subnet
             asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(sep = self.separator, asn = asn, timestamp = timestamp)
             nb_of_ips = 0 
             pipeline = self.global_db.pipeline()
@@ -311,40 +102,120 @@ class Reports(CommonReport):
                                     asn_timestamp_key = asn_timestamp_key, date = date, source=source))
             ips_by_sources = pipeline.execute()
             nb_of_ips += sum(ips_by_sources)
+
             if nb_of_ips > 0:
                 keys = ['{asn_timestamp_key}{owner}'.   format(asn_timestamp_key = asn_timestamp_key, \
                                                                            owner = self.config.get('input_keys','owner')),
                         '{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, \
                                                                         ip_block = self.config.get('input_keys','ips_block'))]
                 owner, ip_block = self.global_db.mget(keys)
-                local_rank = 0.0
-                i = 0 
-                for source in sources:
-                    local_rank += float(ips_by_sources[i]) *  float(self.config_db.get(str(source)))
-                    i += 1
+                impacts = self.config_db.mget(sources)
+                # Compute the local ranking: the ranking if this subnet is the only one for this AS
+                local_rank = sum([ float(ips_by_sources[i]) * float(impacts[i]) for i in range(len(sources)) ]) / IP(ip_block).len()
+
+                asn_timestamp_temp = '{date}{sep}{asn}{sep}{timestamp}'.format(\
+                                                    sep = self.separator, date      = date,\
+                                                    asn = asn,            timestamp = timestamp)
                 sources_web = self.history_db_temp.smembers(asn_timestamp_temp)
-                asn_descs_to_print.append([asn, timestamp, owner, ip_block,\
-                                            nb_of_ips, sources_web, local_rank / IP(ip_block).len()])
+                asn_descs_to_print.append( [asn, timestamp, owner, ip_block, nb_of_ips, sources_web, local_rank] )
         to_return = sorted(asn_descs_to_print, key=lambda desc: desc[6], reverse = True)
         return to_return, last_seen_sources, data_graph
 
+    def daterange(self, start, end, delta):
+        """
+            Just like `range`, but for dates!
+            origin: http://stackoverflow.com/questions/1950098/does-python-have-any-for-loop-equivalent-not-foreach
+        """
+        current = start
+        while current <= end:
+            yield current
+            current += delta
 
-    def get_ips_descs(self, asn, asn_timestamp, sources = None, date = None):
+    def get_dates_from_interval(self, first_date, last_date):
         """
-            Get the details of an IP
+            Generate a list of dates between first_date and  last_date
+            with this format: YYYY-MM-DD
         """
+        return [ d.strftime("%Y-%m-%d") for d in self.daterange(first_date, last_date, datetime.timedelta(days=1))]
+
+    def get_all_sources(self, dates):
+        """
+            Return a list of sources available for all the dates.
+            { day: [source1, source2...}, ...}
+        """
+        pipeline = self.global_db.pipeline()
+        for date in dates:
+            pipeline.smembers(\
+                '{date}{sep}{key}'.format(  date    = date,\
+                                            sep     = self.separator,\
+                                            key     = self.config.get('input_keys','index_sources')))
+
+        lists_sources = pipeline.execute()
+        return dict(zip(dates,lists_sources))
+
+    def get_all_ranks(self, asn, dates, dates_sources):
+        """
+            Return all the ranks of an ASN for all the dates and all the sources:
+                { 'Source1' : [rank_day1, rank_day_2, ...], ...}
+                Note: it there is no rank for a day, rank_day_X will be None
+        """
+        keys = {}
+        pipeline = self.history_db.pipeline()
+        for date in dates:
+            sources = dates_sources[date]
+            if len(sources) > 0:
+                string = '{asn}{sep}{date}{sep}{source}{sep}{v4}'
+                # Generate the list of keys to mget
+                keys[date] = [ string.format(\
+                                        sep  = self.separator, asn     = asn,\
+                                        date = date,           source  = source,\
+                                        v4   = self.config.get('input_keys','rankv4')) 
+                                    for source in sources]
+                pipeline.mget(keys[date])
+        histories = pipeline.execute()
+        if len(histories) == 0:
+            # Nothing to display, quit
+            return []
+        return histories
+
+    def prepare_graphe_js(self, ranks, dates, dates_sources):
+        """
+            Prepare the data to display in the graph
+        """
+        ranks_by_days = {}
+        last_seen_sources = {}
+        i = 0
+        for date in dates:
+            # get all the sources for a date
+            sources = dates_sources[date]
+            if len(sources) > 0:
+                ranks_by_days[date] = 0
+                # Get all the ranks for the day
+                daily_ranks = ranks[i]
+                j = 0
+                for source in sources:
+                    rank = daily_ranks[j]
+                    if rank is not None:
+                        last_seen_sources[source] = date
+                        ranks_by_days[date] += float(rank) * float(self.config_db.get(str(source)))
+                    j += 1
+                i += 1
+            else:
+                # no sources for the day
+                ranks_by_days[date] = None
+        return ranks_by_days, last_seen_sources
+
+    def get_ips_descs(self, asn, asn_timestamp, sources, date):
+        """
+            Get the details of a subnet
+        """
+        if date is None:
+            date = self.get_default_date()[1]
         if sources is None:
-            sources = self.sources
+            sources = self.get_sources(date)
         else:
             sources = [sources]
-        if date is None:
-            date = self.default_date
-        key_list_tstamp = self.config.get('input_keys','list_tstamp')
-        key_infection = self.config.get('input_keys','infection')
-        key_raw = self.config.get('input_keys','raw')
-        key_whois = self.config.get('input_keys','whois')
 
-        
         asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(asn = asn, sep = self.separator, timestamp = asn_timestamp)
         pipeline = self.global_db.pipeline()
         for source in sources:
@@ -364,5 +235,89 @@ class Reports(CommonReport):
                 else:
                     ip_descs_to_print[ip].append(source)
             i += 1
-        to_return = sorted(ip_descs_to_print.items(), key=lambda desc: IP(desc[0]).int())
+        return sorted(ip_descs_to_print.items(), key=lambda desc: (len(desc[1]), IP(desc[0]).int()), reverse=True)
+
+    def get_stats(self):
+        """
+            Return stats by sources:
+            { Source : [nb_asns, nb_subnets]...}
+        """
+        dates = self.get_dates()
+        to_return = {}
+        for date in dates:
+            to_return[date] = {}
+            sources = self.get_sources(date)
+            for source in sources:
+                to_return[date][source] = []
+                to_return[date][source].append(self.history_db_temp.zcard(\
+                                                '{date}{sep}{histo_key}{sep}{ip_key}'.format(\
+                                                    sep         = self.separator,\
+                                                    date        = date,\
+                                                    histo_key   = source,\
+                                                    ip_key      = self.ip_key)))
+                to_return[date][source].append(self.global_db.scard(\
+                                        '{date}{sep}{source}{sep}{key}'.format(\
+                                            date = date, sep = self.separator, source = source,\
+                                            key = self.config.get('input_keys','index_asns_details'))))
+        return to_return
+
+    def get_stats_asns(self):
+        """
+            Return stats by sources:
+            { Source : [nb_asns, nb_subnets]...}
+        """
+        dates = self.get_dates()
+        max_nr = 0
+        to_return = {}
+        for date in dates:
+            to_return[date] = {}
+            sources = self.get_sources(date)
+            for source in sources:
+                to_return[date][source] = self.history_db_temp.zcard(\
+                                                '{date}{sep}{histo_key}{sep}{ip_key}'.format(\
+                                                    sep         = self.separator,\
+                                                    date        = date,\
+                                                    histo_key   = source,\
+                                                    ip_key      = self.ip_key))
+                max_nr = max(max_nr, to_return[date][source])
+        return to_return, max_nr
+
+    def prepare_distrib_graph(self, date):
+        """
+            Prepate the distributions graph printed using RGaph
+        """
+        source = self.config.get('input_keys','histo_global')
+        histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
+                                                            date        = date,\
+                                                            histo_key   = source,\
+                                                            ip_key      = self.ip_key)
+
+        reports_temp = self.history_db_temp.zrevrange(histo_key, 0, -1, True)
+        report_rounded = [ '%.3f' % round( 1 + r[1],3) for r in reports_temp ]
+        unique_set = set(rank for rank in report_rounded)
+        to_return = {}
+        # FIXME python 2.7
+        for rank in unique_set:
+            to_return[rank] = report_rounded.count(rank)
+        return to_return
+
+    def prepare_distrib_graph_protovis(self, dates):
+        """
+            Prepare the data used to display statististics using ProtoVis
+        """
+        source = self.config.get('input_keys','histo_global')
+        to_return = {}
+        for date in dates:
+            histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
+                                                                date        = date,\
+                                                                histo_key   = source,\
+                                                                ip_key      = self.ip_key)
+
+            reports_temp = self.history_db_temp.zrevrange(histo_key, 0, -1, True)
+            report_rounded = [ '%.3f' % round( 1 + r[1],3) for r in reports_temp ]
+            unique_set = set(rank for rank in report_rounded)
+            for rank in unique_set:
+                if to_return.get(rank) is None:
+                    to_return[rank] = {}
+                to_return[rank][date] = report_rounded.count(rank)
         return to_return

@@ -35,7 +35,47 @@ class Master(object):
                                 'RGraph.line.js',\
                                 'RGraph.common.tooltips.js']
         self.controler = MasterControler()
-        
+
+    @cherrypy.expose
+    def protovis(self):
+        """
+            Some tests with protovis
+        """
+        dates, data, max_y, stats = self.controler.protovis()
+        self.template = Template(file = os.path.join(self.website_root, self.templates, 'protovis.tmpl'))
+        self.template.rgraph_dir = config.get('web','rgraph_dir')
+        self.template.rgraph_scripts = self.rgraph_scripts
+        self.template.css_file = self.config.get('web','css_file')
+        self.template.logo     = self.config.get('web','logo')
+        self.template.banner   = self.config.get('web','banner')
+        self.template.panel = dates
+        self.template.data = data
+        self.template.max_y = max_y
+        self.template.data_2 = stats
+        return str(self.template)
+
+    @cherrypy.expose
+    def stats(self):
+        """
+            Some stats
+        """
+        stats, graph, graph_name = self.controler.get_stats()
+        self.template = Template(file = os.path.join(self.website_root, self.templates, 'statistics.tmpl'))
+        self.template.rgraph_dir = config.get('web','rgraph_dir')
+        self.template.rgraph_scripts = self.rgraph_scripts
+        self.template.css_file = self.config.get('web','css_file')
+        self.template.logo     = self.config.get('web','logo')
+        self.template.banner   = self.config.get('web','banner')
+        rowspan = {}
+        for section in stats:
+            rowspan[section] = len(stats[section]) + 1
+        self.template.order_stats = sorted(stats.keys())
+        self.template.stats    = stats
+        self.template.rowspan  = rowspan
+        self.template.js_stats = graph
+        self.template.js_stats_name = graph_name
+        return str(self.template)
+
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def json(self, source = None, date = None, asn = None, ip_details = None):
@@ -77,6 +117,9 @@ class Master(object):
         self.template.date = date
     
     def escape(self, var):
+        """
+            Escape input
+        """
         return cgi.escape(var)
 
     def reset_if_empty(self, to_check = None):

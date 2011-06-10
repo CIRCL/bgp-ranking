@@ -54,7 +54,7 @@ class HTTPParser(object):
                 r.sadd(entry["server_ip"] + "short", asn[0])
         ips = r.smembers("ips")
         for ip in ips:
-            r.zadd("order_ips", ip, r.scard(ip))
+            r.zadd("order_ips", **{ip: r.scard(ip)})
 
     def agent_by_origin_ip(self):
         """
@@ -67,7 +67,7 @@ class HTTPParser(object):
             r.sadd(entry["server_ip"], entry["agent"])
         ips = r.smembers("ips")
         for ip in ips:
-            r.zadd("order_ips", ip, r.scard(ip))
+            r.zadd("order_ips", **{ip: r.scard(ip)})
         
 
     def origin_ip_by_asn(self):
@@ -84,7 +84,7 @@ class HTTPParser(object):
                 r.sadd(asn[0], entry["server_ip"])
         asns = r.smembers("asns")
         for asn in asns:
-            r.zadd("order_asns", asn, r.scard(asn))
+            r.zadd("order_asns", **{asn: r.scard(asn)})
 
     def ip_by_agent(self):
         """
@@ -97,7 +97,7 @@ class HTTPParser(object):
             r.sadd(entry["agent"], entry["server_ip"])
         agents = r.smembers("agents")
         for agent in agents:
-            r.zadd("order_agents", agent, r.scard(agent))
+            r.zadd("order_agents", **{agent: r.scard(agent)})
 
     def ip_by_origin(self):
         """
@@ -111,7 +111,7 @@ class HTTPParser(object):
                 r.sadd(entry["referral"], entry["server_ip"])
         origins = r.smembers("origins")
         for origin in origins:
-            r.zadd("order_origins", origin, r.scard(origin))
+            r.zadd("order_origins", **{origin: r.scard(origin)})
 
     def ip_queries(self):
         """
@@ -129,9 +129,9 @@ class HTTPParser(object):
                 r.sadd("ips", entry["server_ip"])
                 r.sadd("asns", asn[0])
                 r.sadd(asn[0], entry["server_ip"])
-                r.zincr("ip_queries", entry["server_ip"] + "_" + asn[0])
-                r.zincr(entry["server_ip"], asn[0])
-                r.zincr("queries", asn[0])
+                r.zincrby("ip_queries", entry["server_ip"] + "_" + asn[0])
+                r.zincrby(entry["server_ip"], asn[0])
+                r.zincrby("queries", asn[0])
 
     def top_asn_ips_info(self, limit = 20):
         """

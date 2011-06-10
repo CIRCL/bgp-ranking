@@ -55,6 +55,9 @@ class FetchRaw(object):
         self.old_directory = os.path.join(self.directory, old_dir)
 
     def fetcher(self):
+        """
+            Main function which fetch the datasets
+        """
         while self.config_db.sismember('modules', self.module):
             try:
                 urllib.urlretrieve(self.url, self.temp_filename)
@@ -84,6 +87,9 @@ class FetchRaw(object):
         self.config_db.delete(self.module + "|" + "fetching")
 
     def check_exit(self):
+        """
+            Check in redis if the module should be stoped
+        """
         wait_until = datetime.datetime.now() + datetime.timedelta(seconds = self.sleep_timer)
         while wait_until >= datetime.datetime.now():
             if not self.config_db.sismember('modules', self.module):

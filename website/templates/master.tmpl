@@ -16,6 +16,7 @@
             <script  type="text/javascript" src="${rgraph_dir}${js}" ></script>
         #end for
     #end if
+    <script  type="text/javascript" src="protovis/protovis-r3.2.js" ></script>
   </head>
   <body>
     <div id="header" class="header">
@@ -32,7 +33,7 @@
                 <div id="nav">
                     <ul>
                         <li>
-                            <a href="/reload">Reload</a><br/>
+                            <a href="/reload">Reload</a>
                         </li>
                         <li>
                            #if $source is None
@@ -40,6 +41,9 @@
                            #else
                                <a href="/comparator?source=${source}">Compare a list of ASNs</a>
                            #end if
+                        </li>
+                        <li>
+                            <a href="/stats">Statistics</a>
                         </li>
                     </ul>
                 </div>

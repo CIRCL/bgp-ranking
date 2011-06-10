@@ -26,12 +26,16 @@
 AmadaIpBlockList    = 7 amada/ipblocklist/ http://amada.abuse.ch/blocklist.php?download=ipblocklist
 BlocklistDe         = 0.1
 BlocklistDeSsh      = 5 blocklist_de/ssh/ http://www.blocklist.de/lists/ssh.txt
-BlocklistDeMail     = 5 blocklist_de/mail/ http://www.blocklist.de/lists/mail.txt
+BlocklistDeMail     = 0.1 blocklist_de/mail/ http://www.blocklist.de/lists/mail.txt
 BlocklistDeApache   = 5 blocklist_de/apache/ http://www.blocklist.de/lists/apache.txt
 BlocklistDePop3     = 5 blocklist_de/pop3/ http://www.blocklist.de/lists/pop3.txt
 BlocklistDeFtp      = 5 blocklist_de/ftp/ http://www.blocklist.de/lists/ftp.txt
+CIArmy              = 5 ciarmy/ip/ http://www.ciarmy.com/list/ci-badguys.txt
+CleanMXMalwares     = 5 cleanmx/malwares/ http://support.clean-mx.de/clean-mx/xmlviruses.php?response=alive
+CleanMXPhishing     = 5 cleanmx/phishing/ http://support.clean-mx.de/clean-mx/xmlphishing.php?response=alive
+CleanMXPortals      = 5 cleanmx/portals/ http://support.clean-mx.de/clean-mx/xmlportals.php?response=alive
 EmergingThreatsCompromized = 5 emergingthreats/compromized/ http://rules.emergingthreats.net/blockrules/compromised-ips.txt
-EmergingThreatsRBN  = 1 emergingthreats/rbn/ http://doc.emergingthreats.net/pub/Main/RussianBusinessNetwork/RussianBusinessNetworkIPs.txt
+EmergingThreatsRBN  = 0.01 emergingthreats/rbn/ http://doc.emergingthreats.net/pub/Main/RussianBusinessNetwork/RussianBusinessNetworkIPs.txt
 MaliciousnetworksFIRE = 7 maliciousnetworks/fire/ http://maliciousnetworks.org/fire-blocklist.txt
 DshieldDaily        = 0.1 dshield/daily/ http://www.dshield.org/feeds/daily_sources
 DshieldTopIPs       = 1 dshield/topips/ http://www.dshield.org/feeds/topips.txt

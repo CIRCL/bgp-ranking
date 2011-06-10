@@ -56,33 +56,36 @@ class CommonReport(object):
         default_date = default_date_raw.isoformat()
         return default_date_raw, default_date
 
-    def get_sources(self, date):
-        """
-            Get the sources parsed on a `date`
-        """
-        return self.global_db.smembers('{date}{sep}{key}'.format(  date   = date, \
-                            sep    = self.separator,\
-                            key    = self.config.get('input_keys','index_sources')))
-
     def get_dates(self):
         """
             Get the dates where there is a ranking available in the database
         """
-        return self.history_db_temp.smembers(self.config.get('ranking','all_dates'))
+        return sorted(self.history_db_temp.smembers(self.config.get('ranking','all_dates')))
 
+    def get_sources(self, date):
+        """
+            Get the sources parsed on a `date`
+        """
+        return sorted(self.global_db.smembers('{date}{sep}{key}'.format(\
+                            date   = date, \
+                            sep    = self.separator,\
+                            key    = self.config.get('input_keys','index_sources'))))
 
-    def get_daily_rank(self, asn, date, source):
+    def get_multiple_daily_rank(self, asn_list, date, source):
         """
-            Get the rank of an AS for a particular `source` and `date`
+            Get the rakns of multiple ASNs in one query
         """
-        return self.history_db.get(\
-                    '{asn}{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep     = self.separator,\
-                                                                        asn     = asn,\
-                                                                        date    = date,\
-                                                                        source  = source,\
-                                                                        ip_key  = self.ip_key))
+        string = '{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep    = self.separator,\
+                                                                date   = date,\
+                                                                source = source,\
+                                                                ip_key = self.ip_key)
+        to_get = ['{asn}{string}'.format(asn = asn, string = string) for asn in asn_list]
+        return self.history_db.mget(to_get)
 
     def get_daily_rank_client(self, asn, date, source = None):
+        """
+            Get a single rank *from the temporary database*
+        """
         if source is None:
             source = self.config.get('input_keys','histo_global')
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\

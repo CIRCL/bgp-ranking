@@ -51,6 +51,9 @@ class MicroBlog(CommonReport):
         self.last_dm_identica_key = "last_dm_identica"
 
     def grab_dms(self, api, key):
+        """
+            Get the last DM and respond if necessary
+        """
         last_dm_id = self.microblog_db_temp.get(key)
         if last_dm_id is None:
             dms = api.GetDirectMessages()
@@ -69,14 +72,20 @@ class MicroBlog(CommonReport):
             self.microblog_db_temp.set(key, dms[0].id)
     
     def post_last_top(self):
+        """
+            Post the last top five (once a day)
+        """
         last_top_date = self.check_last_top()
         raw_date, date = self.get_default_date()
         if date != last_top_date:
-            self.post(self.top_date())
+            self.post(self.top_date(date))
             return True
         return False
 
     def check_last_top(self):
+        """
+            Check the date of the last top five posted
+        """
         tl = self.twitter_api.GetUserTimeline("bgpranking")
         last_top_date = None
         for entry in tl:
@@ -95,12 +104,10 @@ class MicroBlog(CommonReport):
             return True
         return False
     
-    def top_date(self, date = None):
+    def top_date(self, date):
         """
             Return the top ASN for a given date
         """
-        if date is None:
-            raw_date, date = self.get_default_date()
         source = self.config.get('input_keys','histo_global')
         histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
                                                                     date        = date,\

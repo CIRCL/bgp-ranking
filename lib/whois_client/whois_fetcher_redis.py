@@ -22,6 +22,9 @@ import errno
 import syslog
 
 def init_static():
+    """
+        Initialize config parser
+    """
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)

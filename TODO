@@ -43,10 +43,12 @@ Improvements
   I agree. :-)
     Work in progress: "unique" name/urls/impact are now saved in the redis database
 
+* Ranking = 1 + IP Occ + IP Net - logarithm ? (adulau)
+
 New functionalities
 ===================
 
-* Have some "Static lists": the Russian Business Network list provided by emergingthreats.net is a good example: 
+* "Static lists": the Russian Business Network list provided by emergingthreats.net is a good example: 
   It is not really a "malware list" but will give information on "probably bad IPs" and it should be possible to,
   when you want more information about an ASN, know that the ASN has IP in this list.
 
@@ -68,14 +70,10 @@ New functionalities
     - get the weight of each source
     - get the rank of a subnet/asn (by whatever you want)
 
-* Display the daily ASN max ranking
-
 * grab files using rsync, example : http://psbl.surriel.com/howto/
 
 * handle this lists?
     - https://www.projecthoneypot.org/index.php
-    - http://doc.emergingthreats.net/bin/view/Main/RussianBusinessNetwork
-    - http://doc.pfsense.org/index.php/IP_Blocklist
 
 Documentation
 =============

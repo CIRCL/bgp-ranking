@@ -49,16 +49,17 @@ class ModuleManager(object):
 
 
     def launch_fetcher(self, module):
+        """
+            Launch a process which fetch a dataset in a directory
+        """
         if module is None:
             syslog.syslog(syslog.LOG_ERR, 'Unable to start fetching : module is None')
             return
-
         url = self.config_db.get(module + "|" + "url")
         if url is None:
             syslog.syslog(syslog.LOG_INFO, module + ' does not have an URL, no fetcher.')
             self.config_db.set(module + "|" + "fetching", 0)
             return
-
         directory = self.config_db.get(module + "|" + "home_dir")
         if directory is not None:
             subprocess.Popen(["python", self.service_fetcher, module, directory, url])
@@ -70,10 +71,12 @@ class ModuleManager(object):
 
 
     def launch_parser(self, module):
+        """
+            Launch a parser on a dataset for a module
+        """
         if module is None:
             syslog.syslog(syslog.LOG_ERR, 'Unable to start parsing : module is None')
             return
-
         directory = self.config_db.get(module + "|" + "home_dir")
         if directory is not None:
             subprocess.Popen(["python", self.service_parser, module, directory])
@@ -83,10 +86,10 @@ class ModuleManager(object):
             syslog.syslog(syslog.LOG_ERR, 'Unable to start parsing of ' + module + ': home_dir unknown.')
             self.config_db.set(module + "|" + "parsing", 0)
 
-    def get_config_db(self):
-        return self.config_db
-
     def manager(self):
+        """
+            Manage (start/stop) the process (fetching/parsing) of the modules
+        """
         modules = self.config_db.smembers('modules')
         modules_nr = len(modules)
         for module in modules:
@@ -106,7 +109,7 @@ class ModuleManager(object):
                 if parsing == 0 and fetching == 0:
                     self.config_db.srem('modules', module)
 
-            modules = config_db.smembers('modules')
+            modules = self.config_db.smembers('modules')
             if len(modules) != modules_nr:
                 modules_nr = len(modules)
                 syslog.syslog(syslog.LOG_INFO, 'These modules are running: ' + str(modules))
@@ -114,6 +117,9 @@ class ModuleManager(object):
                 time.sleep(self.sleep_timer)
 
 def stop_services(signum, frame):
+    """
+        Tell the modules to stop.
+    """
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
@@ -132,6 +138,5 @@ if __name__ == '__main__':
     syslog.openlog('BGP_Ranking_Module_Manager', syslog.LOG_PID, syslog.LOG_LOCAL5)
     syslog.syslog(syslog.LOG_INFO, 'Manager started.')
     mm = ModuleManager()
-    config_db = mm.get_config_db()
     signal.signal(signal.SIGHUP, stop_services)
     mm.manager()

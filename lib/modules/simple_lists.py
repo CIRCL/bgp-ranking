@@ -65,3 +65,10 @@ class MaliciousnetworksFIRE(AbstractModuleDefault):
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
 
+class CIArmy(AbstractModuleDefault):
+    """
+        IPs list provided by ciarmy.com
+    """
+
+    def __init__(self, raw_dir):
+        AbstractModuleDefault.__init__(self, raw_dir)

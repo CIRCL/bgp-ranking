@@ -21,9 +21,6 @@ class DshieldDaily(AbstractModule):
         self.directory = raw_dir
 
     def parse(self):
-        """ 
-            Parse the list
-        """
         self.ips = []
         for file in self.files:
             self.date = dateutil.parser.parse(re.findall('updated (.*)\n', open(file).read())[0])

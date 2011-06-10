@@ -3,8 +3,8 @@
 
 """
     
-    :file:`bin/services/push_update_routing.py` - Push routing dump and initialize ranking
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    :file:`bin/services/push_update_routing.py` - Push routing dump and compute ranking
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     This script has two parts: 
     
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     from helpers.initscript import *
     from helpers.files_splitter import FilesSplitter
-    from ranking.reports import Reports
+    from ranking.reports_generator import ReportsGenerator
     services_dir = os.path.join(root_dir,config.get('directories','services'))
     bgpdump = os.path.join(root_dir,config.get('routing','bgpdump'))
 
@@ -140,7 +140,7 @@ if __name__ == '__main__':
         fs = FilesSplitter(output.name, int(config.get('routing','number_of_splits')))
         splitted_files = fs.fplit()
         syslog.syslog(syslog.LOG_INFO, 'Splitting finished.')
-        # Flush the old database and launch the population of the new database
+        # Flush the old routing database and launch the population of the new database
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Start pushing all routes...')
         run_splitted_processing(int(config.get('processes','routing_push')), pushing_process_service, splitted_files)
@@ -151,7 +151,7 @@ if __name__ == '__main__':
         
         if compute_yesterday_ranking():
             # Clean the whole database and regenerate it (like this we do not keep data of the old rankings)
-            report = Reports()
+            report = ReportsGenerator()
             report.flush_temp_db()
             report.build_reports_lasts_days(int(config.get('ranking','days')))
 
@@ -192,7 +192,9 @@ if __name__ == '__main__':
             # wait for a new file
             time.sleep(sleep_timer_short)
         rmpid(ranking_process_service)
+        # Save the number of asns known by the RIPE 
+        history_db_static.set('{date}{sep}{amount_asns}'.format(date = date, sep = separator, amount_asns = config.get('redis','amount_asns')), routing_db.dbsize())
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Updating the reports...')
-        Reports().build_reports(date)
+        ReportsGenerator().build_reports(date)
         syslog.syslog(syslog.LOG_INFO, '...done.')

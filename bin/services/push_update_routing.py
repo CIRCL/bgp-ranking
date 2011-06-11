@@ -100,6 +100,7 @@ if __name__ == '__main__':
     from helpers.initscript import *
     from helpers.files_splitter import FilesSplitter
     from ranking.reports_generator import ReportsGenerator
+    from ranking.maps import Map
     services_dir = os.path.join(root_dir,config.get('directories','services'))
     bgpdump = os.path.join(root_dir,config.get('routing','bgpdump'))
 
@@ -157,6 +158,9 @@ if __name__ == '__main__':
 
             # date used to generate a ranking with the data in the database at this point
             date = (datetime.date.today() - datetime.timedelta(1)).isoformat()
+            m = Map()
+            m.get_country_codes()
+            m.generate()
         else:
             date = datetime.date.today().isoformat()
         separator = config.get('input_keys','separator')

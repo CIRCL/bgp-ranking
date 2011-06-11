@@ -16,12 +16,12 @@
     <script type="text/javascript+protovis">
         var fill = pv.Scale.linear()
             .domain(0, 0.1, 0.4, 1.5 , 2)
-            .range("white", "green", "yellow", "red", "black");
+            .range("white", "lightgreen", "yellow", "red", "black");
 
         countries.forEach(function(c) {
             c.color = stats[c.code]
                 ? fill(stats[c.code])
-                : "#ccc"; // unknown
+                : "lightgray"; // unknown
         });
 
         var w = 1200,

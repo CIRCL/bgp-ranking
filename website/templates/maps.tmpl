@@ -76,10 +76,27 @@
         vis.add(pv.Panel)
             .width(402)
             .height(20)
-            .left(500)
-            .bottom(120)
+            .left(498)
+            .bottom(121)
             .strokeStyle("black")
-            .lineWidth(1)
+            .lineWidth(2)
+          .add(pv.Label)
+            .textAlign("center")
+            .textStyle("black")
+            .font("14px sans-serif")
+            .text("0")
+          .add(pv.Label)
+            .left(201)
+            .textAlign("center")
+            .textStyle("black")
+            .font("14px sans-serif")
+            .text("1")
+          .add(pv.Label)
+            .left(402)
+            .textAlign("center")
+            .textStyle("black")
+            .font("14px sans-serif")
+            .text("2")
           .add(pv.Bar)
             .data(pv.range(0, 2, 1/100))
             .left(function() this.index * 2)
@@ -88,6 +105,7 @@
             .domain(0, 0.1, 0.4, 1.5 , 2)
             .range("white", "lightgreen", "yellow", "red", "black"))
             .title(function(d) d);
+
 
         vis.render();
 

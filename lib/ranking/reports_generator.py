@@ -16,7 +16,7 @@ class ReportsGenerator(CommonReport):
 
     def __init__(self, ip_version = 4):
         CommonReport.__init__(self, ip_version)
-        self.config_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
+        self.config_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
                                        db = self.config.get('redis','config'))
 
     def flush_temp_db(self):

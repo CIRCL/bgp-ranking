@@ -28,11 +28,11 @@ class Ranking(object):
         config_file = "/path/to/bgp-ranking.conf"
         self.config.read(config_file)
         
-        self.routing_db = redis.Redis(port = int(self.config.get('redis','port_cache')),\
+        self.routing_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
                                         db = self.config.get('redis','routing'))
-        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
+        self.global_db  = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
                                         db = self.config.get('redis','global'))
-        self.history_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
+        self.history_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
                                         db = self.config.get('redis','history'))
         self.separator = self.config.get('input_keys','separator')
         self.weight = {}

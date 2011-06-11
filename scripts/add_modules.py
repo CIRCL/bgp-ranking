@@ -12,8 +12,8 @@ class AddModules(object):
         config = ConfigParser.SafeConfigParser()
         config.read(self.config_file)
 
-        self.config_db  = redis.Redis( port = int(config.get('redis','port_master')),\
-                                    db = int(config.get('redis','config')))
+        self.config_db  = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
+                                        db = int(config.get('redis','config')))
 
     def push_module_information(self, module, impact, home_dir = None, url = None):
         self.config_db.set(module, impact)

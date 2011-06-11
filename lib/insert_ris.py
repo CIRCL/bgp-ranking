@@ -44,11 +44,11 @@ class InsertRIS(object):
         self.key_asn = self.config.get('input_keys','asn')
         self.key_owner = self.config.get('input_keys','owner')
         self.key_ips_block = self.config.get('input_keys','ips_block')
-        self.cache_db   = redis.Redis(port = int(self.config.get('redis','port_cache')),\
+        self.cache_db   = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
                                         db = int(self.config.get('redis','cache_ris')))
-        self.cache_db_0 = redis.Redis(port = int(self.config.get('redis','port_cache')) ,\
+        self.cache_db_0 = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache') ,\
                                         db = int(self.config.get('redis','temp')))
-        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
+        self.global_db  = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
                                         db = int(self.config.get('redis','global')))
         default_asn_members = self.global_db.smembers(self.config.get('modules_global','default_asn'))
         if len(default_asn_members) == 0 :

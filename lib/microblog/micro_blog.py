@@ -45,8 +45,8 @@ class MicroBlog(CommonReport):
                                         access_token_key    =   identica_access_token_key,
                                         access_token_secret =   identica_access_token_secret,
                                         base_url = 'https://identi.ca/api')
-        self.microblog_db_temp = redis.Redis(port = int(self.config.get('redis','port_cache')),\
-                                        db = self.config.get('redis','temp'))
+        self.microblog_db_temp = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
+                                                db = self.config.get('redis','temp'))
         self.last_dm_twitter_key = "last_dm_twitter"
         self.last_dm_identica_key = "last_dm_identica"
 

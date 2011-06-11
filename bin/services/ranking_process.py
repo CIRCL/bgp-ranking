@@ -27,7 +27,8 @@ if __name__ == '__main__':
     from ranking.compute import *
     sleep_timer = int(config.get('sleep_timers','short'))
 
-    history_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','history'))
+    history_db   = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
+                                    db=config.get('redis','history'))
     
     syslog.openlog('Compute_Ranking_Process', syslog.LOG_PID, syslog.LOG_LOCAL5)
 

@@ -36,9 +36,9 @@ class InsertWhois(object):
         self.key_whois = self.config.get('input_keys','whois')
         self.key_whois_server = self.config.get('input_keys','whois_server')
         
-        self.cache_db   = redis.Redis(port = int(self.config.get('redis','port_cache')),\
+        self.cache_db   = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
                                         db=int(self.config.get('redis','cache_whois')))
-        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
+        self.global_db  = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
                                         db=int(self.config.get('redis','global')))
 
     def get_whois(self):

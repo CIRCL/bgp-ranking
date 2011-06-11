@@ -101,7 +101,8 @@ def set_options():
         if port:
             redis.set(url + port_option_suffix, port)
 
-redis = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','whois_assignations'))
+redis = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
+                        db=config.get('redis','whois_assignations'))
 redis.flushdb()
 urls = set()
 

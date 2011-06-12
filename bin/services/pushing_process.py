@@ -27,7 +27,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     from whois_parser.bgp_parsers import *
 
-    routing_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
+    routing_db = redis.Redis(unix_socket_path = config.get('redis','unix_socket_cache'),\
                                 db=config.get('redis','routing'))
 
     syslog.openlog('Push_BGP_Routing', syslog.LOG_PID, syslog.LOG_LOCAL5)

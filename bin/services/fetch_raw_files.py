@@ -43,7 +43,7 @@ class FetchRaw(object):
         self.sleep_timer = int(config.get('sleep_timers','long'))
         self.sleep_timer_short = int(config.get('sleep_timers','short'))
 
-        self.config_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
+        self.config_db = redis.Redis(unix_socket_path = config.get('redis','unix_socket'),\
                                        db = config.get('redis','config'))
 
         self.module = module

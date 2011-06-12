@@ -61,14 +61,17 @@ class Map(CommonReport):
             if len(splitted[1].strip()) == 0:
                 continue
             if values.get(splitted[1].strip()) is None:
-                values[splitted[1].strip()] = self.history_db_temp.zscore(self.histo_key, splitted[0].strip())
-            else:
-                values[splitted[1].strip()] += self.history_db_temp.zscore(self.histo_key, splitted[0].strip())
+                values[splitted[1].strip()] = []
+            values[splitted[1].strip()].append(self.history_db_temp.zscore(self.histo_key, splitted[0].strip()))
+        to_dump = {}
+        for key, value in values.iteritems():
+            to_dump[key] = sum(value)
+
         js_file = os.path.join( self.config.get('directories','root'),\
                                 self.config.get('web','root_web'),\
                                 self.config.get('web','map_data'))
         f = open(js_file, "w")
-        f.write("var stats =\n" + json.dumps(values))
+        f.write("var stats =\n" + json.dumps(to_dump))
         f.close()
 
 if __name__ == '__main__':

@@ -40,7 +40,7 @@ class ModuleManager(object):
         services_dir = os.path.join(root_dir,config.get('directories','services'))
         sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
-        self.config_db = redis.Redis(unix_socket_path = config.get('redis','unix_socket'),\
+        self.config_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
                                        db = config.get('redis','config'))
         self.service_fetcher = os.path.join(services_dir, "fetch_raw_files.py")
         self.service_parser = os.path.join(services_dir, "parse_raw_files.py")
@@ -129,7 +129,7 @@ def stop_services(signum, frame):
     for module in modules:
         config_db.set(module + "|" + "parsing", 0)
         config_db.set(module + "|" + "fetching", 0)
-    config_db.delete('modules')
+    config_db.delete('modules', module)
     syslog.syslog(syslog.LOG_INFO, 'The services will be stopped ASAP')
     exit(0)
 

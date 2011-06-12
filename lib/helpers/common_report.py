@@ -26,11 +26,11 @@ class CommonReport(object):
         config_file = "/path/to/bgp-ranking.conf"
         self.config.read(config_file)
         self.separator = self.config.get('input_keys','separator')
-        self.global_db  = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
+        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
                                         db = self.config.get('redis','global'))
-        self.history_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
+        self.history_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
                                         db = self.config.get('redis','history'))
-        self.history_db_temp = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
+        self.history_db_temp = redis.Redis(port = int(self.config.get('redis','port_cache')),\
                                              db = self.config.get('redis','history'))
         if ip_version == 4:
             self.ip_key = self.config.get('input_keys','rankv4')

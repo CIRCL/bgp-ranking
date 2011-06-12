@@ -44,7 +44,7 @@ class AbstractModule(object):
         self.key_raw = self.config.get('input_keys','raw')
         self.key_times = self.config.get('input_keys','times')
         
-        self.temp_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
+        self.temp_db = redis.Redis(port = int(self.config.get('redis','port_cache')),\
                             db=int(self.config.get('modules_global','temp_db')))
     
     def put_entry(self, entry):

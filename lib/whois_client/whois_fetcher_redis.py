@@ -40,8 +40,7 @@ def get_all_servers_urls():
     if int(config.get('whois_servers','desactivate_whois')) :
         return ['riswhois.ripe.net']        
     else:
-        return redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
-                                db = config.get('redis','whois_assignations')).smembers(config.get('assignations','servers_key'))
+        return redis.Redis(db=config.get('redis','whois_assignations')).smembers(config.get('assignations','servers_key'))
 
 
 
@@ -156,8 +155,7 @@ class WhoisFetcher(object):
         """
             Set the needed informations concerning the server we want to use
         """
-        r = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
-                            db = self.config.get('redis','whois_assignations'))
+        r = redis.Redis(db=self.config.get('redis','whois_assignations'))
         pre_option_suffix = self.config.get('assignations','pre_option_suffix')
         post_option_suffix = self.config.get('assignations','post_option_suffix')
         keepalive_option_suffix = self.config.get('assignations','keepalive_option_suffix')
@@ -211,10 +209,8 @@ if __name__ == "__main__":
     
     print get_all_servers_urls()
     
-    print get_server_by_query('200.3.14.10', redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
-                                                            db = config.get('redis','whois_assignations')))
-    print get_server_by_query('127.0.0.1', redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
-                                                            db = cnfig.get('redis','whois_assignations')))
+    print get_server_by_query('200.3.14.10', redis.Redis(db=config.get('redis','whois_assignations')))
+    print get_server_by_query('127.0.0.1', redis.Redis(db=config.get('redis','whois_assignations')))
   
     
     

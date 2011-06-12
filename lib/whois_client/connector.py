@@ -46,17 +46,14 @@ class Connector(object):
         self.support_keepalive = self.config.get('whois_servers', 'support_keepalive').split()
         self.support_keepalive += self.local_whois
         
-        self.temp_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
-                                    db=int(self.config.get('redis','temp')))
+        self.temp_db = redis.Redis(port = int(self.config.get('redis','port_cache')) , db=int(self.config.get('redis','temp')))
         self.server = server
         if self.server == 'riswhois.ripe.net':
-            self.cache_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
-                                            db=int(self.config.get('redis','cache_ris')))
+            self.cache_db = redis.Redis(port = int(self.config.get('redis','port_cache')), db=int(self.config.get('redis','cache_ris')))
             self.key = self.config.get('redis','key_temp_ris')
         else:
             self.key = self.server
-            self.cache_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
-                                            db=int(self.config.get('redis','cache_whois')))
+            self.cache_db = redis.Redis(port = int(self.config.get('redis','port_cache')), db=int(self.config.get('redis','cache_whois')))
         if self.server in self.support_keepalive:
             self.keepalive = True
         if self.server in self.local_whois:

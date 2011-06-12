@@ -26,7 +26,7 @@ class Reports(CommonReport):
 
     def __init__(self, ip_version = 4):
         CommonReport.__init__(self, ip_version)
-        self.config_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
+        self.config_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
                                        db = self.config.get('redis','config'))
 
     def get_sources(self, date):

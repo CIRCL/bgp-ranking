@@ -33,11 +33,9 @@ if __name__ == '__main__':
 
     syslog.openlog('BGP_Ranking_Sort_Whois_Entries', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
-    temp_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
-                            db=int(config.get('redis','temp_reris')))
+    temp_db = redis.Redis(port = int(config.get('redis','port_cache')), db=int(config.get('redis','temp_reris')))
     key = config.get('redis','key_temp_whois')
-    r = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
-                        db = config.get('redis','whois_assignations'))
+    r = redis.Redis(db=config.get('redis','whois_assignations'))
     while 1:
     #    syslog.syslog(syslog.LOG_DEBUG, 'blocs to whois: ' + str(temp_db.llen(key)))
         block = temp_db.spop(key)

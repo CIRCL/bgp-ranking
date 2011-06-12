@@ -30,7 +30,7 @@ if __name__ == '__main__':
     from modules import *
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
     sleep_timer = int(config.get('sleep_timers','short'))
-    config_db = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
+    config_db = redis.Redis(port = int(config.get('redis','port_master')),\
                               db = config.get('redis','config'))
 
     syslog.openlog('BGP_Ranking_Get_Whois_Entries', syslog.LOG_PID, syslog.LOG_LOCAL5)

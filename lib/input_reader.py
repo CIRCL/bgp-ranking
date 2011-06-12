@@ -54,9 +54,9 @@ class InputReader(object):
         """
             Connection to the redis instances 
         """
-        self.temp_db    = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
+        self.temp_db    = redis.Redis(port = int(self.config.get('redis','port_cache')),\
                             db=int(self.config.get('modules_global','temp_db')))
-        self.global_db  = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
+        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
                             db=int(self.config.get('redis','global')))
 
     def get_all_information(self):

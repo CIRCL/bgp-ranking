@@ -78,7 +78,7 @@ def compute_yesterday_ranking():
     ts_file = os.path.join(raw_data, config.get('routing','bviewtimesamp'))
     if os.path.exists(ts_file):
         ts = open(ts_file, 'r').read()
-        redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
+        redis.Redis(port = int(config.get('redis','port_master')),\
                     db   = config.get('redis','history')).set(config.get('ranking','latest_ranking'), ts)
         ts = ts.split()
         if int(ts[1]) == int(first_hour):
@@ -107,13 +107,13 @@ if __name__ == '__main__':
     
     syslog.openlog('Push_n_Rank', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
-    routing_db          = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
+    routing_db          = redis.Redis(port = int(config.get('redis','port_cache')),\
                                         db = config.get('redis','routing'))
-    global_db           = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
+    global_db           = redis.Redis(port = int(config.get('redis','port_master')),\
                                         db = config.get('redis','global'))
-    history_db          = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket_cache'),\
+    history_db          = redis.Redis(port = int(config.get('redis','port_cache')),\
                                         db = config.get('redis','history'))
-    history_db_static   = redis.Redis(unix_socket_path = self.config.get('redis','unix_socket'),\
+    history_db_static   = redis.Redis(port = int(config.get('redis','port_master')),\
                                         db = config.get('redis','history'))
 
     filename = sys.argv[1]

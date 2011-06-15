@@ -18,8 +18,9 @@ New:
       - The URL where the dataset is downloaded
       - The path to put the dataset
  * New modules: malc0de, Sucuri, EmergingThreatsCompromized, EmergingThreatsRBN
-                MaliciousnetworksFIRE, CIArmy
+                MaliciousnetworksFIRE, CIArmy, Clean MX (3 lists)
  * (Experimental) Statistics using ProtoVis: http://bgpranking.circl.lu/protovis
+ * (Experimental) World Map using ProtoVis: http://bgpranking.circl.lu/maps
  * Save the amount of ASNs known by the RIPE each day:
         Database 6, YYYY-MM-DD|amount_asns
 
@@ -31,6 +32,8 @@ Improvements:
  * Website: The IPs found in many sources are now at seen first
  * Generation of the reports much more faster
  * Sync the redis configs files with the default
+ * Better default impacts
+ * Update Doc
 
 v1.1.3 - 2011-05-12
 

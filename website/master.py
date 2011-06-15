@@ -37,6 +37,16 @@ class Master(object):
         self.controler = MasterControler()
 
     @cherrypy.expose
+    def maps(self):
+        self.template = Template(file = os.path.join(self.website_root, self.templates, 'maps.tmpl'))
+        self.template.rgraph_dir = config.get('web','rgraph_dir')
+        self.template.rgraph_scripts = self.rgraph_scripts
+        self.template.css_file = self.config.get('web','css_file')
+        self.template.logo     = self.config.get('web','logo')
+        self.template.banner   = self.config.get('web','banner')
+        return str(self.template)
+
+    @cherrypy.expose
     def protovis(self):
         """
             Some tests with protovis

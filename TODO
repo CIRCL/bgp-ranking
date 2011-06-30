@@ -20,7 +20,7 @@ Improvements
 
 * use python-whois as an external dep instead of the bundled version
   (http://gitorious.org/python-whois)
-  
+
 * Extract interesting informations of the bview file, prepare to do a diff ::
     ``egrep -w "^$|PREFIX:|ASPATH:"| awk -F' ' '{print $NF}' |  sed 's/^$/XXXXX/' | tr '\n' ' ' | sed 's/XXXXX/\n/g'| sed 's/^ //' | sort | uniq``
 
@@ -29,16 +29,16 @@ Improvements
 * Make a "standard module" which just look for IP Addresses in a file.
 
 * Reduce the length of the keys (idea of adulau)::
-    
+
     5577|2011-03-30|URLQuery|rankv4
-    -> 5577|20110330|1|4  
-    
+    -> 5577|20110330|1|4
+
     1->URLQuery
     4->rankv4
 
 * Invent a favicon/logo
 
-* Adulau said: 
+* Adulau said:
     "Maybe we should work in the future on a way to publish and share the source "unique" name , with their urls and a recommended impact."
   I agree. :-)
     Work in progress: "unique" name/urls/impact are now saved in the redis database
@@ -47,25 +47,29 @@ Improvements
 
 * add list: http://www.atma.es/atma.p2p
 
+* add lists: http://labs.snort.org/iplists/
+
+* print month average on ASN details
+
 New functionalities
 ===================
 
-* "Static lists": the Russian Business Network list provided by emergingthreats.net is a good example: 
+* "Static lists": the Russian Business Network list provided by emergingthreats.net is a good example:
   It is not really a "malware list" but will give information on "probably bad IPs" and it should be possible to,
   when you want more information about an ASN, know that the ASN has IP in this list.
 
-* Ranking by subnet can be improved: we divide the number of IPs found in a subnet by 
-  the total of IPs announced by the AS. Like this, we just have to add the ranks of 
+* Ranking by subnet can be improved: we divide the number of IPs found in a subnet by
+  the total of IPs announced by the AS. Like this, we just have to add the ranks of
   each subnet of the AS to get the global rank of the AS.
 
   It might be interesting to compute the division of the number of IPs found in a subnet
-  by the size of this subnet and to compare it to the global rank of the AS: if we have a 
-  (big) difference, we can be sure that this particular subnet is better/worse than the 
+  by the size of this subnet and to compare it to the global rank of the AS: if we have a
+  (big) difference, we can be sure that this particular subnet is better/worse than the
   rest of the subnets announced by the AS. And investigate it further.
-  
+
 * read the code of Khanku (http://gitorious.org/~khanku/bgp-ranking/predictive-bgp-ranking/)
   ans find a way to handle this usage of the ranking system in the main trunk
-  
+
 * Module which ping a list of URL known as malicious and insert the IP in the system.
 
 * API (telnet like ?) -> See https://github.com/adulau/bgpranking-API

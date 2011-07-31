@@ -18,7 +18,7 @@ from master_controler import MasterControler
 import cgi
 
 class Master(object):
-    
+
     def __init__(self):
         self.config = ConfigParser.RawConfigParser()
         config_file = "/path/to/bgp-ranking.conf"
@@ -27,7 +27,7 @@ class Master(object):
         self.templates = config.get('web','templates')
         self.website_root = os.path.join(self.config.get('directories','root'),\
                                             config.get('web','root_web'))
-        
+
         self.rgraph_scripts = [ 'RGraph.common.core.js',\
                                 'RGraph.common.zoom.js', \
                                 'RGraph.common.resizing.js',\
@@ -125,7 +125,7 @@ class Master(object):
         self.template.dates = sorted(self.controler.get_dates())
         self.template.source = source
         self.template.date = date
-    
+
     def escape(self, var):
         """
             Escape input
@@ -159,7 +159,7 @@ class Master(object):
     @cherrypy.expose
     def asn_details(self, source = None, asn = None, ip_details = None, date = None):
         """
-            Generate the view of an ASN 
+            Generate the view of an ASN
         """
         asn = self.reset_if_empty(asn)
         source = self.reset_if_empty(source)
@@ -186,7 +186,7 @@ class Master(object):
                 if self.controler.js is not None:
                     self.template.javascript = self.controler.js
                     self.template.js_name = self.controler.js_name
-            else: 
+            else:
                 self.template.error = "Invalid query: " +  asn
             if self.template.javascript is None:
                 self.template.error = "No data available to generate the graph for "+ asn
@@ -237,15 +237,15 @@ if __name__ == "__main__":
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
-    
+
     website = Master()
-    
+
     def handle_error():
         website = Master()
         cherrypy.response.status = 500
         cherrypy.response.body = ["<html><body>Sorry, an error occured</body></html>"]
-    
+
     _cp_config = {'request.error_response': handle_error}
-    
+
     cherrypy.config.update({'error_page.404': error_page_404})
     cherrypy.quickstart(website, config = config.get('web','config_file'))

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
-Very small script used to computer the number of IPs announced by a particular ASN 
+Very small script used to computer the number of IPs announced by a particular ASN
 """
 
 import os

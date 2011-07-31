@@ -5,11 +5,11 @@
 
     :file:`bin/services/ris.py` - Push RIS Entries
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     Process which push the RIS entries in redis
 """
 
-import os 
+import os
 import sys
 import ConfigParser
 import syslog
@@ -17,7 +17,7 @@ import time
 
 
 if __name__ == '__main__':
-    
+
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     sleep_timer = int(config.get('sleep_timers','short'))
 
     syslog.openlog('BGP_Ranking_RIS_Whois_Insert', syslog.LOG_PID, syslog.LOG_LOCAL5)
-    
+
     def usage():
         print "ris.py"
         exit (1)

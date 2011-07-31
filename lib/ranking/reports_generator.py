@@ -4,7 +4,7 @@
 """
     Reports Generator
     ~~~~~~~~~~~~~~~~~
-    
+
     Generate reports for a particular day.
 """
 

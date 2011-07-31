@@ -4,8 +4,8 @@
 """
     BGP Parser
     ~~~~~~~~~~
-    
-    Initialize the BGP parsers. 
+
+    Initialize the BGP parsers.
 
     There is only a parser for the information from RIPE NCC
 """
@@ -22,8 +22,8 @@ if __name__ == "__main__":
     sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
 
 RIPE_BGP_Dump = {
-    'asn'   : 'ASPATH:[\s]*([^\n{]*)', 
-    'prefix': 'PREFIX:[\s]*([^\n]*)', 
+    'asn'   : 'ASPATH:[\s]*([^\n{]*)',
+    'prefix': 'PREFIX:[\s]*([^\n]*)',
     'date'  : 'ORIGINATED:[\s]*([^\n]*)'
 }
 
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     import dateutil.parser
     import datetime
     import time
-    
+
     riswhois = "TIME: 06/15/10 08:00:00 \n \
     TYPE: TABLE_DUMP_V2/IPV6_UNICAST\n \
     PREFIX: 2a02::/32\n\
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     ris_whois = BGP(riswhois,  'RIPE')
     print ris_whois.asn
     print ris_whois.prefix
-    
+
     riswhois = "TIME: 06/15/10 07:59:54\n \
     TYPE: TABLE_DUMP_V2/IPV4_UNICAST\n \
     PREFIX: 41.196.34.0/23\n \

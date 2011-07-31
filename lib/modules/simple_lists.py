@@ -23,7 +23,7 @@ class MalwareDomainListIP(AbstractModuleDefault):
     """
         List provided by malwaredomainlist.com
     """
-    
+
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
 
@@ -31,7 +31,7 @@ class DshieldTopIPs(AbstractModuleDefault):
     """
         Top IPs list provided by DShield
     """
-    
+
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
 

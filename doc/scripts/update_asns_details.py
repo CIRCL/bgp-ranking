@@ -65,7 +65,7 @@ def recompute_ranks_day(day):
                 for detail in details_zset:
                     asn_rank += float(detail[1])
                 pipeline.set('{asn}|{day}|{source}|rankv4'.format(asn = asn, day = day, source = source), asn_rank)
-                
+
                 details_zset = r_history.zrange('{asn}|{day}|{source}|rankv6|details'.format(asn = asn, day = day, source = source), 0, -1, withscores = True)
                 asn_rank = 0.0
                 for detail in details_zset:
@@ -74,7 +74,7 @@ def recompute_ranks_day(day):
         pipeline.execute()
 
 
-def recompute_all_ranks():        
+def recompute_all_ranks():
     graph_last_date = datetime.date.today()
     graph_first_date = datetime.date.today() - datetime.timedelta(days=60)
     dates = make_days(graph_first_date, graph_last_date)

@@ -2,22 +2,22 @@
 # -*- coding: utf-8 -*-
 
 """
-    
+
     :file:`bin/services/fetch_raw_files.py` - Fetch the Raw files (datasets)
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Fetch a raw file (given as paramater) and put it in a directory 
+    Fetch a raw file (given as paramater) and put it in a directory
     (also a parameter) when finished, but only if the file is new.
-    Elsewhere, the file is dropped. 
-    
+    Elsewhere, the file is dropped.
+
     During the download, the file is put in a temporary directory.
 """
 
-import os 
+import os
 import sys
 import ConfigParser
 import syslog
-import datetime 
+import datetime
 import urllib
 import filecmp
 import glob

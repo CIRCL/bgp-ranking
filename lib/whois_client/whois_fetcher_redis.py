@@ -4,8 +4,8 @@
 """
     WhoisFetcher and some helpers
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
-    Fetch the whois entries from the servers, 
+
+    Fetch the whois entries from the servers,
     the helpers give information on the servers available.
 """
 from socket import *
@@ -28,17 +28,17 @@ def init_static():
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
-    
+
     syslog.openlog('BGP_Ranking_Fetchers', syslog.LOG_PID, syslog.LOG_LOCAL5)
     return config
 
 def get_all_servers_urls():
     """
-        Get the URLs of all the whois servers 
+        Get the URLs of all the whois servers
     """
     config = init_static()
     if int(config.get('whois_servers','desactivate_whois')) :
-        return ['riswhois.ripe.net']        
+        return ['riswhois.ripe.net']
     else:
         return redis.Redis(db=config.get('redis','whois_assignations')).smembers(config.get('assignations','servers_key'))
 
@@ -80,8 +80,8 @@ class WhoisFetcher(object):
     """
         Class to fetch the Whois entry of a particular IP.
     """
-    
-    # Some funny whois implementations.... 
+
+    # Some funny whois implementations....
     whois_part = {
         # This whois contains a Korean and an English version, we only need the english one, \
         # which comes after "ENGLISH\n"
@@ -91,11 +91,11 @@ class WhoisFetcher(object):
     regex_riswhois = {
         'whois.ripe.net' : '% Information related to*\n(.*)'
         }
-    # Message BEFORE the query 
+    # Message BEFORE the query
     has_welcome_message = ['riswhois.ripe.net',  'whois.apnic.net',  'whois.ripe.net', 'whois.afrinic.net']
     # Message AFTER the query
     has_info_message = ['whois.ripe.net', 'whois.afrinic.net',  'whois.lacnic.net']
-    # Doesn't support CIDR queries -> we always do queries with ips 
+    # Doesn't support CIDR queries -> we always do queries with ips
 #    need_an_ip = ['whois.arin.net', 'whois.nic.or.kr']
 
 
@@ -103,7 +103,7 @@ class WhoisFetcher(object):
         self.config = init_static()
         self.__set_values(server)
         self.s = socket(AF_INET, SOCK_STREAM)
-    
+
     def connect(self):
         """
             TCP connection to one on the whois servers
@@ -112,16 +112,16 @@ class WhoisFetcher(object):
         self.s.connect((self.server,self.port))
         if self.server in self.has_welcome_message:
             self.s.recv(1024)
-        
+
     def disconnect(self):
         """
-            Close the TCP connection 
+            Close the TCP connection
         """
         self.s.close()
-    
+
     def fetch_whois(self, query, keepalive = False):
         """
-            Fetch the whois informations. Keep the connection alive if needed. 
+            Fetch the whois informations. Keep the connection alive if needed.
         """
         pre_options = self.pre_options
         if keepalive:
@@ -138,8 +138,8 @@ class WhoisFetcher(object):
 #            syslog.syslog(syslog.LOG_DEBUG, self.server + ": " + temp)
             if not temp or len(temp) == 0 or prec == temp == '\n':
                 break
-            self.text += temp 
-            prec = temp 
+            self.text += temp
+            prec = temp
         if len(self.text) == 0:
             syslog.syslog(syslog.LOG_ERR, "error (no response) with query: " + query + " on server " + self.server)
             time.sleep(int(self.config.get('sleep_timers','short')))
@@ -174,7 +174,7 @@ class WhoisFetcher(object):
         if self.port == None:
             self.port = self.config.get('assignations','default_whois_port')
         self.port = int(self.port)
-    
+
     def __repr__(self):
         return self.text
 
@@ -196,21 +196,21 @@ if __name__ == "__main__":
     f.connect()
     print(f.fetch_whois('200.3.14.10', False))
     f.disconnect()
-    
+
     f = WhoisFetcher('whois.apnic.net')
     f.connect()
     print(f.fetch_whois('116.66.203.208', False))
     f.disconnect()
-    
+
     f = WhoisFetcher('riswhois.ripe.net')
     f.connect()
     print(f.fetch_whois('200.3.14.10', False))
     f.disconnect()
-    
+
     print get_all_servers_urls()
-    
+
     print get_server_by_query('200.3.14.10', redis.Redis(db=config.get('redis','whois_assignations')))
     print get_server_by_query('127.0.0.1', redis.Redis(db=config.get('redis','whois_assignations')))
-  
-    
-    
+
+
+

@@ -15,11 +15,11 @@ from modules.abstract_module import AbstractModule
 
 
 class SshblBase(AbstractModule):
-    
+
     def __init__(self, raw_dir):
         AbstractModule.__init__(self)
         self.directory = raw_dir
- 
+
     def parse(self):
         self.date = datetime.date.today()
         for file in self.files:

@@ -5,9 +5,9 @@
 """
     Micro-blog
     ~~~~~~~~~~
-    
+
     Microblog client for twitter and identica
-    
+
     FIXME identica not completely implemented
 """
 
@@ -33,7 +33,7 @@ class MicroBlog(CommonReport):
         Twitter client which inform the followers when something happens
         on BGP Ranking
     """
-    
+
     def __init__(self, ip_version = 4):
         CommonReport.__init__(self, ip_version)
         self.twitter_api = twitter.Api( consumer_key        =   twitter_customer_key,
@@ -70,7 +70,7 @@ class MicroBlog(CommonReport):
                             pass
         if len(dms) > 0 :
             self.microblog_db_temp.set(key, dms[0].id)
-    
+
     def post_last_top(self):
         """
             Post the last top five (once a day)
@@ -103,7 +103,7 @@ class MicroBlog(CommonReport):
             self.identica_api.PostUpdate(string)
             return True
         return False
-    
+
     def top_date(self, date):
         """
             Return the top ASN for a given date

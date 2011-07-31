@@ -47,7 +47,7 @@ if __name__ == '__main__':
     if response == 'y':
         add_modules.from_config_file()
     response = None
-    
+
     while True:
         response = raw_input("Do you want to import a new module? (y/N) ")
         if response == 'y':

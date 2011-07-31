@@ -6,7 +6,7 @@ from subprocess import Popen, PIPE
 
 
 class HTTPParser(object):
-    
+
     def __init__(self):
         self.blacklist_uri = ".*(RGraph|robots.txt|master.css|favicon).*"
         self.blacklist_agents = ".*(Googlebot|YandexBot|Wget).*"
@@ -17,7 +17,7 @@ class HTTPParser(object):
     def parse(self, filename):
         'Return tuple of dictionaries containing file data.'
         def make_entry(x):
-            return { 
+            return {
                 'server_ip':x.group('ip'),
                 'uri':x.group('uri'),
                 'time':x.group('time'),
@@ -68,7 +68,7 @@ class HTTPParser(object):
         ips = r.smembers("ips")
         for ip in ips:
             r.zadd("order_ips", **{ip: r.scard(ip)})
-        
+
 
     def origin_ip_by_asn(self):
         """
@@ -193,19 +193,19 @@ if __name__ == '__main__':
 
     parser = HTTPParser()
     parser.read_logs()
-    
+
     # One ASN interests multiple IPs
 #    parser.origin_ip_by_asn()
-    
+
     # Multiple agents for one single ip ?!
 #    parser.agent_by_origin_ip()
-    
+
     # All the IPs with a single agent id
 #    parser.ip_by_agent()
 
     # Where are they from ?
 #    parser.ip_by_origin()
- 
+
     # Very active IPs on a particular AS
 #    parser.ip_queries()
 #    parser.top_asn_ips_info()

@@ -4,7 +4,7 @@
 """
     Map
     ~~~
-    
+
     Generate the data used to display the world map
 """
 

@@ -5,7 +5,7 @@
 """
 Start the service inserting the new entries in the Redis database
 """
-import os 
+import os
 import sys
 import ConfigParser
 

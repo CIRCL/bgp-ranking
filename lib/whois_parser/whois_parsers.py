@@ -4,10 +4,10 @@
 """
     Whois Parsers
     ~~~~~~~~~~~~~
-    
+
     Initialize the Whois parsers.
 
-    It is not really used because the whole whois entry is put in the database. 
+    It is not really used because the whole whois entry is put in the database.
 """
 
 from abstract_parser import AbstractParser
@@ -19,25 +19,25 @@ RIS = {
 }
 
 RIPE = {
-    'inetnum':  'inetnum:[ ]*([^\n]*)', 
-    'netname':  'netname:[ ]*([^\n]*)', 
-    'descr':    'descr:[ ]*([^\n]*)', 
+    'inetnum':  'inetnum:[ ]*([^\n]*)',
+    'netname':  'netname:[ ]*([^\n]*)',
+    'descr':    'descr:[ ]*([^\n]*)',
     'country':  'country:[ ]*([^\n]*)'
 }
 
 Afrinic = {
     'netname':  'netname:[ ]*([^\n]*)'
-}    
+}
 
 class Whois(AbstractParser):
     """
-    This class return a dump of the Whois. 
-    Until we have a real implementation of whois in python, 
+    This class return a dump of the Whois.
+    Until we have a real implementation of whois in python,
     we will use this class to return all the informations
     """
     possible_regex = {
-        'riswhois.ripe.net' : RIS, 
-        'whois.ripe.net'    : RIPE, 
+        'riswhois.ripe.net' : RIS,
+        'whois.ripe.net'    : RIPE,
         'whois.afrinic.net' : Afrinic
         }
 

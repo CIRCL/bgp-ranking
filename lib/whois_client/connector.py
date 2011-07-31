@@ -4,7 +4,7 @@
 """
     Connector
     ~~~~~~~~~
-    
+
     Initialize a connection to a whois server
 """
 import redis
@@ -13,7 +13,7 @@ import errno
 
 
 import time
-import os 
+import os
 import sys
 import ConfigParser
 import syslog
@@ -22,30 +22,30 @@ class Connector(object):
     """
         Query a specific Whois server using :class:`WhoisFetcher`
     """
-    
+
     def __init__(self, server):
         """
             Set variables depending on the server, initialize a :class:`WhoisFetcher` on this server
         """
-        
+
         self.config = ConfigParser.RawConfigParser()
         config_file = "/path/to/bgp-ranking.conf"
         self.config.read(config_file)
-        # In case there is nothing to fetch, the process will sleep 5 seconds 
+        # In case there is nothing to fetch, the process will sleep 5 seconds
         self.process_sleep = int(self.config.get('sleep_timers','short'))
-        
+
         syslog.openlog('BGP_Ranking_Connectors', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
-        # Set the ttl of the cached entries to 1 day 
+        # Set the ttl of the cached entries to 1 day
         self.cache_ttl = int(self.config.get('redis','cache_entries'))
 
         self.local_whois = self.config.get('whois_servers','local').split()
-        
-        
+
+
         self.keepalive = False
         self.support_keepalive = self.config.get('whois_servers', 'support_keepalive').split()
         self.support_keepalive += self.local_whois
-        
+
         self.temp_db = redis.Redis(port = int(self.config.get('redis','port_cache')) , db=int(self.config.get('redis','temp')))
         self.server = server
         if self.server == 'riswhois.ripe.net':
@@ -61,12 +61,12 @@ class Connector(object):
         else:
             self.fetcher = WhoisFetcher(self.server)
         self.connected = False
-    
+
     def __connect(self):
         """
             Connect the :class:`WhoisFetcher` instance
         """
-        self.fetcher.connect()   
+        self.fetcher.connect()
         self.connected = True
 
     def __disconnect(self):
@@ -75,7 +75,7 @@ class Connector(object):
         """
         self.fetcher.disconnect()
         self.connected = False
-    
+
     def launch(self):
         """
             Fetch all the whois entry assigned to the server of this :class:`Connector`

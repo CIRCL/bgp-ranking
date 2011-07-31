@@ -5,7 +5,7 @@
     Abstract class of the modules
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    This abstract class should be used by all local modules. Local means that the modules 
+    This abstract class should be used by all local modules. Local means that the modules
     are running on the same server as the redis databases.
 """
 
@@ -15,49 +15,49 @@ from abc import ABCMeta, abstractmethod
 import redis
 import glob
 
-import os 
+import os
 import sys
 import ConfigParser
 
 class AbstractModule(object):
-    """   
-    To use this class you have to provide a variable called self.directory which is the directory 
-    where the new files are. 
-    
-    A variable date is also necessary to move the file when the parsing is done. 
-    
-    You have to define a function parse which extract the entries from the dataset and use 
-    the function put_entry to put them in redis. 
     """
-    
+    To use this class you have to provide a variable called self.directory which is the directory
+    where the new files are.
+
+    A variable date is also necessary to move the file when the parsing is done.
+
+    You have to define a function parse which extract the entries from the dataset and use
+    the function put_entry to put them in redis.
+    """
+
     def __init__(self):
         self.config = ConfigParser.RawConfigParser()
         config_file = "/path/to/bgp-ranking.conf"
         self.config.read(config_file)
-        
+
         self.separator = self.config.get('input_keys','separator')
-        
+
         self.key_ip = self.config.get('input_keys','ip')
         self.key_src = self.config.get('input_keys','src')
         self.key_tstamp = self.config.get('input_keys','tstamp')
         self.key_infection = self.config.get('input_keys','infection')
         self.key_raw = self.config.get('input_keys','raw')
         self.key_times = self.config.get('input_keys','times')
-        
+
         self.temp_db = redis.Redis(port = int(self.config.get('redis','port_cache')),\
                             db=int(self.config.get('modules_global','temp_db')))
-    
+
     def put_entry(self, entry):
         """
             Add the entries in the database
-            
+
             entry is a dict:
-            
+
                 ::
-                    
+
                     { ':ip' : ip , ':timestamp' : timestamp ... }
         """
-        
+
         uid = self.temp_db.incr(self.config.get('modules_global','uid_var'))
         to_set = {}
         for key, value in entry.iteritems():
@@ -92,7 +92,7 @@ class AbstractModule(object):
         entry[self.key_times] = times
         return entry
 
-    __metaclass__ = ABCMeta    
+    __metaclass__ = ABCMeta
     @abstractmethod
     def parse(self):
         """
@@ -107,7 +107,7 @@ class AbstractModule(object):
         self.glob_only_files()
         if len(self.files) > 0:
             self.parse()
-        
+
     def move_file(self, file):
         """
         Move /from/some/dir/file to /from/some/dir/old/file

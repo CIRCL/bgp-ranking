@@ -6,7 +6,7 @@
 Start the services looking for entries without Whois information in the database.
 """
 
-import os 
+import os
 import sys
 import ConfigParser
 

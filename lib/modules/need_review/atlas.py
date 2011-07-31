@@ -24,14 +24,14 @@ class Atlas(AbstractModule):
     """
         Parser
     """
-    
+
     def __init__(self, raw_dir):
         self.directory = 'atlas/'
         AbstractModule.__init__(self)
         self.directory = os.path.join(raw_dir, self.directory)
 
     def parse(self):
-        """ 
+        """
             Parse the list
         """
         self.ips = []
@@ -48,12 +48,12 @@ class Atlas(AbstractModule):
     def parse_entry(self,  entry):
         """
             Extract the information needed by the system.
-            
-            Entry: 
+
+            Entry:
              0. ip
              1. date of the report
              2. attack
-             3. url for more informations, coverage, category of the attack 
+             3. url for more informations, coverage, category of the attack
         """
         toReturn = []
         title = entry['title'].split(' | ')
@@ -66,7 +66,7 @@ class Atlas(AbstractModule):
         category = entry['tags'][0]['term'] + ' - ' + entry['tags'][0]['label']
         toReturn.append(url + ', ' + coverage + ', ' + category)
         return toReturn
-    
+
     def extract_from_xml(self, rss):
         """
             Extract each entry and loop

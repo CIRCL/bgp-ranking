@@ -3,12 +3,12 @@
     bgp_ranking.lib.InsertWhois
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Insert the Whois information in the database. 
+    Insert the Whois information in the database.
 
 """
 import redis
 import time
-import os 
+import os
 import sys
 import ConfigParser
 import syslog
@@ -16,26 +16,26 @@ import syslog
 class InsertWhois(object):
     """
     Set the whois information to ASNsDescriptions wich do not already have one.
-    
+
     Take a look at doc/uml-diagramms/Whois\ Fetching.png to see a diagramm.
     """
     max_consecutive_errors = 10
 
     def __init__(self):
         """
-        Initialize the two connectors to the redis server 
+        Initialize the two connectors to the redis server
         """
         syslog.openlog('BGP_Ranking_Fetching_Whois', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
         self.config= ConfigParser.RawConfigParser()
         config_file = "/path/to/bgp-ranking.conf"
         self.config.read(config_file)
-        
+
         self.separator = self.config.get('input_keys','separator')
-    
+
         self.key_whois = self.config.get('input_keys','whois')
         self.key_whois_server = self.config.get('input_keys','whois_server')
-        
+
         self.cache_db   = redis.Redis(port = int(self.config.get('redis','port_cache')),\
                                         db=int(self.config.get('redis','cache_whois')))
         self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
@@ -47,9 +47,9 @@ class InsertWhois(object):
         """
         key_no_whois = self.config.get('redis','no_whois')
         description = self.cache_db.spop(key_no_whois)
-        errors = 0 
+        errors = 0
         to_return = False
-        
+
         syslog.syslog(syslog.LOG_DEBUG, 'Whois to fetch: ' + str(self.global_db.scard(key_no_whois)))
         while description is not None:
             ip, timestamp = description.split(self.separator)

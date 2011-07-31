@@ -10,7 +10,7 @@
 
 import re
 import os
-import datetime 
+import datetime
 
 from modules.abstract_module import AbstractModule
 
@@ -26,7 +26,7 @@ class AbstractModuleDefault(AbstractModule):
 
 
     def parse(self):
-        """ 
+        """
             Parse the list
         """
         self.date = datetime.date.today()

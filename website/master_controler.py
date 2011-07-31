@@ -55,10 +55,10 @@ class MasterControler(object):
             Returns all the available dates given by the model
         """
         return self.report.get_dates()
-    
+
     def get_as_infos(self, asn = None, source = None, date = None):
         """
-            Get the data needed to display the page of the details on an AS 
+            Get the data needed to display the page of the details on an AS
         """
         as_infos, current_sources, raw_sources = [], [], []
         if asn is not None:
@@ -73,7 +73,7 @@ class MasterControler(object):
             if len(as_infos_temp) >= 0:
                 as_infos = [ [a[0], a[1], a[2], a[3], a[4], ', '.join(a[5]), 1 + a[6]  ] for a in as_infos_temp]
         return as_infos, current_sources, raw_sources
-    
+
     def get_ip_infos(self, asn = None, asn_tstamp = None, source = None, date = None):
         """
             Get the descriptions of the IPs of a subnet
@@ -81,7 +81,7 @@ class MasterControler(object):
         if asn is not None and asn_tstamp is not None:
             ips_descs_temp = self.report.get_ips_descs(asn, asn_tstamp, source, date)
             return [ [ips_desc_temp[0], ', '.join(ips_desc_temp[1]) ] for ips_desc_temp in ips_descs_temp]
-    
+
     def comparator(self, asns = None):
         """
             Get the data needed to display the page of the comparator

@@ -24,7 +24,7 @@ class CleanMXDefault(AbstractModule):
 
 
     def parse(self):
-        """ 
+        """
             Parse the list
         """
         self.date = datetime.date.today()

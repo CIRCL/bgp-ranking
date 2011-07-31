@@ -4,10 +4,10 @@
 """
     Reports
     ~~~~~~~
-    
+
     Model used by the website to get information from the database (read only)
 """
-import os 
+import os
 import sys
 import ConfigParser
 
@@ -20,7 +20,7 @@ from helpers.common_report import CommonReport
 
 class Reports(CommonReport):
     """
-        This class is used to generate reports for a day 
+        This class is used to generate reports for a day
         (you can also choose between IPv4 and IPv6)
     """
 
@@ -95,7 +95,7 @@ class Reports(CommonReport):
         for timestamp in timestamps:
             # Get the number of IPs found in the database for each subnet
             asn_timestamp_key = '{asn}{sep}{timestamp}{sep}'.format(sep = self.separator, asn = asn, timestamp = timestamp)
-            nb_of_ips = 0 
+            nb_of_ips = 0
             pipeline = self.global_db.pipeline()
             for source in sources:
                 pipeline.scard('{asn_timestamp_key}{date}{sep}{source}'.format(sep = self.separator, \
@@ -169,7 +169,7 @@ class Reports(CommonReport):
                 keys[date] = [ string.format(\
                                         sep  = self.separator, asn     = asn,\
                                         date = date,           source  = source,\
-                                        v4   = self.config.get('input_keys','rankv4')) 
+                                        v4   = self.config.get('input_keys','rankv4'))
                                     for source in sources]
                 pipeline.mget(keys[date])
         histories = pipeline.execute()

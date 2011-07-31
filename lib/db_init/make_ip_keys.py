@@ -1,17 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# copy of the fonctions designed for the whois server 
+# copy of the fonctions designed for the whois server
 
 """
 This class is generate the keys used to find the best network of a particular IP.
-You should read the doc if you really want to understand how it works :). 
+You should read the doc if you really want to understand how it works :).
 
-FIXME: put more comments there 
+FIXME: put more comments there
 """
 
 class MakeIPKeys:
-    
+
     def __init__(self, ipv4):
         self.ipv4 = ipv4
 
@@ -28,7 +28,7 @@ class MakeIPKeys:
         first_index = first_set.split('.')
         last_index = last_set.split('.')
         if first_index[0] != last_index[0]:
-            # push each values between first and last (first and last excluded) 
+            # push each values between first and last (first and last excluded)
             intermediate = self.__intermediate_between(int(first_index[0])+ 1 , int(last_index[0]) - 1)
             if first_index[1] == '0' and last_index[1] == '255':
                 intermediate.append(first_index[0])
@@ -41,7 +41,7 @@ class MakeIPKeys:
         elif first_index[0] == last_index[0] and first_index[1] == '0' and last_index[1] == '255':
             intermediate.append(first_index[0])
         elif first_index[1] != last_index[1]:
-            # push each values between first and last (first and last excluded) 
+            # push each values between first and last (first and last excluded)
             intermediate = self.__intermediate_between(int(first_index[1])+ 1 , int(last_index[1]) - 1, first_index[0] + '.')
             if first_index[2] == '0' and last_index[2] == '255':
                 intermediate.append(first_index[0] + '.' + first_index[1])
@@ -58,7 +58,7 @@ class MakeIPKeys:
         elif first_index[2] == last_index[2]:
             intermediate.append(first_index[0] + '.' + first_index[1] + '.' + first_index[2])
         return intermediate
-    
+
     def __intermediate_sets_v6(self, first_set, last_set):
         intermediate = []
         first_index = first_set.split(':')
@@ -84,7 +84,7 @@ class MakeIPKeys:
         else:
             intermediate.append(key)
         return intermediate
-    
+
     # push each values from first_index[0].first_index[1] to first_index[0].255
     def __intermediate_to_last(self, first, main_str = ''):
         intermediate = []
@@ -103,7 +103,7 @@ class MakeIPKeys:
             intermediate.append(main_str + str(b))
             b += 1
         return intermediate
-    
+
     def __intermediate_between(self, first, last, main_str = ''):
         intermediate = []
         while first <= last:

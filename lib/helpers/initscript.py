@@ -2,19 +2,19 @@
 # -*- coding: utf-8 -*-
 
 """
-    
+
     Initscripts
     ~~~~~~~~~~~
-    
+
     Functions used by the initscripts
-    
+
     Standard functions used by the init scripts
-    
+
     .. note::
         The original idea is of adulau: http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
 """
-import os 
+import os
 import sys
 import ConfigParser
 import subprocess
@@ -37,13 +37,13 @@ def service_start_multiple(servicename, number, param = None):
     """
         Start multiple services using `service_start` and save their pids
     """
-    i = 0 
+    i = 0
     #print('Starting ' + str(number) + ' times ' + servicename)
     syslog.syslog(syslog.LOG_INFO, 'Starting ' + str(number) + ' times ' + servicename)
     while i < number:
         proc = service_start(servicename, param)
         writepid(servicename, proc)
-        i += 1 
+        i += 1
 
 def service_start_once(servicename = None, param = None, processname = None):
     """
@@ -104,7 +104,7 @@ def rmpid (processname = None):
 
 def pidof(processname = None):
     """
-        Get the pid(s) of a process 
+        Get the pid(s) of a process
     """
     config, pid_path = init_static()
     processname = os.path.basename(processname)
@@ -135,8 +135,8 @@ def update_running_pids(old_procs):
                 pass
     return new_procs
 
-def check_pid(pid):        
-    """ 
+def check_pid(pid):
+    """
         Check For the existence of a unix pid.
     """
     try:
@@ -146,7 +146,7 @@ def check_pid(pid):
     else:
         return True
 
-    
+
 def init_counter(total_ips):
     """
         Init an ugly array to manage a certain amount of processes
@@ -169,5 +169,5 @@ def init_counter(total_ips):
         max_processes -= 1
         ip_counter['processes'] += 1
     return ip_counter
-    
+
 

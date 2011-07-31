@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 
 """
-    
+
     :file:`bin/services/fetch_whois_entries.py` - Fetch the Whois entries
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Launch a connector which fetch the whois entries 
+    Launch a connector which fetch the whois entries
     on a particular whois server.
 """
 
-import os 
+import os
 import sys
 import ConfigParser
 

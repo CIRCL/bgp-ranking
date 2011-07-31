@@ -2,32 +2,32 @@
 # -*- coding: utf-8 -*-
 
 """
-    
+
     :file:`bin/services/push_update_routing.py` - Push routing dump and compute ranking
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    This script has two parts: 
-    
+    This script has two parts:
+
      1. pushing the routing information in a database
-     2. computing the ranking using the routing information 
+     2. computing the ranking using the routing information
 
     This way, we ensure of the integrity of the routing information.
-    
-    .. warning:: 
+
+    .. warning::
         FIXME: rename the script
 
-    .. note:: 
-     1. To push the routing information we have first to generate a plain text file from the 
-        binary dump. The second part use the splitting module to make a certain number of files 
-        (defined in the configuration file). When it is finished, the process start a process on 
-        each files to push the information into redis. And wait that each process is finished. 
+    .. note::
+     1. To push the routing information we have first to generate a plain text file from the
+        binary dump. The second part use the splitting module to make a certain number of files
+        (defined in the configuration file). When it is finished, the process start a process on
+        each files to push the information into redis. And wait that each process is finished.
 
      2. It manages a pool of processes computing the ranking.
         Using the number of processes defined in the config file, the interval assigned
-        to each process is computed. 
+        to each process is computed.
 """
 
-import os 
+import os
 import sys
 import ConfigParser
 import syslog
@@ -41,7 +41,7 @@ def intervals_ranking(nb_of_asns, interval):
         Compute the size of each intervals based on the number of ASNs found in the database
         and the number of processes defined in the configuration file
     """
-    first = 0 
+    first = 0
     intervals = []
     while first < nb_of_asns:
         intervals.append(str(first) + ' ' + str(first + interval))
@@ -51,7 +51,7 @@ def intervals_ranking(nb_of_asns, interval):
 def run_splitted_processing(max_simultaneous_processes, process_name, process_args):
     """
         Run processes which push the routing dump of the RIPE in a redis database.
-        The dump has been splitted in multiple files and each process run on one 
+        The dump has been splitted in multiple files and each process run on one
         of this files.
     """
     pids = []
@@ -69,7 +69,7 @@ def run_splitted_processing(max_simultaneous_processes, process_name, process_ar
 
 def compute_yesterday_ranking():
     """
-        if the bview file has been generated at midnight, it is better 
+        if the bview file has been generated at midnight, it is better
         to compute the ranking of "yesterday"
     """
     hours = sorted(config.get('routing','update_hours').split())
@@ -104,7 +104,7 @@ if __name__ == '__main__':
     services_dir = os.path.join(root_dir,config.get('directories','services'))
     bgpdump = os.path.join(root_dir,config.get('routing','bgpdump'))
 
-    
+
     syslog.openlog('Push_n_Rank', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     routing_db          = redis.Redis(port = int(config.get('redis','port_cache')),\
@@ -128,16 +128,16 @@ if __name__ == '__main__':
             time.sleep(sleep_timer)
             continue
         syslog.syslog(syslog.LOG_INFO, 'Start converting binary bview file in plain text...')
-        # create the plain text dump from the binary dump 
+        # create the plain text dump from the binary dump
         output = open(dir + '/bview', 'wr')
         nul_f = open(os.devnull, 'w')
         p_bgp = Popen([bgpdump , filename], stdout=PIPE, stderr = nul_f)
         for line in p_bgp.stdout:
             output.write(line)
-        nul_f.close() 
+        nul_f.close()
         output.close()
         syslog.syslog(syslog.LOG_INFO, 'Convertion finished, start splitting...')
-        # Split the plain text file 
+        # Split the plain text file
         fs = FilesSplitter(output.name, int(config.get('routing','number_of_splits')))
         splitted_files = fs.fplit()
         syslog.syslog(syslog.LOG_INFO, 'Splitting finished.')
@@ -149,7 +149,7 @@ if __name__ == '__main__':
         # Remove the binary and the plain text files
         os.unlink(output.name)
         os.unlink(filename)
-        
+
         if compute_yesterday_ranking():
             # Clean the whole database and regenerate it (like this we do not keep data of the old rankings)
             report = ReportsGenerator()
@@ -165,7 +165,7 @@ if __name__ == '__main__':
             date = datetime.date.today().isoformat()
         separator = config.get('input_keys','separator')
         sources = global_db.smembers('{date}{sep}{key}'.format(date = date, sep = separator, key = config.get('input_keys','index_sources')))
-        
+
         pipeline = history_db.pipeline()
         pipeline_static = history_db_static.pipeline()
         to_delete = []
@@ -191,12 +191,12 @@ if __name__ == '__main__':
         pipeline_static.execute()
 
         service_start_multiple(ranking_process_service, int(config.get('processes','ranking')))
-        
+
         while history_db.scard(config.get('redis','to_rank')) > 0:
             # wait for a new file
             time.sleep(sleep_timer_short)
         rmpid(ranking_process_service)
-        # Save the number of asns known by the RIPE 
+        # Save the number of asns known by the RIPE
         history_db_static.set('{date}{sep}{amount_asns}'.format(date = date, sep = separator, amount_asns = config.get('redis','amount_asns')), routing_db.dbsize())
         routing_db.flushdb()
         syslog.syslog(syslog.LOG_INFO, 'Updating the reports...')

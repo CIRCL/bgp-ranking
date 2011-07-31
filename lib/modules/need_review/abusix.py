@@ -4,9 +4,9 @@
 """
     Abusix
     ~~~~~~
-    
+
     Class used to parse the files in the format Abusix
-    
+
 """
 
 import re
@@ -31,7 +31,7 @@ class Abusix(AbstractModule):
 
 
     def parse(self):
-        """ 
+        """
             Parse the list
         """
         self.ips = []

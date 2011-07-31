@@ -6,7 +6,7 @@ FIXME: not used anymore, generate a gnuplot graph
 """
 
 
-import os 
+import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
@@ -25,14 +25,14 @@ gnuplot_static =  'set xlabel "Date"\n set ylabel "Rank"\n set xdata time \nset 
 from sqlalchemy import desc
 
 class ASGraf():
-    
+
     def __init__(self, asn):
         self.asn = asn
-    
+
     def save_graph(self):
         self.prepare_graf()
         self.make_graph()
-    
+
     def prepare_graf(self):
         histories = History.query.filter_by(asn=int(self.asn)).order_by(desc(History.timestamp)).all()
         datav4 = os.path.join(graphs_dir, str(self.asn) + '_v4.dat' )
@@ -65,7 +65,7 @@ class ASGraf():
         p = Popen(['gnuplot', self.filename_gnuplot], stdout=f, stderr=f)
 
 class MetaGraph():
-    
+
     def make_all_graphs(self):
         asns = ASNs.query.all()
         for asn in asns:

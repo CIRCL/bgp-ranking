@@ -31,9 +31,9 @@ class SpyeyetrackerIpBlockList(AbuseCh):
 class AmadaIpBlockList(AbuseCh):
     """
         Amada IPblocklist provided by Abuse.ch
-    
+
         .. note::
-            the type of the infection is available in the list but 
+            the type of the infection is available in the list but
             not saved by the module
     """
 

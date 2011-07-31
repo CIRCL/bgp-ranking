@@ -5,21 +5,21 @@
 
     :file:`bin/services/pushing_process.py` - Push RIS
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
-    Service pushing the routing information. 
 
-    This service runs on a file and extract from each RI block the network and the ASN 
-    announcing this block. Both of them are pushed into the redis database. 
+    Service pushing the routing information.
+
+    This service runs on a file and extract from each RI block the network and the ASN
+    announcing this block. Both of them are pushed into the redis database.
 
 """
-import os 
+import os
 import sys
 import ConfigParser
 import redis
 import syslog
 
 if __name__ == '__main__':
-    
+
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
@@ -34,13 +34,13 @@ if __name__ == '__main__':
     file = open(sys.argv[1])
     entry = ''
     pipeline = routing_db.pipeline()
-    i = 0 
+    i = 0
     for line in file:
         if not line:
             # EOF, quit
             break
         if line == '\n':
-            i += 1 
+            i += 1
             # End of block, extracting the information
             parsed = BGP(entry,  'RIPE')
             if parsed.asn is not None:
@@ -52,7 +52,7 @@ if __name__ == '__main__':
             if i >= 10000:
                 pipeline.execute()
                 pipeline = routing_db.pipeline()
-                i = 0 
+                i = 0
         else :
             # append the line to the current block.
             entry += line

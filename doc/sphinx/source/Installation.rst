@@ -71,7 +71,13 @@ To be able to post on twitter and identi.ca:
     
     ::
         
-        $ apt-get install python-oauth2 python-twitter
+        $ apt-get install python-oauth2
+
+The version of python-twitter provided by the ubuntu repositories is too old and does not support oauth...
+
+    ::
+
+        $ easy_install -U python-twitter
 
 BGP Ranking
 ===========
@@ -149,6 +155,15 @@ Installation rgraph
     
     $ unzip RGraph_2011-01-28-stable.zip -d bgpranking/thirdparty/
 
+Installation protovis
+---------------------
+
+::
+    
+    $ unzip RGraph_2011-01-28-stable.zip -d bgpranking/thirdparty/
+
+
+
 Installation redis-py
 ---------------------
 
@@ -203,6 +218,20 @@ Start the system
 
 Monitoring
 ==========
+
+Rsystlog
+--------
+
+Configuation:
+
+    ::
+
+        $ cat /etc/rsyslog.d/70-bgpranking.conf 
+        local5.*         /var/log/bgpranking.log
+        #local5.debug     -/var/log/bgpranking.debug
+        local5.info      -/var/log/bgpranking.info
+        #local5.warn      -/var/log/bgpranking.warn
+        local5.err       /var/log/bgpranking.err
 
 Redis logs:
 

@@ -62,11 +62,8 @@ class InputReader(object):
         uid = self.temp_db.spop(self.list_ips)
         if uid is None:
             return None
-        ip_key =        '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_ip)
-        src_key =       '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_src)
-        timestamp_key = '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_tstamp)
 
-        table_keys = [ip_key, src_key, timestamp_key]
+        table_keys = [self.key_ip, self.key_src, self.key_tstamp]
 
         ip, src, timestamp = self.temp_db.hmget(uid, table_keys)
         if timestamp is None:

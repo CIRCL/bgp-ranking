@@ -43,11 +43,7 @@ class InputReader(object):
 
         self.key_ip          = self.config.get('input_keys','ip')
         self.key_src         = self.config.get('input_keys','src')
-        self.key_list_tstamp = self.config.get('input_keys','list_tstamp')
         self.key_tstamp      = self.config.get('input_keys','tstamp')
-        self.key_infection   = self.config.get('input_keys','infection')
-        self.key_raw         = self.config.get('input_keys','raw')
-        self.key_times       = self.config.get('input_keys','times')
 
 
     def connect(self):
@@ -69,20 +65,16 @@ class InputReader(object):
         ip_key =        '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_ip)
         src_key =       '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_src)
         timestamp_key = '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_tstamp)
-        infection_key = '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_infection)
-        raw_key =       '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_raw)
-        times_key =     '{uid}{sep}{key}'.format(uid = uid , sep = self.separator, key = self.key_times)
 
-        table_keys = [ip_key, src_key, timestamp_key, infection_key, raw_key, times_key]
+        table_keys = [ip_key, src_key, timestamp_key]
 
-        ip, src, timestamp, infection, raw, times = self.temp_db.mget(table_keys)
+        ip, src, timestamp = self.temp_db.hmget(uid, table_keys)
         if timestamp is None:
             timestamp = datetime.date.today()
         else:
             timestamp = dateutil.parser.parse(timestamp)
-        # FIXME pipeline -> every X loop
-        self.temp_db.delete(*table_keys)
-        return uid, ip, src, timestamp, infection, raw, times
+        self.temp_db.delete(uid)
+        return uid, ip, src, timestamp
 
     def insert(self):
         """
@@ -94,7 +86,7 @@ class InputReader(object):
             infos = self.get_all_information()
             if infos is None:
                 continue
-            uid, ip, src, timestamp, infection, raw, times = infos
+            uid, ip, src, timestamp = infos
             if ip is None:
                 syslog.syslog(syslog.LOG_ERR, 'Entry without IP, invalid')
                 continue
@@ -126,22 +118,10 @@ class InputReader(object):
             ip_details      = '{ip}{sep}{timestamp}'.format(sep = self.separator, ip = ip, timestamp = iso_timestamp)
 
             to_return = True
-            # FIXME pipeline -> every X loop ?
-            pipeline = self.global_db.pipeline()
+            self.global_db.sadd(index_day_src, src)
             pipeline_temp_db = self.temp_db.pipeline()
-            pipeline.sadd(index_day_src, src)
             pipeline_temp_db.sadd(index_day_ips, ip_details)
-
-            ip_details_keys = '{ip_details}{sep}'.format(ip_details = ip_details, sep = self.separator)
-
-            if infection is not None:
-                pipeline.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_infection), infection)
-            if raw is not None:
-                pipeline.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_raw), raw)
-            if times is not None:
-                pipeline.set('{ip}{key}'.format(ip = ip_details_keys, key = self.key_times), times)
             pipeline_temp_db.sadd(self.config.get('redis','key_temp_ris'), ip)
             pipeline_temp_db.sadd(self.config.get('redis','no_asn'), index_day_ips)
-            pipeline.execute()
             pipeline_temp_db.execute()
         return to_return

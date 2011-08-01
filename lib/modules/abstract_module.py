@@ -40,9 +40,6 @@ class AbstractModule(object):
         self.key_ip = self.config.get('input_keys','ip')
         self.key_src = self.config.get('input_keys','src')
         self.key_tstamp = self.config.get('input_keys','tstamp')
-        self.key_infection = self.config.get('input_keys','infection')
-        self.key_raw = self.config.get('input_keys','raw')
-        self.key_times = self.config.get('input_keys','times')
 
         self.temp_db = redis.Redis(port = int(self.config.get('redis','port_cache')),\
                             db=int(self.config.get('modules_global','temp_db')))
@@ -50,23 +47,14 @@ class AbstractModule(object):
     def put_entry(self, entry):
         """
             Add the entries in the database
-
             entry is a dict:
-
                 ::
-
-                    { ':ip' : ip , ':timestamp' : timestamp ... }
+                    { 'ip' : ip , 'timestamp' : timestamp ... }
         """
 
         uid = self.temp_db.incr(self.config.get('modules_global','uid_var'))
-        to_set = {}
-        for key, value in entry.iteritems():
-            if value is not None:
-                to_set['{uid}{sep}{key}'.format(uid = str(uid),sep = self.separator, key = key)] = value
-        pipeline = self.temp_db.pipeline(False)
-        pipeline.mset(to_set)
-        pipeline.sadd(self.config.get('modules_global','uid_list'), uid)
-        pipeline.execute()
+        self.temp_db.hmset(uid, entry)
+        self.temp_db.sadd(self.config.get('modules_global','uid_list'), uid)
 
     def glob_only_files(self):
         """
@@ -79,7 +67,7 @@ class AbstractModule(object):
             if not os.path.isdir(file):
                 self.files.append(file)
 
-    def prepare_entry(self, ip, source, timestamp = None, infection = None, raw = None, times = None):
+    def prepare_entry(self, ip, source, timestamp):
         """
             Prepare the entry to insert in redis
         """
@@ -87,9 +75,6 @@ class AbstractModule(object):
         entry[self.key_ip] = ip
         entry[self.key_src] = source
         entry[self.key_tstamp] = timestamp.isoformat()
-        entry[self.key_infection] = infection
-        entry[self.key_raw] = raw
-        entry[self.key_times] = times
         return entry
 
     __metaclass__ = ABCMeta

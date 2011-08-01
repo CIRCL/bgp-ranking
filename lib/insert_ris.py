@@ -3,7 +3,7 @@
     bgp_ranking.lib.InsertRIS
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Insert the RIS Whois information in the database. 
+    Insert the RIS Whois information in the database.
 
 """
 
@@ -11,7 +11,7 @@ import re
 
 import redis
 import time
-import os 
+import os
 import sys
 import ConfigParser
 
@@ -24,8 +24,8 @@ import dateutil.parser
 
 class InsertRIS(object):
     """
-        Link the entries with their ASN. 
-        
+        Link the entries with their ASN.
+
         A new asn "object" is created by :meth:`add_asn_entry` if it does not already exists
     """
     default_asn_desc = None
@@ -61,8 +61,8 @@ class InsertRIS(object):
 
     def add_asn_entry(self, asn, owner, ips_block):
         """
-            Add a new subnet to the ASNs known by the system, 
-            only if the subnet is not already present. Elsewhere, simply return 
+            Add a new subnet to the ASNs known by the system,
+            only if the subnet is not already present. Elsewhere, simply return
             the value from the database.
         """
         key = None
@@ -87,7 +87,7 @@ class InsertRIS(object):
         if key is None:
             timestamp = datetime.datetime.utcnow().isoformat()
             key = "{asn}{sep}{timestamp}".format(asn=asn, sep = self.separator, timestamp=timestamp)
-            to_set = {  "{key}{sep}{owner}"     .format(key = key, sep = self.separator, owner = self.key_owner)        : owner, 
+            to_set = {  "{key}{sep}{owner}"     .format(key = key, sep = self.separator, owner = self.key_owner)        : owner,
                         "{key}{sep}{ips_block}" .format(key = key, sep = self.separator, ips_block = self.key_ips_block): ips_block}
             pipeline = self.global_db.pipeline(False)
             pipeline.sadd(asn, timestamp)
@@ -96,8 +96,8 @@ class InsertRIS(object):
         return key
 
     def update_db_ris(self, data):
-        """ 
-            Use :meth:`add_asn_entry` to update the database with the RIS whois informations 
+        """
+            Use :meth:`add_asn_entry` to update the database with the RIS whois informations
             from :class:`WhoisFetcher` and return the corresponding entry.
         """
         splitted = data.partition('\n')
@@ -116,7 +116,7 @@ class InsertRIS(object):
             The entry has now a link with his ASN.
         """
         key_no_asn = self.config.get('redis','no_asn')
-        errors = 0 
+        errors = 0
         to_return = False
         while True:
             sets = self.cache_db_0.smembers(key_no_asn)
@@ -124,7 +124,7 @@ class InsertRIS(object):
                 break
             to_return = True
             for ip_set in sets:
-                errors = 0 
+                errors = 0
                 ip_set_card = self.cache_db_0.scard(ip_set)
                 if ip_set_card == 0:
                     self.cache_db_0.srem(key_no_asn, ip_set)

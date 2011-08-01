@@ -3,13 +3,13 @@
 # Inspired by : http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
 """
-Start the process pushing the update of the routing information. 
-NOTE: it will also compute the ranking 
+Start the process pushing the update of the routing information.
+NOTE: it will also compute the ranking
 
-FIXME: rename the script 
+FIXME: rename the script
 """
 
-import os 
+import os
 import sys
 import ConfigParser
 
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
-    
+
     from helpers.initscript import *
     from helpers.files_splitter import *
     services_dir = os.path.join(root_dir,config.get('directories','services'))

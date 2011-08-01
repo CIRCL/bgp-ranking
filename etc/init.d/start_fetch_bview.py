@@ -6,7 +6,7 @@
 Start the service fetching the dumps of routing information (bview files)
 provided by RIPE NCC
 """
-import os 
+import os
 import sys
 import ConfigParser
 

@@ -7,11 +7,11 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     This service sort the queries by Whois server.
-    It uses the list of assignations provided by the Debian whois client. 
+    It uses the list of assignations provided by the Debian whois client.
     NOTE: This list has to be pushed into redis first.
     FIXME:This function has never been tested!
 """
-import os 
+import os
 import sys
 import ConfigParser
 import syslog
@@ -22,7 +22,7 @@ import time
 
 
 if __name__ == '__main__':
-    
+
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)

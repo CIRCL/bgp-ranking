@@ -6,7 +6,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     RussianBusinessNetwork IPs list provided by EmergingThreats
-    
+
     .. note::
         See http://doc.emergingthreats.net/bin/view/Main/RussianBusinessNetwork
 """

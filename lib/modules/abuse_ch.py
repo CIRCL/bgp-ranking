@@ -6,7 +6,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     It provides helpers to the modules parsing the datasets of Abuse.ch
-    
+
     .. note::
         raw_dir might seems useless but it is a parameter because like this,
         we do not have to import the configuration file in the module.
@@ -14,7 +14,7 @@
 
 import re
 import os
-import datetime 
+import datetime
 import dateutil.parser
 
 from modules.abstract_module import AbstractModule
@@ -23,12 +23,12 @@ class AbuseCh(AbstractModule):
     """
         Contains all the function needed by the modules for abuse.ch
     """
-    
-    
+
+
     def __init__(self, raw_dir):
         AbstractModule.__init__(self)
         self.directory = raw_dir
- 
+
     def parse(self):
         """
             Parse the list depending on the type (blocklist or ddos)
@@ -62,7 +62,7 @@ class AbuseCh(AbstractModule):
             return ip, date
         else:
             return None, None
- 
+
     def line_blocklist(self, line):
         """
             Parse a ligne of a blocklist file

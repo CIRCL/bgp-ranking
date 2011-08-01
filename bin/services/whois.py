@@ -5,10 +5,10 @@
 
     :file:`bin/services/whois.py` - Push Whois Entries
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     Process which push the Whois entries in redis
 """
-import os 
+import os
 import sys
 import ConfigParser
 import syslog
@@ -24,7 +24,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     from insert_whois import InsertWhois
     sleep_timer = int(config.get('sleep_timers','short'))
-    
+
     syslog.openlog('BGP_Ranking_Whois_Insert', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
     def usage():

@@ -8,7 +8,7 @@
     Start the microblogging client which posts on twitter and identica
 """
 
-import os 
+import os
 import sys
 import ConfigParser
 import syslog
@@ -21,7 +21,7 @@ def usage():
 
 
 if __name__ == '__main__':
-    
+
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)

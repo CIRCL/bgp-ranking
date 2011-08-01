@@ -12,11 +12,11 @@ import datetime
 class GraphGenerator(object):
     """
         The script to generate is defined here as a template and we
-        insert the data we want to display. 
+        insert the data we want to display.
     """
-    
+
     empty = 'null'
-    
+
     template = Template("""
 window.onload = function ()
     {
@@ -40,7 +40,7 @@ window.onload = function ()
         graph.Draw();
     }
 """)
-    
+
     def __init__(self, name):
         self.first_date = None
         self.last_date = None
@@ -57,7 +57,7 @@ window.onload = function ()
         self.labels = xaxis
         self.lines.append(self.line_values(line))
         self.keys.append(key)
-    
+
     def line_values(self, line):
         """
             Prepare the components of a line
@@ -82,7 +82,7 @@ window.onload = function ()
             to_return += str(l)
         to_return += ']'
         return to_return
-    
+
     def set_title(self, title):
         """
             Set the title of the schema

@@ -4,10 +4,10 @@
 """
     Ranking
     ~~~~~~~
-    
+
     Compute the ranking of a subnet given as parameter
 """
-import os 
+import os
 import sys
 import ConfigParser
 
@@ -21,13 +21,13 @@ class Ranking(object):
     """
         This class is used in a big loop on each subnet we want to rank.
     """
-    
+
     def __init__(self):
         self.config = ConfigParser.RawConfigParser()
         self.config.optionxform = str
         config_file = "/path/to/bgp-ranking.conf"
         self.config.read(config_file)
-        
+
         self.routing_db = redis.Redis(port = int(self.config.get('redis','port_cache')),\
                                         db = self.config.get('redis','routing'))
         self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
@@ -53,7 +53,7 @@ class Ranking(object):
         """
             Count the number of IPs announced by the ASN (ipv6 and ipv4)
         """
-        
+
         keys = [str(self.asn) + ':v4', str(self.asn) + ':v6']
         self.ipv4, self.ipv6 = self.routing_db.mget(keys)
         if self.ipv4 is None or self.ipv6 is None:
@@ -97,7 +97,7 @@ class Ranking(object):
             self.rank_by_source[0] = (float(self.weight[0])/self.ipv4)
         elif self.ipv6 > 0 :
             self.rank_by_source[1] = (float(self.weight[1])/self.ipv6)
-    
+
     def make_history(self):
         """
             Save the ranks (by subnets and global) in the database.
@@ -110,7 +110,7 @@ class Ranking(object):
                                             details = self.config.get('input_keys','daily_asns_details'))
 
             self.history_db.zadd(asn_key_v4_details, **{self.timestamp: self.rank_by_source[0]})
-            
+
             asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}{v4}'.format(\
                             sep = self.separator, asn = self.asn,\
                             date = self.date, source = self.source,\

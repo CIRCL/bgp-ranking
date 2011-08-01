@@ -7,7 +7,7 @@ Start processes sorting the queries between whois servers
 """
 
 
-import os 
+import os
 import sys
 import ConfigParser
 import signal
@@ -16,14 +16,14 @@ import syslog
 def usage():
     print "start_sort_whois_queries.py (start|stop)"
     exit (1)
-    
+
 if __name__ == '__main__':
     config = ConfigParser.RawConfigParser()
     config_file = "/path/to/bgp-ranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
-    
+
     from helpers.initscript import *
     services_dir = os.path.join(root_dir,config.get('directories','services'))
 

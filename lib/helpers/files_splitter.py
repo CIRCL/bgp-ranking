@@ -5,26 +5,26 @@
     Files Splitter
     ~~~~~~~~~~~~~~
 
-    Split a file into a certain number of files. 
-    If necessary, it uses a separator to split at the right place 
+    Split a file into a certain number of files.
+    If necessary, it uses a separator to split at the right place
     and not in the middle of a block.
-    
+
     The splitted are prefixed with split\_ and postfixed with their number.
-    
-    A table of filenames is retourned by "fsplit" 
+
+    A table of filenames is retourned by "fsplit"
 """
 
-import os 
+import os
 
 class FilesSplitter(object):
     """
-        Needs a filename to split and the number of file to generate. 
-        
-        If the separator between the blocks is not a '\\n', you have to 
+        Needs a filename to split and the number of file to generate.
+
+        If the separator between the blocks is not a '\\n', you have to
         give it as argument too.
     """
 
-    
+
     def __init__(self, file, number_of_files, separator = '\n'):
         self.split = '/split_'
         self.file = file
@@ -40,7 +40,7 @@ class FilesSplitter(object):
         self.splitted_files = []
         f = open(self.file, "r")
         number = 0
-        actual = 0 
+        actual = 0
         while 1:
             prec = actual
             # Jump of "size" from the current place in the file
@@ -61,7 +61,7 @@ class FilesSplitter(object):
             self.splitted_files.append(new_file)
             # Write the new file
             open(new_file, 'w').write(copy)
-            number +=1 
+            number +=1
             if not s:
                 # End of file
                 break

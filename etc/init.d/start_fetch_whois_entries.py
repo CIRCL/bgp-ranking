@@ -5,7 +5,7 @@
 """
 Start the services fetching the (RIS) Whois information from the whois servers.
 """
-import os 
+import os
 import sys
 import ConfigParser
 
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
-    
+
     from whois_client.whois_fetcher_redis import get_all_servers_urls
     from helpers.initscript import *
     services_dir = os.path.join(root_dir,config.get('directories','services'))

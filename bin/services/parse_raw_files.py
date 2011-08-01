@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """
-    
+
     :file:`bin/services/parse_raw_files.py` - Parse a raw dataset
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Launch the parsing of a raw file.
 """
-import os 
+import os
 import sys
 import ConfigParser
 import syslog

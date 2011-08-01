@@ -4,7 +4,7 @@
 """
     Common Report
     ~~~~~~~~~~~~~
-    
+
     Mother class of all the modules who are using the reports.
 
 """
@@ -19,7 +19,7 @@ class CommonReport(object):
         Some values are used quite often. Thanks to this class, the code to get them
         will not be repeated everywhere.
     """
-    
+
     def __init__(self, ip_version):
         self.config = ConfigParser.RawConfigParser()
         self.config.optionxform = str
@@ -36,13 +36,13 @@ class CommonReport(object):
             self.ip_key = self.config.get('input_keys','rankv4')
         elif ip_version == 6:
             self.ip_key = self.config.get('input_keys','rankv6')
-    
+
     def get_last_ranking(self):
         """
             Get the timestamp of the ranking
         """
         return self.history_db.get(self.config.get('ranking','latest_ranking'))
-                            
+
     def get_default_date(self):
         """
             Set the default date displayed on the website.

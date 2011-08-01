@@ -6,7 +6,7 @@
 Start the services looking for entries without RIS Whois information in the database.
 """
 
-import os 
+import os
 import sys
 import ConfigParser
 import signal
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     from helpers.initscript import *
     services_dir = os.path.join(root_dir,config.get('directories','services'))
-    
+
     syslog.openlog('BGP_Ranking_RIS', syslog.LOG_PID, syslog.LOG_LOCAL5)
 
 

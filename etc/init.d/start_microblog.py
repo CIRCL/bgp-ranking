@@ -5,7 +5,7 @@
 """
 Start the microblogging bot
 """
-import os 
+import os
 import sys
 import ConfigParser
 

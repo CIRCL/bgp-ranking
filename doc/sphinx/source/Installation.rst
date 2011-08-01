@@ -6,7 +6,7 @@ Installation
 Dependencies of BGP Ranking
 ===========================
 
-Dependencies available in the ubuntu repositories:
+Dependencies available in the ubuntu repositories (Ubuntu 11.04):
 
     ::
     
@@ -45,8 +45,7 @@ Repository of the Redis client (Python). You can safely get the latest stable ve
 
 `Website of Rgraph`_, grab the latest (stable) version.
 
-.. _gitorious: http://gitorious.org/bgp-ranking/bgp-ranking/archive-tarball/1.0.1
-.. _github: https://github.com/Rafiot/bgp-ranking/tree/1.0.1
+.. _github: ttps://github.com/Rafiot/bgp-ranking/tree/stable
 
 Optional dependencies
 ---------------------
@@ -59,15 +58,9 @@ Optional dependencies
 
     ::
         
-        $ apt-get install python-dev python-setuptools
+        $ apt-get install python-dev
 
-2. Fetch hiredis-py
-    
-    ::
-        
-        $ wget http://pypi.python.org/packages/source/h/hiredis/hiredis-0.1.0.tar.gz
-
-3. Install hiredis
+2. Install hiredis
 
     ::
         
@@ -78,22 +71,13 @@ To be able to post on twitter and identi.ca:
     
     ::
         
-        $ apt-get install python-simplejson python-httplib2
+        $ apt-get install python-oauth2
 
-.. _oauth2: https://github.com/simplegeo/python-oauth2
-.. _python-twitter: https://code.google.com/p/python-twitter/
+The version of python-twitter provided by the ubuntu repositories is too old and does not support oauth...
 
-The versions of `oauth2`_ and `python-twitter`_ provided by ubuntu are too old:
-    
     ::
 
-        $ wget http://pypi.python.org/packages/source/o/oauth2/oauth2-1.5.170.tar.gz
-        $ wget http://python-twitter.googlecode.com/files/python-twitter-0.8.1.tar.gz
-
-Unpack the archives and do::
-        $ sudo python setup.py install
-
-In both directories.
+        $ easy_install -U python-twitter
 
 BGP Ranking
 ===========
@@ -127,10 +111,10 @@ Versions from trunk
 Our test environnement is based on Ubuntu 10.10. Except the following programms, we use the
 versions of the repositories: 
 
-* Redis : 2.2
-* Redis-py : 2.2.4
+* Redis : 2.4
+* Redis-py : 2.4.*
 * libbgpdump : 1.4.99.13
-* Rgraph : 2011-01-28-stable
+* Rgraph : Latest stable
 
 
 Third-party programms
@@ -170,6 +154,15 @@ Installation rgraph
 ::
     
     $ unzip RGraph_2011-01-28-stable.zip -d bgpranking/thirdparty/
+
+Installation protovis
+---------------------
+
+::
+    
+    $ unzip RGraph_2011-01-28-stable.zip -d bgpranking/thirdparty/
+
+
 
 Installation redis-py
 ---------------------
@@ -226,6 +219,20 @@ Start the system
 Monitoring
 ==========
 
+Rsystlog
+--------
+
+Configuation:
+
+    ::
+
+        $ cat /etc/rsyslog.d/70-bgpranking.conf 
+        local5.*         /var/log/bgpranking.log
+        #local5.debug     -/var/log/bgpranking.debug
+        local5.info      -/var/log/bgpranking.info
+        #local5.warn      -/var/log/bgpranking.warn
+        local5.err       /var/log/bgpranking.err
+
 Redis logs:
 
 ::
@@ -236,7 +243,7 @@ BGP Ranking logs:
 
 ::
     
-    $ tail -f /var/log/user.log
+    $ tail -f /var/log/bgpranking.log
 
 Website:
 

@@ -4,51 +4,51 @@
 """
     :file:`bin/services/fetch_bview.py` - Fetch the bview files
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
-    The service fetch a dump of the routing database from 
+
+    The service fetch a dump of the routing database from
     the RIS Whois service provided by RIPE NCC.
 
-    It verifies if the new file is more recent than the one already downloaded. 
-    When the script is started, the most recent dump is inconditionally downloaded. 
+    It verifies if the new file is more recent than the one already downloaded.
+    When the script is started, the most recent dump is inconditionally downloaded.
 
-    The URL to download looks like that: 
-            
+    The URL to download looks like that:
+
         ::
-    
+
             http://data.ris.ripe.net/rrc00/YYYY.MM/bview.YYYYMMDD.HHHH.gz
             YYYY    = Year (e.g. 2010)
             MM      = Month (e.g. 09)
             DD      = Day (e.g. 01)
             HHHH    = Hour (0000, 0800 or 1600)
 
-    We always want to fetch the latest available dump, the script will take 
-    the current day and try to find a file corresponding to one of the three possible hours, 
-    in reverse order. 
+    We always want to fetch the latest available dump, the script will take
+    the current day and try to find a file corresponding to one of the three possible hours,
+    in reverse order.
 
-    If the script is not restarted, it will never download two time the same file: 
-    the hour corresponding the last downloaded file is saved. 
-    
-    .. note:: 
-        When the current day change, this hour is set to None. 
-    
-    To verify if the URL to fetch exists, we use a function provided by the two following links 
-     - http://code.activestate.com/recipes/101276/ and 
+    If the script is not restarted, it will never download two time the same file:
+    the hour corresponding the last downloaded file is saved.
+
+    .. note::
+        When the current day change, this hour is set to None.
+
+    To verify if the URL to fetch exists, we use a function provided by the two following links
+     - http://code.activestate.com/recipes/101276/ and
      - http://stackoverflow.com/questions/2486145/python-check-if-url-to-jpg-exists
 
 """
 
-import os 
+import os
 import sys
 import ConfigParser
 import syslog
-import datetime 
+import datetime
 import urllib
 import filecmp
 import glob
 import time
 
 import httplib
-from urlparse import urlparse 
+from urlparse import urlparse
 
 
 
@@ -56,22 +56,22 @@ def usage():
     print "fetch_bview.py"
     exit (1)
 
-def checkURL(url): 
+def checkURL(url):
     """
         Check if the URL exists by getting the header of the response.
     """
-    p = urlparse(url) 
-    h = httplib.HTTPConnection(p[1]) 
+    p = urlparse(url)
+    h = httplib.HTTPConnection(p[1])
     h.request('HEAD', p[2])
     reply = h.getresponse()
     h.close()
-    if reply.status == 200 : return 1 
-    else: return 0 
+    if reply.status == 200 : return 1
+    else: return 0
 
 def downloadURL(url):
     """
         Inconditianilly download the URL in a temporary directory.
-        When finished, the file is moved in the real directory. 
+        When finished, the file is moved in the real directory.
         Like this an other process will not attempt to extract an inclomplete file.
     """
     tmp_dest_file = os.path.join(raw_data, config.get('routing','temp_bviewfile'))

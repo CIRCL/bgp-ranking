@@ -2,18 +2,18 @@
 # -*- coding: utf-8 -*-
 
 """
-Script initializing the redis database of assignations, used by the sorting processes. 
-It defines also the options of the differents servers. 
+Script initializing the redis database of assignations, used by the sorting processes.
+It defines also the options of the differents servers.
 
-NOTE: This script has to be launched each time there is a new assignations files provided by debian. 
+NOTE: This script has to be launched each time there is a new assignations files provided by debian.
 
-FIXME: make two scripts: if the whois entries are not fetched, the only important part is the options of the servers. 
+FIXME: make two scripts: if the whois entries are not fetched, the only important part is the options of the servers.
 """
 
 
 from make_ip_keys import *
 
-import os 
+import os
 import sys
 import ConfigParser
 config = ConfigParser.RawConfigParser()
@@ -28,15 +28,15 @@ import redis
 
 # 'address' : option(s)
 whois_pre_options = {
-    #'whois.ripe.net' :  '-B ', 
+    #'whois.ripe.net' :  '-B ',
     'riswhois.ripe.net' : '-M '
     }
 
 whois_keepalive_options = {
-    'whois.ripe.net' : '-k ', 
+    'whois.ripe.net' : '-k ',
     'riswhois.ripe.net' : '-k '
     }
-    
+
 whois_post_options = {
     'whois.nic.ad.jp' : ' /e '
     }
@@ -53,7 +53,7 @@ def insert(assignations):
         if url not in to_drop :
             if not re.findall('\.',url):
                 url = 'whois.' + url + '.net'
-        # All the urls has to be pushed in the list: 
+        # All the urls has to be pushed in the list:
         # elsewhere there is no running process to put them out of redis...
         urls.add(url)
         # Buggy networks

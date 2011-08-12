@@ -81,13 +81,6 @@
             .strokeStyle("black")
             .lineWidth(1)
             .antialias(false)
-          .add(pv.Label)
-            .data([0, 0.5, 1, 1.5, 2])
-            .left(function(d) 100 * this.index + 1)
-            .textAlign("center")
-            .textStyle("black")
-            .font("14px sans-serif")
-            .text(function(d) d)
           .add(pv.Bar)
             .data(pv.range(0, 2, 1/100))
             .left(function() this.index * 2)
@@ -95,7 +88,16 @@
             .fillStyle(pv.Scale.linear()
             .domain(0, 0.1, 0.4, 1.5 , 2)
             .range("white", "lightgreen", "yellow", "red", "black"))
-            .title(function(d) d);
+            .title(function(d) d)
+          .add(pv.Rule)
+            .data([0, 0.5, 1, 1.5, 2])
+            .left(function(d) 100 * this.index + 1)
+            .strokeStyle(function(d) d ? "rgba(255,255,255,.3)" : "#FFF")
+          .add(pv.Rule)
+            .bottom(0)
+          .anchor("bottom").add(pv.Label)
+            .font("14px sans-serif")
+            .text(function(d) d);
 
 
         vis.render();

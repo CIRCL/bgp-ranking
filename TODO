@@ -49,7 +49,9 @@ Improvements
 
 * add lists: http://labs.snort.org/iplists/
 
-* print month average on ASN details
+* print month average on ASN Details
+
+* whitelisting Google, AOL, Cogent...
 
 New functionalities
 ===================

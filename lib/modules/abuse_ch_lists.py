@@ -28,13 +28,9 @@ class SpyeyetrackerIpBlockList(AbuseCh):
         self.list_type = 1
         AbuseCh.__init__(self, raw_dir)
 
-class AmadaIpBlockList(AbuseCh):
+class PalevotrackerIpBlockList(AbuseCh):
     """
-        Amada IPblocklist provided by Abuse.ch
-
-        .. note::
-            the type of the infection is available in the list but
-            not saved by the module
+        Palevotracker IPblocklist provided by Abuse.ch
     """
 
     def __init__(self, raw_dir):

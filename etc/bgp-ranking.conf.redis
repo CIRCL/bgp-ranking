@@ -23,7 +23,6 @@
 ; all the modules to use. 
 [modules]
 ; classname = impact home_dir url
-AmadaIpBlockList    = 7 amada/ipblocklist/ http://amada.abuse.ch/blocklist.php?download=ipblocklist
 BlocklistDe         = 0.1
 BlocklistDeSsh      = 5 blocklist_de/ssh/ http://www.blocklist.de/lists/ssh.txt
 BlocklistDeMail     = 0.1 blocklist_de/mail/ http://www.blocklist.de/lists/mail.txt
@@ -41,6 +40,7 @@ DshieldDaily        = 0.1 dshield/daily/ http://www.dshield.org/feeds/daily_sour
 DshieldTopIPs       = 1 dshield/topips/ http://www.dshield.org/feeds/topips.txt
 Malc0de             = 5 malc0de/blocklist/ http://malc0de.com/bl/IP_Blacklist.txt
 MalwareDomainListIP = 5 malwaredomainlist/ip/ http://www.malwaredomainlist.com/hostslist/ip.txt
+PalevotrackerIpBlockList = 5 palevo/ipblocklist/ https://palevotracker.abuse.ch/blocklists.php?download=ipblocklist
 SpyeyetrackerDdos   = 3 spyeye/ddos/
 SpyeyetrackerIpBlockList = 7 spyeye/ipblocklist/ http://www.abuse.ch/spyeyetracker/blocklist.php?download=ipblocklist
 SshblBase           = 5 sshbl/base/ http://www.sshbl.org/lists/date.txt

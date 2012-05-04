@@ -16,12 +16,12 @@ Abuse.ch
 
 The datasets are flat files.
 
-.. _amada: http://amada.abuse.ch/
+.. _palevo: https://palevotracker.abuse.ch/
 .. _spyeye: https://spyeyetracker.abuse.ch/
 .. _zeus: https://zeustracker.abuse.ch/
 
-There is several tracker provided by this website and each has a blocklist:
- - amada_
+There are several trackers provided by this website and each has a blocklist:
+ - palevo_
  - spyeye_
  - zeus_
 

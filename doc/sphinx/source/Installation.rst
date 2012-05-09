@@ -9,11 +9,11 @@ Dependencies of BGP Ranking
 Dependencies available in the ubuntu repositories (Ubuntu 11.04):
 
     ::
-    
-        $ apt-get install python-dateutil python-feedparser python-cherrypy3 python-cheetah python-ipy
+
+        $ apt-get install python-dateutil python-feedparser python-cherrypy3 python-cheetah python-ipy logbook
 
 To use the JSON interface (v1.1.4), you need at least Cherrypy 3.2:
-    
+
     ::
 
         sudo easy_install -U cherrypy
@@ -21,7 +21,7 @@ To use the JSON interface (v1.1.4), you need at least Cherrypy 3.2:
 Dependencies of libbgpdump + gcc (compilation :) ) + unzip (rgraph is zipped):
 
     ::
-        
+
         $ apt-get install gcc autoconf zlib1g-dev libbz2-dev unzip
 
 
@@ -41,7 +41,7 @@ Repository of the Redis client (Python). You can safely get the latest stable ve
 
 `Repository of libbgpdump`_, grab the latest version.
 
-.. _Website of Rgraph: http://www.rgraph.net/#download 
+.. _Website of Rgraph: http://www.rgraph.net/#download
 
 `Website of Rgraph`_, grab the latest (stable) version.
 
@@ -52,25 +52,25 @@ Optional dependencies
 
 .. _hiredis: https://github.com/pietern/hiredis-py
 
-`hiredis`_ may improve the performances of the system. To use it, you have to do the following: 
+`hiredis`_ may improve the performances of the system. To use it, you have to do the following:
 
 1. Install the dependencies
 
     ::
-        
+
         $ apt-get install python-dev
 
 2. Install hiredis
 
     ::
-        
+
         $ easy_install hiredis
 
 
 To be able to post on twitter and identi.ca:
-    
+
     ::
-        
+
         $ apt-get install python-oauth2
 
 The version of python-twitter provided by the ubuntu repositories is too old and does not support oauth...
@@ -82,34 +82,34 @@ The version of python-twitter provided by the ubuntu repositories is too old and
 BGP Ranking
 ===========
 
-You can get the latest stable version of the code from `gitorious`_ or 
-from `github`_. Now the latest stable version is 1.1. Always ensure you 
+You can get the latest stable version of the code from `gitorious`_ or
+from `github`_. Now the latest stable version is 1.1. Always ensure you
 are using the latest stable version.
 
 
-You can also download a testing from the github repository: 
+You can also download a testing from the github repository:
 
     ::
-        
+
         git clone git://github.com/Rafiot/bgp-ranking.git
 
-And an unstable version from gitorious: 
+And an unstable version from gitorious:
 
     ::
-        
+
         git clone http://git.gitorious.org/bgp-ranking/bgp-ranking.git
 
 FYI, I also use this programms for the monitoring tasks:
 
     ::
-        
+
         $ apt-get install screen ipython htop most iotop
 
 Versions from trunk
 ===================
 
 Our test environnement is based on Ubuntu 10.10. Except the following programms, we use the
-versions of the repositories: 
+versions of the repositories:
 
 * Redis : 2.4
 * Redis-py : 2.4.*
@@ -129,7 +129,7 @@ Compilation and installation libbgpdump
 Example with the version **1.4.99.13**:
 
 ::
-    
+
     $ tar xjf 1.4.99.13.bz2 -C bgpranking/thirdparty/
     $ cd bgpranking/thirdparty/bgpdump
     $ ./bootstrap.sh
@@ -138,13 +138,13 @@ Example with the version **1.4.99.13**:
 Installation and compilation redis
 ----------------------------------
 
-By default, BGP Ranking will search `redis-server` in :file:`~/redis/src`. If you want 
+By default, BGP Ranking will search `redis-server` in :file:`~/redis/src`. If you want
 yo change it, take a look at :file:`bgp-ranking/scripts/common.source.sh`.
 
-We assume you did it. 
+We assume you did it.
 
 ::
-    
+
     $ cd redis
     $ make
 
@@ -152,14 +152,14 @@ Installation rgraph
 -------------------
 
 ::
-    
+
     $ unzip RGraph_2011-01-28-stable.zip -d bgpranking/thirdparty/
 
 Installation protovis
 ---------------------
 
 ::
-    
+
     $ unzip RGraph_2011-01-28-stable.zip -d bgpranking/thirdparty/
 
 
@@ -170,7 +170,7 @@ Installation redis-py
 In the directory where you clone the repository:
 
 ::
-    
+
     $ python setup.py install
 
 
@@ -181,7 +181,7 @@ Stop everything :)
 ------------------
 
 ::
-    
+
     $ cd scripts
     $ ./stop_ranking.sh
     $ ./stop_services.sh
@@ -192,7 +192,7 @@ Copy the redis dumps
 --------------------
 
 ::
-    
+
     $ scp redis/src/{dump-cache.rdb,dump.rdb} your.new.server:~/redis/src/
 
 
@@ -203,14 +203,14 @@ If you have a completely fresh new install, the first thing to do is to populate
 database 4. It contains the information needed by the whois clients.
 
 ::
-    
+
     $ lib/db_init/init_assignations_redis.py
 
 Start the system
 ================
 
 ::
-    
+
     $ cd scripts
     $ ./start_redis.sh
     $ ./start_services.sh
@@ -226,7 +226,7 @@ Configuation:
 
     ::
 
-        $ cat /etc/rsyslog.d/70-bgpranking.conf 
+        $ cat /etc/rsyslog.d/70-bgpranking.conf
         local5.*         /var/log/bgpranking.log
         #local5.debug     -/var/log/bgpranking.debug
         local5.info      -/var/log/bgpranking.info
@@ -236,25 +236,25 @@ Configuation:
 Redis logs:
 
 ::
-    
+
     $ tail -f ~/redis/src/*.log
 
 BGP Ranking logs:
 
 ::
-    
+
     $ tail -f /var/log/bgpranking.log
 
 Website:
 
 ::
-    
+
     $ python bgp-ranking/website/master.py
 
 Processes:
 
 ::
-    
+
     $ htop
 
 Reverse proxy and Webserver
@@ -264,13 +264,13 @@ Nginx (reverse proxy)
 ---------------------
 
 ::
-    
+
     $ apt-get install nginx
 
 Configuration:
 
 ::
-    
+
     server {
 
         listen   80; ## listen for ipv4
@@ -292,7 +292,7 @@ Cherrypy (webserver)
 --------------------
 
 ::
-    
+
     $ python bgp-ranking/website/master.py
 
 

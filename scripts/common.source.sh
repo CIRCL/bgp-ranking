@@ -6,5 +6,6 @@ PYTHON="/usr/bin/python"
 NICE=""
 
 
-REDIS_ROOT="${PREFIX}/redis/src"
+REDIS_SERVER="/usr/bin/redis-server"
+REDIS_CLIENT="/usr/bin/redis-cli"
 REDIS_CONFIG="${BGP_RANKING_ROOT}/etc/"

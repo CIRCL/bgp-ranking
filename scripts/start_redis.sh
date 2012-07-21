@@ -2,14 +2,11 @@
 
 source common.source.sh
 
-OLD_PWD=$PWD
-cd ${REDIS_ROOT}
+echo -n "Starting main redis instance..."
+${REDIS_SERVER} ${REDIS_CONFIG}/redis.conf
+echo " done."
 
-./redis-server ${REDIS_CONFIG}/redis.conf
-# ./redis-server ${REDIS_CONFIG}/redis-slave.conf
-# ./redis-server ${REDIS_CONFIG}/redis-slave2.conf
+echo -n "Starting cache redis instance..."
+${REDIS_SERVER} ${REDIS_CONFIG}/redis-cache.conf
+echo " done."
 
-./redis-server ${REDIS_CONFIG}/redis-cache.conf
-
-
-cd $OLD_PWD

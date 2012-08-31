@@ -23,7 +23,7 @@
 ; all the modules to use.
 [modules]
 ; classname = impact home_dir url
-Alienvault          = 5 alienvault/reputation.generic/ http://reputation.alienvault.com/reputation.generic
+Alienvault          = 0.1 alienvault/reputation.generic/ http://reputation.alienvault.com/reputation.generic
 BlocklistDe         = 0.1
 BlocklistDeSsh      = 5 blocklist_de/ssh/ http://www.blocklist.de/lists/ssh.txt
 BlocklistDeMail     = 0.1 blocklist_de/mail/ http://www.blocklist.de/lists/mail.txt

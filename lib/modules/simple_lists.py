@@ -8,10 +8,21 @@
     Some other simple lists
 """
 
-
 from modules.abstract_module_default import AbstractModuleDefault
 
+
+class Alienvault(AbstractModuleDefault):
+
+    """
+        List provided by alienvault.com
+    """
+
+    def __init__(self, raw_dir):
+        AbstractModuleDefault.__init__(self, raw_dir)
+
+
 class URLQuery(AbstractModuleDefault):
+
     """
         List provided by urlquery.net
     """
@@ -19,7 +30,9 @@ class URLQuery(AbstractModuleDefault):
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
 
+
 class MalwareDomainListIP(AbstractModuleDefault):
+
     """
         List provided by malwaredomainlist.com
     """
@@ -27,7 +40,9 @@ class MalwareDomainListIP(AbstractModuleDefault):
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
 
+
 class DshieldTopIPs(AbstractModuleDefault):
+
     """
         Top IPs list provided by DShield
     """
@@ -35,7 +50,9 @@ class DshieldTopIPs(AbstractModuleDefault):
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
 
+
 class Sucuri(AbstractModuleDefault):
+
     """
         IPs list provided by Sucuri
         .. note:
@@ -45,7 +62,9 @@ class Sucuri(AbstractModuleDefault):
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
 
+
 class EmergingThreatsCompromized(AbstractModuleDefault):
+
     """
         IPs list of compromized hosts provided by EmergingThreats
         .. note:
@@ -55,7 +74,9 @@ class EmergingThreatsCompromized(AbstractModuleDefault):
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
 
+
 class MaliciousnetworksFIRE(AbstractModuleDefault):
+
     """
         IPs list provided by MaliciousNetworks.org
         .. note:
@@ -65,10 +86,14 @@ class MaliciousnetworksFIRE(AbstractModuleDefault):
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
 
+
 class CIArmy(AbstractModuleDefault):
+
     """
         IPs list provided by ciarmy.com
     """
 
     def __init__(self, raw_dir):
         AbstractModuleDefault.__init__(self, raw_dir)
+
+

@@ -1,15 +1,15 @@
 ; Configuration Data pushed in the redis database
 
-; The timers are used all around the system. 
+; The timers are used all around the system.
 ; The short one is used to check very often if there is new entries to out in the system
 ;timer_short = 5
 ; The intermediate one is used by the twitter client
 ;timer_intermediate = 300
-; The long one is mostly used to veryfy if there is new raw information to fetch. 
+; The long one is mostly used to veryfy if there is new raw information to fetch.
 ;timer_long = 3600
 
 ; History of rankings to compute
-;histo_ranking_days = 2 
+;histo_ranking_days = 2
 
 ; amount of processes to start
 ;processes_input = 6
@@ -20,9 +20,10 @@
 ;processes_ranking = 6
 
 
-; all the modules to use. 
+; all the modules to use.
 [modules]
 ; classname = impact home_dir url
+Alienvault          = 5 alienvault/reputation.generic/ http://reputation.alienvault.com/reputation.generic
 BlocklistDe         = 0.1
 BlocklistDeSsh      = 5 blocklist_de/ssh/ http://www.blocklist.de/lists/ssh.txt
 BlocklistDeMail     = 0.1 blocklist_de/mail/ http://www.blocklist.de/lists/mail.txt

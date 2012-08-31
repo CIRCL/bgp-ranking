@@ -130,7 +130,7 @@ class Master(object):
         """
             Escape input
         """
-        return cgi.escape(var)
+        return cgi.escape(var, True)
 
     def reset_if_empty(self, to_check = None):
         """

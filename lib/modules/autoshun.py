@@ -10,6 +10,7 @@
 
 import re
 import os
+import datetime
 import dateutil.parser
 import csv
 from modules.abstract_module import AbstractModule
@@ -22,6 +23,7 @@ class Shunlist(AbstractModule):
         self.directory = raw_dir
 
     def parse(self):
+        self.date = datetime.date.today()
         self.ips = []
         for file in self.files:
             with open(file, 'r') as csvfile:

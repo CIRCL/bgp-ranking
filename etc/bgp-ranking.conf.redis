@@ -42,6 +42,7 @@ DshieldTopIPs       = 1 dshield/topips/ http://www.dshield.org/feeds/topips.txt
 Malc0de             = 5 malc0de/blocklist/ http://malc0de.com/bl/IP_Blacklist.txt
 MalwareDomainListIP = 5 malwaredomainlist/ip/ http://www.malwaredomainlist.com/hostslist/ip.txt
 PalevotrackerIpBlockList = 5 palevo/ipblocklist/ https://palevotracker.abuse.ch/blocklists.php?download=ipblocklist
+Shunlist            = 1 autosun/shunlist/ http://www.autoshun.org/files/shunlist.csv
 SpyeyetrackerDdos   = 3 spyeye/ddos/
 SpyeyetrackerIpBlockList = 7 spyeye/ipblocklist/ http://www.abuse.ch/spyeyetracker/blocklist.php?download=ipblocklist
 SshblBase           = 5 sshbl/base/ http://www.sshbl.org/lists/date.txt

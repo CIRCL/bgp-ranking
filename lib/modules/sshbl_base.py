@@ -28,10 +28,9 @@ class SshblBase(AbstractModule):
                 if line[0] != '#':
                     splitted = line.split()
                     ip = splitted[0]
-                    date = datetime.datetime.utcfromtimestamp(int(splitted[1]))
                     if len(ip) == 0:
                         continue
-                    entry = self.prepare_entry(ip = ip, source = self.__class__.__name__, timestamp = date)
+                    entry = self.prepare_entry(ip = ip, source = self.__class__.__name__, timestamp = self.date)
                     self.put_entry(entry)
             daily.close()
             self.move_file(file)

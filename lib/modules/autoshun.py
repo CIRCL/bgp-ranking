@@ -30,7 +30,7 @@ class Shunlist(AbstractModule):
                     if len(line) < 3:
                         continue
                     ip = line[0]
-                    date = line[1]
+                    date = dateutil.parser.parse(line[1])
                     comment = line[2]
                     entry = self.prepare_entry(ip = ip, source = self.__class__.__name__, timestamp = date)
                     self.put_entry(entry)

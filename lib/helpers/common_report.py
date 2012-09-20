@@ -80,7 +80,10 @@ class CommonReport(object):
                                                                 source = source,\
                                                                 ip_key = self.ip_key)
         to_get = ['{asn}{string}'.format(asn = asn, string = string) for asn in asn_list]
-        return self.history_db.mget(to_get)
+        if len(to_get) != 0:
+            return self.history_db.mget(to_get)
+        else :
+            return None
 
     def get_daily_rank_client(self, asn, date, source = None):
         """

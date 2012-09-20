@@ -23,11 +23,11 @@
 ; all the modules to use.
 [modules]
 ; classname = impact home_dir url
-Alienvault          = 0.1 alienvault/reputation.generic/ http://reputation.alienvault.com/reputation.generic
+Alienvault          = 0.01 alienvault/reputation.generic/ http://reputation.alienvault.com/reputation.generic
 BlocklistDe         = 0.1
 BlocklistDeSsh      = 5 blocklist_de/ssh/ http://www.blocklist.de/lists/ssh.txt
 BlocklistDeMail     = 0.1 blocklist_de/mail/ http://www.blocklist.de/lists/mail.txt
-BlocklistDeApache   = 5 blocklist_de/apache/ http://www.blocklist.de/lists/apache.txt
+BlocklistDeApache   = 0.1 blocklist_de/apache/ http://www.blocklist.de/lists/apache.txt
 BlocklistDePop3     = 5 blocklist_de/pop3/ http://www.blocklist.de/lists/pop3.txt
 BlocklistDeFtp      = 5 blocklist_de/ftp/ http://www.blocklist.de/lists/ftp.txt
 CIArmy              = 5 ciarmy/ip/ http://www.ciarmy.com/list/ci-badguys.txt
@@ -45,7 +45,7 @@ PalevotrackerIpBlockList = 5 palevo/ipblocklist/ https://palevotracker.abuse.ch/
 Shunlist            = 1 autosun/shunlist/ http://www.autoshun.org/files/shunlist.csv
 SpyeyetrackerDdos   = 3 spyeye/ddos/
 SpyeyetrackerIpBlockList = 7 spyeye/ipblocklist/ http://www.abuse.ch/spyeyetracker/blocklist.php?download=ipblocklist
-SshblBase           = 5 sshbl/base/ http://www.sshbl.org/lists/date.txt
+SshblBase           = 5 sshbl/base/ https://www.openbl.org/lists/base.txt
 Sucuri              = 5 sucuri/ip/ http://sucuri.net/blacklist/MS-iplist.txt
 URLQuery            = 5 urlquery/ip/ http://urlquery.net/ip.txt
 ZeustrackerDdos     = 3 zeus/ddos/

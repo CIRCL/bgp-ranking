@@ -1,0 +1,24 @@
+Overall changes
+- proper monitoring and logging
+    - send mail if something goes wrong
+        - pubsublogger / Logbook
+    - generate statistics
+        - Munin ?
+- use argparse for the services
+    - and catch exceptions
+- use proper exceptions classes
+- ensure the data input is valid
+- Save the old/static data in a "proper" database
+- Create libraries to split the project in multiple parts
+- Add testcases
+
+Lists
+- different types of lists (infected client, C&C, P2P, DDoS, scanning, suspected...)
+    - different handling
+    - add context (type of detection) in the DB
+- ability to split the lists in multiple one
+- change weight of the lists on the fly
+
+Website
+- Django ?
+- bootstrap?

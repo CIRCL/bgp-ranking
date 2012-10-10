@@ -8,7 +8,7 @@ Overall changes
     - and catch exceptions
 - use proper exceptions classes
 - ensure the data input is valid
-- Save the old/static data in a "proper" database
+- Save the old/static data in a "proper" database (Riak ?)
 - Create libraries to split the project in multiple parts
 - Add testcases
 
@@ -20,5 +20,6 @@ Lists
 - change weight of the lists on the fly
 
 Website
+- Display all the subnets for each malicious ASNs
 - Django ?
 - bootstrap?

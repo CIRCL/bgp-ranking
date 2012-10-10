@@ -15,21 +15,20 @@
 
 """
 import os
-import sys
 import ConfigParser
 import subprocess
+import signal
 
-import syslog
+from pubsublogger import publisher
 
 def init_static():
     config = ConfigParser.RawConfigParser()
     config.optionxform = str
-    config_file = "/path/to/bgp-ranking.conf"
+    config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
     pid_path = os.path.join(root_dir,config.get('directories','pids'))
 
-    syslog.openlog('BGP_Ranking', syslog.LOG_PID, syslog.LOG_LOCAL5)
     return config, pid_path
 
 
@@ -38,8 +37,7 @@ def service_start_multiple(servicename, number, param = None):
         Start multiple services using `service_start` and save their pids
     """
     i = 0
-    #print('Starting ' + str(number) + ' times ' + servicename)
-    syslog.syslog(syslog.LOG_INFO, 'Starting ' + str(number) + ' times ' + servicename)
+    publisher.info('Starting ' + str(number) + ' times ' + servicename)
     while i < number:
         proc = service_start(servicename, param)
         writepid(servicename, proc)
@@ -58,7 +56,7 @@ def service_start_once(servicename = None, param = None, processname = None):
         writepid(processname, proc)
     else:
         print(processname + ' already running on pid ' + str(pidof(processname)[0]))
-        syslog.syslog(syslog.LOG_ERR, "%s already running with pid %s" % (param, pidof(processname)[0]))
+        publisher.error("%s already running with pid %s" % (param, pidof(processname)[0]))
 
 def service_start(servicename = None, param = None):
     """
@@ -69,7 +67,7 @@ def service_start(servicename = None, param = None):
         if not param:
             proc =  subprocess.Popen(["python",service])
         else:
-            proc =  subprocess.Popen(["python",service, param])
+            proc =  subprocess.Popen(["python",service] + param)
         return proc
     return False
 
@@ -124,11 +122,11 @@ def update_running_pids(old_procs):
     new_procs = []
     for proc in old_procs:
         if proc.poll() == None and check_pid(proc.pid):
-#            syslog.syslog(syslog.LOG_DEBUG, str(proc.pid) + ' is alive')
+            publisher.debug(str(proc.pid) + ' is alive')
             new_procs.append(proc)
         else:
             try:
-#                syslog.syslog(syslog.LOG_DEBUG, str(proc.pid) + ' is gone')
+                publisher.debug(str(proc.pid) + ' is gone')
                 os.kill (proc.pid, signal.SIGKILL)
             except:
                 # the process is just already gone

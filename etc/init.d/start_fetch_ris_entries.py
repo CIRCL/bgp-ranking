@@ -3,7 +3,7 @@
 # Inspired by : http://gitorious.org/forban/forban/blobs/master/bin/forbanctl
 
 """
-Start the service inserting the new entries in the Redis database
+Start the services fetching the (RIS) Whois information from the whois servers.
 """
 import os
 import sys
@@ -13,12 +13,13 @@ import signal
 from pubsublogger import publisher
 import argparse
 
+servers_available = ['riswhois.ripe.net']
 
 if __name__ == '__main__':
 
-    publisher.channel = 'DatabaseInput'
+    publisher.channel = 'RISWhoisFetch'
 
-    parser = argparse.ArgumentParser(description='Start the database input processes')
+    parser = argparse.ArgumentParser(description='Start the RIS Whoid fetcher processes')
     parser.add_argument('action', choices=('start', 'stop'))
     args = parser.parse_args()
 
@@ -30,27 +31,30 @@ if __name__ == '__main__':
     from helpers.initscript import *
     services_dir = os.path.join(root_dir,config.get('directories','services'))
 
-    service = os.path.join(services_dir, "db_input")
+    service = os.path.join(services_dir, "fetch_ris_entries")
 
     if args.action == "start":
-        print("Starting insertion...")
-        publisher.info("Starting insertion...")
-        print(service + " to start...")
-        publisher.info(service + " to start...")
-        service_start_multiple(servicename = service, number = \
-                int(config.get('processes','input')))
+        publisher.info( "Starting fetching...")
+        for option in servers_available:
+            print(option + " to start...")
+            publisher.info( option + " to start...")
+            service_start_multiple(servicename = service,
+                    param = ['-s', option],
+                    number = int(config.get('processes','whois_fetch')))
 
     elif args.action == "stop":
-        print("Stopping insertion...")
-        publisher.info("Stopping insertion...")
+        print("Stopping fetching...")
+        publisher.info("Stopping fetching...")
         pids = pidof(processname=service)
         if pids:
             print(service + " to be stopped...")
             publisher.info(service + " to be stopped...")
             for pid in pids:
                 try:
-                    os.kill(int(pid), signal.SIGHUP)
+                    os.kill(int(pid), signal.SIGKILL)
                 except OSError, e:
                     print(service + " unsuccessfully stopped")
-                    publisher.error(service +  " unsuccessfully stopped")
+                    publisher.error(service + " unsuccessfully stopped")
             rmpid(processname=service)
+    else:
+        usage()

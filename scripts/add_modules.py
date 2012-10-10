@@ -7,7 +7,7 @@ import redis
 
 class AddModules(object):
     def __init__(self):
-        self.config_file = "/path/to/bgp-ranking.conf"
+        self.config_file = "/etc/bgpranking/bgpranking.conf"
 
         config = ConfigParser.SafeConfigParser()
         config.read(self.config_file)

@@ -44,7 +44,7 @@ MalwareDomainListIP = 5 malwaredomainlist/ip/ http://www.malwaredomainlist.com/h
 PalevotrackerIpBlockList = 5 palevo/ipblocklist/ https://palevotracker.abuse.ch/blocklists.php?download=ipblocklist
 SpyeyetrackerDdos   = 3 spyeye/ddos/
 SpyeyetrackerIpBlockList = 7 spyeye/ipblocklist/ http://www.abuse.ch/spyeyetracker/blocklist.php?download=ipblocklist
-SshblBase           = 5 sshbl/base/ http://www.sshbl.org/lists/date.txt
+SshblBase           = 5 sshbl/base/ https://www.openbl.org/lists/base.txt
 Sucuri              = 5 sucuri/ip/ http://sucuri.net/blacklist/MS-iplist.txt
 URLQuery            = 5 urlquery/ip/ http://urlquery.net/ip.txt
 ZeustrackerDdos     = 3 zeus/ddos/

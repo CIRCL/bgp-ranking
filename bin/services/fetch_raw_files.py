@@ -14,9 +14,9 @@
 """
 
 import os
-import sys
 import ConfigParser
-import syslog
+from pubsublogger import publisher
+import argparse
 import datetime
 import urllib
 import filecmp
@@ -25,86 +25,104 @@ import time
 import redis
 
 
-def usage():
-    print "fetch_raw_files.py name dir url"
-    exit (1)
+sleep_timer = 0
+sleep_timer_short = 0
+config_db = None
+module = None
+directory = None
+url = None
+temp_filename = None
+filename = None
+old_directory = None
 
-class FetchRaw(object):
+def prepare():
+    global sleep_timer
+    global sleep_timer_short
+    global config_db
+    global directory
+    global temp_filename
+    global filename
+    global old_directory
+    config = ConfigParser.RawConfigParser()
+    config_file = '/etc/bgpranking/bgpranking.conf'
+    config.read(config_file)
 
-    def __init__(self, module, directory, url):
-        config = ConfigParser.RawConfigParser()
-        config_file = "/path/to/bgp-ranking.conf"
-        config.read(config_file)
-        root_dir = config.get('directories','root')
-        raw_dir = config.get('directories','raw_data')
-        temporary_dir = config.get('fetch_files','tmp_dir')
-        old_dir = config.get('fetch_files','old_dir')
+    root_dir = config.get('directories','root')
+    raw_dir = config.get('directories','raw_data')
+    directory = os.path.join(root_dir, raw_dir, directory)
+    filename = os.path.join(directory, str(datetime.date.today()))
 
-        self.sleep_timer = int(config.get('sleep_timers','long'))
-        self.sleep_timer_short = int(config.get('sleep_timers','short'))
+    temporary_dir = config.get('fetch_files','tmp_dir')
+    temp_filename = os.path.join(directory, temporary_dir, str(datetime.date.today()))
 
-        self.config_db = redis.Redis(port = int(config.get('redis','port_master')),\
-                                       db = config.get('redis','config'))
+    old_dir = config.get('fetch_files','old_dir')
+    old_directory = os.path.join(directory, old_dir)
 
-        self.module = module
-        self.directory = os.path.join(root_dir, raw_dir, directory)
-        self.url = url
+    sleep_timer = int(config.get('sleep_timers','long'))
+    sleep_timer_short = int(config.get('sleep_timers','short'))
 
-        self.temp_filename = os.path.join(self.directory, temporary_dir, str(datetime.date.today()))
-        self.filename = os.path.join(self.directory, str(datetime.date.today()))
-        self.old_directory = os.path.join(self.directory, old_dir)
+    config_db = redis.Redis(port = int(config.get('redis','port_master')),\
+                                   db = config.get('redis','config'))
 
-    def fetcher(self):
+
+def fetcher():
+    """
+        Main function which fetch the datasets
+    """
+    while config_db.sismember('modules', module):
+        try:
+            urllib.urlretrieve(url, temp_filename)
+        except:
+            publisher.error('Unable to fetch ' + url)
+            __check_exit()
+            continue
+        drop_file = False
         """
-            Main function which fetch the datasets
+            Check is the file already exists, if the same file is found,
+            the downloaded file is dropped. Else, it is moved in his final directory.
+            FIXME: I should not check ALL the file present, or do sth with old files
         """
-        while self.config_db.sismember('modules', self.module):
-            try:
-                urllib.urlretrieve(self.url, self.temp_filename)
-            except:
-                syslog.syslog(syslog.LOG_ERR, 'Unable to fetch ' + self.url)
-                self.check_exit()
-                continue
-            drop_file = False
-            """
-                Check is the file already exists, if the same file is found,
-                the downloaded file is dropped. Else, it is moved in his final directory.
-                FIXME: I should not check ALL the file present, or do sth with old files
-            """
-            to_check = glob.glob( os.path.join(self.old_directory, '*') )
-            to_check += glob.glob( os.path.join(self.directory, '*') )
-            for file in to_check:
-                if filecmp.cmp(self.temp_filename, file):
-                    drop_file = True
-                    break
-            if drop_file:
-                os.unlink(self.temp_filename)
-        #        syslog.syslog(syslog.LOG_DEBUG, 'No new file on ' + sys.argv[3])
-            else:
-                os.rename(self.temp_filename, self.filename)
-                syslog.syslog(syslog.LOG_INFO, 'New file on ' + self.url)
-            self.check_exit()
-        self.config_db.delete(self.module + "|" + "fetching")
-
-    def check_exit(self):
-        """
-            Check in redis if the module should be stoped
-        """
-        wait_until = datetime.datetime.now() + datetime.timedelta(seconds = self.sleep_timer)
-        while wait_until >= datetime.datetime.now():
-            if not self.config_db.sismember('modules', self.module):
+        to_check = glob.glob( os.path.join(old_directory, '*') )
+        to_check += glob.glob( os.path.join(directory, '*') )
+        for file in to_check:
+            if filecmp.cmp(temp_filename, file):
+                drop_file = True
                 break
-            time.sleep(self.sleep_timer_short)
+        if drop_file:
+            os.unlink(temp_filename)
+            publisher.debug('No new file on ' + url)
+        else:
+            os.rename(temp_filename, filename)
+            publisher.info('New file on ' + url)
+        __check_exit()
+    config_db.delete(module + "|" + "fetching")
+
+def __check_exit():
+    """
+        Check in redis if the module should be stoped
+    """
+    wait_until = datetime.datetime.now() + datetime.timedelta(seconds = sleep_timer)
+    while wait_until >= datetime.datetime.now():
+        if not config_db.sismember('modules', module):
+            break
+        time.sleep(sleep_timer_short)
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Start a fetcher for a list.')
 
+    parser.add_argument("-n", "--name", required=True, type=str, help='Name of the list.')
+    parser.add_argument("-d", "--directory", required=True, type=str, help='Path to the directory where the lists are saved.')
+    parser.add_argument("-u", "--url", required=True, type=str, help='URL to fetch.')
 
-    syslog.openlog('BGP_Ranking_Fetch_Raw_Files', syslog.LOG_PID, syslog.LOG_LOCAL5)
+    args = parser.parse_args()
 
-    if len(sys.argv) < 4:
-        usage()
+    module = args.name
+    directory = args.directory
+    url = args.url
 
-    fr = FetchRaw(sys.argv[1], sys.argv[2], sys.argv[3])
+    publisher.channel = 'FetchRawFiles'
 
-    fr.fetcher()
+    prepare()
+    fetcher()
+

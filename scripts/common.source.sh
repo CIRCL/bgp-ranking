@@ -1,4 +1,4 @@
-PREFIX="/path/to/project/prefix"
+PREFIX="/home/raphael/gits/"
 BGP_RANKING_ROOT="${PREFIX}/bgp-ranking"
 #PYTHON="${PREFIX}/Python-2.7/python"
 PYTHON="/usr/bin/python"

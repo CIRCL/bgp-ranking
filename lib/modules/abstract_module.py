@@ -32,7 +32,7 @@ class AbstractModule(object):
 
     def __init__(self):
         self.config = ConfigParser.RawConfigParser()
-        config_file = "/path/to/bgp-ranking.conf"
+        config_file = "/etc/bgpranking/bgpranking.conf"
         self.config.read(config_file)
 
         self.separator = self.config.get('input_keys','separator')

@@ -132,3 +132,12 @@ The dataset is a flat file
 .. _Alienvault.com: http://www.alienvault.com/
 
 More information available on the `Alienvault.com`_ website.
+
+Shunlist
+========
+
+The dataset is a flat file
+
+.. _Autoshun.org: http://www.autoshun.org/
+
+More information available on the `Autoshun.org`_ website.

@@ -38,23 +38,23 @@
 """
 
 import os
-import sys
 import ConfigParser
-import syslog
 import datetime
 import urllib
-import filecmp
-import glob
 import time
 
 import httplib
 from urlparse import urlparse
 
+from pubsublogger import publisher
 
-
-def usage():
-    print "fetch_bview.py"
-    exit (1)
+sleep_timer = 3600
+base_url = 'http://data.ris.ripe.net/rrc00/{year_month}/bview.{file_day}.{hour}.gz'
+hours = ['0000', '0800', '1600']
+path_bviewtimesamp = 'bgp/bview.gz.timestamp'
+path_temp_bviewfile = 'bgp/tmp/bview.gz'
+path_bviewfile = 'bgp/bview.gz'
+current_date = None
 
 def checkURL(url):
     """
@@ -74,8 +74,8 @@ def downloadURL(url):
         When finished, the file is moved in the real directory.
         Like this an other process will not attempt to extract an inclomplete file.
     """
-    tmp_dest_file = os.path.join(raw_data, config.get('routing','temp_bviewfile'))
-    dest_file = os.path.join(raw_data, config.get('routing','bviewfile'))
+    tmp_dest_file = os.path.join(raw_data, path_temp_bviewfile)
+    dest_file = os.path.join(raw_data, path_bviewfile)
     urllib.urlretrieve(url, tmp_dest_file)
     os.rename(tmp_dest_file, dest_file)
 
@@ -84,7 +84,7 @@ def already_downloaded(date, hour):
         Verify that the date and the hour of the file we try to
         download is newer than the latest downloaded file.
     """
-    ts_file = os.path.join(raw_data, config.get('routing','bviewtimesamp'))
+    ts_file = os.path.join(raw_data, path_bviewtimesamp)
     if os.path.exists(ts_file):
         ts = open(ts_file, 'r').read().split()
         if ts[0] == date:
@@ -95,39 +95,31 @@ def already_downloaded(date, hour):
 
 
 if __name__ == '__main__':
+
+    publisher.channel = 'Ranking'
+
     config = ConfigParser.RawConfigParser()
-    config_file = "/path/to/bgp-ranking.conf"
+    config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
-    root_dir = config.get('directories','root')
-    temporary_dir = config.get('fetch_files','tmp_dir')
-    old_dir = config.get('fetch_files','old_dir')
-    sleep_timer = int(config.get('routing','timer'))
-    raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
+    raw_data = os.path.join(config.get('directories','root'),
+            config.get('directories','raw_data'))
 
-    syslog.openlog('BGP_Ranking_Fetch_bview', syslog.LOG_PID, syslog.LOG_LOCAL5)
-
-    base_url = config.get('routing','base_url')
-    hours = sorted(config.get('routing','update_hours').split())
-    prefix = config.get('routing','prefix_basename')
-    suffix = config.get('routing','suffix_basename')
-
-    current_date = None
     while 1:
         try:
             current_date = datetime.date.today()
             # Initialization of the URL to fetch
-            dir = current_date.strftime("%Y.%m")
+            year_month = current_date.strftime("%Y.%m")
             file_day = current_date.strftime("%Y%m%d")
-            daily_url = base_url + '/' + dir + '/' + prefix + file_day + '.%s' +  suffix
 
             for hour in reversed(hours):
-                url = daily_url % hour
+                url = base_url.format(year_month = year_month,
+                        file_day = file_day, hour = hour)
                 if checkURL(url):
                     if not already_downloaded(file_day, hour):
-                        syslog.syslog(syslog.LOG_INFO, "New bview file found: " + url)
+                        publisher.info("New bview file found: " + url)
                         downloadURL(url)
                         last_hour = hour
                         break
         except:
-            syslog.syslog(syslog.LOG_CRIT, 'Unable to download bview file. Server does not respond.')
+            publisher.critical('Unable to download bview file. Server does not respond.')
         time.sleep(sleep_timer)

@@ -20,7 +20,7 @@ class MasterControler(object):
 
     def __init__(self):
         self.config = ConfigParser.RawConfigParser()
-        config_file = "/path/to/bgp-ranking.conf"
+        config_file = "/etc/bgpranking/bgpranking.conf"
         self.config.read(config_file)
         root_dir =  self.config.get('directories','root')
         sys.path.append(os.path.join(root_dir,self.config.get('directories','libraries')))

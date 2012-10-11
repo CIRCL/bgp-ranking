@@ -17,9 +17,10 @@ from abstract_parser import AbstractParser
 
 if __name__ == "__main__":
     config = ConfigParser.RawConfigParser()
-    config_file = "/path/to/bgp-ranking.conf"
+    config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
-    sys.path.append(os.path.join(config.get('directories','root'),config.get('directories','libraries')))
+    sys.path.append(os.path.join(config.get('directories','root'),
+        config.get('directories','libraries')))
 
 RIPE_BGP_Dump = {
     'asn'   : 'ASPATH:[\s]*([^\n{]*)',
@@ -36,7 +37,6 @@ class BGP(AbstractParser):
 
 if __name__ == "__main__":
     import dateutil.parser
-    import datetime
     import time
 
     riswhois = "TIME: 06/15/10 08:00:00 \n \

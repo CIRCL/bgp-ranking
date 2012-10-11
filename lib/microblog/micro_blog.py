@@ -13,7 +13,6 @@
 
 import twitter
 from micro_blog_keys import *
-import dateutil.parser
 import redis
 
 if __name__ == '__main__':
@@ -21,7 +20,7 @@ if __name__ == '__main__':
     import sys
     import ConfigParser
     config = ConfigParser.RawConfigParser()
-    config_file = "/path/to/bgp-ranking.conf"
+    config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
@@ -71,13 +70,13 @@ class MicroBlog(CommonReport):
         if len(dms) > 0 :
             self.microblog_db_temp.set(key, dms[0].id)
 
-    def post_last_top(self):
+    def post_last_top(self, dev_mode = False):
         """
             Post the last top five (once a day)
         """
         last_top_date = self.check_last_top()
         raw_date, date = self.get_default_date()
-        if date != last_top_date:
+        if date != last_top_date and not dev_mode:
             self.post(self.top_date(date))
             return True
         return False

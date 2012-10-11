@@ -1,5 +1,7 @@
-PREFIX="/home/raphael/gits/"
-BGP_RANKING_ROOT="${PREFIX}/bgp-ranking"
+set -e
+
+PREFIX="${HOME}/gits/"
+BGP_RANKING_ROOT="${PREFIX}bgp-ranking"
 #PYTHON="${PREFIX}/Python-2.7/python"
 PYTHON="/usr/bin/python"
 #NICE="nice -n15 ionice -n2 -c7"

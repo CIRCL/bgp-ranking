@@ -34,6 +34,7 @@ class AbstractModuleDefault(AbstractModule):
         for file in self.files:
             daily = open(file)
             for line in daily:
+                # TODO: Would also '((?:\d{1,3}\.){3}\d{1,3})' do the job?
                 ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s].*',line)
                 if len(ip) == 0:
                     continue

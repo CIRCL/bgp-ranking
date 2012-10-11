@@ -11,14 +11,19 @@ import sys
 import ConfigParser
 
 import signal
-
-def usage():
-    print "start_fetch_bview.py (start|stop)"
-    exit (1)
+from pubsublogger import publisher
+import argparse
 
 if __name__ == '__main__':
+
+    publisher.channel = 'Ranking'
+
+    parser = argparse.ArgumentParser(description='Fetch a Bview file.')
+    parser.add_argument('action', choices=('start', 'stop'))
+    args = parser.parse_args()
+
     config = ConfigParser.RawConfigParser()
-    config_file = "/path/to/bgp-ranking.conf"
+    config_file = '/etc/bgpranking/bgpranking.conf'
     config.read(config_file)
     root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
@@ -27,29 +32,25 @@ if __name__ == '__main__':
 
     service = os.path.join(services_dir, "fetch_bview")
 
-    syslog.openlog('BGP_Ranking_Bview', syslog.LOG_PID, syslog.LOG_LOCAL5)
-
-    if len(sys.argv) < 2:
-        usage()
-
-    if sys.argv[1] == "start":
+    if args.action == "start":
         print('Start fetching of bview')
-        syslog.syslog(syslog.LOG_INFO, 'Start fetching of bview')
-        proc = service_start_once(servicename = service, processname = service)
-    elif sys.argv[1] == "stop":
+        publisher.info('Start fetching of bview')
+        print(service + " to start...")
+        publisher.info(service + " to start...")
+        proc = service_start_once(servicename = service,
+                processname = service)
+
+    elif args.action == "stop":
         print('Stop fetching of bview')
-        syslog.syslog(syslog.LOG_INFO, 'Stop fetching of bview')
+        publisher.info('Stop fetching of bview')
         pid = pidof(processname=service)
         if pid:
             pid = pid[0]
+            print(service + " to be stopped...")
+            publisher.info(service + " to be stopped...")
             try:
                 os.kill(int(pid), signal.SIGKILL)
             except OSError, e:
-                print("bview fetching unsuccessfully stopped")
-                syslog.syslog(syslog.LOG_ERR,"bview fetching unsuccessfully stopped")
+                print(service + 'unsuccessfully stopped')
+                publisher.error(service + 'unsuccessfully stopped')
             rmpid(processname=service)
-        else:
-            print('No running bview fetching processes')
-            syslog.syslog(syslog.LOG_INFO, 'No running bview fetching processes')
-    else:
-        usage()

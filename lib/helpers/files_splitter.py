@@ -67,13 +67,3 @@ class FilesSplitter(object):
                 break
         return self.splitted_files
 
-
-if __name__ == "__main__":
-    import sys
-    import ConfigParser
-    config = ConfigParser.SafeConfigParser()
-    config_file = "/path/to/bgp-ranking.conf"
-    config.read(config_file)
-    file = '/home/raphael/bgp-ranking/var/raw_data/bgp/bview'
-    fs = FilesSplitter(file, int(config.get('routing','processes_push')))
-    print fs.fplit()

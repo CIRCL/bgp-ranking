@@ -16,22 +16,32 @@ import os
 import sys
 import ConfigParser
 import redis
-import syslog
+
+from pubsublogger import publisher
+import argparse
 
 if __name__ == '__main__':
 
+    parser = argparse.ArgumentParser(description='Parse a bview file.')
+    parser.add_argument("-f", "--filename", required=True, type=str, help='Name of the file.')
+    args = parser.parse_args()
+
+    filename = args.filename
+
     config = ConfigParser.RawConfigParser()
-    config_file = "/path/to/bgp-ranking.conf"
+    config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
-    sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
-    from whois_parser.bgp_parsers import *
+    sys.path.append(os.path.join(root_dir,config.get('directories',
+        'libraries')))
+    from whois_parser.bgp_parsers import BGP
 
-    routing_db = redis.Redis(port = int(config.get('redis','port_cache')), db=config.get('redis','routing'))
+    routing_db = redis.Redis(port = int(config.get('redis','port_cache')),
+            db=config.get('redis','routing'))
 
-    syslog.openlog('Push_BGP_Routing', syslog.LOG_PID, syslog.LOG_LOCAL5)
+    publisher.channel = 'Ranking'
 
-    file = open(sys.argv[1])
+    file = open(filename)
     entry = ''
     pipeline = routing_db.pipeline()
     i = 0
@@ -49,13 +59,13 @@ if __name__ == '__main__':
                 if block is not None:
                     pipeline.sadd(asn, block)
                 entry = ''
-            if i >= 10000:
+            if i%10000 == 0:
                 pipeline.execute()
                 pipeline = routing_db.pipeline()
-                i = 0
         else :
             # append the line to the current block.
             entry += line
     pipeline.execute()
-    syslog.syslog(syslog.LOG_INFO, sys.argv[1] + ' done')
-    os.unlink(sys.argv[1])
+    publisher.info('{f} finished, {nb} entries impported.'.\
+            format(f=filename, nb = i))
+    os.unlink(filename)

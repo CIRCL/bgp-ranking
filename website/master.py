@@ -9,11 +9,8 @@
 
 import os
 import cherrypy
-from cherrypy import _cperror
 from Cheetah.Template import Template
 import ConfigParser
-import sys
-import IPy
 from master_controler import MasterControler
 import cgi
 
@@ -21,7 +18,7 @@ class Master(object):
 
     def __init__(self):
         self.config = ConfigParser.RawConfigParser()
-        config_file = "/path/to/bgp-ranking.conf"
+        config_file = "/etc/bgpranking/bgpranking.conf"
         self.config.read(config_file)
 
         self.templates = config.get('web','templates')
@@ -235,7 +232,7 @@ def error_page_404(status, message, traceback, version):
 
 if __name__ == "__main__":
     config = ConfigParser.RawConfigParser()
-    config_file = "/path/to/bgp-ranking.conf"
+    config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
 
     website = Master()

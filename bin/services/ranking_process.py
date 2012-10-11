@@ -11,39 +11,45 @@
 
 import os
 import sys
-import IPy
 import ConfigParser
-
+import time
 import redis
-import syslog
+
+from pubsublogger import publisher
+
+sleep_timer = 10
+key_to_rank = 'to_rank'
+
 
 if __name__ == '__main__':
 
+    publisher.channel = 'Ranking'
+
     config = ConfigParser.RawConfigParser()
-    config_file = "/path/to/bgp-ranking.conf"
+    config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
-    root_dir =  config.get('directories','root')
+    root_dir = config.get('directories','root')
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
-    from ranking.compute import *
-    sleep_timer = int(config.get('sleep_timers','short'))
+    from ranking import compute
 
-    history_db   = redis.Redis(port = int(config.get('redis','port_cache')) , db=config.get('redis','history'))
-
-    syslog.openlog('Compute_Ranking_Process', syslog.LOG_PID, syslog.LOG_LOCAL5)
-
+    history_db = redis.Redis(port = int(config.get('redis','port_cache')),
+            db=config.get('redis','history'))
     i = 0
 
-    time.sleep(sleep_timer)
-    syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(number = history_db.scard(config.get('redis','to_rank'))))
-    r = Ranking()
-    while history_db.scard(config.get('redis','to_rank')) > 0 :
-        key = history_db.spop(config.get('redis','to_rank'))
+    time.sleep(360)
+    publisher.info('{number} rank to compute'.\
+            format(number = history_db.scard(key_to_rank)))
+    compute.prepare()
+    while history_db.scard(key_to_rank) > 0 :
+        key = history_db.spop(key_to_rank)
         try:
             if key is not None:
-                r.rank_using_key(key)
+                compute.rank_using_key(key)
                 i +=1
-                if i >= 1000:
-                    syslog.syslog(syslog.LOG_INFO, '{number} rank to compute'.format(number = history_db.scard(config.get('redis','to_rank'))))
-                    i = 0
+                if i%1000 == 0:
+                    publisher.info('{number} rank to compute'.\
+                            format(number = history_db.scard(key_to_rank)))
         except:
-            history_db.sadd(config.get('redis','to_rank'), key)
+            history_db.sadd(key_to_rank, key)
+
+    publisher.info('{number} ranks computed'.format(number = i))

@@ -23,25 +23,28 @@ class CommonReport(object):
     def __init__(self, ip_version):
         self.config = ConfigParser.RawConfigParser()
         self.config.optionxform = str
-        config_file = "/path/to/bgp-ranking.conf"
+        config_file = "/etc/bgpranking/bgpranking.conf"
         self.config.read(config_file)
-        self.separator = self.config.get('input_keys','separator')
-        self.global_db  = redis.Redis(port = int(self.config.get('redis','port_master')),\
-                                        db = self.config.get('redis','global'))
-        self.history_db = redis.Redis(port = int(self.config.get('redis','port_master')),\
-                                        db = self.config.get('redis','history'))
-        self.history_db_temp = redis.Redis(port = int(self.config.get('redis','port_cache')),\
-                                             db = self.config.get('redis','history'))
+        self.separator = '|'
+        self.global_db  = redis.Redis(port =
+                int(self.config.get('redis','port_master')),
+                db = self.config.get('redis','global'))
+        self.history_db = redis.Redis(port =
+                int(self.config.get('redis','port_master')),
+                db = self.config.get('redis','history'))
+        self.history_db_temp = redis.Redis(port =
+                int(self.config.get('redis','port_cache')),
+                db = self.config.get('redis','history'))
         if ip_version == 4:
-            self.ip_key = self.config.get('input_keys','rankv4')
+            self.ip_key = 'v4'
         elif ip_version == 6:
-            self.ip_key = self.config.get('input_keys','rankv6')
+            self.ip_key = 'v4'
 
     def get_last_ranking(self):
         """
             Get the timestamp of the ranking
         """
-        return self.history_db.get(self.config.get('ranking','latest_ranking'))
+        return self.history_db.get(self.config.get('ranking', 'latest_ranking'))
 
     def get_default_date(self):
         """
@@ -50,7 +53,8 @@ class CommonReport(object):
         timestamp = self.get_last_ranking()
         if timestamp is not None:
             timestamp = timestamp.split()
-            default_date_raw = dateutil.parser.parse(timestamp[0]).date() - datetime.timedelta(days=1)
+            default_date_raw = dateutil.parser.\
+                    parse(timestamp[0]).date() - datetime.timedelta(days=1)
         else:
             default_date_raw = datetime.date.today() - datetime.timedelta(days=1)
         default_date = default_date_raw.isoformat()
@@ -60,27 +64,30 @@ class CommonReport(object):
         """
             Get the dates where there is a ranking available in the database
         """
-        return sorted(self.history_db_temp.smembers(self.config.get('ranking','all_dates')))
+        return sorted(self.history_db_temp.smembers(
+            self.config.get('ranking','all_dates')))
 
     def get_sources(self, date):
         """
             Get the sources parsed on a `date`
         """
-        return sorted(self.global_db.smembers('{date}{sep}{key}'.format(\
-                            date   = date, \
-                            sep    = self.separator,\
-                            key    = self.config.get('input_keys','index_sources'))))
+        return sorted(self.global_db.smembers('{date}{sep}{key}'.format(
+            date = date, sep = self.separator,
+            key = self.config.get('input_keys','index_sources'))))
 
     def get_multiple_daily_rank(self, asn_list, date, source):
         """
             Get the rakns of multiple ASNs in one query
         """
-        string = '{sep}{date}{sep}{source}{sep}{ip_key}'.format(sep    = self.separator,\
-                                                                date   = date,\
-                                                                source = source,\
-                                                                ip_key = self.ip_key)
-        to_get = ['{asn}{string}'.format(asn = asn, string = string) for asn in asn_list]
-        return self.history_db.mget(to_get)
+        string = '{sep}{date}{sep}{source}{sep}{ip_key}'.format(
+                sep = self.separator, date   = date, source = source,
+                ip_key = self.ip_key)
+        to_get = ['{asn}{string}'.format(asn = asn,
+            string = string) for asn in asn_list]
+        if len(to_get) != 0:
+            return self.history_db.mget(to_get)
+        else :
+            return None
 
     def get_daily_rank_client(self, asn, date, source = None):
         """
@@ -88,8 +95,7 @@ class CommonReport(object):
         """
         if source is None:
             source = self.config.get('input_keys','histo_global')
-        histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
-                                                                    date        = date,\
-                                                                    histo_key   = source,\
-                                                                    ip_key      = self.ip_key)
+        histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(
+                sep = self.separator, date = date, histo_key = source,
+                ip_key = self.ip_key)
         return self.history_db_temp.zscore(histo_key, asn)

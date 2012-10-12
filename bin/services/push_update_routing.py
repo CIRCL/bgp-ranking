@@ -46,7 +46,7 @@ key_to_rank = 'to_rank'
 key_latest_ranking = 'latest_ranking'
 key_amount_asns = 'amount_asns'
 index_sources = 'sources'
-index_asns_details = 'index_asns_details'
+index_asns_details = 'asns_details'
 
 
 def intervals_ranking(nb_of_asns, interval):
@@ -130,6 +130,9 @@ if __name__ == '__main__':
     pushing_process_service = os.path.join(services_dir, "pushing_process")
     ranking_process_service = os.path.join(services_dir, "ranking_process")
 
+    # Wait a bit until the bview file is downloaded
+    time.sleep(60)
+
     while 1:
         if not os.path.exists(filename) or history_db.exists(key_to_rank):
             # wait for a new file
@@ -209,7 +212,7 @@ if __name__ == '__main__':
 
         while history_db.scard(key_to_rank) > 0:
             # wait for a new file
-            time.sleep(sleep_timer_short)
+            time.sleep(sleep_timer)
         rmpid(ranking_process_service)
         # Save the number of asns known by the RIPE
         history_db_static.set('{date}{sep}{amount_asns}'.\

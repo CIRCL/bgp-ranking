@@ -36,7 +36,7 @@ if __name__ == '__main__':
             db=config.get('redis','history'))
     i = 0
 
-    time.sleep(360)
+    time.sleep(60)
     publisher.info('{number} rank to compute'.\
             format(number = history_db.scard(key_to_rank)))
     compute.prepare()

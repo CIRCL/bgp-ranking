@@ -187,10 +187,10 @@ if __name__ == '__main__':
                         key = index_asns_details))
             for asn in asns:
                 global_asn = asn.split(separator)[0]
-                asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}v4'.\
+                asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}rankv4'.\
                         format(sep = separator, asn = global_asn,
                                 date = date, source = source)
-                asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}v6'.\
+                asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}rankv6'.\
                         format(sep = separator, asn = global_asn,
                                 date = date, source = source)
                 to_delete.append(asn_key_v4)

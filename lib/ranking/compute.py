@@ -118,14 +118,14 @@ def make_history():
         Save the ranks (by subnets and global) in the database.
     """
     if rank_by_source[0] > 0.0:
-        asn_key_v4_details = '{asn}{sep}{date}{sep}{source}{sep}v4{sep}{details}'\
+        asn_key_v4_details = '{asn}{sep}{date}{sep}{source}{sep}rankv4{sep}{details}'\
                                 .format(sep = separator, asn = asn,
                                         date = date, source = source,
                                         details = daily_asns_details)
 
         history_db.zadd(asn_key_v4_details, **{timestamp: rank_by_source[0]})
 
-        asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}v4'.format(\
+        asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}rankv4'.format(\
                         sep = separator, asn = asn,
                         date = date, source = source)
 
@@ -137,14 +137,14 @@ def make_history():
         history_db.set(asn_key_v4, temp_rank)
 
     if rank_by_source[1] > 0.0:
-        asn_key_v6_details = '{asn}{sep}{date}{sep}{source}{sep}v6{sep}{details}'.format(\
+        asn_key_v6_details = '{asn}{sep}{date}{sep}{source}{sep}rankv6{sep}{details}'.format(\
                                 sep = separator, asn = asn,
                                 date = date, source = source,
                                 details = daily_asns_details)
 
         history_db.zadd(asn_key_v6_details, **{timestamp: rank_by_source[1]})
 
-        asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}v6'.format(\
+        asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}rankv6'.format(\
                         sep = separator, asn = asn,\
                         date = date, source = source)
 

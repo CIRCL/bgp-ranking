@@ -36,9 +36,9 @@ class CommonReport(object):
                 int(self.config.get('redis','port_cache')),
                 db = self.config.get('redis','history'))
         if ip_version == 4:
-            self.ip_key = 'v4'
+            self.ip_key = 'rankv4'
         elif ip_version == 6:
-            self.ip_key = 'v4'
+            self.ip_key = 'rankv4'
 
     def get_last_ranking(self):
         """

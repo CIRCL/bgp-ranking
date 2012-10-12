@@ -45,6 +45,8 @@ separator = '|'
 key_to_rank = 'to_rank'
 key_latest_ranking = 'latest_ranking'
 key_amount_asns = 'amount_asns'
+index_sources = 'sources'
+index_asns_details = 'index_asns_details'
 
 
 def intervals_ranking(nb_of_asns, interval):

@@ -38,7 +38,7 @@ path_bviewtimesamp = 'bgp/bview.gz.timestamp'
 path_bviewfile = 'bgp/bview.gz'
 bview_check_interval = 3600
 sleep_timer = 10
-path_to_bgpdump_bin = 'thirdparty/bgpdump/bgpdump'
+path_to_bgpdump_bin = 'var/thirdparty/bgpdump/bgpdump'
 
 separator = '|'
 
@@ -85,7 +85,7 @@ def compute_yesterday_ranking():
         to compute the ranking of "yesterday"
     """
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
-    ts_file = os.path.join(raw_data, bviewtimesamp)
+    ts_file = os.path.join(raw_data, path_bviewtimesamp)
     if os.path.exists(ts_file):
         ts = open(ts_file, 'r').read()
         redis.Redis(port = int(config.get('redis','port_master')),

@@ -4,7 +4,6 @@ import fileinput
 import socket
 from pyfurl.furl import Furl
 from cymru.ip2asn.dns import DNSClient as ip2asn
-import sys
 import json
 
 import api
@@ -31,11 +30,11 @@ for line in fileinput.input():
         l = client.lookup(ip,qType='IP')
         cc = getattr(l,'cc')
         asn = getattr(l,'asn')
+        prefix = getattr(l,'prefix')
         if cc is not None:
             ranking_info = api.get_asn_informations(asn)
-            temp = []
+            temp = {}
             for day, data in ranking_info['data'].iteritems():
-                temp.append({day: data['total']})
-            entry = [cc, asn, line.strip(), temp]
-            to_print += entry
+                temp.update({day: data['total']})
+            to_print += [cc, asn, line.strip(), prefix, temp]
     print json.dumps(to_print, sort_keys=True, indent=4)

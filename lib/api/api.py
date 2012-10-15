@@ -11,8 +11,10 @@ import helper_global as h
 
 def get_asn_informations(asn):
     to_return = {}
-    timestamps = h.global_db.smembers(asn)
-    if len(timestamps) == 0:
+    if h.global_db is None:
+        h.prepare()
+    timestamps = h.global_db.scard(asn)
+    if timestamps == 0:
         to_return['return_code'] = 0
         to_return['return_vebose'] = 'Unknown ASN'
         return to_return
@@ -43,7 +45,6 @@ def get_asn_informations(asn):
     to_return['return_vebose'] = 'Got ranks.'
     to_return['data'] = data
     return to_return
-
 
 if __name__ == '__main__':
     h.prepare()

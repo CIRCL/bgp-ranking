@@ -79,7 +79,7 @@ def fetch_whois(query):
     """
         Fetch the RIS RIPE informations. Keep the connection is possible.
     """
-    server_socket.send('-k ' + query + '\n')
+    server_socket.send('-k -M ' + query + '\n')
     text = ''
     fs = server_socket.makefile()
     prec = ''

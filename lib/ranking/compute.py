@@ -27,8 +27,6 @@ date = None
 source = None
 
 # Current rank
-ipv4 = None
-ipv6 = None
 weight = [0.0, 0.0]
 rank_by_source = [0.0, 0.0]
 
@@ -68,8 +66,6 @@ def ip_count():
     """
         Count the number of IPs announced by the ASN (ipv6 and ipv4)
     """
-    global ipv4
-    global ipv6
     keys = [str(asn) + '|v4', str(asn) + '|v6']
     ipv4, ipv6 = routing_db.mget(keys)
     if ipv4 is None or ipv6 is None:
@@ -83,15 +79,13 @@ def ip_count():
             else :
                 ipv4 += ip.len()
         routing_db.mset({keys[0]: ipv4, keys[1]: ipv6})
-    else:
-        ipv4 = int(ipv4)
-        ipv6 = int(ipv6)
 
 def make_index_source():
     """
         Count the number of IPs found in the dataset for this subnet
     """
     global weight
+    weight = [0.0, 0.0]
     ips = global_db.smembers('{asn}{sep}{ts}{sep}{date}{sep}{source}'\
             .format(sep = separator, asn = asn, ts = timestamp,
                 date = date, source = source))
@@ -108,10 +102,14 @@ def rank():
         Divide the number of IPs in the datasets by the total announced by the AS
     """
     global rank_by_source
+    ipv4, ipv6 = routing_db.mget([str(asn) + '|v4', str(asn) + '|v6'])
+    ipv4 = float(ipv4)
+    ipv6 = float(ipv6)
+    #print weight, ipv4, rank_by_source
     if ipv4 > 0 :
-        rank_by_source[0] = (float(weight[0])/ipv4)
-    elif ipv6 > 0 :
-        rank_by_source[1] = (float(weight[1])/ipv6)
+        rank_by_source[0] = float(weight[0]) / ipv4
+    if ipv6 > 0 :
+        rank_by_source[1] = float(weight[1]) / ipv6
 
 def make_history():
     """

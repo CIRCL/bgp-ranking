@@ -60,18 +60,15 @@ class ReportsGenerator(CommonReport):
             Build the report of a particular source
         """
         self.build_asns_by_source(source, date)
-        histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(   sep         = self.separator,\
-                                                                    date        = date,\
-                                                                    histo_key   = source,\
-                                                                    ip_key      = self.ip_key)
+        histo_key = '{date}{sep}{histo_key}{sep}{ip_key}'.format(\
+                sep = self.separator, date = date, histo_key = source,
+                ip_key = self.ip_key)
         # delete the old key
         self.history_db_temp.delete(histo_key)
 
-        asns = self.global_db.smembers(\
-                    '{date}{sep}{source}{sep}{key}'.format( sep     = self.separator,\
-                                                            date    = date,\
-                                                            source  = source,\
-                                                            key     = self.config.get('input_keys','index_asns')))
+        asns = self.global_db.smembers('{date}{sep}{source}{sep}{key}'.format(\
+                sep = self.separator, date = date, source  = source,
+                key = self.config.get('input_keys','index_asns')))
 
         ranks = self.get_multiple_daily_rank(asns, date, source)
         to_zadd = {}

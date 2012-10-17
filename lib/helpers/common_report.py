@@ -82,8 +82,8 @@ class CommonReport(object):
         string = '{sep}{date}{sep}{source}{sep}{ip_key}'.format(
                 sep = self.separator, date   = date, source = source,
                 ip_key = self.ip_key)
-        to_get = ['{asn}{string}'.format(asn = asn,
-            string = string) for asn in asn_list]
+        to_get = ['{asn}{string}'.format(asn = asn, string = string)
+                for asn in asn_list]
         if len(to_get) != 0:
             return self.history_db.mget(to_get)
         else :

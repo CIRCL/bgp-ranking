@@ -162,59 +162,61 @@ def get_ris():
         The entry has now a link with his ASN.
     """
     while True:
-        card_no_asn = cache_db_0.scard(temp_no_asn)
-        if card_no_asn != 0:
-            for ip_set in cache_db_0.smembers(temp_no_asn):
-                errors = 0
-                ip_set_card = cache_db_0.scard(ip_set)
-                if ip_set_card == 0:
-                    cache_db_0.srem(temp_no_asn, ip_set)
-                    continue
-                for i in range(ip_set_card):
-                    ip_details = cache_db_0.spop(ip_set)
-                    if ip_details is None:
-                        break
-                    a, b, source, c = ip_set.split(separator)
-                    ip, timestamp = ip_details.split(separator)
-                    entry = cache_db.get(ip)
-                    if entry is None:
-                        errors += 1
-                        cache_db_0.sadd(ip_set, ip_details)
-                        if errors >= max_consecutive_errors:
-                            cache_db_0.sadd(temp_ris, ip)
-                    else:
-                        errors = 0
-                        asn = update_db_ris(entry)
-                        if asn is None:
-                            # Concurrency conflict, retry later
-                            cache_db_0.sadd(ip_set, ip_details)
-                            continue
-                        date = dateutil.parser.parse(timestamp).date().isoformat()
-                        index_day_asns_details = '{date}{sep}{source}{sep}{key}'\
-                                .format(sep=separator, date=date,
-                                        source=source, key=index_asns_details)
-                        index_day_asns = '{date}{sep}{source}{sep}{key}'\
-                                .format(sep = separator, date=date,
-                                        source=source, key=index_asns)
-                        index_as_ips = '{asn}{sep}{date}{sep}{source}'\
-                                .format(sep = separator, asn = asn, date=date,
-                                        source=source)
-                        if global_db.sismember(index_as_ips, ip_details) is False:
-                            pipeline = global_db.pipeline(False)
-                            pipeline.sadd(index_day_asns_details, asn)
-                            pipeline.sadd(index_day_asns, asn.split(separator)[0])
-                            pipeline.sadd(index_as_ips, ip_details)
-                            pipeline.execute()
-                    if i%100 == 0 and config_db.exists(stop_ris):
-                        break
-                    if i%100000 == 0:
-                        publisher.info('{card} RIS Whois to insert from {ip_set}'\
-                                .format(card = cache_db_0.scard(ip_set),
-                                    ip_set = ip_set))
         time.sleep(sleep_timer)
         if config_db.exists(stop_ris):
             publisher.info('RISWhoisInsert stopped.')
             break
+        card_no_asn = cache_db_0.scard(temp_no_asn)
+        if card_no_asn == 0:
+            continue
+
+        for ip_set in cache_db_0.smembers(temp_no_asn):
+            errors = 0
+            ip_set_card = cache_db_0.scard(ip_set)
+            if ip_set_card == 0:
+                cache_db_0.srem(temp_no_asn, ip_set)
+                continue
+            for i in range(ip_set_card):
+                ip_details = cache_db_0.spop(ip_set)
+                if ip_details is None:
+                    break
+                a, b, source, c = ip_set.split(separator)
+                ip, timestamp = ip_details.split(separator)
+                entry = cache_db.get(ip)
+                if entry is None:
+                    errors += 1
+                    cache_db_0.sadd(ip_set, ip_details)
+                    if errors >= max_consecutive_errors:
+                        cache_db_0.sadd(temp_ris, ip)
+                else:
+                    errors = 0
+                    asn = update_db_ris(entry)
+                    if asn is None:
+                        # Concurrency conflict, retry later
+                        cache_db_0.sadd(ip_set, ip_details)
+                        continue
+                    date = dateutil.parser.parse(timestamp).date().isoformat()
+                    index_day_asns_details = '{date}{sep}{source}{sep}{key}'\
+                            .format(sep=separator, date=date,
+                                    source=source, key=index_asns_details)
+                    index_day_asns = '{date}{sep}{source}{sep}{key}'\
+                            .format(sep = separator, date=date,
+                                    source=source, key=index_asns)
+                    index_as_ips = '{asn}{sep}{date}{sep}{source}'\
+                            .format(sep = separator, asn = asn, date=date,
+                                    source=source)
+                    if global_db.sismember(index_as_ips, ip_details) is False:
+                        pipeline = global_db.pipeline(False)
+                        pipeline.sadd(index_day_asns_details, asn)
+                        pipeline.sadd(index_day_asns, asn.split(separator)[0])
+                        pipeline.sadd(index_as_ips, ip_details)
+                        pipeline.execute()
+                if i%100 == 0 and config_db.exists(stop_ris):
+                    break
+                if i%100000 == 0:
+                    publisher.info('{card} RIS Whois to insert from {ip_set}'\
+                            .format(card = cache_db_0.scard(ip_set),
+                                ip_set = ip_set))
 
 def stop_services(signum, frame):
     """

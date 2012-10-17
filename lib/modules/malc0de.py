@@ -10,6 +10,7 @@
 
 import re
 import os
+import datetime
 import dateutil.parser
 from modules.abstract_module import AbstractModule
 
@@ -23,7 +24,10 @@ class Malc0de(AbstractModule):
     def parse(self):
         self.ips = []
         for file in self.files:
-            self.date = dateutil.parser.parse(re.findall('Last updated (.*)\n', open(file).read())[0])
+            try:
+                self.date = dateutil.parser.parse(re.findall('Last updated (.*)\n', open(file).read())[0])
+            except:
+                self.date = datetime.date.today()
             malc0de = open(file)
             for line in malc0de:
                 ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s].*',line)

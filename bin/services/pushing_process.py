@@ -58,6 +58,7 @@ if __name__ == '__main__':
                 block = parsed.prefix
                 if block is not None:
                     pipeline.sadd(asn, block)
+                    pipeline.sadd('asns', asn)
                 entry = ''
             if i%10000 == 0:
                 pipeline.execute()

@@ -180,6 +180,21 @@ def get_ris():
                 ip_details = cache_db_0.spop(ip_set)
                 if ip_details is None:
                     break
+                if ip_set == 'full_asn_db':
+                    # Just add the ASN in the DB, not related with any IP
+                    entry = cache_db.get(ip_details)
+                    if entry is None:
+                        errors += 1
+                        cache_db_0.sadd(ip_set, ip_details)
+                        if errors >= max_consecutive_errors:
+                            cache_db_0.sadd(temp_ris, ip_details)
+                    else:
+                        errors = 0
+                        asn = update_db_ris(entry)
+                        if asn is None:
+                            # Concurrency conflict, retry later
+                            cache_db_0.sadd(ip_set, ip_details)
+                        continue
                 a, b, source, c = ip_set.split(separator)
                 ip, timestamp = ip_details.split(separator)
                 entry = cache_db.get(ip)

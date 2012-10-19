@@ -15,6 +15,7 @@ import IPy
 
 separator = '|'
 daily_asns_details = 'details'
+ips_block = 'ips_block'
 
 routing_db = None
 global_db = None
@@ -89,6 +90,12 @@ def make_index_source():
     ips = global_db.smembers('{asn}{sep}{ts}{sep}{date}{sep}{source}'\
             .format(sep = separator, asn = asn, ts = timestamp,
                 date = date, source = source))
+    if len(ips) > 0:
+        block = global_db.get('{asn}{sep}{timestamp}{sep}{ips_block}'.\
+                format(sep = separator, asn = asn, timestamp = timestamp,
+                    ips_block = ips_block))
+        history_db.srem('{asn}{sep}{date}{sep}clean_set'.format(sep = separator,
+            asn = asn, date = date), block)
     for i in ips:
         ip_extract, t = i.split(separator)
         ip = IPy.IP(ip_extract)

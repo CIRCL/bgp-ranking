@@ -103,21 +103,33 @@ class Reports(CommonReport):
             ips_by_sources = pipeline.execute()
             nb_of_ips += sum(ips_by_sources)
 
-            if nb_of_ips > 0:
-                keys = ['{asn_timestamp_key}{owner}'.   format(asn_timestamp_key = asn_timestamp_key, \
-                                                                           owner = self.config.get('input_keys','owner')),
-                        '{asn_timestamp_key}{ip_block}'.format(asn_timestamp_key = asn_timestamp_key, \
-                                                                        ip_block = self.config.get('input_keys','ips_block'))]
-                owner, ip_block = self.global_db.mget(keys)
-                impacts = self.config_db.mget(sources)
-                # Compute the local ranking: the ranking if this subnet is the only one for this AS
-                local_rank = sum([ float(ips_by_sources[i]) * float(impacts[i]) for i in range(len(sources)) ]) / IP(ip_block).len()
 
-                asn_timestamp_temp = '{date}{sep}{asn}{sep}{timestamp}'.format(\
-                                                    sep = self.separator, date      = date,\
-                                                    asn = asn,            timestamp = timestamp)
+            key_owner = '{asn_timestamp_key}{owner}'.\
+                            format(asn_timestamp_key = asn_timestamp_key,
+                        owner = self.config.get('input_keys','owner'))
+            key_block = '{asn_timestamp_key}{ip_block}'.\
+                            format(asn_timestamp_key = asn_timestamp_key,
+                        ip_block = self.config.get('input_keys','ips_block'))
+            key_clean_set = '{asn}{sep}{date}{sep}clean_set'.\
+                            format(sep = self.separator, asn = asn, date = date)
+            owner, ip_block = self.global_db.mget([key_owner, key_block])
+            if nb_of_ips > 0:
+                impacts = self.config_db.mget(sources)
+                # Compute the local ranking: the ranking if this subnet is the
+                # only one for this AS
+                local_rank = sum([ float(ips_by_sources[i]) * float(impacts[i])
+                    for i in range(len(sources)) ]) / IP(ip_block).len()
+
+                asn_timestamp_temp = '{date}{sep}{asn}{sep}{timestamp}'.\
+                        format(sep = self.separator, date = date, asn = asn,
+                                timestamp = timestamp)
                 sources_web = self.history_db_temp.smembers(asn_timestamp_temp)
-                asn_descs_to_print.append( [asn, timestamp, owner, ip_block, nb_of_ips, sources_web, local_rank] )
+                asn_descs_to_print.append( [asn, timestamp, owner, ip_block,
+                    nb_of_ips, sources_web, local_rank] )
+            elif ip_block in self.history_db.smembers(key_clean_set):
+                asn_descs_to_print.append( [asn, timestamp, owner, ip_block,
+                    0, [], 0] )
+            # TODO: else oldblock
         to_return = sorted(asn_descs_to_print, key=lambda desc: desc[6], reverse = True)
         return to_return, last_seen_sources, data_graph
 

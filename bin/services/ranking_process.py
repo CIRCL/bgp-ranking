@@ -45,14 +45,15 @@ if __name__ == '__main__':
         time.sleep(10)
     while history_db.scard(key_to_rank) > 0 :
         key = history_db.spop(key_to_rank)
-        try:
-            if key is not None:
-                compute.rank_using_key(key)
-                i +=1
-                if i%1000 == 0:
-                    publisher.info('{number} rank to compute'.\
-                            format(number = history_db.scard(key_to_rank)))
-        except:
-            history_db.sadd(key_to_rank, key)
+        #try:
+        if key is not None:
+            compute.rank_using_key(key)
+            i +=1
+            if i%1000 == 0:
+                publisher.info('{number} rank to compute'.\
+                        format(number = history_db.scard(key_to_rank)))
+        #except Exception as e:
+            #history_db.sadd(key_to_rank, key)
+        #    print e
 
     publisher.info('{number} ranks computed'.format(number = i))

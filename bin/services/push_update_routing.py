@@ -98,6 +98,94 @@ def compute_yesterday_ranking():
             return True
     return False
 
+def prepare_bview_file():
+    publisher.info('Start converting binary bview file in plain text...')
+
+    # create the plain text dump from the binary dump
+    output = open(os.path.join(bview_dir, 'bview'), 'wr')
+    nul_f = open(os.devnull, 'w')
+    p_bgp = Popen([bgpdump , filename], stdout=PIPE, stderr = nul_f)
+    for line in p_bgp.stdout:
+        output.write(line)
+    nul_f.close()
+    output.close()
+    publisher.info('Convertion finished, start splitting...')
+
+    # Split the plain text file
+    fs = FilesSplitter(output.name, int(config.get('routing','number_of_splits')))
+    splitted_files = fs.fplit()
+    publisher.info('Splitting finished.')
+
+    # Flush the old routing database and launch the population of the new database
+    routing_db.flushdb()
+
+    publisher.info('Start pushing all routes...')
+    run_splitted_processing(int(config.get('processes','routing_push')),
+            pushing_process_service, splitted_files)
+    publisher.info('All routes pushed.')
+
+    # Remove the binary and the plain text files
+    os.unlink(output.name)
+    os.unlink(filename)
+
+def reset_db_daily():
+    # Clean the whole database and regenerate it (like this we do not keep data of the old rankings)
+    report = ReportsGenerator()
+    report.flush_temp_db()
+    report.build_reports_lasts_days(int(config.get('ranking','days')))
+
+    # date used to generate a ranking with the data in the database at this point
+    date = (datetime.date.today() - datetime.timedelta(1)).isoformat()
+    m = Map()
+    m.get_country_codes()
+    m.generate()
+    return date
+
+def prepare_keys_for_ranking():
+    # Add all announced subnets by ASN
+    pipeline = history_db_static.pipeline()
+    for asn in routing_db.smembers('asns'):
+        blocks = routing_db.smembers(asn)
+        pipeline.sadd('{asn}{sep}{date}{sep}clean_set'.format(sep = separator,
+            asn = asn, date = date), *blocks)
+        temp_db.sadd('full_asn_db', *blocks)
+        temp_db.sadd('no_asn', 'full_asn_db')
+    pipeline.execute()
+
+    # Cleanup the old keys, setup the list of asns to rank
+    sources = global_db.smembers('{date}{sep}{key}'.\
+            format(date = date, sep = separator, key = index_sources))
+
+    pipeline = history_db.pipeline()
+    pipeline_static = history_db_static.pipeline()
+    to_delete = []
+    for source in sources:
+        asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.\
+                format(date = date, sep = separator, source = source,
+                    key = index_asns_details))
+        for asn in asns:
+            global_asn = asn.split(separator)[0]
+            asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}rankv4'.\
+                    format(sep = separator, asn = global_asn,
+                            date = date, source = source)
+            asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}rankv6'.\
+                    format(sep = separator, asn = global_asn,
+                            date = date, source = source)
+            to_delete.append(asn_key_v4)
+            to_delete.append(asn_key_v6)
+
+            pipeline.sadd(key_to_rank,
+                    '{asn}{sep}{date}{sep}{source}'.format(sep = separator,
+                        asn = asn, date = date, source = source))
+    to_delete = set(to_delete)
+    if len(to_delete) > 0:
+        pipeline_static.delete(*to_delete)
+    else:
+        publisher.error('You *do not* have anything to rank!')
+    pipeline.execute()
+    pipeline_static.execute()
+
+
 if __name__ == '__main__':
 
     publisher.channel = 'Ranking'
@@ -122,6 +210,8 @@ if __name__ == '__main__':
             db = config.get('redis','history'))
     history_db_static = redis.Redis(port = int(config.get('redis','port_master')),
             db = config.get('redis','history'))
+    temp_db = redis.Redis(port = int(config.get('redis','port_cache')),
+            db=int(config.get('redis','temp')))
 
     filename = os.path.join(root_dir, config.get('directories','raw_data'),
             path_bviewfile)
@@ -138,74 +228,15 @@ if __name__ == '__main__':
             # wait for a new file
             time.sleep(bview_check_interval)
             continue
-        publisher.info('Start converting binary bview file in plain text...')
-        # create the plain text dump from the binary dump
-        output = open(os.path.join(bview_dir, 'bview'), 'wr')
-        nul_f = open(os.devnull, 'w')
-        p_bgp = Popen([bgpdump , filename], stdout=PIPE, stderr = nul_f)
-        for line in p_bgp.stdout:
-            output.write(line)
-        nul_f.close()
-        output.close()
-        publisher.info('Convertion finished, start splitting...')
-        # Split the plain text file
-        fs = FilesSplitter(output.name, int(config.get('routing','number_of_splits')))
-        splitted_files = fs.fplit()
-        publisher.info('Splitting finished.')
-        # Flush the old routing database and launch the population of the new database
-        routing_db.flushdb()
-        publisher.info('Start pushing all routes...')
-        run_splitted_processing(int(config.get('processes','routing_push')),
-                pushing_process_service, splitted_files)
-        publisher.info('All routes pushed.')
-        # Remove the binary and the plain text files
-        os.unlink(output.name)
-        os.unlink(filename)
+
+        prepare_bview_file()
 
         if compute_yesterday_ranking():
-            # Clean the whole database and regenerate it (like this we do not keep data of the old rankings)
-            report = ReportsGenerator()
-            report.flush_temp_db()
-            report.build_reports_lasts_days(int(config.get('ranking','days')))
-
-            # date used to generate a ranking with the data in the database at this point
-            date = (datetime.date.today() - datetime.timedelta(1)).isoformat()
-            m = Map()
-            m.get_country_codes()
-            m.generate()
+            date = reset_db_daily()
         else:
             date = datetime.date.today().isoformat()
-        sources = global_db.smembers('{date}{sep}{key}'.\
-                format(date = date, sep = separator, key = index_sources))
 
-        pipeline = history_db.pipeline()
-        pipeline_static = history_db_static.pipeline()
-        to_delete = []
-        for source in sources:
-            asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.\
-                    format(date = date, sep = separator, source = source,
-                        key = index_asns_details))
-            for asn in asns:
-                global_asn = asn.split(separator)[0]
-                asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}rankv4'.\
-                        format(sep = separator, asn = global_asn,
-                                date = date, source = source)
-                asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}rankv6'.\
-                        format(sep = separator, asn = global_asn,
-                                date = date, source = source)
-                to_delete.append(asn_key_v4)
-                to_delete.append(asn_key_v6)
-
-                pipeline.sadd(key_to_rank,
-                        '{asn}{sep}{date}{sep}{source}'.format(sep = separator,
-                            asn = asn, date = date, source = source))
-        to_delete = set(to_delete)
-        if len(to_delete) > 0:
-            pipeline_static.delete(*to_delete)
-        else:
-            publisher.error('You *do not* have anything to rank!')
-        pipeline.execute()
-        pipeline_static.execute()
+        prepare_keys_for_ranking()
 
         service_start_multiple(ranking_process_service,
                 int(config.get('processes','ranking')))

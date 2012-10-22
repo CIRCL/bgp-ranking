@@ -38,7 +38,7 @@ path_bviewtimesamp = 'bgp/bview.gz.timestamp'
 path_bviewfile = 'bgp/bview.gz'
 bview_check_interval = 3600
 sleep_timer = 10
-path_to_bgpdump_bin = 'var/thirdparty/bgpdump/bgpdump'
+path_to_bgpdump_bin = 'thirdparty/bgpdump/bgpdump'
 
 separator = '|'
 

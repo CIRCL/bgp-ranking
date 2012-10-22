@@ -194,7 +194,7 @@ def get_ris():
                         if asn is None:
                             # Concurrency conflict, retry later
                             cache_db_0.sadd(ip_set, ip_details)
-                        continue
+                    continue
                 a, b, source, c = ip_set.split(separator)
                 ip, timestamp = ip_details.split(separator)
                 entry = cache_db.get(ip)

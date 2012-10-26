@@ -148,7 +148,7 @@ def prepare_keys_for_ranking():
         blocks = routing_db.smembers(asn)
         pipeline.sadd('{asn}{sep}{date}{sep}clean_set'.format(sep = separator,
             asn = asn, date = date), *blocks)
-        temp_db.sadd('full_asn_db', *blocks)
+        temp_db.sadd('full_asn_db', *[str(IPy.IP(b)[0]) for b in blocks])
         temp_db.sadd('no_asn', 'full_asn_db')
     pipeline.execute()
 

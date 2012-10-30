@@ -31,6 +31,7 @@ from subprocess import Popen, PIPE
 import time
 import redis
 import datetime
+import IPy
 
 from pubsublogger import publisher
 

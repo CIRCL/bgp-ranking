@@ -7,23 +7,17 @@
 #end block menu
 
 #block main_content
-<script type="text/javascript" src="dygraph-combined.js"></script>
+<script type="text/javascript" src="dygraph/dygraph-combined.js"></script>
+<p>Relational graph between the global worldwide security trend and the Luxemburg one.</p><br/>
 <div id="graphdiv1" style="width:1280px; height:768px;border: 1px solid black;"></div>
 <script type="text/javascript">
   g = new Dygraph(
       document.getElementById("graphdiv1"),
-      "data/aggregated.csv",
+      "csv/aggregated.txt",
       {
-        labels: ['date', 'global', 'lu'],
-        'lu': {
-            axis: {
-            }
-        },
-        axes: {
-          y2: {
-            labelsKMB: true
-          }
-        },
+        labels: ['date', 'Global', 'Luxembourg'],
+        'Luxembourg': { axis: {} },
+        axes: { y2: { labelsKMB: true } },
         rollPeriod: 30,
         showRoller: true,
         logscale : true,

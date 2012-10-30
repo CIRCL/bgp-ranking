@@ -1,0 +1,37 @@
+#from templates.master import master
+#extends master
+
+#attr title = 'Trend'
+
+#block menu
+#end block menu
+
+#block main_content
+<script type="text/javascript" src="dygraph-combined.js"></script>
+<div id="graphdiv1" style="width:1280px; height:768px;border: 1px solid black;"></div>
+<script type="text/javascript">
+  g = new Dygraph(
+      document.getElementById("graphdiv1"),
+      "data/aggregated.csv",
+      {
+        labels: ['date', 'global', 'lu'],
+        'lu': {
+            axis: {
+            }
+        },
+        axes: {
+          y2: {
+            labelsKMB: true
+          }
+        },
+        rollPeriod: 30,
+        showRoller: true,
+        logscale : true,
+        ylabel: 'Global Trend',
+        y2label: 'Luxembourg Trend',
+        yAxisLabelWidth: 50,
+        xAxisLabelWidth: 60
+        });
+</script>
+
+#end block main_content

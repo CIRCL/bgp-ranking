@@ -36,6 +36,6 @@ if __name__ == '__main__':
                 publisher.info('New Ranking posted on twitter and identica.')
             mb.grab_dms(mb.twitter_api, mb.last_dm_twitter_key)
             mb.grab_dms(mb.identica_api, mb.last_dm_identica_key)
-        except Exception as e:
-            publisher.error('The microblog module was sad: ' + e.strerror)
+        except:
+            pass
         time.sleep(sleep_timer)

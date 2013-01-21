@@ -12,7 +12,9 @@ In order to provide an improved security view on those AS numbers, a trust ranki
 scheme will be implemented based on existing dataset of compromised systems, 
 malware C&C IP and existing datasets of the ISPs.
 
-The official website of the project is for now: http://gitorious.org/bgp-ranking
+The official website of the project is: https://github.com/CIRCL/bgp-ranking/
+
+There is a public BGP Ranking at http://bgpranking.circl.lu/
 
 BGP Ranking is free software licensed under the GNU Affero General Public License
 

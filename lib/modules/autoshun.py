@@ -8,10 +8,8 @@
     Class used to parse the files provided by Autoshun
 """
 
-import re
-import os
 import datetime
-import dateutil.parser
+#import dateutil.parser
 import csv
 from modules.abstract_module import AbstractModule
 
@@ -32,8 +30,12 @@ class Shunlist(AbstractModule):
                     if len(line) < 3:
                         continue
                     ip = line[0]
-                    date = dateutil.parser.parse(line[1])
-                    comment = line[2]
-                    entry = self.prepare_entry(ip = ip, source = self.__class__.__name__, timestamp = date)
+                    # The timestamp change many times each day.
+                    # It breaks the ranking
+                    # date = dateutil.parser.parse(line[1])
+                    #comment = line[2]
+                    entry = self.prepare_entry(ip = ip,
+                            source = self.__class__.__name__,
+                            timestamp = self.date)
                     self.put_entry(entry)
             self.move_file(file)

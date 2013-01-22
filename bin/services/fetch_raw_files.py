@@ -23,7 +23,7 @@ import filecmp
 import glob
 import time
 import redis
-
+import socket
 
 sleep_timer = 0
 sleep_timer_short = 0
@@ -63,6 +63,7 @@ def prepare():
 
     config_db = redis.Redis(port = int(config.get('redis','port_master')),\
                                    db = config.get('redis','config'))
+    socket.setdefaulttimeout(30)
 
 
 def fetcher():

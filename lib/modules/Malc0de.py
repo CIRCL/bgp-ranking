@@ -2,23 +2,26 @@
 # -*- coding: utf-8 -*-
 
 """
-    CleanMX parser
+    malc0de parser
     ~~~~~~~~~~~~~~
 
-    The default parser of CleanMX lists
+    Class used to parse the daily files provided by DShield
 """
 
 import re
+import dateutil.parser
 from helper import new_entry
 
 
 def parser(filename, listname, date):
-    """
-        Parse the list
-    """
+    try:
+        date = dateutil.parser.parse(re.findall('Last updated (.*)\n',
+            open(filename, 'r').read())[0])
+    except:
+        pass
     with open(filename, 'r') as f :
         for line in f:
-            ip = re.findall('<(?:ip|review)>((?:\d{1,3}\.){3}\d{1,3})<.*',line)
+            ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})[\s].*',line)
             if len(ip) == 0:
                 continue
             new_entry(ip = ip[0], source = listname, timestamp = date)

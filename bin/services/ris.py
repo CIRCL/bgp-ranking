@@ -67,7 +67,6 @@ def prepare():
     config = ConfigParser.RawConfigParser()
     config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
-    separator = config.get('input_keys','separator')
 
     cache_db = redis.Redis(port = int(config.get('redis','port_cache')),
                         db = int(config.get('redis','cache_ris')))

@@ -44,6 +44,7 @@ MalwareDomainListIP = 5 malwaredomainlist/ip/ http://www.malwaredomainlist.com/h
 NothinkDNS          = 5 nothink/dns http://www.nothink.org/blacklist/blacklist_malware_dns.txt
 NothinkHTTP         = 5 nothink/http http://www.nothink.org/blacklist/blacklist_malware_http.txt
 NothinkIRC          = 5 nothink/irc http://www.nothink.org/blacklist/blacklist_malware_irc.txt
+NothinkSSH          = 5 nothink/ssh http://www.nothink.org/blacklist/blacklist_ssh_day.txt
 PalevotrackerIpBlockList = 5 palevo/ipblocklist/ https://palevotracker.abuse.ch/blocklists.php?download=ipblocklist
 Shunlist            = 1 autosun/shunlist/ http://www.autoshun.org/files/shunlist.csv
 SpyeyetrackerDdos   = 3 spyeye/ddos/

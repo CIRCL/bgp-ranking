@@ -24,12 +24,14 @@
 [modules]
 ; classname = impact home_dir url
 Alienvault          = 0.01 alienvault/reputation.generic/ http://reputation.alienvault.com/reputation.generic
-BlocklistDe         = 0.1
-BlocklistDeSsh      = 5 blocklist_de/ssh/ http://www.blocklist.de/lists/ssh.txt
+BlocklistDeSsh      = 3 blocklist_de/ssh/ http://www.blocklist.de/lists/ssh.txt
 BlocklistDeMail     = 0.1 blocklist_de/mail/ http://www.blocklist.de/lists/mail.txt
 BlocklistDeApache   = 0.1 blocklist_de/apache/ http://www.blocklist.de/lists/apache.txt
-BlocklistDePop3     = 5 blocklist_de/pop3/ http://www.blocklist.de/lists/pop3.txt
-BlocklistDeFtp      = 5 blocklist_de/ftp/ http://www.blocklist.de/lists/ftp.txt
+BlocklistDeImap     = 3 blocklist_de/imap/ http://www.blocklist.de/lists/imap.txt
+BlocklistDeFtp      = 3 blocklist_de/ftp/ http://www.blocklist.de/lists/ftp.txt
+BlocklistDeSip      = 3 blocklist_de/sip/ http://www.blocklist.de/lists/sip.txt
+BlocklistDeBots     = 3 blocklist_de/bots/ http://www.blocklist.de/lists/bots.txt
+BlocklistDeStrong   = 6 blocklist_de/strong/ http://www.blocklist.de/lists/strongips.txt
 CIArmy              = 5 ciarmy/ip/ http://www.ciarmy.com/list/ci-badguys.txt
 CleanMXMalwares     = 5 cleanmx/malwares/ http://support.clean-mx.de/clean-mx/xmlviruses.php?response=alive
 CleanMXPhishing     = 5 cleanmx/phishing/ http://support.clean-mx.de/clean-mx/xmlphishing.php?response=alive

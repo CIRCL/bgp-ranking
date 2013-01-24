@@ -100,7 +100,8 @@ def insert():
                 if src is None:
                     publisher.error(ip + ' without source, invalid')
                     continue
-                if timestamp.date() < datetime.date.today() and not accept_old_entries:
+                if timestamp.date() < datetime.date.today() - \
+                        datetime.timedelta(1) and not accept_old_entries:
                     publisher.warning('The timestamp ({ts}) of {ip} from {source} is too old.'.\
                             format(ts = timestamp.isoformat(), ip = ip, source = src))
                     continue

@@ -12,7 +12,7 @@ import sys
 
 separator = '|'
 key_ip = 'ip'
-key_src = 'src'
+key_src = 'source'
 key_tstamp = 'timestamp'
 
 key_uid = 'uid'

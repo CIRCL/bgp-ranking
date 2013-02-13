@@ -94,7 +94,7 @@ def add_asn_entry(asn, owner, ips_block):
         the value from the database.
     """
     key = None
-    asn_timestamps = global_db.smembers(asn)
+    asn_timestamps = sorted(global_db.smembers(asn), reverse=True)
     key_list = [ "{asn}{sep}{timestamp}{sep}{ips_block}".format(\
                     asn = asn, timestamp = asn_timestamp,
                     sep = separator, ips_block = key_ips_block)

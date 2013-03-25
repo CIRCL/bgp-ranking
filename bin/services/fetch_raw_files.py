@@ -63,7 +63,7 @@ def prepare():
 
     config_db = redis.Redis(port = int(config.get('redis','port_master')),\
                                    db = config.get('redis','config'))
-    socket.setdefaulttimeout(30)
+    socket.setdefaulttimeout(120)
 
 
 def fetcher():

@@ -27,6 +27,7 @@ while True:
         asn, ts = asn_detail.split('|')
         new_asn_detail = '{asn}|{block}'.format(asn=asn, block=block)
         p.sadd(key, new_asn_detail)
-        p.rename('|'.join([asn_detail, date, source]), new_asn_detail)
+        p.rename('|'.join([asn_detail, date, source]),
+                '|'.join([new_asn_detail, date, source]))
         i += 1
     p.execute()

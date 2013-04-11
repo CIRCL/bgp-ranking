@@ -10,9 +10,9 @@ r = redis.Redis(unix_socket_path='./redis_export.sock')
 
 while True:
     asn_ts= r.spop('asn_ts')
-    asn, ts = asn_ts.split('|')
     if asn_ts is None:
         break
+    asn, ts = asn_ts.split('|')
     keys = [asn_ts + '|ips_block', asn_ts + '|timestamp']
     block, description = global_db.mget(keys)
     p = global_db.pipeline(False)

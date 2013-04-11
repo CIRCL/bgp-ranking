@@ -34,13 +34,6 @@ default_asn_descr = 'Default AS, none found using RIS Whois.'
 default_asn_route = '0.0.0.0/0'
 default_asn_key = None
 
-key_asn = 'asn'
-key_owner = 'owner'
-key_ips_block = 'ips_block'
-
-index_asns_details = 'asns_details'
-index_asns= 'asns'
-
 temp_ris = 'ris'
 temp_no_asn = 'no_asn'
 
@@ -182,15 +175,12 @@ def get_ris():
                         cache_db_0.sadd(ip_set, ip_details)
                         continue
                     date = dateutil.parser.parse(timestamp).date().isoformat()
-                    index_day_asns_details = '{date}{sep}{source}{sep}{key}'\
-                            .format(sep=separator, date=date,
-                                    source=source, key=index_asns_details)
-                    index_day_asns = '{date}{sep}{source}{sep}{key}'\
-                            .format(sep = separator, date=date,
-                                    source=source, key=index_asns)
-                    index_as_ips = '{asn}{sep}{date}{sep}{source}'\
-                            .format(sep = separator, asn = asn, date=date,
-                                    source=source)
+                    date_source = '{date}|{source}'.format(date=date,
+                            source=source)
+                    index_day_asns_details = date_source + '|asns_details'
+                    index_day_asns = date_source + '|asns'
+                    index_as_ips = '{asn}|{date_source}'.format(asn= asn,
+                            date_source=date_source)
                     if global_db.sismember(index_as_ips, ip_details) is False:
                         pipeline = global_db.pipeline(False)
                         # FIXME: need migration

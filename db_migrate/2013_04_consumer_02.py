@@ -13,7 +13,7 @@ while True:
     if asn_ts is None:
         break
     asn, ts = asn_ts.split('|')
-    keys = [asn_ts + '|ips_block', asn_ts + '|timestamp']
+    keys = [asn_ts + '|ips_block', asn_ts + '|owner']
     block, description = global_db.mget(keys)
     p = global_db.pipeline(False)
     p.hset(asn + '|' + block, ts, description)

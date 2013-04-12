@@ -16,7 +16,11 @@ while True:
     asn_details = global_db.smembers(key)
     global_db.delete(key)
     blocks = global_db.mget(*[asn_detail + '|ips_block' for asn_detail in asn_details])
+    keys_blocks = [asn_detail + '|ips_block' for asn_detail in asn_details]
 
+    if len(keys_blocks) == 0:
+        continue
+    blocks = global_db.mget(*keys_blocks)
     p = global_db.pipeline(False)
     i = 0
     for asn_detail in asn_details:

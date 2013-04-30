@@ -34,13 +34,6 @@ default_asn_descr = 'Default AS, none found using RIS Whois.'
 default_asn_route = '0.0.0.0/0'
 default_asn_key = None
 
-key_asn = 'asn'
-key_owner = 'owner'
-key_ips_block = 'ips_block'
-
-index_asns_details = 'asns_details'
-index_asns= 'asns'
-
 temp_ris = 'ris'
 temp_no_asn = 'no_asn'
 
@@ -93,47 +86,19 @@ def add_asn_entry(asn, owner, ips_block):
         only if the subnet is not already present. Elsewhere, simply return
         the value from the database.
     """
-    key = None
-    asn_timestamps = sorted(global_db.smembers(asn), reverse=True)
-    key_list = [ "{asn}{sep}{timestamp}{sep}{ips_block}".format(\
-                    asn = asn, timestamp = asn_timestamp,
-                    sep = separator, ips_block = key_ips_block)
-                 for asn_timestamp in asn_timestamps ]
-    known_asn_ips_blocks = []
-    if len(key_list) != 0:
-        known_asn_ips_blocks = global_db.mget(key_list)
-    i = 0
-    for block in known_asn_ips_blocks:
-        if block == ips_block:
-            asn, timestamp, b = key_list[i].split(separator)
-            temp_key = "{asn}{sep}{timestamp}".format(asn=asn,
-                    sep = separator, timestamp=timestamp)
-            if global_db.get("{key}{sep}{owner}".format(key = temp_key,
-                sep = separator, owner = key_owner)) == owner:
-                key = temp_key
-                break
-        i +=1
-    if key is None:
+    key = '{asn}|{block}'.format(asn=asn, block=ips_block)
+    owners = global_db.hvals(key)
+    if owner not in owners:
         lock = global_db.getset('locked_new_ans', 1)
         if lock == 1 :
             # ensure the same new entry is not inserted twice
             return None
         timestamp = datetime.datetime.utcnow().isoformat()
-        key = "{asn}{sep}{timestamp}".format(asn=asn, sep = separator,
-                timestamp=timestamp)
-        to_set = {\
-                    "{key}{sep}{owner}".format(\
-                                key = key, sep = separator,
-                                owner = key_owner) : owner,
-                    "{key}{sep}{ips_block}".format(\
-                                key = key, sep = separator,
-                                ips_block = key_ips_block): ips_block
-                 }
-        pipeline = global_db.pipeline(False)
-        pipeline.sadd(asn, timestamp)
-        pipeline.mset(to_set)
-        pipeline.set('locked_new_ans', 0)
-        pipeline.execute()
+        p = global_db.pipeline(False)
+        p.hset(key, timestamp, owner)
+        p.sadd(asn, ips_block)
+        p.set('locked_new_ans', 0)
+        p.execute()
         publisher.info('New asn entry inserted in the database: {asn}, {owner}, {ipblock}'\
                 .format(asn = asn, owner = owner, ipblock = ips_block))
     return key
@@ -210,19 +175,18 @@ def get_ris():
                         cache_db_0.sadd(ip_set, ip_details)
                         continue
                     date = dateutil.parser.parse(timestamp).date().isoformat()
-                    index_day_asns_details = '{date}{sep}{source}{sep}{key}'\
-                            .format(sep=separator, date=date,
-                                    source=source, key=index_asns_details)
-                    index_day_asns = '{date}{sep}{source}{sep}{key}'\
-                            .format(sep = separator, date=date,
-                                    source=source, key=index_asns)
-                    index_as_ips = '{asn}{sep}{date}{sep}{source}'\
-                            .format(sep = separator, asn = asn, date=date,
-                                    source=source)
+                    date_source = '{date}|{source}'.format(date=date,
+                            source=source)
+                    index_day_asns_details = date_source + '|asns_details'
+                    index_day_asns = date_source + '|asns'
+                    index_as_ips = '{asn}|{date_source}'.format(asn= asn,
+                            date_source=date_source)
                     if global_db.sismember(index_as_ips, ip_details) is False:
                         pipeline = global_db.pipeline(False)
+                        # FIXME: need migration
                         pipeline.sadd(index_day_asns_details, asn)
                         pipeline.sadd(index_day_asns, asn.split(separator)[0])
+                        # FIXME: need migration
                         pipeline.sadd(index_as_ips, ip_details)
                         pipeline.execute()
                 if i%100 == 0 and config_db.exists(stop_ris):

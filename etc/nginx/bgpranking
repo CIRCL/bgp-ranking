@@ -1,26 +1,25 @@
-# Nginx is used as a reverse proxy. It redirects 
-# everything to a cherrypy server.
-# note that the reload function is protected by an htpasswd file
-
 server {
+        listen   80; ## listen for ipv4; this line is default and implied
+        listen   [::]:80 default ipv6only=on; ## listen for ipv6
 
-    listen   80; ## listen for ipv4
-    listen   [::]:80 default ipv6only=on; ## listen for ipv6
+        server_name bgpranking.circl.lu;
 
-    server_name  localhost;
-
-    access_log  /var/log/nginx/localhost.access.log;
+    access_log  /var/log/nginx/bgpranking.access.log;
 
     location / {
-        proxy_pass        http://localhost:8080;
+        proxy_pass        http://localhost:8085;
+        proxy_redirect off;
+        proxy_set_header  Host $host;
         proxy_set_header  X-Real-IP  $remote_addr;
-    }
+        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
 
-    location /reload {
-        auth_basic "Restricted";
-        auth_basic_user_file /etc/nginx/htpasswd;
-        proxy_pass        http://localhost:8080;
+    location /json {
+        proxy_pass        http://localhost:5000;
+        proxy_set_header  Host $host;
         proxy_set_header  X-Real-IP  $remote_addr;
+        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 
 }
+

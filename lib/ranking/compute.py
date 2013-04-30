@@ -14,8 +14,6 @@ import redis
 import IPy
 
 separator = '|'
-daily_asns_details = 'details'
-ips_block = 'ips_block'
 
 routing_db = None
 global_db = None
@@ -23,7 +21,7 @@ history_db = None
 
 # Current key
 asn = None
-timestamp = None
+ips_block = None
 date = None
 source = None
 
@@ -53,11 +51,11 @@ def rank_using_key(key):
         The key is the subnet we want to rank
     """
     global asn
-    global timestamp
+    global ips_block
     global date
     global source
     if key is not None:
-        asn, timestamp, date, source = key.split(separator)
+        asn, ips_block, date, source = key.split(separator)
         ip_count()
         make_index_source()
         rank()
@@ -87,15 +85,11 @@ def make_index_source():
     """
     global weight
     weight = [0.0, 0.0]
-    ips = global_db.smembers('{asn}{sep}{ts}{sep}{date}{sep}{source}'\
-            .format(sep = separator, asn = asn, ts = timestamp,
-                date = date, source = source))
+    ips = global_db.smembers('{asn}|{block}|{date}|{source}'.format(asn=asn,
+                        block=ips_block, date=date, source=source))
     if len(ips) > 0:
-        block = global_db.get('{asn}{sep}{timestamp}{sep}{ips_block}'.\
-                format(sep = separator, asn = asn, timestamp = timestamp,
-                    ips_block = ips_block))
-        history_db.srem('{asn}{sep}{date}{sep}clean_set'.format(sep = separator,
-            asn = asn, date = date), block)
+        history_db.srem('{asn}|{date}|clean_set'.format(asn=asn, date=date),
+                ips_block)
     for i in ips:
         ip_extract, t = i.split(separator)
         ip = IPy.IP(ip_extract)
@@ -123,15 +117,12 @@ def make_history():
         Save the ranks (by subnets and global) in the database.
     """
     if rank_by_source[0] > 0.0:
-        asn_key_v4_details = '{asn}{sep}{date}{sep}{source}{sep}rankv4{sep}{details}'\
-                                .format(sep = separator, asn = asn,
-                                        date = date, source = source,
-                                        details = daily_asns_details)
+        asn_key_v4_details = '{asn}|{date}|{source}|rankv4|details'.format(
+                                asn = asn, date = date, source = source)
 
-        history_db.zadd(asn_key_v4_details, **{timestamp: rank_by_source[0]})
+        history_db.zadd(asn_key_v4_details, **{ips_block: rank_by_source[0]})
 
-        asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}rankv4'.format(\
-                        sep = separator, asn = asn,
+        asn_key_v4 = '{asn}|{date}|{source}|rankv4'.format(asn = asn,
                         date = date, source = source)
 
         temp_rank = history_db.get(asn_key_v4)
@@ -142,15 +133,12 @@ def make_history():
         history_db.set(asn_key_v4, temp_rank)
 
     if rank_by_source[1] > 0.0:
-        asn_key_v6_details = '{asn}{sep}{date}{sep}{source}{sep}rankv6{sep}{details}'.format(\
-                                sep = separator, asn = asn,
-                                date = date, source = source,
-                                details = daily_asns_details)
+        asn_key_v6_details = '{asn}|{date}|{source}|rankv6|details'.format(
+                                asn = asn, date = date, source = source)
 
-        history_db.zadd(asn_key_v6_details, **{timestamp: rank_by_source[1]})
+        history_db.zadd(asn_key_v6_details, **{ips_block: rank_by_source[1]})
 
-        asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}rankv6'.format(\
-                        sep = separator, asn = asn,\
+        asn_key_v6 = '{asn}|{date}|{source}|rankv6'.format(asn = asn,
                         date = date, source = source)
 
         temp_rank = history_db.get(asn_key_v6)

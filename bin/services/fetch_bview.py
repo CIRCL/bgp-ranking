@@ -42,6 +42,7 @@ import ConfigParser
 import datetime
 import urllib
 import time
+import socket
 
 import httplib
 from urlparse import urlparse
@@ -104,6 +105,7 @@ if __name__ == '__main__':
     raw_data = os.path.join(config.get('directories','root'),
             config.get('directories','raw_data'))
 
+    socket.setdefaulttimeout(10)
     while 1:
         try:
             current_date = datetime.date.today()

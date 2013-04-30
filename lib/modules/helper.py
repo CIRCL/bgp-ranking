@@ -9,6 +9,7 @@ import datetime
 import re
 import importlib
 import sys
+from pubsublogger import publisher
 
 separator = '|'
 key_ip = 'ip'
@@ -70,6 +71,7 @@ def __default_parser(filename, listname, date):
     return date
 
 def importer(raw_dir, listname):
+    publisher.channel = 'ParseRawFiles'
     has_files = False
     if temp_db is None:
         __prepare()
@@ -79,10 +81,17 @@ def importer(raw_dir, listname):
         parser = __default_parser
     date = datetime.date.today()
     for filename in __get_files(raw_dir):
-        has_files = True
-        date_from_module = parser(filename, listname, date)
-        if date_from_module is not None:
-            date = date_from_module
-        os.rename(filename,
-                os.path.join(raw_dir, old_dir, str(date).replace(' ','-')))
+        try:
+            date_from_module = parser(filename, listname, date)
+            has_files = True
+            if date_from_module is not None:
+                date = date_from_module
+            os.rename(filename,
+                    os.path.join(raw_dir, old_dir, str(date).replace(' ','-')))
+        except:
+            new_file = os.path.join(raw_dir, old_dir,
+                    'INVALID_' + str(date).replace(' ','-'))
+            os.rename(filename, new_file)
+            publisher.error('Invalid file: ' + new_file)
     return has_files
+

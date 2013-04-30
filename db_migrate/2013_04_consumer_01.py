@@ -17,7 +17,7 @@ while True:
     global_db.delete(key)
     if len(asn_details) == 0:
         # Buggy entry
-        print asn_details
+        print key
         continue
     blocks = global_db.mget(*[asn_detail + '|ips_block' for asn_detail in asn_details])
     keys_blocks = [asn_detail + '|ips_block' for asn_detail in asn_details]

@@ -21,6 +21,7 @@ while True:
         continue
     blocks = global_db.mget(*[asn_detail + '|ips_block' for asn_detail in asn_details])
     i = 0
+    p = global_db.pipeline(False)
     for asn_detail in asn_details:
         block = blocks[i]
         if block is None:
@@ -28,10 +29,12 @@ while True:
             exit()
         asn, ts = asn_detail.split('|')
         new_asn_detail = '{asn}|{block}'.format(asn=asn, block=block)
-        global_db.sadd(key, new_asn_detail)
-        try:
-            global_db.rename('|'.join([asn_detail, date, source]),
-                    '|'.join([new_asn_detail, date, source]))
-        except:
-            print '|'.join([asn_detail, date, source]), '|'.join([new_asn_detail, date, source])
+        p.sadd(key, new_asn_detail)
+        old_key = '|'.join([asn_detail, date, source])
+        if global_db.exists(old_key):
+            new_key = '|'.join([new_asn_detail, date, source])
+            p.rename(old_key, new_key)
+        else:
+            print old_key
         i += 1
+    p.execute()

@@ -137,9 +137,6 @@ def reset_db_daily():
 
     # date used to generate a ranking with the data in the database at this point
     date = (datetime.date.today() - datetime.timedelta(1)).isoformat()
-    m = Map()
-    m.get_country_codes()
-    m.generate()
     return date
 
 def prepare_keys_for_ranking():
@@ -199,7 +196,6 @@ if __name__ == '__main__':
     from helpers.initscript import *
     from helpers.files_splitter import FilesSplitter
     from ranking.reports_generator import ReportsGenerator
-    from ranking.maps import Map
     services_dir = os.path.join(root_dir,config.get('directories','services'))
     bgpdump = os.path.join(root_dir, path_to_bgpdump_bin)
 

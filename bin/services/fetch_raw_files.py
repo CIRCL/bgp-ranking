@@ -35,6 +35,10 @@ temp_filename = None
 filename = None
 old_directory = None
 
+class BgpRanking_UrlFetcher(urllib.FancyURLopener):
+    version = "Fetcher for bgpranking.circl.lu - Contact: info@circl.lu"
+
+
 def prepare():
     global sleep_timer
     global sleep_timer_short
@@ -64,6 +68,7 @@ def prepare():
     config_db = redis.Redis(port = int(config.get('redis','port_master')),\
                                    db = config.get('redis','config'))
     socket.setdefaulttimeout(120)
+    urllib._urlopener = BgpRanking_UrlFetcher()
 
 
 def fetcher():

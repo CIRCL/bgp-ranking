@@ -127,9 +127,11 @@ def launch():
                 publisher.info(str(temp_db.scard(key_ris)) + ' to process on ' + server)
         except IOError as text:
             publisher.error("IOError on " + server + ': ' + str(text))
+            publisher.info(str(temp_db.scard(key_ris)) + ' to process on ' + server)
+            time.sleep(sleep_timer)
+            __disconnect()
         except Exception as e:
             publisher.error("Error on " + server + ': ' + str(e))
-        finally:
             publisher.info(str(temp_db.scard(key_ris)) + ' to process on ' + server)
             time.sleep(sleep_timer)
             __disconnect()

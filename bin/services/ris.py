@@ -183,10 +183,8 @@ def get_ris():
                             date_source=date_source)
                     if global_db.sismember(index_as_ips, ip_details) is False:
                         pipeline = global_db.pipeline(False)
-                        # FIXME: need migration
                         pipeline.sadd(index_day_asns_details, asn)
                         pipeline.sadd(index_day_asns, asn.split(separator)[0])
-                        # FIXME: need migration
                         pipeline.sadd(index_as_ips, ip_details)
                         pipeline.execute()
                 if i%100 == 0 and config_db.exists(stop_ris):

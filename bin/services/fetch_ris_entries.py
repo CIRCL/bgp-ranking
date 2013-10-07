@@ -19,9 +19,9 @@ import time
 from pubsublogger import publisher
 import argparse
 
-sleep_timer = 10
+sleep_timer = 60
 # Set the ttl of the cached entries to 1 day
-cache_ttl = 86400
+cache_ttl = 86000
 
 temp_db = None
 cache_db = None
@@ -47,7 +47,7 @@ def prepare():
     config = ConfigParser.RawConfigParser()
     config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
-
+    socket.setdefaulttimeout(10)
 
     temp_db = redis.Redis(port = int(config.get('redis','port_cache')),
             db=int(config.get('redis','temp')))
@@ -127,9 +127,12 @@ def launch():
                 publisher.info(str(temp_db.scard(key_ris)) + ' to process on ' + server)
         except IOError as text:
             publisher.error("IOError on " + server + ': ' + str(text))
+        except Exception as e:
+            publisher.error("Error on " + server + ': ' + str(e))
+        finally:
+            publisher.info(str(temp_db.scard(key_ris)) + ' to process on ' + server)
             time.sleep(sleep_timer)
             __disconnect()
-
 
 if __name__ == '__main__':
 

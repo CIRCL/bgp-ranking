@@ -25,6 +25,9 @@ if __name__ == '__main__':
             help='Name of the list.')
     parser.add_argument("-d", "--directory", required=True, type=str,
             help='Path to the directory where the lists are saved.')
+    parser.add_argument("-t", "--timer", required=True, type=int,
+            help='Interval between two checks for files to parse.')
+
     args = parser.parse_args()
 
 
@@ -35,7 +38,6 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     from modules import helper
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
-    sleep_timer = int(config.get('sleep_timers','short'))
     config_db = redis.Redis(port = int(config.get('redis','port_master')),\
                               db = config.get('redis','config'))
 
@@ -46,5 +48,5 @@ if __name__ == '__main__':
             publisher.info('Done with ' + args.name)
         else:
             publisher.debug('No files to parse for ' + args.name)
-        time.sleep(sleep_timer)
+        time.sleep(args.timer)
     config_db.delete(args.name + "|" + "parsing")

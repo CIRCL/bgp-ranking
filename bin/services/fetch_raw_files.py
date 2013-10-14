@@ -26,7 +26,6 @@ import redis
 import socket
 
 sleep_timer = 0
-sleep_timer_short = 0
 config_db = None
 module = None
 directory = None
@@ -40,8 +39,6 @@ class BgpRanking_UrlFetcher(urllib.FancyURLopener):
 
 
 def prepare():
-    global sleep_timer
-    global sleep_timer_short
     global config_db
     global directory
     global temp_filename
@@ -57,16 +54,15 @@ def prepare():
     filename = os.path.join(directory, str(datetime.date.today()))
 
     temporary_dir = config.get('fetch_files','tmp_dir')
-    temp_filename = os.path.join(directory, temporary_dir, str(datetime.date.today()))
+    temp_filename = os.path.join(directory, temporary_dir, \
+            str(datetime.date.today()))
 
     old_dir = config.get('fetch_files','old_dir')
     old_directory = os.path.join(directory, old_dir)
 
-    sleep_timer = int(config.get('sleep_timers','long'))
-    sleep_timer_short = int(config.get('sleep_timers','short'))
-
-    config_db = redis.Redis(port = int(config.get('redis','port_master')),\
-                                   db = config.get('redis','config'))
+    config_db = redis.Redis(
+            port = int(config.get('redis','port_master')),\
+            db = config.get('redis','config'))
     socket.setdefaulttimeout(120)
     urllib._urlopener = BgpRanking_UrlFetcher()
 
@@ -85,8 +81,8 @@ def fetcher():
         drop_file = False
         """
             Check is the file already exists, if the same file is found,
-            the downloaded file is dropped. Else, it is moved in his final directory.
-            FIXME: I should not check ALL the file present, or do sth with old files
+            the downloaded file is dropped. Else, it is moved in his
+            final directory.
         """
         to_check = glob.glob( os.path.join(old_directory, '*') )
         to_check += glob.glob( os.path.join(directory, '*') )
@@ -107,25 +103,33 @@ def __check_exit():
     """
         Check in redis if the module should be stoped
     """
-    wait_until = datetime.datetime.now() + datetime.timedelta(seconds = sleep_timer)
+    wait_until = datetime.datetime.now() + \
+        datetime.timedelta(seconds = sleep_timer)
     while wait_until >= datetime.datetime.now():
         if not config_db.sismember('modules', module):
             break
-        time.sleep(sleep_timer_short)
+        time.sleep(5)
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Start a fetcher for a list.')
+    parser = argparse.ArgumentParser(
+            description='Start a fetcher for a list.')
 
-    parser.add_argument("-n", "--name", required=True, type=str, help='Name of the list.')
-    parser.add_argument("-d", "--directory", required=True, type=str, help='Path to the directory where the lists are saved.')
-    parser.add_argument("-u", "--url", required=True, type=str, help='URL to fetch.')
+    parser.add_argument("-n", "--name", required=True, type=str,
+            help='Name of the list.')
+    parser.add_argument("-d", "--directory", required=True, type=str,
+            help='Path to the directory where the lists are saved.')
+    parser.add_argument("-u", "--url", required=True, type=str,
+            help='URL to fetch.')
+    parser.add_argument("-t", "--timer", required=True, type=int,
+            help='Interval between two fetch.')
 
     args = parser.parse_args()
 
     module = args.name
     directory = args.directory
     url = args.url
+    sleep_timer = args.timer
 
     publisher.channel = 'FetchRawFiles'
 

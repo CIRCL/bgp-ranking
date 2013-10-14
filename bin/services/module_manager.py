@@ -28,12 +28,11 @@ from pubsublogger import publisher
 
 config_db = None
 services_dir = None
-sleep_timer = 0
+sleep_timer = 30
 
 def prepare():
     global config_db
     global services_dir
-    global sleep_timer
     config = ConfigParser.RawConfigParser()
     config_file = '/etc/bgpranking/bgpranking.conf'
     config.read(config_file)
@@ -45,7 +44,6 @@ def prepare():
 
     config_db = redis.Redis(port = int(config.get('redis','port_master')),\
                                    db = config.get('redis','config'))
-    sleep_timer = int(config.get('sleep_timers','short'))
 
 
 def launch_fetcher(module):
@@ -53,6 +51,7 @@ def launch_fetcher(module):
         Launch a process which fetch a dataset in a directory
     """
     service_fetcher = os.path.join(services_dir, "fetch_raw_files.py")
+    timer = 3600
     if module is None:
         publisher.error('Unable to start fetching : module is None')
         return
@@ -63,11 +62,13 @@ def launch_fetcher(module):
         return
     directory = config_db.get(module + "|" + "home_dir")
     if directory is not None:
-        subprocess.Popen(["python", service_fetcher, '-n', module, '-d', directory, '-u', url])
+        subprocess.Popen(["python", service_fetcher, '-n', module,
+            '-d', directory, '-u', url, '-t', timer])
         config_db.set(module + "|" + "fetching", 1)
         publisher.info('Fetching of ' + module + 'started.')
     else:
-        publisher.error('Unable to start fetching of ' + module + ': home_dir unknown.')
+        publisher.error('Unable to start fetching of ' + module + \
+                ': home_dir unknown.')
         config_db.set(module + "|" + "fetching", 0)
 
 
@@ -76,16 +77,19 @@ def launch_parser(module):
         Launch a parser on a dataset for a module
     """
     service_parser = os.path.join(services_dir, "parse_raw_files.py")
+    timer = 60
     if module is None:
         publisher.error('Unable to start parsing : module is None')
         return
     directory = config_db.get(module + "|" + "home_dir")
     if directory is not None:
-        subprocess.Popen(["python", service_parser, '-n', module, '-d', directory])
+        subprocess.Popen(["python", service_parser, '-n', module,
+            '-d', directory, '-t', timer])
         config_db.set(module + "|" + "parsing", 1)
         publisher.info('Parsing of ' + module + 'started.')
     else:
-        publisher.error('Unable to start parsing of ' + module + ': home_dir unknown.')
+        publisher.error('Unable to start parsing of ' + module + \
+                ': home_dir unknown.')
         config_db.set(module + "|" + "parsing", 0)
 
 def manager():

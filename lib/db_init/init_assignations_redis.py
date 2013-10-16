@@ -41,11 +41,9 @@ whois_post_options = {
     'whois.nic.ad.jp' : ' /e '
     }
 
-whois_port_options = {
-    config.get('whois_server', 'hostname') : config.get('whois_server', 'port')
-    }
+whois_port_options = { 'localhost' : 4343 }
 
-to_drop = config.get('whois_servers', 'non_routed').split()
+to_drop = 'UNALLOCATED 6to4 teredo 6bone v6nic'.split()
 
 def insert(assignations):
     maker = MakeIPKeys(IPy.IP(assignations[0][0]).version() == 4)
@@ -75,16 +73,16 @@ def push_sets(sets, ip, url):
         redis.set(ip, url)
 #        redis.sadd(url, ip)
 
-servers_key = config.get('assignations','servers_key')
+servers_key = 'servers'
 
 def push_servers(urls):
     for url in urls:
         redis.sadd(servers_key, url)
 
-pre_option_suffix = config.get('assignations','pre_option_suffix')
-post_option_suffix = config.get('assignations','post_option_suffix')
-keepalive_option_suffix = config.get('assignations','keepalive_option_suffix')
-port_option_suffix = config.get('assignations','port_option_suffix')
+pre_option_suffix = ':pre'
+post_option_suffix = ':post'
+keepalive_option_suffix = ':keepalive'
+port_option_suffix = ':port'
 
 def set_options():
     for url in urls:
@@ -101,7 +99,7 @@ def set_options():
         if port:
             redis.set(url + port_option_suffix, port)
 
-redis = redis.Redis(port = int(config.get('redis','port_master')), db=config.get('redis','whois_assignations'))
+redis = redis.Redis(port = int(config.get('redis','port_master')), db=4)
 redis.flushdb()
 urls = set()
 
@@ -121,7 +119,7 @@ insert(assignations)
 # to do the RIS Requests
 urls.add('riswhois.ripe.net')
 # local queries -> http://gitorious.org/whois-server
-urls.add(config.get('whois_server', 'hostname'))
+urls.add('localhost')
 
 set_options()
 push_servers(urls)

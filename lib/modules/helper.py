@@ -31,7 +31,7 @@ def __prepare():
     config.read(config_file)
 
     temp_db = redis.Redis(port = int(config.get('redis','port_cache')),
-            db=int(config.get('modules_global','temp_db')))
+            db=int(config.get('redis','temp')))
     sys.path.append(os.path.dirname(__file__))
 
 def new_entry(ip, source, timestamp):

@@ -3,8 +3,8 @@
 
 """
 
-    :file:`bin/services/push_update_routing.py` - Push routing dump and compute ranking
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Push routing dump and compute ranking
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     This script has two parts:
 
@@ -14,14 +14,16 @@
     This way, we ensure of the integrity of the routing information.
 
     .. note::
-     1. To push the routing information we have first to generate a plain text file from the
-        binary dump. The second part use the splitting module to make a certain number of files
-        (defined in the configuration file). When it is finished, the process start a process on
-        each files to push the information into redis. And wait that each process is finished.
+     1. To push the routing information we have first to generate a
+        plain text file from the binary dump. The second part use the
+        splitting module to make a certain number of files (defined in
+        the configuration file). When it is finished, the process start
+        a process on each files to push the information into redis.
+        And wait that each process is finished.
 
      2. It manages a pool of processes computing the ranking.
-        Using the number of processes defined in the config file, the interval assigned
-        to each process is computed.
+        Using the number of processes defined in the config file, the
+        interval assigned to each process is computed.
 """
 
 import os
@@ -40,20 +42,19 @@ path_bviewfile = 'bgp/bview.gz'
 bview_check_interval = 3600
 sleep_timer = 10
 path_to_bgpdump_bin = 'thirdparty/bgpdump/bgpdump'
-
-separator = '|'
+days_history_cache = 3
 
 key_to_rank = 'to_rank'
-key_latest_ranking = 'latest_ranking'
-key_amount_asns = 'amount_asns'
-index_sources = 'sources'
-index_asns_details = 'asns_details'
+number_of_splits = 10
+split_procs = 10
+rank_procs = 10
 
 
 def intervals_ranking(nb_of_asns, interval):
     """
-        Compute the size of each intervals based on the number of ASNs found in the database
-        and the number of processes defined in the configuration file
+        Compute the size of each intervals based on the number of ASNs
+        found in the database and the number of processes defined in
+        the configuration file
     """
     first = 0
     intervals = []
@@ -62,15 +63,15 @@ def intervals_ranking(nb_of_asns, interval):
         first += interval + 1
     return intervals
 
-def run_splitted_processing(max_simultaneous_processes, process_name, process_args):
+def run_splitted_processing(max_sim_procs, process_name, process_args):
     """
-        Run processes which push the routing dump of the RIPE in a redis database.
-        The dump has been splitted in multiple files and each process run on one
-        of this files.
+        Run processes which push the routing dump of the RIPE in a
+        redis database. The dump has been splitted in multiple files
+        and each process run on one of this files.
     """
     pids = []
     while len(process_args) > 0:
-        while len(process_args) > 0 and len(pids) < max_simultaneous_processes:
+        while len(process_args) > 0 and len(pids) < max_sim_procs:
             arg = process_args.pop()
             pids.append(service_start(servicename = process_name,
                 param = ['-f', arg]))
@@ -92,8 +93,7 @@ def compute_yesterday_ranking():
     if os.path.exists(ts_file):
         ts = open(ts_file, 'r').read()
         redis.Redis(port = int(config.get('redis','port_master')),
-                db = config.get('redis','history')).\
-                        set(key_latest_ranking, ts)
+                db = config.get('redis','history')).set('latest_ranking', ts)
         ts = ts.split()
         if int(ts[1]) == 0:
             return True
@@ -113,16 +113,17 @@ def prepare_bview_file():
     publisher.info('Convertion finished, start splitting...')
 
     # Split the plain text file
-    fs = FilesSplitter(output.name, int(config.get('routing','number_of_splits')))
+    fs = FilesSplitter(output.name, number_of_splits)
     splitted_files = fs.fplit()
     publisher.info('Splitting finished.')
 
-    # Flush the old routing database and launch the population of the new database
+    # Flush the old routing database and launch the population of
+    # the new database
     routing_db.flushdb()
 
     publisher.info('Start pushing all routes...')
-    run_splitted_processing(int(config.get('processes','routing_push')),
-            pushing_process_service, splitted_files)
+    run_splitted_processing(split_procs, pushing_process_service,
+            splitted_files)
     publisher.info('All routes pushed.')
 
     # Remove the binary and the plain text files
@@ -130,12 +131,14 @@ def prepare_bview_file():
     os.unlink(filename)
 
 def reset_db_daily():
-    # Clean the whole database and regenerate it (like this we do not keep data of the old rankings)
+    # Clean the whole database and regenerate it (like this we do not
+    # keep data of the old rankings)
     report = ReportsGenerator()
     report.flush_temp_db()
-    report.build_reports_lasts_days(int(config.get('ranking','days')))
+    report.build_reports_lasts_days(days_history_cache)
 
-    # date used to generate a ranking with the data in the database at this point
+    # date used to generate a ranking with the data in the database at
+    # this point
     date = (datetime.date.today() - datetime.timedelta(1)).isoformat()
     return date
 
@@ -144,37 +147,32 @@ def prepare_keys_for_ranking():
     pipeline = history_db_static.pipeline()
     for asn in routing_db.smembers('asns'):
         blocks = routing_db.smembers(asn)
-        pipeline.sadd('{asn}{sep}{date}{sep}clean_set'.format(sep = separator,
-            asn = asn, date = date), *blocks)
+        pipeline.sadd('{asn}|{date}|clean_set'.format(asn = asn,
+            date = date), *blocks)
         temp_db.sadd('full_asn_db', *[str(IPy.IP(b)[0]) for b in blocks])
         temp_db.sadd('no_asn', 'full_asn_db')
     pipeline.execute()
 
     # Cleanup the old keys, setup the list of asns to rank
-    sources = global_db.smembers('{date}{sep}{key}'.\
-            format(date = date, sep = separator, key = index_sources))
+    sources = global_db.smembers('{date}|sources'.format(date = date))
 
     pipeline = history_db.pipeline()
     pipeline_static = history_db_static.pipeline()
     to_delete = []
     for source in sources:
-        asns = global_db.smembers('{date}{sep}{source}{sep}{key}'.\
-                format(date = date, sep = separator, source = source,
-                    key = index_asns_details))
+        asns = global_db.smembers('{date}|{source}|asns_details'.format(
+            date = date, source = source))
         for asn in asns:
-            global_asn = asn.split(separator)[0]
-            asn_key_v4 = '{asn}{sep}{date}{sep}{source}{sep}rankv4'.\
-                    format(sep = separator, asn = global_asn,
-                            date = date, source = source)
-            asn_key_v6 = '{asn}{sep}{date}{sep}{source}{sep}rankv6'.\
-                    format(sep = separator, asn = global_asn,
-                            date = date, source = source)
+            global_asn = asn.split('|')[0]
+            asn_key_v4 = '{asn}|{date}|{source}|rankv4'.format(
+                    asn = global_asn, date = date, source = source)
+            asn_key_v6 = '{asn}|{date}|{source}|rankv6'.format(
+                    asn = global_asn, date = date, source = source)
             to_delete.append(asn_key_v4)
             to_delete.append(asn_key_v6)
 
-            pipeline.sadd(key_to_rank,
-                    '{asn}{sep}{date}{sep}{source}'.format(sep = separator,
-                        asn = asn, date = date, source = source))
+            pipeline.sadd(key_to_rank, '{asn}|{date}|{source}'.format(
+                asn = asn, date = date, source = source))
     to_delete = set(to_delete)
     if len(to_delete) > 0:
         pipeline_static.delete(*to_delete)
@@ -192,18 +190,20 @@ if __name__ == '__main__':
     config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
-    sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
+    sys.path.append(os.path.join(root_dir,
+        config.get('directories','libraries')))
     from helpers.initscript import *
     from helpers.files_splitter import FilesSplitter
     from ranking.reports_generator import ReportsGenerator
-    services_dir = os.path.join(root_dir,config.get('directories','services'))
+    services_dir = os.path.join(root_dir,
+            config.get('directories','services'))
     bgpdump = os.path.join(root_dir, path_to_bgpdump_bin)
 
-    routing_db = redis.Redis(port = int(config.get('redis','port_cache')),
+    routing_db = redis.Redis(port=int(config.get('redis','port_cache')),
             db = config.get('redis','routing'))
-    global_db = redis.Redis(port = int(config.get('redis','port_master')),
+    global_db = redis.Redis(port=int(config.get('redis','port_master')),
             db = config.get('redis','global'))
-    history_db = redis.Redis(port = int(config.get('redis','port_cache')),
+    history_db = redis.Redis(port=int(config.get('redis','port_cache')),
             db = config.get('redis','history'))
     history_db_static = redis.Redis(port = int(config.get('redis','port_master')),
             db = config.get('redis','history'))
@@ -235,17 +235,14 @@ if __name__ == '__main__':
 
         prepare_keys_for_ranking()
 
-        service_start_multiple(ranking_process_service,
-                int(config.get('processes','ranking')))
+        service_start_multiple(ranking_process_service, rank_procs)
 
         while history_db.scard(key_to_rank) > 0:
             # wait for a new file
             time.sleep(sleep_timer)
         rmpid(ranking_process_service)
         # Save the number of asns known by the RIPE
-        history_db_static.set('{date}{sep}{amount_asns}'.\
-                format(date = date, sep = separator,
-                    amount_asns = key_amount_asns),
+        history_db_static.set('{date}|amount_asns'.format(date = date),
                 routing_db.dbsize())
         routing_db.flushdb()
         publisher.info('Updating the reports...')

@@ -57,7 +57,7 @@ def prepare():
     config_file = '/etc/bgpranking/bgpranking.conf'
     config.read(config_file)
     temp_db    = redis.Redis(port = int(config.get('redis','port_cache')),
-                        db=int(config.get('modules_global','temp_db')))
+                        db=int(config.get('redis','temp')))
     global_db  = redis.Redis(port = int(config.get('redis','port_master')),
                         db=int(config.get('redis','global')))
     config_db = redis.Redis(port = int(config.get('redis','port_master')),

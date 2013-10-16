@@ -53,12 +53,9 @@ def prepare():
     directory = os.path.join(root_dir, raw_dir, directory)
     filename = os.path.join(directory, str(datetime.date.today()))
 
-    temporary_dir = config.get('fetch_files','tmp_dir')
-    temp_filename = os.path.join(directory, temporary_dir, \
-            str(datetime.date.today()))
+    temp_filename = os.path.join(directory, 'temp', str(datetime.date.today()))
 
-    old_dir = config.get('fetch_files','old_dir')
-    old_directory = os.path.join(directory, old_dir)
+    old_directory = os.path.join(directory, 'old')
 
     config_db = redis.Redis(
             port = int(config.get('redis','port_master')),\

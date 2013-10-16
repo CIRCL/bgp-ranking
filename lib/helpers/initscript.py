@@ -144,28 +144,3 @@ def check_pid(pid):
     else:
         return True
 
-
-def init_counter(total_ips):
-    """
-        Init an ugly array to manage a certain amount of processes
-        FIXME: well.. rewrite it
-    """
-    config, pid_path = init_static()
-    ip_counter = {}
-    max_processes = int(config.get('whois_push','max_processes'))
-    max_ips_by_process = int(config.get('whois_push','max_ips_by_process'))
-    min_ips_by_process = int(config.get('whois_push','min_ips_by_process'))
-    if total_ips > max_processes * max_ips_by_process:
-        total_ips = max_processes * max_ips_by_process
-    ip_counter['total_ips'] = total_ips
-    ip_counter['interval'] = total_ips / max_processes + 1
-    if ip_counter['interval'] < min_ips_by_process:
-        ip_counter['interval'] = min_ips_by_process
-    ip_counter['processes'] = 0
-    while max_processes > 0 and total_ips > 0:
-        total_ips -= ip_counter['interval']
-        max_processes -= 1
-        ip_counter['processes'] += 1
-    return ip_counter
-
-

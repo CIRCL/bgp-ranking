@@ -51,7 +51,7 @@ def launch_fetcher(module):
         Launch a process which fetch a dataset in a directory
     """
     service_fetcher = os.path.join(services_dir, "fetch_raw_files.py")
-    timer = 3600
+    timer = '3600'
     if module is None:
         publisher.error('Unable to start fetching : module is None')
         return
@@ -77,7 +77,7 @@ def launch_parser(module):
         Launch a parser on a dataset for a module
     """
     service_parser = os.path.join(services_dir, "parse_raw_files.py")
-    timer = 60
+    timer = '60'
     if module is None:
         publisher.error('Unable to start parsing : module is None')
         return

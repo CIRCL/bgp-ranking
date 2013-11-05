@@ -75,7 +75,7 @@ def run_splitted_processing(max_sim_procs, process_name, process_args):
             arg = process_args.pop()
             pids.append(service_start(servicename = process_name,
                 param = ['-f', arg]))
-        while len(pids) == max_simultaneous_processes:
+        while len(pids) == max_sim_procs:
             time.sleep(sleep_timer)
             pids = update_running_pids(pids)
     while len(pids) > 0:

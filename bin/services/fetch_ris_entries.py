@@ -60,8 +60,7 @@ def __connect():
     """
     global connected
     global server_socket
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.connect((server,port))
+    server_socket = socket.create_connection((server,port))
     # Skip the welcome message
     server_socket.recv(1024)
     connected = True

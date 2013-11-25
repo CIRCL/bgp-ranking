@@ -43,6 +43,7 @@ import datetime
 import urllib
 import time
 import socket
+import argparse
 
 import httplib
 from urlparse import urlparse
@@ -94,34 +95,59 @@ def already_downloaded(date, hour):
     open(ts_file, 'w').write(date + ' ' + hour)
     return False
 
+def mkdate(datestring):
+    if datestring is None:
+        return None
+    return datetime.datetime.strptime(datestring, '%Y-%m-%d').date()
 
 if __name__ == '__main__':
 
     publisher.channel = 'Ranking'
-
-    config = ConfigParser.RawConfigParser()
-    config_file = "/etc/bgpranking/bgpranking.conf"
-    config.read(config_file)
-    raw_data = os.path.join(config.get('directories','root'),
-            config.get('directories','raw_data'))
-
     socket.setdefaulttimeout(10)
-    while 1:
-        try:
-            current_date = datetime.date.today()
-            # Initialization of the URL to fetch
-            year_month = current_date.strftime("%Y.%m")
-            file_day = current_date.strftime("%Y%m%d")
 
-            for hour in reversed(hours):
-                url = base_url.format(year_month = year_month,
-                        file_day = file_day, hour = hour)
-                if checkURL(url):
-                    if not already_downloaded(file_day, hour):
-                        publisher.info("New bview file found: " + url)
-                        downloadURL(url)
-                        last_hour = hour
-                        break
-        except:
-            publisher.critical('Unable to download bview file. Server does not respond.')
-        time.sleep(sleep_timer)
+    parser = argparse.ArgumentParser(description='Fetch a bview file')
+    parser.add_argument('-d', '--day', type=mkdate, default=None,
+            help='Day to fetch (EOD, midnight). Format: YYYY-MM-DD. Default: None, run as service.')
+    parser.add_argument('-p', '--path', type=str, default=None,
+            help='Path where the file will be fetched. If None, read config file.')
+    args = parser.parse_args()
+
+    raw_data = args.path
+    if raw_data is None:
+        config = ConfigParser.RawConfigParser()
+        config_file = "/etc/bgpranking/bgpranking.conf"
+        config.read(config_file)
+        raw_data = os.path.join(config.get('directories','root'),
+                config.get('directories','raw_data'))
+
+
+    if args.day is not None:
+        # we want the file of midnight the day after
+        day = args.day + datetime.timedelta(days=1)
+        url = base_url.format(year_month = day.strftime("%Y.%m"),
+                file_day = day.strftime("%Y%m%d"), hour = '0000')
+        if checkURL(url):
+            publisher.debug('Asked for {}, downloading {}'.format(args.day, url))
+            downloadURL(url)
+        else:
+            publisher.warning('File unavailable {}: {}'.format(args.day, url))
+    else:
+        while 1:
+            try:
+                current_date = datetime.date.today()
+                # Initialization of the URL to fetch
+                year_month = current_date.strftime("%Y.%m")
+                file_day = current_date.strftime("%Y%m%d")
+
+                for hour in reversed(hours):
+                    url = base_url.format(year_month = year_month,
+                            file_day = file_day, hour = hour)
+                    if checkURL(url):
+                        if not already_downloaded(file_day, hour):
+                            publisher.info("New bview file found: " + url)
+                            downloadURL(url)
+                            last_hour = hour
+                            break
+            except:
+                publisher.critical('Unable to download bview file. Server does not respond.')
+            time.sleep(sleep_timer)

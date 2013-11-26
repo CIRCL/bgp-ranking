@@ -34,6 +34,7 @@ import time
 import redis
 import datetime
 import IPy
+import argparse
 
 from pubsublogger import publisher
 
@@ -88,12 +89,10 @@ def compute_yesterday_ranking():
         if the bview file has been generated at midnight, it is better
         to compute the ranking of "yesterday"
     """
-    raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
     ts_file = os.path.join(raw_data, path_bviewtimesamp)
     if os.path.exists(ts_file):
         ts = open(ts_file, 'r').read()
-        redis.Redis(port = int(config.get('redis','port_master')),
-                db = config.get('redis','history')).set('latest_ranking', ts)
+        history_db_static.set('latest_ranking', ts)
         ts = ts.split()
         if int(ts[1]) == 0:
             return True
@@ -105,6 +104,7 @@ def prepare_bview_file():
     # create the plain text dump from the binary dump
     output = open(os.path.join(bview_dir, 'bview'), 'wr')
     nul_f = open(os.devnull, 'w')
+    bgpdump = os.path.join(root_dir, path_to_bgpdump_bin)
     p_bgp = Popen([bgpdump , filename], stdout=PIPE, stderr = nul_f)
     for line in p_bgp.stdout:
         output.write(line)
@@ -122,6 +122,7 @@ def prepare_bview_file():
     routing_db.flushdb()
 
     publisher.info('Start pushing all routes...')
+    pushing_process_service = os.path.join(services_dir, "pushing_process")
     run_splitted_processing(split_procs, pushing_process_service,
             splitted_files)
     publisher.info('All routes pushed.')
@@ -181,23 +182,24 @@ def prepare_keys_for_ranking():
     pipeline.execute()
     pipeline_static.execute()
 
-
-if __name__ == '__main__':
-
-    publisher.channel = 'Ranking'
-
+def prepare():
+    global root_dir
+    global raw_data
+    global services_dir
+    global global_db
+    global history_db
+    global history_db_static
+    global temp_db
+    global routing_db
     config = ConfigParser.RawConfigParser()
     config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
     root_dir = config.get('directories','root')
+    raw_data = config.get('directories','raw_data')
     sys.path.append(os.path.join(root_dir,
         config.get('directories','libraries')))
-    from helpers.initscript import *
-    from helpers.files_splitter import FilesSplitter
-    from ranking.reports_generator import ReportsGenerator
     services_dir = os.path.join(root_dir,
             config.get('directories','services'))
-    bgpdump = os.path.join(root_dir, path_to_bgpdump_bin)
 
     routing_db = redis.Redis(port=int(config.get('redis','port_cache')),
             db = config.get('redis','routing'))
@@ -210,31 +212,56 @@ if __name__ == '__main__':
     temp_db = redis.Redis(port = int(config.get('redis','port_cache')),
             db=int(config.get('redis','temp')))
 
-    filename = os.path.join(root_dir, config.get('directories','raw_data'),
-            path_bviewfile)
-    bview_dir = os.path.dirname(filename)
+root_dir = None
+raw_data = None
+services_dir = None
+routing_db = None
+history_db = None
+history_db_static = None
+temp_db = None
+global_db = None
 
-    pushing_process_service = os.path.join(services_dir, "pushing_process")
+def mkdate(datestring):
+    if datestring is None:
+        return None
+    return datetime.datetime.strptime(datestring, '%Y-%m-%d').date()
+
+
+if __name__ == '__main__':
+
+    publisher.channel = 'Ranking'
+    prepare()
+    from helpers.initscript import service_start_multiple, rmpid, \
+            service_start, update_running_pids
+    from helpers.files_splitter import FilesSplitter
+    from ranking.reports_generator import ReportsGenerator
+
+    parser = argparse.ArgumentParser(description='Process a bview file an compute ranking')
+    parser.add_argument('-d', '--day', type=mkdate, default=None,
+            help='Day to process (EOD, midnight). Format: YYYY-MM-DD. Default: None, run as service.')
+    parser.add_argument('-p', '--path', type=str, default=None,
+            help='Path where the file has been fetched. If None, read config file.')
+    args = parser.parse_args()
+
+    raw_data = args.path
+    if raw_data is None:
+        filename = os.path.join(root_dir, raw_data, path_bviewfile)
+        bview_dir = os.path.dirname(filename)
+
+
+
     ranking_process_service = os.path.join(services_dir, "ranking_process")
-
     # Wait a bit until the bview file is downloaded
     time.sleep(60)
 
-    while 1:
-        if not os.path.exists(filename) or history_db.exists(key_to_rank):
-            # wait for a new file
-            time.sleep(bview_check_interval)
-            continue
-
+    if args.day is not None:
+        # FIXME: it is not possible to have two ranking processes at the
+        # same time because routing_db will be messed up.
+        if routing_db.dbsize() > 0:
+            time.sleep(sleep_timer)
         prepare_bview_file()
-
-        if compute_yesterday_ranking():
-            date = reset_db_daily()
-        else:
-            date = datetime.date.today().isoformat()
-
+        date = args.day.isoformat()
         prepare_keys_for_ranking()
-
         service_start_multiple(ranking_process_service, rank_procs)
 
         while history_db.scard(key_to_rank) > 0:
@@ -245,6 +272,37 @@ if __name__ == '__main__':
         history_db_static.set('{date}|amount_asns'.format(date = date),
                 routing_db.dbsize())
         routing_db.flushdb()
-        publisher.info('Updating the reports...')
-        ReportsGenerator().build_reports(date)
-        publisher.info('...done.')
+
+    else:
+        while 1:
+            # FIXME: it is not possible to have two ranking processes at the
+            # same time because routing_db will be messed up.
+            if routing_db.dbsize() > 0:
+                time.sleep(sleep_timer)
+            if not os.path.exists(filename) or history_db.exists(key_to_rank):
+                # wait for a new file
+                time.sleep(bview_check_interval)
+                continue
+
+            prepare_bview_file()
+
+            if compute_yesterday_ranking():
+                date = reset_db_daily()
+            else:
+                date = datetime.date.today().isoformat()
+
+            prepare_keys_for_ranking()
+
+            service_start_multiple(ranking_process_service, rank_procs)
+
+            while history_db.scard(key_to_rank) > 0:
+                # wait for a new file
+                time.sleep(sleep_timer)
+            rmpid(ranking_process_service)
+            # Save the number of asns known by the RIPE
+            history_db_static.set('{date}|amount_asns'.format(date = date),
+                    routing_db.dbsize())
+            routing_db.flushdb()
+            publisher.info('Updating the reports...')
+            ReportsGenerator().build_reports(date)
+            publisher.info('...done.')

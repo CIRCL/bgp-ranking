@@ -260,6 +260,7 @@ if __name__ == '__main__':
         if routing_db.dbsize() > 0:
             time.sleep(sleep_timer)
         prepare_bview_file()
+        amount_asns = routing_db.scard('asns')
         date = args.day.isoformat()
         prepare_keys_for_ranking()
         service_start_multiple(ranking_process_service, rank_procs)
@@ -269,8 +270,8 @@ if __name__ == '__main__':
             time.sleep(sleep_timer)
         rmpid(ranking_process_service)
         # Save the number of asns known by the RIPE
-        history_db_static.set('{date}|amount_asns'.format(date = date),
-                routing_db.dbsize())
+        history_db_static.set(
+                '{date}|amount_asns'.format(date = date), amount_asns)
         routing_db.flushdb()
 
     else:
@@ -285,6 +286,7 @@ if __name__ == '__main__':
                 continue
 
             prepare_bview_file()
+            amount_asns = routing_db.scard('asns')
 
             if compute_yesterday_ranking():
                 date = reset_db_daily()
@@ -300,8 +302,8 @@ if __name__ == '__main__':
                 time.sleep(sleep_timer)
             rmpid(ranking_process_service)
             # Save the number of asns known by the RIPE
-            history_db_static.set('{date}|amount_asns'.format(date = date),
-                    routing_db.dbsize())
+            history_db_static.set(
+                    '{date}|amount_asns'.format(date = date),amount_asns)
             routing_db.flushdb()
             publisher.info('Updating the reports...')
             ReportsGenerator().build_reports(date)

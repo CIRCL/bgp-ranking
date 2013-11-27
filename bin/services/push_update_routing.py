@@ -247,6 +247,9 @@ if __name__ == '__main__':
     if raw_data is None:
         filename = os.path.join(root_dir, raw_data, path_bviewfile)
         bview_dir = os.path.dirname(filename)
+    else:
+        filename = os.path.join(raw_data, path_bviewfile)
+        bview_dir = os.path.dirname(filename)
 
 
 

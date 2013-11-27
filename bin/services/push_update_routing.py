@@ -243,14 +243,14 @@ if __name__ == '__main__':
             help='Path where the file has been fetched. If None, read config file.')
     args = parser.parse_args()
 
-    raw_data = args.path
-    if raw_data is None:
-        filename = os.path.join(root_dir, raw_data, path_bviewfile)
-        bview_dir = os.path.dirname(filename)
-    else:
+    if args.path is None:
+        raw_data = os.path.join(root_dir, raw_data)
         filename = os.path.join(raw_data, path_bviewfile)
         bview_dir = os.path.dirname(filename)
-
+    else:
+        raw_data = args.path
+        filename = os.path.join(raw_data, path_bviewfile)
+        bview_dir = os.path.dirname(filename)
 
 
     ranking_process_service = os.path.join(services_dir, "ranking_process")

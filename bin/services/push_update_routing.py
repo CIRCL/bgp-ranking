@@ -260,7 +260,7 @@ if __name__ == '__main__':
     if args.day is not None:
         # FIXME: it is not possible to have two ranking processes at the
         # same time because routing_db will be messed up.
-        if routing_db.dbsize() > 0:
+        while routing_db.dbsize() > 0:
             time.sleep(sleep_timer)
         prepare_bview_file()
         amount_asns = routing_db.scard('asns')
@@ -281,7 +281,7 @@ if __name__ == '__main__':
         while 1:
             # FIXME: it is not possible to have two ranking processes at the
             # same time because routing_db will be messed up.
-            if routing_db.dbsize() > 0:
+            while routing_db.dbsize() > 0:
                 time.sleep(sleep_timer)
             if not os.path.exists(filename) or history_db.exists(key_to_rank):
                 # wait for a new file

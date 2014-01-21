@@ -38,6 +38,7 @@ CleanMXPhishing     = 5 cleanmx/phishing/ http://support.clean-mx.de/clean-mx/xm
 CleanMXPortals      = 5 cleanmx/portals/ http://support.clean-mx.de/clean-mx/xmlportals.php?response=alive
 EmergingThreatsCompromized = 5 emergingthreats/compromized/ http://rules.emergingthreats.net/blockrules/compromised-ips.txt
 EmergingThreatsRBN  = 0.01 emergingthreats/rbn/ http://doc.emergingthreats.net/pub/Main/RussianBusinessNetwork/RussianBusinessNetworkIPs.txt
+FeodotrackerIpBlockList = 5 feodo/ipblocklist/ https://feodotracker.abuse.ch/blocklist.php?download=ipblocklist
 MaliciousnetworksFIRE = 7 maliciousnetworks/fire/ http://maliciousnetworks.org/fire-blocklist.txt
 DshieldDaily        = 0.1 dshield/daily/ http://www.dshield.org/feeds/daily_sources
 DshieldTopIPs       = 1 dshield/topips/ http://www.dshield.org/feeds/topips.txt

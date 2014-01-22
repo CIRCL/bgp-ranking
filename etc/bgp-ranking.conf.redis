@@ -33,9 +33,9 @@ BlocklistDeSip      = 3 blocklist_de/sip/ http://www.blocklist.de/lists/sip.txt
 BlocklistDeBots     = 3 blocklist_de/bots/ http://www.blocklist.de/lists/bots.txt
 BlocklistDeStrong   = 6 blocklist_de/strong/ http://www.blocklist.de/lists/strongips.txt
 CIArmy              = 5 ciarmy/ip/ http://www.ciarmy.com/list/ci-badguys.txt
-CleanMXMalwares     = 5 cleanmx/malwares/ http://support.clean-mx.de/clean-mx/xmlviruses.php?response=alive
-CleanMXPhishing     = 5 cleanmx/phishing/ http://support.clean-mx.de/clean-mx/xmlphishing.php?response=alive
-CleanMXPortals      = 5 cleanmx/portals/ http://support.clean-mx.de/clean-mx/xmlportals.php?response=alive
+CleanMXMalwares     = 5 cleanmx/malwares/
+CleanMXPhishing     = 5 cleanmx/phishing/
+CleanMXPortals      = 5 cleanmx/portals/
 EmergingThreatsCompromized = 5 emergingthreats/compromized/ http://rules.emergingthreats.net/blockrules/compromised-ips.txt
 EmergingThreatsRBN  = 0.01 emergingthreats/rbn/ http://doc.emergingthreats.net/pub/Main/RussianBusinessNetwork/RussianBusinessNetworkIPs.txt
 FeodotrackerIpBlockList = 5 feodo/ipblocklist/ https://feodotracker.abuse.ch/blocklist.php?download=ipblocklist

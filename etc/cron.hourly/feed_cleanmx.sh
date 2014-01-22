@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Version 1.01 15th Jan 2014
 # Author: Gerhard W. Recher (gerhard.recher@net4sec.com)
 # BGP Ranking related Changes: Raphaël Vinot
@@ -27,17 +27,17 @@ if [ "$STRICT" = "yes" ]; then
     format=xml
     #
     # fetch watermarks of last run
-    aviruses=`cat ./aviruses.last`
-    aphishing=`cat ./aphishing.last`
-    aportals=`cat ./aportals.last`
+    aviruses=`cat ./aviruses.last || true`
+    aphishing=`cat ./aphishing.last || true`
+    aportals=`cat ./aportals.last || true`
     #azombies=`cat ./azombies.last`
     #
     # Get delta since last run
-    wget "http://support.clean-mx.de/clean-mx/xmlviruses?format=$format&delta=$aviruses" \
+    wget "http://support.clean-mx.de/clean-mx/xmlviruses.php?format=$format&delta=$aviruses" \
             -O ./malwares/temp/hourly.viruses.$YEAR.$MONTH.$DAY.$HOUR.$format
-    wget "http://support.clean-mx.de/clean-mx/xmlportals?format=$format&delta=$aportals" \
+    wget "http://support.clean-mx.de/clean-mx/xmlportals.php?format=$format&delta=$aportals" \
             -O ./portals/temp/hourly.portals.$YEAR.$MONTH.$DAY.$HOUR.$format
-    wget "http://support.clean-mx.de/clean-mx/xmlphishing?format=$format&delta=$aphishing" \
+    wget "http://support.clean-mx.de/clean-mx/xmlphishing.php?format=$format&delta=$aphishing" \
             -O ./phishing/temp/hourly.phishing.$YEAR.$MONTH.$DAY.$HOUR.$format
     #wget "http://support.clean-mx.de/clean-mx/xmlpublog?format=$format&delta=$azombies" \
     #        -O ./zombies/temp/hourly.zombies.$YEAR.$MONTH.$DAY.$HOUR.$format

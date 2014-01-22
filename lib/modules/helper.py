@@ -86,8 +86,7 @@ def importer(raw_dir, listname):
             has_files = True
             if date_from_module is not None:
                 date = date_from_module
-            os.rename(filename,
-                    os.path.join(raw_dir, old_dir, str(date).replace(' ','-')))
+            os.rename(filename, os.path.join(raw_dir, old_dir, date.isoformat()))
         except:
             new_file = os.path.join(raw_dir, old_dir,
                     'INVALID_' + str(date).replace(' ','-'))

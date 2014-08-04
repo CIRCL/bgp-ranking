@@ -23,6 +23,9 @@ old_dir = 'old'
 
 temp_db = None
 
+ip_publisher_channel = 'ips'
+
+
 def __prepare():
     global temp_db
 
@@ -30,9 +33,10 @@ def __prepare():
     config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
 
-    temp_db = redis.Redis(port = int(config.get('redis','port_cache')),
-            db=int(config.get('redis','temp')))
+    temp_db = redis.Redis(port=int(config.get('redis', 'port_cache')),
+                          db=int(config.get('redis', 'temp')))
     sys.path.append(os.path.dirname(__file__))
+
 
 def new_entry(ip, source, timestamp):
     """
@@ -43,8 +47,10 @@ def new_entry(ip, source, timestamp):
     uid = temp_db.incr(key_uid)
     p = temp_db.pipeline()
     p.hmset(uid, {key_ip: ip, key_src: source, key_tstamp: timestamp})
+    p.publish(ip_publisher_channel, '"{}","{}","{}"'.format(source, timestamp, ip))
     p.sadd(key_uid_list, uid)
     p.execute()
+
 
 def __get_files(directory):
     """
@@ -58,17 +64,19 @@ def __get_files(directory):
             files.append(f)
     return files
 
+
 def __default_parser(filename, listname, date):
     """
         Search for IPs on each line of the files in that dir
     """
     with open(filename, 'r') as f:
         for line in f:
-            ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})',line)
+            ip = re.findall('((?:\d{1,3}\.){3}\d{1,3})', line)
             if len(ip) == 0:
                 continue
             new_entry(ip[0], listname, date)
     return date
+
 
 def importer(raw_dir, listname):
     publisher.channel = 'ParseRawFiles'
@@ -89,8 +97,7 @@ def importer(raw_dir, listname):
             os.rename(filename, os.path.join(raw_dir, old_dir, date.isoformat()))
         except:
             new_file = os.path.join(raw_dir, old_dir,
-                    'INVALID_' + str(date).replace(' ','-'))
+                                    'INVALID_' + str(date).replace(' ', '-'))
             os.rename(filename, new_file)
             publisher.error('Invalid file: ' + new_file)
     return has_files
-

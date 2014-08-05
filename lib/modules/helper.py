@@ -10,15 +10,6 @@ import re
 import importlib
 import sys
 from pubsublogger import publisher
-try:
-    import zmq
-    has_zmq = True
-    port = "5556"
-    context = zmq.Context()
-    socket = context.socket(zmq.PUB)
-    socket.bind("tcp://*:%s" % port)
-except:
-    has_zmq = False
 
 separator = '|'
 key_ip = 'ip'
@@ -31,6 +22,8 @@ key_uid_list = 'uid_list'
 old_dir = 'old'
 
 temp_db = None
+
+ip_publisher_channel = 'ips'
 
 
 def __prepare():
@@ -54,10 +47,9 @@ def new_entry(ip, source, timestamp):
     uid = temp_db.incr(key_uid)
     p = temp_db.pipeline()
     p.hmset(uid, {key_ip: ip, key_src: source, key_tstamp: timestamp})
+    p.publish(ip_publisher_channel, '"{}","{}","{}"'.format(source, timestamp, ip))
     p.sadd(key_uid_list, uid)
     p.execute()
-    if has_zmq:
-        socket.send('"{}","{}","{}"'.format(source, timestamp, ip))
 
 
 def __get_files(directory):

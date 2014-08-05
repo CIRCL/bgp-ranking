@@ -9,6 +9,7 @@ $PYTHON start_db_input.py stop
 $PYTHON start_module_manager.py stop
 $PYTHON start_ris.py stop
 $PYTHON start_fetch_ris_entries.py stop
+$PYTHON start_ip_zmq.py stop
 #$PYTHON start_microblog.py stop
 
 # Desactivated by default

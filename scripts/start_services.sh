@@ -9,6 +9,7 @@ $NICE $PYTHON start_db_input.py start
 $NICE $PYTHON start_module_manager.py start
 $NICE $PYTHON start_ris.py start
 $NICE $PYTHON start_fetch_ris_entries.py start
+$NICE $PYTHON start_ip_zmq.py start
 #$NICE $PYTHON start_microblog.py start
 
 # Desactivated by default

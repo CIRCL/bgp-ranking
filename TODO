@@ -9,7 +9,7 @@ TODO List
 Bugfixes
 ========
 
-* Ensure each modules is running ony one time, it works but easy to do a misake
+* Ensure each modules is only running one time, it works but easy to do a mistake
 * There is actually a problem with the slave database: it takes **to much** time.
   The proper fix it the move the temporary data from the global database to an other one,
   not synchronized with the slave.
@@ -94,7 +94,7 @@ Microblogging client
 ====================
 
 * Post when a new ranking has been computed
-* Possiblity to do query on AS/IP
+* Possibility to do query on AS/IP
 
 Website
 =======
@@ -106,11 +106,11 @@ Homepage
 
 ASN Details
 -----------
-* highligh depending on the number of sources where it has been found + credibility
+* highlight depending on the number of sources where it has been found + credibility
 * ability to display the details of the other days (click on the graph?)
 
 IP Details
 ----------
 
-* highligh the IPs found in more than one source
+* highlight the IPs found in more than one source
 

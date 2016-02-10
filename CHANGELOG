@@ -31,14 +31,14 @@ Improvements:
  * Use one single file for several modules.
  * Website: The IPs found in many sources are now at seen first
  * Generation of the reports much more faster
- * Sync the redis configs files with the default
+ * Sync the redis config files with the default
  * Better default impacts
  * Update Doc
 
 v1.1.3 - 2011-05-12
 
 New:
- * Very simple migroblogging bot (twitter and identica)
+ * Very simple microblogging bot (twitter and identica)
  * Add an HTTP log analyzer to play with
  * Website: display the rank of each subnet on asn_details
 
@@ -51,7 +51,7 @@ Improvements:
  * Use a dedicated logfile and not user.log anymore
  * Use the lists/services (ssh, mail, pop3, apache and ftp) of blocklist.de instead the
    Global one which contains complete subnets.
- * First usage of the "default module" used on files which only contains IP adresses
+ * First usage of the "default module" used on files which only contains IP addresses
 
 v1.1.2 - 2011-04-23
 

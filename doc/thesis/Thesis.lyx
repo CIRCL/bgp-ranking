@@ -846,7 +846,7 @@ e...
  but confidence without any control will not work: if an ISP decide that
  he does not care what is happening on his network he may be blacklisted
  by the other ISPs.
- Or at least his bandwidth will be reduced, even if the the suspicious traffic
+ Or at least his bandwidth will be reduced, even if the suspicious traffic
  is originating from a third ISP.
  
 \end_layout
@@ -1182,7 +1182,7 @@ e the traffic originating from a malicious source when it is detected in
 \emph on
 fast enough
 \emph default
- depends on the the frequency of the update of the sources.
+ depends on the frequency of the update of the sources.
 \end_layout
 
 \begin_layout Standard
@@ -1593,7 +1593,7 @@ Fast access
 \begin_layout Standard
 The other usage of Redis is quite obvious: we need to be able to do a lot
  of queries in a small period of time.
- It is the case for the the whois database for example: the most we do queries
+ It is the case for the whois database for example: the most we do queries
  per second, the fastest we update the ranking database.
  
 \end_layout
@@ -1932,7 +1932,7 @@ Data from the datasets
 \end_layout
 
 \begin_layout Standard
-The database contains the the following tables: 
+The database contains the following tables:
 \end_layout
 
 \begin_layout Description
@@ -3033,7 +3033,7 @@ This is why we want to be able to find the smallest network within a set
 \end_layout
 
 \begin_layout Standard
-To do it, we just have to split the the interval keys found for a IP, check
+To do it, we just have to split the interval keys found for a IP, check
  if it is in this interval.
  When one if found, we have to verify that there is no other smallest network
  containing the IP.

@@ -921,8 +921,8 @@ Key points in the analysis
 \end_layout
 
 \begin_layout Standard
-The data are coming from different sources, it is important because this
- sources sources will cover different threads ant it will allow us to have
+The data are coming from different sources, it is important because these
+ sources will cover different threads and it will allow us to have
  a more global overview on the malicious ASNs.
 \end_layout
 
@@ -2569,7 +2569,7 @@ knows
 \end_layout
 
 \begin_layout Standard
-The raw data are saved in in MRT format 
+The raw data are saved in MRT format
 \begin_inset CommandInset citation
 LatexCommand cite
 key "MRT-RFC"
@@ -3136,7 +3136,7 @@ Context
 \end_layout
 
 \begin_layout Standard
-One of the requirements is that the system has to to allow mapreduce-like
+One of the requirements is that the system has to allow mapreduce-like
  processing.
  The problem with files is that it is not possible to parse it with more
  than one process at the same time.

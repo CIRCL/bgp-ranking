@@ -20,7 +20,7 @@ What is the directory structure?
  |  +- helpers/
  |  |  +- some helpers (for the initscripts and the manipulation of the ips) used very often in the project
  |  +- modules/
- |  |  +- all the modules to parse the differents raw files
+ |  |  +- all the modules to parse the different raw files
  |  +- whois_client/
  |  |  +- whois fetcher and connector for the whois client
  |  +- whois_parser/
@@ -36,7 +36,7 @@ What is the directory structure?
  |  |  |  +- temp/ : directory where the lists are downloaded 
  |  |  |  +- file(s) to parse 
  |  +- run/
- |  |  +- pid files of the unning processes 
+ |  |  +- pid files of the running processes
  |  +- log/
  |  |  +- log files
 
@@ -48,11 +48,11 @@ tl;dr: if you do not use the daily dataset of dshield, one redis server is enoug
 And comment the line with DshieldDaily! 
 
 
-Detailled answer: 
+Detailed answer:
 It depends. If you use the whole system with all the sources, not. At all. Or you will see redis die.
 
-The system is massively multiprocessed, with massively I meen around 40/50 processes when it is busy. Each of this processes interract more or less with redis. Some of them write stuff but the most "redis-intensif" work is reading information from the databases.
+The system is massively multiprocessed, with massively I mean around 40/50 processes when it is busy. Each of this processes interact more or less with redis. Some of them write stuff but the most "redis-intensive" work is reading information from the databases.
 That is why there is two slave databases which only handle this part. 
 The master server handle all the write processes. 
 
-The second master redis server contains the temporary (RIS) Whois entries, it is quite intensive but a single server doing only this is enough. It is gread to have this second server because many information are added/removed from the server and the other master server was quite busy to replicate the entries on the slaves. 
+The second master redis server contains the temporary (RIS) Whois entries, it is quite intensive but a single server doing only this is enough. It is great to have this second server because many information are added/removed from the server and the other master server was quite busy to replicate the entries on the slaves.

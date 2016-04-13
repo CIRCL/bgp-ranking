@@ -65,9 +65,12 @@ def prepare():
                         db = int(config.get('redis','cache_ris')))
     cache_db_0 = redis.Redis(port = int(config.get('redis','port_cache')),
                         db = int(config.get('redis','temp')))
-    global_db = redis.Redis(port = int(config.get('redis','port_master')),
+    global_db = redis.Redis(host=config.get('redis','host_master1'),
+                        port = int(config.get('redis','port_master1')),
                         db = int(config.get('redis','global')))
-    config_db = redis.Redis(port = int(config.get('redis','port_master')),
+    config_db = redis.Redis(
+                        host=config.get('redis','host_master2'),
+                        port = int(config.get('redis','port_master2')),
                         db = config.get('redis','config'))
     config_db.delete(stop_ris)
 
@@ -112,7 +115,7 @@ def update_db_ris(data):
     splitted = data.partition('\n')
     ris_origin = splitted[0]
     riswhois = splitted[2]
-    ris_whois = Whois(riswhois,  ris_origin)
+    ris_whois = Whois(riswhois, ris_origin)
     if not ris_whois.origin:
         return default_asn_key
     else:
@@ -201,7 +204,8 @@ def stop_services(signum, frame):
     config = ConfigParser.RawConfigParser()
     config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
-    config_db = redis.Redis(port = int(config.get('redis','port_master')),
+    config_db = redis.Redis(host=config.get('redis','host_master2'),
+            port = int(config.get('redis','port_master2')),
             db = config.get('redis','config'))
     config_db.set(stop_ris, 1)
 

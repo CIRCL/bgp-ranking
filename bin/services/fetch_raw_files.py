@@ -58,9 +58,10 @@ def prepare():
     old_directory = os.path.join(directory, 'old')
 
     config_db = redis.Redis(
-            port = int(config.get('redis','port_master')),\
+            host=config.get('redis','host_master2'),
+            port = int(config.get('redis','port_master2')),
             db = config.get('redis','config'))
-    socket.setdefaulttimeout(120)
+    socket.setdefaulttimeout(600)
     urllib._urlopener = BgpRanking_UrlFetcher()
 
 

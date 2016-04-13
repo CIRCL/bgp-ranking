@@ -17,7 +17,8 @@ class ReportsGenerator(CommonReport):
     def __init__(self, ip_version = 4):
         CommonReport.__init__(self, ip_version)
         self.config_db = redis.Redis(
-                port = int(self.config.get('redis','port_master')),
+                host=self.config.get('redis','host_master2'),
+                port = int(self.config.get('redis','port_master2')),
                 db = self.config.get('redis','config'))
         self.default_asn = -1
 

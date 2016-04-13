@@ -38,8 +38,9 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
     from modules import helper
     raw_data = os.path.join(root_dir,config.get('directories','raw_data'))
-    config_db = redis.Redis(port = int(config.get('redis','port_master')),\
-                              db = config.get('redis','config'))
+    config_db = redis.Redis(host=config.get('redis','host_master2'),
+                            port = int(config.get('redis','port_master2')),\
+                            db = config.get('redis','config'))
 
     directory = os.path.join(raw_data, args.directory)
 

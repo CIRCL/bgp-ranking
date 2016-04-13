@@ -58,9 +58,12 @@ def prepare():
     config.read(config_file)
     temp_db    = redis.Redis(port = int(config.get('redis','port_cache')),
                         db=int(config.get('redis','temp')))
-    global_db  = redis.Redis(port = int(config.get('redis','port_master')),
+    global_db  = redis.Redis(host=config.get('redis','host_master1'),
+                        port = int(config.get('redis','port_master1')),
                         db=int(config.get('redis','global')))
-    config_db = redis.Redis(port = int(config.get('redis','port_master')),
+    config_db = redis.Redis(
+                        host=config.get('redis','host_master2'),
+                        port = int(config.get('redis','port_master2')),
                         db = config.get('redis','config'))
     config_db.delete(stop_db_input)
 
@@ -154,7 +157,8 @@ def stop_services(signum, frame):
     config = ConfigParser.RawConfigParser()
     config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
-    config_db = redis.Redis(port = int(config.get('redis','port_master')),
+    config_db = redis.Redis(host=config.get('redis','host_master2'),
+            port = int(config.get('redis','port_master2')),
             db = config.get('redis','config'))
     config_db.set(stop_db_input, 1)
 

@@ -25,11 +25,12 @@ class CommonReport(object):
         self.config.optionxform = str
         config_file = "/etc/bgpranking/bgpranking.conf"
         self.config.read(config_file)
-        self.global_db  = redis.Redis(port =
-                int(self.config.get('redis','port_master')),
+        self.global_db  = redis.Redis(host=self.config.get('redis','host_master1'),
+                port=int(self.config.get('redis','port_master1')),
                 db = self.config.get('redis','global'))
-        self.history_db = redis.Redis(port =
-                int(self.config.get('redis','port_master')),
+        self.history_db = redis.Redis(
+                host=self.config.get('redis','host_master2'),
+                port = int(self.config.get('redis','port_master2')),
                 db = self.config.get('redis','history'))
         self.history_db_temp = redis.Redis(port =
                 int(self.config.get('redis','port_cache')),

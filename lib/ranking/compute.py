@@ -41,10 +41,12 @@ def prepare():
 
     routing_db = redis.Redis(port = int(config.get('redis','port_cache')),\
                                     db = config.get('redis','routing'))
-    global_db  = redis.Redis(port = int(config.get('redis','port_master')),\
+    global_db  = redis.Redis(host=config.get('redis','host_master1'),
+                                    port = int(config.get('redis','port_master1')),\
                                     db = config.get('redis','global'))
-    history_db = redis.Redis(port = int(config.get('redis','port_master')),\
-                                    db = config.get('redis','history'))
+    history_db = redis.Redis(host=config.get('redis','host_master2'),
+                             port = int(config.get('redis','port_master2')),\
+                             db = config.get('redis','history'))
 
 def rank_using_key(key):
     """

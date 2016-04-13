@@ -42,8 +42,9 @@ def prepare():
     services_dir = os.path.join(root_dir,config.get('directories','services'))
     sys.path.append(os.path.join(root_dir,config.get('directories','libraries')))
 
-    config_db = redis.Redis(port = int(config.get('redis','port_master')),\
-                                   db = config.get('redis','config'))
+    config_db = redis.Redis(host=config.get('redis','host_master2'),
+                            port = int(config.get('redis','port_master2')),\
+                            db = config.get('redis','config'))
 
 
 def launch_fetcher(module):
@@ -131,8 +132,9 @@ def stop_services(signum, frame):
     config = ConfigParser.RawConfigParser()
     config_file = "/etc/bgpranking/bgpranking.conf"
     config.read(config_file)
-    config_db = redis.Redis(port = int(config.get('redis','port_master')),\
-                              db = config.get('redis','config'))
+    config_db = redis.Redis(host=config.get('redis','host_master2'),
+                            port = int(config.get('redis','port_master2')),\
+                            db = config.get('redis','config'))
     modules = config_db.smembers('modules')
     # Cleanup
     for module in modules:

@@ -27,6 +27,11 @@ global = 5
 history = 6
 config = 7
 
-port_master= 6379
+host_master1 = 127.0.0.1
+port_master1= 6379
+
+host_master2 = 127.0.0.1
+port_master2= 6479
+
 port_cache = 6382
 

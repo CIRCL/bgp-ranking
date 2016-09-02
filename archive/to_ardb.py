@@ -54,22 +54,29 @@ def copy_valid_blocks(src, dst):
             dst.sadd(a, *to_copy)
 
 
-def copy_all_ips(src, dst, year):
+def copy_all_ips(src, dst, year, move=False):
     for day in perdelta(date(year, 1, 1), date(year, 12, 31), timedelta(days=1)):
         sources = src.smembers('{}|sources'.format(day))
         if sources:
             print(day)
             dst.sadd('{}|sources'.format(day), *sources)
+            if move:
+                src.delete('{}|sources'.format(day))
         else:
             print('No data for', day)
             continue
         for s in sources:
+            dst_pipeline = dst.pipeline(False)
             asns = src.smembers('{}|{}|asns'.format(day, s))
             if asns:
-                dst.sadd('{}|{}|asns'.format(day, s), *asns)
+                dst_pipeline.sadd('{}|{}|asns'.format(day, s), *asns)
+                if move:
+                    src.delete('{}|{}|asns'.format(day, s))
             asns_d = src.smembers('{}|{}|asns_details'.format(day, s))
             if asns_d:
-                dst.sadd('{}|{}|asns_details'.format(day, s), *asns_d)
+                dst_pipeline.sadd('{}|{}|asns_details'.format(day, s), *asns_d)
+                if move:
+                    src.delete('{}|{}|asns_details'.format(day, s))
             else:
                 continue
             details_keys = ['{}|{}|{}'.format(detail, day, s) for detail in asns_d]
@@ -77,7 +84,10 @@ def copy_all_ips(src, dst, year):
             [p_details.smembers(k) for k in details_keys]
             contents = p_details.execute()
             all_content = zip(details_keys, contents)
-            [dst.sadd(k, *content) for k, content in all_content if content]
+            [dst_pipeline.sadd(k, *content) for k, content in all_content if content]
+            if move:
+                src.delete(*details_keys)
+            dst_pipeline.execute()
 
 
 def check_asns(src, alreadychecked_blocks):
@@ -171,6 +181,6 @@ def check_data(src):
 
 
 if __name__ == '__main__':
-    src = StrictRedis(host='127.0.0.1', port='6379', db=5)
-    dst = StrictRedis(host='127.0.0.1', port='6399')
-    copy_all_ips(src, dst, 2015)
+    src = StrictRedis(host='149.13.33.71', port='6379', db=5, decode_responses=True)
+    dst = StrictRedis(host='127.0.0.1', port='16379', decode_responses=True)
+    copy_all_ips(src, dst, 2015, move=True)

@@ -49,6 +49,6 @@ There is some scripts available in scripts/.
 
 Before starting the system, edit the file scripts/common.source.sh accordingly to your system. 
 
-When it is done, start first start_redis.sh, init_databases.sh, start_services.sh and finally start_ranking.sh. 
+When it is done, start first start_redis.sh, start_services.sh and finally start_ranking.sh. 
 
 ####################################

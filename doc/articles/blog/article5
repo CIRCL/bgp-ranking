@@ -4,14 +4,14 @@ Starting the Application is really easy: you just have to launch all the service
 
 * start_fetch_raw_files.py
 
-Fetch the raw files definded in bgp-config.conf in the section raw_fetching with the the following entry: 
+Fetch the raw files defined in bgp-config.conf in the section raw_fetching with the following entry:
 uniq_name = module directory url
 
 Note: the files will firstly be downloaded in a temporary directory and compare with all the other files present. If the same file is found, the file we just download will be dropped. Else, it will be moved in the parent directory and fetched by an other process : start_parse_raw_files.py
 
 * start_parse_raw_files.py  
 
-Parse the raw files. As for the fetching, the modules to use for the parsing are definded in bgp-config.conf in the section gobal, item modules_to_parse. 
+Parse the raw files. As for the fetching, the modules to use for the parsing are defined in bgp-config.conf in the global section, item modules_to_parse.
 
 * start_fetch_whois_entries.py  
 

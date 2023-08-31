@@ -846,7 +846,7 @@ e...
  but confidence without any control will not work: if an ISP decide that
  he does not care what is happening on his network he may be blacklisted
  by the other ISPs.
- Or at least his bandwidth will be reduced, even if the the suspicious traffic
+ Or at least his bandwidth will be reduced, even if the suspicious traffic
  is originating from a third ISP.
  
 \end_layout
@@ -921,8 +921,8 @@ Key points in the analysis
 \end_layout
 
 \begin_layout Standard
-The data are coming from different sources, it is important because this
- sources sources will cover different threads ant it will allow us to have
+The data are coming from different sources, it is important because these
+ sources will cover different threads and it will allow us to have
  a more global overview on the malicious ASNs.
 \end_layout
 
@@ -1182,7 +1182,7 @@ e the traffic originating from a malicious source when it is detected in
 \emph on
 fast enough
 \emph default
- depends on the the frequency of the update of the sources.
+ depends on the frequency of the update of the sources.
 \end_layout
 
 \begin_layout Standard
@@ -1593,7 +1593,7 @@ Fast access
 \begin_layout Standard
 The other usage of Redis is quite obvious: we need to be able to do a lot
  of queries in a small period of time.
- It is the case for the the whois database for example: the most we do queries
+ It is the case for the whois database for example: the most we do queries
  per second, the fastest we update the ranking database.
  
 \end_layout
@@ -1932,7 +1932,7 @@ Data from the datasets
 \end_layout
 
 \begin_layout Standard
-The database contains the the following tables: 
+The database contains the following tables:
 \end_layout
 
 \begin_layout Description
@@ -2569,7 +2569,7 @@ knows
 \end_layout
 
 \begin_layout Standard
-The raw data are saved in in MRT format 
+The raw data are saved in MRT format
 \begin_inset CommandInset citation
 LatexCommand cite
 key "MRT-RFC"
@@ -3033,7 +3033,7 @@ This is why we want to be able to find the smallest network within a set
 \end_layout
 
 \begin_layout Standard
-To do it, we just have to split the the interval keys found for a IP, check
+To do it, we just have to split the interval keys found for a IP, check
  if it is in this interval.
  When one if found, we have to verify that there is no other smallest network
  containing the IP.
@@ -3136,7 +3136,7 @@ Context
 \end_layout
 
 \begin_layout Standard
-One of the requirements is that the system has to to allow mapreduce-like
+One of the requirements is that the system has to allow mapreduce-like
  processing.
  The problem with files is that it is not possible to parse it with more
  than one process at the same time.

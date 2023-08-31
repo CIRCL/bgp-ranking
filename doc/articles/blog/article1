@@ -41,7 +41,7 @@
 <h1>
         Write a new module</h1>
 <p>
-        Each dataset needs a proper module to extract the needed informations. You can already take a look at the <a href="http://gitorious.org/bgp-ranking/bgp-ranking/trees/master/lib/modules">existings modules</a>.</p>
+        Each dataset needs a proper module to extract the needed informations. You can already take a look at the <a href="http://gitorious.org/bgp-ranking/bgp-ranking/trees/master/lib/modules">existing modules</a>.</p>
 <p>
         Every module has his requirements:</p>
 <ul>
